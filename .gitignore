@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# Database (large, binary)
+*.db
+
+# Temporary files
+*.log
+/tmp/
+
+# Data files (not requirements.txt)
+matches*.txt
+overnight_log.txt
+import_log.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Claude Code
+.claude/
+
+# Old project folders (not part of this repo)
+family-tree-*/
+census/
+tree-svg-old-backup/
+files.zip
