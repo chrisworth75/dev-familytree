@@ -1,175 +1,434 @@
 # Genealogy Research Database
 
-A comprehensive SQLite-based system for genealogy research, focusing on DNA match analysis and ancestor discovery.
+## Research Missions
 
-## Project Goals
+### Mission 1: Identify Henry Lonsdale Wrathall's Father
+Henry Lonsdale Wrathall (1863-1927) was born to Susan Wrathall in Blackburn, Lancashire. His father is unknown (Ahnentafel position 36). This project uses DNA evidence to systematically gather data that may reveal his identity.
 
-1. **Build a comprehensive database** - Accumulate as much information about ancestors as possible from multiple sources
-2. **Import DNA matches from Ancestry** - Either via API or browser scraping (Playwright)
-3. **Import family trees from matches** - To find common ancestors
-4. **Track evidence for and against** - Family stories/claims need to be proven or disproven with evidence
-5. **Continuous updates** - Pull new DNA matches as they appear on Ancestry
+**We do not assume any conclusion.** The "Lonsdale" middle name suggests a connection to the Lowther family (Earls of Lonsdale), but this is a hypothesis to test, not a fact.
 
-**Important**: This is an ongoing research project. We don't jump to conclusions - we gather evidence and let it speak for itself.
+### Mission 2: Identify How I Am Related to My Top 50 Matches
+For each of the top 50 DNA matches (by cM), determine the exact relationship by:
+1. Building a research tree for each match (regardless of whether they have a public tree)
+2. Tracing their ancestry until it intersects with our known tree
+3. Documenting the MRCA (Most Recent Common Ancestors)
 
-## Current Research Questions
+**Progress is tracked in the Top 50 Match Table below.** This table is derived from the `dna_match` database table but includes additional tracking columns.
 
-### Lowther/Wrathall Connection (Unproven)
-- **Claim**: Susan Wrathall (1842-1925) had a relationship with a member of the Lowther family (Earls of Lonsdale), resulting in Henry Lonsdale Wrathall (1863-1927)
-- **Source of claim**: wrathall.org (a Wrathall family member's research)
-- **Status**: UNPROVEN - gathering DNA and documentary evidence for/against
-- **Evidence for**: The middle name "Lonsdale" (the Earl's title); family tradition
-- **Evidence needed**: DNA matches with confirmed Lowther descendants; documentary records
+### Mission 3: Prove a Family Link to the Cricketer Harry Wrathall
+Harry Wrathall (1857-1930) was a professional cricketer from Kirkby Lonsdale/Lowther area. Is there a documented family connection?
 
-## Scripts
+### Mission 4: Prove or Disprove a Family Link to WG Grace
+W.G. Grace (1848-1915) was the famous Victorian cricketer from Bristol/Gloucestershire. Is there any family connection through DNA or documentary evidence?
 
-All production scripts are in the `scripts/` directory. Experimental scripts are in `tmp-scripts/`.
+**Current Status: LIKELY CONNECTION FOUND**
 
-### Daily Use Scripts (scripts/)
+Our family tree (Tree 110 / Rebecca Hyndman's tree) includes W.G. Grace, suggesting a researched connection exists. The link is through:
 
-#### DNA Match Import (`scripts/ancestry_import.py`)
-Imports DNA matches from Ancestry.com using browser automation.
+- **Marjorie Grace Goodall** (1920) - Chris's grandmother, middle name "Grace" from her paternal grandmother
+- **William Cheetham Goodall** (1878) - Marjorie's father
+- **Emma Grace** - William's mother, Chris's great-great-grandmother
 
-```bash
-# IMPORTANT: Close Chrome first! (cookies can't be read while browser is open)
+Tree 125 (193991232) contains detailed Grace family data including:
+- Henry Mills Grace (1808) - W.G. Grace's father
+- William Gilbert "W.G." Grace (1848) - the famous cricketer
+- Graham Grace (1849) - W.G. Grace's brother
+- Blanch Maud Grace (1864) - W.G. Grace's daughter
 
-# Browser mode - scrapes ALL matches
-python scripts/ancestry_import.py --browser
+**Next Steps:**
+1. Determine Emma Grace's exact relationship to W.G. Grace (sister? cousin? same branch?)
+2. Find Emma Grace's parents to confirm the connection
+3. Document the complete lineage from Emma Grace to Henry Mills Grace
 
-# Headless mode (invisible browser)
-python scripts/ancestry_import.py --browser --headless
+**Bristol Connection:** User's aunt reports "GW Grace went to Bristol" (W.G. Grace was from Bristol/Gloucestershire) and "Marjorie's uncle George lived in Clevedon Bristol" (Clevedon is in Somerset, near Bristol). This geographic connection supports the family link.
 
-# API mode - limited to ~200 matches
-python scripts/ancestry_import.py
+### Mission 5: Determine How Toby Yates Connects to the Maternal Side
+Toby Yates is a close DNA match. How does he connect through the maternal line?
 
-# Get shared matches for a specific person
-python scripts/ancestry_import.py --shared "Rachel Wrathall"
-```
+### Mission 6: Find All Descendants of Ancestors up to HLW's Level
+Build a comprehensive descendant tree for ancestors at Henry Lonsdale Wrathall's generation and above (Ahnentafel 36+).
 
-#### Tree Import (`scripts/import_ancestry_tree.py`)
-Imports a complete Ancestry tree with people AND relationships.
-
-```bash
-# Import a tree (with rate limiting)
-python scripts/import_ancestry_tree.py TREE_ID --delay 0.3
-
-# Limit size
-python scripts/import_ancestry_tree.py TREE_ID --max-size 2000
-
-# Show stats only
-python scripts/import_ancestry_tree.py TREE_ID --stats
-```
-
-#### Shared Match Import (`scripts/import_shared_matches.py`)
-Imports shared match data to find triangulation groups.
-
-```bash
-python scripts/import_shared_matches.py --min-cm 30 --delay 0.5
-```
-
-#### Tree ID Discovery (`scripts/import_match_trees.py`)
-Discovers and imports trees from DNA matches.
-
-```bash
-# Discover tree IDs for matches
-python scripts/import_match_trees.py --discover --min-cm 15 --limit 50
-
-# Import discovered trees
-python scripts/import_match_trees.py --import-trees --min-cm 20 --max-tree-size 2000
-```
-
-### Experimental Scripts (tmp-scripts/)
-- `explore_tree_api.py` - API exploration
-- `fetch_daisy_tree.py` - One-off tree fetch
-- `fetch_shared_matches.py` - Early shared match experiments
-- `import_wrathall_cluster.py` - Cluster import experiment
-- `migrate_ahnentafel.py` - Ahnentafel migration
-- `overnight_run.py` - Batch processing script
-
-## Database Schema
-
-### Core Tables
-
-- **person** - Known ancestors with estimated details
-- **relationship** - Parent/child/spouse links between people
-- **tree** - Imported Ancestry trees
-- **dna_match** - DNA matches from Ancestry
-- **shared_match** - Shared matches between two DNA matches
-- **census_record** - UK census transcriptions (1841-1911)
-- **person_census_link** - Links people to census records with confidence scores
-
-### Research Tables
-
-- **ancestor** - Ahnentafel-numbered ancestors (1=self, 2=father, 3=mother, etc.)
-- **cluster** - DNA match clusters for grouping related matches
-- **match_ancestor** - Links DNA matches to known ancestors
-
-## Quick Reference
-
-```bash
-# Activate virtual environment
-source venv/bin/activate
-
-# Database location
-sqlite3 genealogy.db
-
-# Key queries
-# List DNA matches by cM
-SELECT name, shared_cm, match_side FROM dna_match ORDER BY shared_cm DESC LIMIT 20;
-
-# Count matches per side
-SELECT match_side, COUNT(*) FROM dna_match GROUP BY match_side;
-
-# Find imported trees
-SELECT id, ancestry_tree_id, name, (SELECT COUNT(*) FROM person WHERE tree_id = t.id) as people
-FROM tree t ORDER BY people DESC;
-```
-
-## Important Notes for Future Sessions
-
-1. **ALWAYS save working scripts** - Don't modify working code without a backup
-2. **Document what works** - Write notes after each successful operation
-3. **Note CSS selectors** - Ancestry's HTML structure changes; document working selectors
-4. **Keep daily notes** - NOTES_YYYY-MM-DD.md files track progress and findings
-5. **Don't assume claims are true** - The Lowther claim is a research question, not a fact
-
-## Dependencies
-
-```bash
-pip install browser_cookie3 requests playwright
-playwright install chromium
-```
-
-## Files Structure
-
-```
-dev-familytree/
-├── README.md                 # This file
-├── CLAUDE.md                 # Instructions for AI assistant
-├── genealogy.db              # SQLite database (~30MB)
-├── requirements.txt          # Python dependencies
-├── migrations/               # Database schema migrations
-├── NOTES_*.md                # Daily research notes
-├── scripts/                  # Production scripts
-│   ├── ancestry_import.py    # DNA match import
-│   ├── import_ancestry_tree.py
-│   ├── import_shared_matches.py
-│   └── import_match_trees.py
-├── tmp-scripts/              # Experimental/one-off scripts
-└── venv/                     # Python virtual environment
-```
-
-## Current Status (Dec 26, 2025)
-
-- **DNA Matches**: 2,038 in database
-- **People**: ~12,000+ across imported trees
-- **Trees**: 40+ imported
-- **Shared Matches**: ~5,000 records
-
-### Recent Fixes (Dec 26, 2025)
-- DNA match browser scraping **FIXED** - now uses pagination instead of scrolling
-- Key selectors documented in NOTES_2025-12-26.md
+### Mission 7: Build a Family Website
+Create a minimal viable product website where descendants of HLW can:
+- Login securely
+- View the family tree
+- Query the database
+- Download tree data (GEDCOM)
 
 ---
 
-*Last updated: December 26, 2025*
+## Approach: Daily Automated Data Collection
+
+**This project is NOT about contacting people.** It is about establishing a daily routine for automated data collection that will accumulate evidence over time.
+
+### The Strategy
+1. **Import new DNA matches daily** - Ancestry adds new matches regularly
+2. **Import shared match data** - Build triangulation networks
+3. **Import match trees** - Gather surname and location data
+4. **Analyse patterns** - Look for Westmorland/Cumberland connections
+5. **Repeat** - Consistency over time builds the dataset
+
+### Why This Works
+- DNA matches increase as more people test
+- Each new tree import adds potential evidence
+- Triangulation data reveals which matches share ancestors
+- Over months, patterns emerge that single sessions miss
+
+---
+
+## Daily Routine
+
+### Quick Daily Run (5-10 minutes)
+```bash
+cd /Users/chris/dev-familytree
+source venv/bin/activate
+
+# 1. Import any new DNA matches
+python scripts/ancestry_import.py --browser --headless --limit 500
+
+# 2. Import shared matches for recent imports
+python scripts/import_shared_matches.py --min-cm 20 --delay 0.5
+
+# 3. Discover and import new trees (max 500 people per tree)
+python scripts/import_match_trees.py --discover --min-cm 20 --delay 0.3
+python scripts/import_match_trees.py --import-trees --max-tree-size 500
+
+# 4. Run analysis
+python scripts/find_unknown_father_matches.py
+```
+
+### Overnight/Extended Runs
+```bash
+# Import shared matches for lower cM threshold (takes hours)
+python scripts/import_shared_matches.py --min-cm 15 --delay 0.5
+
+# Import larger trees (takes hours)
+python scripts/import_match_trees.py --import-trees --max-tree-size 2000
+```
+
+### Check Progress
+```bash
+sqlite3 genealogy.db "
+SELECT 'DNA matches' as metric, COUNT(*) as count FROM dna_match
+UNION ALL SELECT 'Shared match records', COUNT(*) FROM shared_match
+UNION ALL SELECT 'Trees imported', COUNT(*) FROM tree
+UNION ALL SELECT 'People in trees', COUNT(*) FROM person;
+"
+```
+
+---
+
+## Current Data (11 January 2026)
+
+| Metric | Count |
+|--------|-------|
+| DNA matches | 9,844 |
+| Shared match records | 14,468 |
+| Trees imported | 259 |
+| People in trees | 63,308 |
+| Matches with shared data | 2,143 |
+
+---
+
+## Top 50 Match Table (Mission 2)
+
+This table tracks progress on Mission 2: identifying how each top match connects to our tree.
+
+**Key:**
+- **Public Tree**: Size of match's public Ancestry tree (0 = none/private)
+- **Identified**: Yes = connection proven, Partial = likely but unproven, No = unknown
+- **MRCA**: Most Recent Common Ancestors (if identified)
+- **Research Tree**: Our research tree ID for this match (built regardless of public tree)
+
+> **Note:** This table is derived from the `dna_match` database table but maintained manually here with additional tracking columns. The database is the source of truth for cM values; this table tracks our research progress.
+
+### MRCA Reference
+
+| Gen | MRCA | Friendly Name | Typical cM |
+|-----|------|---------------|------------|
+| 1 | 2+3 | Jon+Pat | 2500+ (sibling) |
+| 2 | 4+5 | Gord+Marj | 400-900 (1st cousin) |
+| 2 | 6+7 | Albert+Doris | 400-900 (1st cousin) |
+| 3 | 8+9 | Arthur+Connie | 100-300 (2nd cousin) |
+| 3 | 10+11 | Goodalls | 100-300 |
+| 3 | 12+13 | John+Betsy | 100-300 |
+| 3 | 14+15 | Sam+Thea | 100-300 |
+| 4 | 16+17 | Worthingtons | 40-100 (3rd cousin) |
+| 4 | 18+19 | Henry+Mary | 40-100 |
+| 4 | 22+23 | Virgos | 40-100 |
+| 4 | 30+31 | Tarts | 40-100 |
+| 5 | **UNK-PAT** | **Unknown Paternal** | 20-50 (4th cousin) |
+
+**Note on UNK-PAT:** Susan Wrathall had only one child (Henry) with the unknown father. Matches in this cluster share DNA through the unknown father's OTHER family - his parents, siblings, or children from another relationship.
+
+### Top 50 Matches
+
+| # | Match | cM | Shared | Public Tree | Identified | MRCA | Research Tree |
+|--:|-------|---:|-------:|------------:|:----------:|------|:-------------:|
+| 1 | Rebecca Hyndman | 2699 | 35 | 241 | Yes | Jon+Pat | - |
+| 2 | Bruce Horrocks | 605 | 30 | 18 | Yes | Gord+Marj | - |
+| 3 | Toby Yates | 466 | 30 | 0 | Partial | Gord+Marj? | TODO |
+| 4 | Emily Hine | 134 | 30 | 84 | Partial | Arthur+Connie? | TODO |
+| 5 | jane_gessler | 125 | 27 | 88 | No | **Unk-Pat?** | TODO |
+| 6 | Bruce Lightfoot | 118 | 29 | 4107 | No | ? | TODO |
+| 7 | Helen Brammer | 112 | 24 | 0 | No | Henry+Mary? | TODO |
+| 8 | Brenda Davey | 100 | 15 | 32 | No | **Unk-Pat?** | TODO |
+| 9 | Neil Farnworth | 90 | 28 | 9 | Yes | Tarts | - |
+| 10 | Angela Ganley | 70 | 24 | 70 | No | **Unk-Pat?** | TODO |
+| 11 | hazelhersant | 58 | 25 | 2713 | Yes | Virgos | - |
+| 12 | Margaret Wagstaff | 53 | 15 | 0 | No | Henry+Mary? | TODO |
+| 13 | Ethel Hull | 51 | 11 | 32 | No | **Unk-Pat?** | TODO |
+| 14 | Michelle Morris | 49 | 20 | 0 | No | Henry+Mary? | TODO |
+| 15 | geri_wood | 48 | 28 | 675 | Partial | Wood? | TODO |
+| 16 | diane_lovick | 48 | 7 | 0 | No | ? | TODO |
+| 17 | Valerie Simpson | 45 | 26 | 4 | No | **Unk-Pat?** | TODO |
+| 18 | Wendy Freeman | 44 | 28 | 0 | No | Henry+Mary? | TODO |
+| 19 | Thelma Howard | 43 | 25 | 0 | Partial | Worthingtons? | TODO |
+| 20 | Kim Parker | 43 | 21 | 0 | No | Henry+Mary? | TODO |
+| 21 | hugh copland | 43 | 21 | 96 | Yes | Leon Wrathall | 304 |
+| 22 | Kate Ellis | 42 | 13 | 1 | No | Worthingtons? | TODO |
+| 23 | Georgina Burton-Roberts | 41 | 20 | 0 | No | Henry+Mary? | TODO |
+| 24 | RuthieStennett | 40 | 26 | 0 | No | Worthingtons? | TODO |
+| 25 | Emily Evans | 39 | 15 | 0 | No | **Unk-Pat?** | TODO |
+| 26 | Katrina Barnes | 39 | 8 | 0 | No | **Unk-Pat?** | TODO |
+| 27 | Joseph James | 38 | 25 | 697 | Yes | Worthingtons | - |
+| 28 | Rachel Wrathall | 38 | 22 | 0 | No | **Unk-Pat?** | TODO |
+| 29 | Jill Lester | 37 | 24 | 2020 | No | **Unk-Pat?** | TODO |
+| 30 | Caroline James | 37 | 24 | 0 | Partial | Worthingtons? | TODO |
+| 31 | Paul Crook | 36 | 26 | 0 | No | ? | TODO |
+| 32 | Thomas Arnstein | 36 | 15 | 6 | No | **Unk-Pat?** | TODO |
+| 33 | diane rowles | 36 | 19 | 22 | No | ? | TODO |
+| 34 | Robert Greenhalgh | 35 | 11 | 17 | No | ? | TODO |
+| 35 | gstewart37 | 34 | 20 | 624 | Yes | Tart/Heywood | - |
+| 36 | B.H. | 34 | 20 | 0 | No | ? | TODO |
+| 37 | Lynne Colley | 34 | 16 | 71 | No | ? | TODO |
+| 38 | Peter Ennor | 34 | 13 | 4 | No | **Unk-Pat?** | TODO |
+| 39 | Roger Meredith | 34 | 13 | 0 | No | ? | TODO |
+| 40 | Leo Taylor-Jannati | 34 | 13 | 0 | No | ? | TODO |
+| 41 | Joanne Harrison | 34 | 10 | 72 | No | **Unk-Pat?** | TODO |
+| 42 | Kathleen Macnab | 34 | 9 | 16 | No | ? | TODO |
+| 43 | karen_pelletier90 | 33 | 12 | 9 | No | ? | TODO |
+| 44 | Em Crooks | 33 | 20 | 0 | No | ? | TODO |
+| 45 | Regine Aichlmayr | 33 | 20 | 0 | No | ? | TODO |
+| 46 | Julie Stonehouse | 32 | 13 | 484 | Partial | Shared tree | - |
+| 47 | Jed Wood | 32 | 16 | 675 | Partial | Wood? | TODO |
+| 48 | SandyJoseph43 | 32 | 20 | 155 | Partial | Kirkman? | TODO |
+| 49 | Luke Rowles | 32 | 13 | 484 | Partial | Shared tree | - |
+| 50 | Emma Alexander | 32 | 10 | 484 | Partial | Shared tree | - |
+
+**Progress: 8/50 identified (16%), 9/50 partial (18%)**
+
+### Notes on Identification Status
+
+- **Yes**: Documentary proof exists (e.g., shared tree shows exact connection)
+- **Partial**: Strong evidence but not conclusive (e.g., cluster membership, geographic patterns)
+- **No**: Connection unknown, needs research
+- **Unk-Pat?**: Likely connects through HLW's unknown father (Mission 1 target)
+- **Shared tree**: Match shares tree 193991232 (main family tree) - connection likely but specific line unconfirmed
+
+---
+
+## Key Findings So Far
+
+### Grace Family Connection (Mission 4)
+Strong evidence of a connection to W.G. Grace's family:
+
+| Person | Role | Birth Year | Tree |
+|--------|------|------------|------|
+| Emma Grace | Great-great-grandmother (paternal) | Unknown | 110 |
+| William Cheetham Goodall | Great-grandfather | 1878 | 110, 119, 125 |
+| Marjorie Grace Goodall | Grandmother | 1920 | 110, 119, 125 |
+| W.G. Grace | Famous cricketer | 1848 | 110, 125 |
+| Henry Mills Grace | W.G. Grace's father | 1808 | 125 |
+
+The Grace family were from Bristol/Gloucestershire. Family oral history mentions "Marjorie's uncle George lived in Clevedon Bristol" (Clevedon is near Bristol), supporting the geographic connection.
+
+**Goodall Family Structure (Tree 110):**
+- William Anderson Goodall (1812) - earlier generation
+- **William Goodall** + **Emma Grace** → parents of:
+  - **William Cheetham Goodall** (1878) - Marjorie's father
+  - **George Hay Goodall** - likely "Uncle George" who lived in Clevedon, Bristol
+  - Norman Goodall
+  - Martha Goodall
+
+**Key Discovery (10 Jan 2026):** Emma Grace is **NOT** a sibling of W.G. Grace. Henry Mills Grace's 9 children were:
+- Sons: Henry (1833), Alfred (1840), Edward Mills (1841), W.G. (1848), George Frederick (1850)
+- Daughters: Anne (1835), Fanny (1839), Alice Rose (1845), Elizabeth Blanche (1847)
+
+**No Emma among them.** Emma Grace must be from a different branch:
+- Possibly a cousin (daughter of Henry Mills Grace's sibling)
+- Possibly from an earlier generation
+- Or from a different Grace family entirely
+
+**Investigation needed:**
+1. **Find Henry Mills Grace's siblings** - Did he have brothers/sisters whose children included Emma?
+2. Find Emma Grace in 1851/1861 census as a child with her parents
+3. Confirm George Hay Goodall lived in Clevedon, Somerset
+4. Determine if/how the Bolton Graces connect to the Bristol Graces
+
+**Sources:**
+- [W.G. Grace WikiTree](https://www.wikitree.com/wiki/Grace-1086)
+- [Grace family Wikipedia](https://en.wikipedia.org/wiki/Grace_family)
+
+### Westmorland/Cumberland Candidates
+Matches with connections to Lowther territory (but NO known family surnames):
+
+| Match | cM | Location Connections |
+|-------|-----|---------------------|
+| Jill Lester | 38.0 | Great Strickland, Cumberland |
+| Susan_Wilcock | 31.3 | Cumberland |
+| Lisa Carter | 29.2 | Caldbeck, Cumberland |
+| Kenneth Olsen | 28.1 | Witon, Cumberland |
+| mkmanson40 | 25.9 | Kendal, Cockermouth |
+| Geoffrey Carr | 25.8 | St Bees, Whitehaven |
+
+### Potential Lead
+**Geoffrey Carr** has "Lowther John Barrington" in their tree - a person with "Lowther" as a first/middle name, suggesting a naming connection to the Lowther family.
+
+### The Problem
+These Westmorland/Cumberland matches do NOT triangulate with each other, suggesting they connect through DIFFERENT ancestors rather than a single unknown father line.
+
+---
+
+## Scripts
+
+| Script | Purpose | Daily Use |
+|--------|---------|-----------|
+| `ancestry_import.py` | Import DNA matches | Yes |
+| `import_shared_matches.py` | Import triangulation data | Yes |
+| `import_match_trees.py` | Discover/import match trees | Yes |
+| `find_unknown_father_matches.py` | Analyse for unknown father | Yes |
+| `cluster_matches.py` | Graph-based clustering | Weekly |
+| `import_ancestry_tree.py` | Import single tree by ID | As needed |
+| `import_census_from_tree.py` | Import census records for people in a tree | As needed |
+
+---
+
+## Database Schema
+
+**Location:** `genealogy.db`
+
+### Key Tables
+| Table | Purpose |
+|-------|---------|
+| `dna_match` | DNA matches with cM, side, tree info |
+| `shared_match` | Who shares DNA with whom (triangulation) |
+| `tree` | Imported family trees |
+| `person` | People from imported trees |
+| `relationship` | Family relationships in trees |
+
+### Tree Types
+
+The database supports two types of trees to separate imported data from research expansions:
+
+| Type | Purpose |
+|------|---------|
+| `imported` | Direct copy of a match's Ancestry tree - kept pristine for re-verification |
+| `research` | Expanded tree with census records, BMD findings, and hypothetical connections |
+
+**Why this matters:** When investigating a DNA match, we want to:
+1. Keep their original tree unchanged (so we can re-import to check for updates)
+2. Build out expanded research with census/BMD records in a separate tree
+3. Track which findings came from the original tree vs our research
+
+**Schema:**
+```sql
+-- tree table columns for this:
+tree_type TEXT DEFAULT 'imported'   -- 'imported' or 'research'
+source_tree_id INTEGER              -- links research tree to its source imported tree
+
+-- person table:
+source TEXT DEFAULT 'import'        -- 'import', 'census', 'bmd', 'research'
+```
+
+**Workflow:**
+1. Import match's tree → stored as `tree_type='imported'`
+2. Create research tree → `tree_type='research'`, `source_tree_id` points to original
+3. Add people from census/BMD → `source='census'` or `source='bmd'`
+4. Original tree remains unchanged for future re-imports
+
+### Useful Queries
+```sql
+-- Find matches with Westmorland connections
+SELECT dm.name, dm.shared_cm, p.birth_place
+FROM dna_match dm
+JOIN tree t ON t.ancestry_tree_id = dm.linked_tree_id
+JOIN person p ON p.tree_id = t.id
+WHERE p.birth_place LIKE '%Westmorland%';
+
+-- Check triangulation between two matches
+SELECT * FROM shared_match
+WHERE match1_id = X AND match2_id = Y;
+
+-- Find matches without imported trees
+SELECT name, shared_cm FROM dna_match
+WHERE has_tree = 1 AND linked_tree_id IS NULL
+ORDER BY shared_cm DESC;
+
+-- Find research trees and their sources
+SELECT r.name as research_tree, i.name as source_tree
+FROM tree r
+JOIN tree i ON r.source_tree_id = i.id
+WHERE r.tree_type = 'research';
+
+-- Find people added from census records
+SELECT p.name, p.birth_year_estimate, p.source, t.name as tree
+FROM person p
+JOIN tree t ON p.tree_id = t.id
+WHERE p.source = 'census';
+```
+
+---
+
+## Troubleshooting
+
+### "Error fetching page 1: 403" during tree imports
+Your Ancestry session cookies have expired. Fix:
+1. Open Chrome and log into ancestry.co.uk
+2. Retry the import script
+
+### Ancestry tree sizes are inaccurate
+Ancestry's reported tree size (visible in DNA match list) is often wildly wrong. A tree reported as having 100 people might actually have 3,000+. The `--max-tree-size` flag now aborts early during fetch if the actual size exceeds the limit.
+
+---
+
+## Research Principles
+
+1. **Automated data collection** - Scripts do the work, not manual clicking
+2. **Daily consistency** - Small daily imports beat occasional large sessions
+3. **Evidence over assumption** - The Lonsdale hypothesis must be tested, not assumed
+4. **No contact required** - All data comes from public trees and match lists
+5. **Reproducible** - Scripts can be re-run to update/verify data
+
+---
+
+## What Would Prove the Connection
+
+1. A triangulating group of matches whose trees ALL contain Lowther/Lonsdale surnames
+2. Multiple matches with trees showing descent from confirmed Lowther family members
+3. Y-DNA evidence linking to Lowther male line (separate test required)
+
+---
+
+## Project Structure
+
+```
+dev-familytree/
+├── README.md                    # This file
+├── CLAUDE.md                    # AI assistant instructions
+├── ANALYSIS_REPORT.md           # Latest analysis report
+├── genealogy.db                 # SQLite database
+├── scripts/
+│   ├── ancestry_import.py       # Import DNA matches
+│   ├── import_shared_matches.py # Import triangulation data
+│   ├── import_match_trees.py    # Batch tree imports
+│   ├── import_ancestry_tree.py  # Single tree import
+│   ├── find_unknown_father_matches.py  # Main analysis
+│   └── cluster_matches.py       # Graph clustering
+├── logs/                        # Research session logs
+└── venv/                        # Python environment
+```
+
+---
+
+*Last updated: 11 January 2026*

@@ -100,6 +100,17 @@ WHERE NOT EXISTS (
 The user is researching the Wrathall family, particularly:
 - Connections to Lowther, Westmorland (now Cumbria)
 - Harry Wrathall (professional cricketer, b. ~1857)
-- Possible connections to the Lowther family (Earls of Lonsdale)
 
-Be alert to Westmorland/Cumberland locations and any occupations connected to the Lowther estate.
+### IMPORTANT: The Lowther Claim is UNPROVEN
+
+There is a family claim that Susan Wrathall (1842-1925) had a relationship with a member of the Lowther family (Earls of Lonsdale), resulting in Henry Lonsdale Wrathall (1863-1927).
+
+**THIS IS UNPROVEN SPECULATION.**
+
+- The source (wrathall.org) is a family memoir, NOT evidence
+- DO NOT cite wrathall.org as proof of anything - it is the claim we are testing
+- The only "evidence" is the middle name "Lonsdale" and family tradition
+- We need DNA matches with CONFIRMED Lowther descendants to prove/disprove this
+- Cluster 17 in the database contains matches potentially related through this unknown line
+
+Be alert to Westmorland/Cumberland locations, but do not assume any Lowther connection without documentary or DNA proof.

@@ -24,7 +24,7 @@ from datetime import datetime
 import requests
 import browser_cookie3
 
-DB_PATH = Path(__file__).parent / "genealogy.db"
+DB_PATH = Path(__file__).parent.parent / "genealogy.db"
 BASE_URL = "https://www.ancestry.co.uk"
 
 # Your test GUID (from notes)
@@ -128,7 +128,7 @@ def update_match_tree_id(match_id, tree_id):
     conn.close()
 
 
-def import_tree(session, ancestry_tree_id, dna_match_id, delay=0.5):
+def import_tree(session, ancestry_tree_id, dna_match_id, delay=0.5, max_size=None):
     """Import a tree with people and relationships."""
     from import_ancestry_tree import import_tree as do_import
 
@@ -158,8 +158,10 @@ def import_tree(session, ancestry_tree_id, dna_match_id, delay=0.5):
 
     conn.close()
 
-    # Import the tree
-    do_import(ancestry_tree_id, delay=delay)
+    # Import the tree (will abort if exceeds max_size)
+    result = do_import(ancestry_tree_id, delay=delay, max_size=max_size)
+    if result is False:
+        return None, "too_large"
 
     # Link to DNA match
     conn = sqlite3.connect(DB_PATH)
@@ -295,8 +297,11 @@ def import_match_trees(min_cm=20, limit=None, max_tree_size=5000, delay=0.5):
         print(f"[{i+1}/{len(matches)}] {name} ({cm:.1f} cM) - Tree {tree_id}")
         print(f"{'=' * 60}")
 
-        local_tree_id, status = import_tree(None, tree_id, match_id, delay)
+        local_tree_id, status = import_tree(None, tree_id, match_id, delay, max_size=max_tree_size)
         print(f"  Status: {status}, Local tree ID: {local_tree_id}")
+
+        if status == "too_large":
+            print(f"  Skipped - tree exceeded {max_tree_size} people limit")
 
 
 def show_matches_with_trees():

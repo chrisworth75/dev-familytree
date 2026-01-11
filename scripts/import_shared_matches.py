@@ -21,7 +21,7 @@ from datetime import datetime
 import browser_cookie3
 from playwright.sync_api import sync_playwright
 
-DB_PATH = Path(__file__).parent / "genealogy.db"
+DB_PATH = Path(__file__).parent.parent / "genealogy.db"
 BASE_URL = "https://www.ancestry.co.uk"
 
 # Your test GUID

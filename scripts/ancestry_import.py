@@ -23,7 +23,7 @@ import requests
 import browser_cookie3
 
 # Configuration
-DB_PATH = Path(__file__).parent / "genealogy.db"
+DB_PATH = Path(__file__).parent.parent / "genealogy.db"
 ANCESTRY_BASE_URL = "https://www.ancestry.co.uk"
 CHROME_USER_DATA = Path.home() / "Library/Application Support/Google/Chrome"
 
@@ -155,22 +155,24 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
                 f.write(html)
             print("Saved HTML to /tmp/ancestry_matches.html", flush=True)
 
-            # Try to set 50 matches per page (click the 50 option at bottom left)
+            # Set 50 matches per page (reduces pages from 1318 to ~527)
             print("Setting 50 matches per page...", flush=True)
             try:
-                # Look for the page size selector
-                fifty_btn = page.query_selector('button:has-text("50"), [aria-label*="50"]')
-                if fifty_btn:
-                    fifty_btn.click()
-                    time.sleep(2)
-                    print("  Set to 50 per page", flush=True)
-                else:
-                    # Try clicking on text that says "50"
-                    page.click('text=50', timeout=3000)
-                    time.sleep(2)
-                    print("  Set to 50 per page", flush=True)
+                result = page.evaluate('''
+                    () => {
+                        const p = document.querySelector('ui-pagination[data-testid="paginator"]');
+                        if (!p || !p.shadowRoot) return 'no shadow';
+                        const sel = p.shadowRoot.querySelector('#item-select');
+                        if (!sel) return 'no select';
+                        sel.value = '50';
+                        sel.dispatchEvent(new Event('change', {bubbles: true}));
+                        return 'done';
+                    }
+                ''')
+                time.sleep(3)  # Wait for page to reload with more items
+                print(f"  Set to 50 per page ({result})", flush=True)
             except Exception as e:
-                print(f"  Could not set page size: {e}", flush=True)
+                print(f"  Could not set page size (using 20): {e}", flush=True)
 
             # Use PAGINATION to load all matches (not scrolling)
             # The page has a <ui-pagination data-testid="paginator"> element
@@ -192,20 +194,15 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
             """)
 
             if pagination_info:
-                total_value = pagination_info['total']
+                # 'total' and 'range' indicate the number of PAGES (1318 pages, 20 per page)
+                total_pages = pagination_info['total']
                 items_per_page = pagination_info['itemsPerPage']
-                # Note: 'total' might mean total PAGES, not total matches!
-                # If total=1318 and items_per_page=20, user reports 2000+ matches on Ancestry
-                # So total might be pages. Let's paginate until we can't anymore.
-                # Set a high limit but don't calculate pages from total/items_per_page
-                max_pages = max(total_value + 10, 2000)  # Allow for at least total_value pages
-                print(f"\nFound pagination: total={total_value}, {items_per_page}/page")
-                print(f"Will paginate up to {max_pages} pages (stopping when no more content)")
+                estimated_matches = total_pages * items_per_page
+                print(f"\nFound pagination: {total_pages} pages, {items_per_page}/page")
+                print(f"Estimated total matches: ~{estimated_matches:,}")
             else:
                 print("\nNo pagination found, will try to extract visible matches only")
-                max_pages = 1
-
-            total_pages = max_pages  # Use max_pages as the limit
+                total_pages = 1
 
             # Function to extract matches from current page
             def extract_current_page_matches():
@@ -267,10 +264,23 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
                     }
                 """)
 
-            print("\nPaginating through matches...")
+            print(f"\nPaginating through all {total_pages} pages (this may take a while)...")
+            print(f"  Estimated time: ~{total_pages * 1.5 / 60:.0f} minutes at 1.5s per page")
             current_page = 1
             consecutive_failures = 0
-            max_failures = 3
+            max_failures = 20  # Allow more failures for 500+ pages
+            last_first_guid = None  # Track content changes
+
+            # Helper to get first match GUID on page
+            def get_first_guid():
+                return page.evaluate('''
+                    () => {
+                        const link = document.querySelector('a[data-testid="matchNameLink"]');
+                        if (!link || !link.href) return null;
+                        const m = link.href.match(/with\\/([A-F0-9-]+)/i);
+                        return m ? m[1].toUpperCase() : null;
+                    }
+                ''')
 
             while current_page <= total_pages and consecutive_failures < max_failures:
                 # Extract matches from current page
@@ -284,78 +294,91 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
                         all_matches_data.append(m)
                         new_count += 1
 
-                if current_page % 5 == 0 or current_page == 1:
-                    print(f"  Page {current_page}/{total_pages}: +{new_count} new ({len(all_matches_data)} total)", flush=True)
+                if current_page % 20 == 0 or current_page <= 5 or current_page == total_pages:
+                    pct = (current_page / total_pages) * 100
+                    print(f"  Page {current_page}/{total_pages} ({pct:.1f}%): +{new_count} new, {len(all_matches_data)} total", flush=True)
 
-                if new_count == 0:
+                # INCREMENTAL SAVE: Save every 50 pages to avoid losing progress
+                if current_page % 50 == 0 and len(all_matches_data) > 0:
+                    print(f"  ** Saving {len(all_matches_data)} matches to database...", flush=True)
+                    temp_matches = []
+                    for m in all_matches_data:
+                        side_text = m.get('matchSide', '') or ''
+                        side = 'unknown'
+                        if 'Paternal' in side_text: side = 'paternal'
+                        elif 'Maternal' in side_text: side = 'maternal'
+                        elif 'Both sides' in side_text: side = 'both'
+                        temp_matches.append({
+                            'name': m.get('name'),
+                            'shared_cm': m.get('sharedCm'),
+                            'predicted_relationship': m.get('relationship'),
+                            'match_side': side,
+                            'ancestry_id': m.get('guid'),
+                        })
+                    import_browser_matches(temp_matches, DB_PATH)
+                    print(f"  ** Save complete", flush=True)
+
+                # Only count as failure if page returned NO matches at all (not just no NEW matches)
+                if len(current_matches) == 0:
                     consecutive_failures += 1
                 else:
                     consecutive_failures = 0
 
-                # Move to next page by clicking pagination buttons
+                # Track consecutive pages with no NEW matches (pagination may be stuck)
+                if not hasattr(fetch_matches_with_browser, 'no_new_count'):
+                    fetch_matches_with_browser.no_new_count = 0
+                if new_count == 0 and len(current_matches) > 0:
+                    fetch_matches_with_browser.no_new_count += 1
+                else:
+                    fetch_matches_with_browser.no_new_count = 0
+
+                # If 30+ consecutive pages have no new matches, pagination is broken - stop early
+                if fetch_matches_with_browser.no_new_count >= 30:
+                    print(f"\n  ** Pagination appears stuck (30 pages with no new matches). Stopping early.", flush=True)
+                    break
+
+                # Move to next page using shadow DOM page-select dropdown
                 if current_page < total_pages:
                     next_page = current_page + 1
+                    current_first_guid = get_first_guid()
 
-                    # Click the next button using JavaScript
-                    clicked = page.evaluate("""
-                        () => {
-                            // The ui-pagination element is a web component
-                            const paginator = document.querySelector('ui-pagination[data-testid="paginator"]');
-                            if (!paginator) return {success: false, error: 'No paginator found'};
+                    # Navigate with retry logic
+                    for retry in range(3):
+                        try:
+                            page.evaluate(f"""
+                                (targetPage) => {{
+                                    const p = document.querySelector('ui-pagination[data-testid="paginator"]');
+                                    if (p && p.shadowRoot) {{
+                                        const sel = p.shadowRoot.querySelector('#page-select');
+                                        if (sel) {{
+                                            sel.value = String(targetPage);
+                                            sel.dispatchEvent(new Event('change', {{bubbles: true}}));
+                                        }}
+                                    }}
+                                }}
+                            """, next_page)
 
-                            // Web components often use shadow DOM - try both
-                            let nextBtn = null;
+                            # Wait for content to change
+                            content_changed = False
+                            for _ in range(10):  # Up to 5 seconds
+                                time.sleep(0.5)
+                                new_first_guid = get_first_guid()
+                                if new_first_guid and new_first_guid != current_first_guid:
+                                    content_changed = True
+                                    break
 
-                            // Check shadow root first
-                            if (paginator.shadowRoot) {
-                                nextBtn = paginator.shadowRoot.querySelector(
-                                    'button[aria-label*="forward" i], ' +
-                                    'button[aria-label*="next" i], ' +
-                                    '[data-testid="forward"]'
-                                );
-                            }
+                            if content_changed:
+                                break
+                            elif retry < 2:
+                                print(f"    Retry {retry+1} for page {next_page}...", flush=True)
+                                time.sleep(1)  # Extra wait before retry
+                            else:
+                                print(f"    Page {next_page}: content change not detected, continuing anyway", flush=True)
 
-                            // Fallback to light DOM
-                            if (!nextBtn) {
-                                nextBtn = paginator.querySelector(
-                                    'button[aria-label*="forward" i], ' +
-                                    'button[aria-label*="next" i]'
-                                );
-                            }
-
-                            // Try to find a forward arrow button by icon type
-                            if (!nextBtn && paginator.shadowRoot) {
-                                const allBtns = paginator.shadowRoot.querySelectorAll('button, ui-button');
-                                for (const btn of allBtns) {
-                                    const icon = btn.querySelector('ui-icon');
-                                    if (icon && (icon.getAttribute('type') || '').includes('forward')) {
-                                        nextBtn = btn;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (nextBtn && !nextBtn.disabled) {
-                                nextBtn.click();
-                                return {success: true};
-                            }
-
-                            // Last resort: dispatch a custom event to the paginator
-                            try {
-                                paginator.setAttribute('page', String(parseInt(paginator.getAttribute('page') || '1') + 1));
-                                paginator.dispatchEvent(new CustomEvent('page-change', {bubbles: true}));
-                                return {success: true, method: 'attribute'};
-                            } catch (e) {
-                                return {success: false, error: e.message};
-                            }
-                        }
-                    """)
-
-                    if clicked and clicked.get('success'):
-                        time.sleep(1.5)  # Wait for page content to update
-                    else:
-                        if current_page % 10 == 0:
-                            print(f"  Navigation issue at page {current_page}: {clicked}", flush=True)
+                        except Exception as e:
+                            if retry == 2:
+                                print(f"  Failed to navigate to page {next_page}: {e}", flush=True)
+                                consecutive_failures += 1
 
                 current_page += 1
 
@@ -1005,10 +1028,34 @@ def import_browser_matches(matches, db_path):
 
             # Check by name + cM
             cursor.execute(
-                "SELECT id FROM dna_match WHERE name = ? AND ABS(shared_cm - ?) < 0.1",
+                "SELECT id, ancestry_id, linked_tree_id FROM dna_match WHERE name = ? AND ABS(shared_cm - ?) < 0.1",
                 (name, shared_cm or 0)
             )
-            if cursor.fetchone():
+            existing = cursor.fetchone()
+            if existing:
+                # Update ancestry_id if we have it and record doesn't
+                existing_id, existing_ancestry_id, existing_tree_id = existing
+                updates = []
+                params = []
+                if ancestry_id and not existing_ancestry_id:
+                    updates.append("ancestry_id = ?")
+                    params.append(ancestry_id)
+                linked_tree_id = match.get("linked_tree_id")
+                if linked_tree_id and not existing_tree_id:
+                    updates.append("linked_tree_id = ?")
+                    params.append(linked_tree_id)
+                tree_size = match.get("tree_size")
+                if tree_size:
+                    updates.append("tree_size = ?")
+                    params.append(tree_size)
+                has_tree = match.get("has_tree")
+                if has_tree is not None:
+                    updates.append("has_tree = ?")
+                    params.append(1 if has_tree else 0)
+
+                if updates:
+                    params.append(existing_id)
+                    cursor.execute(f"UPDATE dna_match SET {', '.join(updates)} WHERE id = ?", params)
                 skipped += 1
                 continue
 

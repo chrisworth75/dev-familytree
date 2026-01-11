@@ -24,7 +24,7 @@ from datetime import datetime
 import requests
 import browser_cookie3
 
-DB_PATH = Path(__file__).parent / "genealogy.db"
+DB_PATH = Path(__file__).parent.parent / "genealogy.db"
 BASE_URL = "https://www.ancestry.co.uk"
 
 
@@ -120,6 +120,8 @@ def parse_person_from_api(person_data):
     return {
         'ancestry_id': ancestry_id,
         'name': name,
+        'forename': given_name,
+        'surname': surname,
         'gender': gender,
         'birth_year': birth_year,
         'birth_place': birth_place,
@@ -213,6 +215,12 @@ def import_tree(ancestry_tree_id, limit=None, delay=0.5, skip_existing=True, max
         print(f"  Page {page}: {len(data)} persons (total: {len(persons)})")
         page += 1
 
+        # Early abort if tree exceeds max_size during fetch
+        if max_size and len(persons) > max_size:
+            print(f"\n  ABORTING FETCH: Tree exceeds max_size of {max_size}")
+            conn.close()
+            return False
+
         if limit and len(persons) >= limit:
             persons = persons[:limit]
             break
@@ -251,14 +259,14 @@ def import_tree(ancestry_tree_id, limit=None, delay=0.5, skip_existing=True, max
 
         # Insert or update person
         cursor.execute("""
-            INSERT INTO person (name, birth_year_estimate, birth_place, death_year, tree_id, ancestry_person_id)
+            INSERT INTO person (forename, surname, birth_year_estimate, birth_place, tree_id, ancestry_person_id)
             VALUES (?, ?, ?, ?, ?, ?)
             ON CONFLICT(id) DO UPDATE SET ancestry_person_id = excluded.ancestry_person_id
         """, (
-            person['name'],
+            person['forename'],
+            person['surname'],
             person['birth_year'],
             person['birth_place'],
-            person['death_year'],
             tree_id,
             ancestry_id
         ))
