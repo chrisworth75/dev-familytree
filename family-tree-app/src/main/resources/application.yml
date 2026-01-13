@@ -1,0 +1,96 @@
+spring:
+  application:
+    name: family-tree-app
+
+  # SQLite Database (for future use with genealogy.db)
+  datasource:
+    url: jdbc:sqlite:${GENEALOGY_DB:../genealogy.db}
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 1
+
+  # Thymeleaf
+  thymeleaf:
+    cache: false
+
+  # Security - users configured in SecurityConfig
+  security:
+    user:
+      name: unused
+      password: unused
+
+server:
+  port: ${PORT:3500}
+
+logging:
+  level:
+    com.familytree: DEBUG
+    org.springframework.security: INFO
+
+# =============================================================================
+# FAMILY TREE CONFIGURATION
+# =============================================================================
+# Define your family trees here. Each tree needs:
+#   - slug: URL-safe identifier (used in /tree/{slug})
+#   - displayName: Name shown on card
+#   - subtitle: Secondary text (e.g. location, time period)
+#   - initials: 1-2 letters for avatar circle
+#   - avatarColor: blue, teal, green, olive, brown, rust, rose, purple, slate
+#   - personCount: Number of people (optional, for display)
+#   - allowedUsers: List of usernames who can access this tree
+#
+# Static SVG files should be placed in: src/main/resources/static/trees/{slug}.svg
+# =============================================================================
+
+familytree:
+  trees:
+    - slug: worthington
+      displayName: Worthington Family
+      subtitle: Yorkshire, England
+      initials: WF
+      avatarColor: blue
+      personCount: 156
+      allowedUsers:
+        - chris
+        - family-au
+        - family-uk
+
+    - slug: wood
+      displayName: Wood Family
+      subtitle: Lancashire, England
+      initials: W
+      avatarColor: teal
+      personCount: 89
+      allowedUsers:
+        - chris
+        - family-uk
+
+    - slug: goodall
+      displayName: Goodall Family
+      subtitle: Derbyshire, England
+      initials: GF
+      avatarColor: green
+      personCount: 124
+      allowedUsers:
+        - chris
+        - family-au
+        - family-uk
+
+    - slug: heywood
+      displayName: Heywood Family
+      subtitle: Lancashire, England
+      initials: HF
+      avatarColor: rust
+      personCount: 67
+      allowedUsers:
+        - chris
+        - family-uk
+
+    - slug: wrathall
+      displayName: Wrathall Family
+      subtitle: Westmorland & Yorkshire
+      initials: WR
+      avatarColor: olive
+      personCount: 203
+      allowedUsers:
+        - chris

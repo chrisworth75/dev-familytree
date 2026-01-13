@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1200" width="1500" height="1200">
+  <defs>
+    <style>
+      .person-box { fill: white; stroke: #e0e0e0; stroke-width: 1; rx: 8; }
+      .person-box-highlight { fill: white; stroke: #2d9cdb; stroke-width: 2; rx: 8; }
+      .person-box-you { fill: #fff8e7; stroke: #f5a623; stroke-width: 2; rx: 8; }
+      .person-box-private { fill: #f5f5f5; stroke: #ccc; stroke-width: 1; rx: 8; stroke-dasharray: 4,2; }
+      .name { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 13px; font-weight: 600; fill: #333; }
+      .relationship { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #666; }
+      .years { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #888; }
+      .dna-match { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; font-weight: 600; fill: #0d9488; }
+      .photo-circle { fill: #e8e8e8; stroke: #ccc; stroke-width: 1; }
+      .photo-circle-dna { fill: #0d9488; stroke: #0d9488; stroke-width: 2; }
+      .photo-circle-private { fill: #4ade80; stroke: #4ade80; stroke-width: 1; }
+      .initials { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 600; fill: #666; }
+      .initials-dna { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; font-weight: 600; fill: white; }
+      .initials-private { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 600; fill: white; }
+      .connector { stroke: #ccc; stroke-width: 1.5; fill: none; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 20px; font-weight: 700; fill: #333; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; fill: #666; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1500" height="1200" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="750" y="35" text-anchor="middle" class="title">Descendants of James Worthington (1791-1857)</text>
+  <text x="750" y="55" text-anchor="middle" class="subtitle">4th Great-Grandfather - Ahnentafel Position 64</text>
+
+  <!-- Generation 1: James Worthington 1791 -->
+  <g transform="translate(650, 75)">
+    <rect x="0" y="0" width="200" height="65" class="person-box-highlight"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">JW</text>
+    <text x="65" y="25" class="name">James Worthington</text>
+    <text x="65" y="40" class="relationship">4th Great-Grandfather</text>
+    <text x="65" y="55" class="years">1791-1857</text>
+  </g>
+
+  <!-- Connector from James to children -->
+  <path d="M750 140 L750 160 L750 175" class="connector"/>
+  <path d="M450 175 L1050 175" class="connector"/>
+  <path d="M450 175 L450 190" class="connector"/>
+  <path d="M1050 175 L1050 190" class="connector"/>
+
+  <!-- Generation 2: George and Richard -->
+  <!-- George WORTHINGTON (your line) -->
+  <g transform="translate(350, 190)">
+    <rect x="0" y="0" width="200" height="65" class="person-box-highlight"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">GW</text>
+    <text x="65" y="25" class="name">George WORTHINGTON</text>
+    <text x="65" y="40" class="relationship">3rd Great-Grandfather</text>
+    <text x="65" y="55" class="years">1825-1896</text>
+  </g>
+
+  <!-- Richard Worthington -->
+  <g transform="translate(950, 190)">
+    <rect x="0" y="0" width="200" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">RW</text>
+    <text x="65" y="25" class="name">Richard Worthington</text>
+    <text x="65" y="40" class="relationship">3rd Great-Granduncle</text>
+    <text x="65" y="55" class="years">1823-1886</text>
+  </g>
+
+  <!-- Connectors from George -->
+  <path d="M450 255 L450 275 L450 290" class="connector"/>
+  <path d="M150 290 L750 290" class="connector"/>
+  <path d="M150 290 L150 305" class="connector"/>
+  <path d="M350 290 L350 305" class="connector"/>
+  <path d="M550 290 L550 305" class="connector"/>
+  <path d="M750 290 L750 305" class="connector"/>
+
+  <!-- Connectors from Richard -->
+  <path d="M1050 255 L1050 275 L1050 290" class="connector"/>
+  <path d="M950 290 L1150 290" class="connector"/>
+  <path d="M950 290 L950 305" class="connector"/>
+  <path d="M1150 290 L1150 305" class="connector"/>
+
+  <!-- Generation 3: Children of George -->
+  <!-- James WORTHINGTON (your line) -->
+  <g transform="translate(50, 305)">
+    <rect x="0" y="0" width="200" height="65" class="person-box-highlight"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">JW</text>
+    <text x="65" y="25" class="name">James WORTHINGTON</text>
+    <text x="65" y="40" class="relationship">2nd Great-Grandfather</text>
+    <text x="65" y="55" class="years">1846-1899</text>
+  </g>
+
+  <!-- George Worthington 1867 -->
+  <g transform="translate(260, 305)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">GW</text>
+    <text x="65" y="25" class="name">George Worthington</text>
+    <text x="65" y="40" class="relationship">2nd Great-Granduncle</text>
+    <text x="65" y="55" class="years">1867-1916</text>
+  </g>
+
+  <!-- Arthur Worthington (your line) -->
+  <g transform="translate(450, 305)">
+    <rect x="0" y="0" width="190" height="65" class="person-box-highlight"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">AW</text>
+    <text x="65" y="25" class="name">Arthur Worthington</text>
+    <text x="65" y="40" class="relationship">Great-Grandfather</text>
+    <text x="65" y="55" class="years">1879-1957</text>
+  </g>
+
+  <!-- GEORGE Worthington 1874 -->
+  <g transform="translate(650, 305)">
+    <rect x="0" y="0" width="190" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">GW</text>
+    <text x="65" y="25" class="name">GEORGE Worthington</text>
+    <text x="65" y="40" class="relationship">Half Great-Granduncle</text>
+    <text x="65" y="55" class="years">1874-1961</text>
+  </g>
+
+  <!-- Generation 3: Children of Richard -->
+  <!-- Levi Worthington -->
+  <g transform="translate(850, 305)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">LW</text>
+    <text x="65" y="25" class="name">Levi Worthington</text>
+    <text x="65" y="40" class="relationship">1st Cousin 4x Removed</text>
+    <text x="65" y="55" class="years">1848-1887</text>
+  </g>
+
+  <!-- Mary J Worthington -->
+  <g transform="translate(1050, 305)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">MJW</text>
+    <text x="65" y="25" class="name">Mary J Worthington</text>
+    <text x="65" y="40" class="relationship">1st Cousin 4x Removed</text>
+    <text x="65" y="55" class="years">1851-1895</text>
+  </g>
+
+  <!-- Connectors to Generation 4 -->
+  <path d="M150 370 L150 395" class="connector"/>
+  <path d="M350 370 L350 395" class="connector"/>
+  <path d="M545 370 L545 395" class="connector"/>
+  <path d="M745 370 L745 395" class="connector"/>
+  <path d="M940 370 L940 395" class="connector"/>
+  <path d="M1140 370 L1140 395" class="connector"/>
+
+  <!-- Generation 4 -->
+  <!-- Arthur Gordon Worthington (your line) -->
+  <g transform="translate(50, 405)">
+    <rect x="0" y="0" width="200" height="65" class="person-box-highlight"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">AGW</text>
+    <text x="65" y="25" class="name">Arthur Gordon Worthington</text>
+    <text x="65" y="40" class="relationship">Grandfather</text>
+    <text x="65" y="55" class="years">1922-2000</text>
+  </g>
+
+  <!-- Norah Worthington -->
+  <g transform="translate(260, 405)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">NW</text>
+    <text x="65" y="25" class="name">Norah Worthington</text>
+    <text x="65" y="40" class="relationship">1st Cousin 3x Removed</text>
+    <text x="65" y="55" class="years">1908-1978</text>
+  </g>
+
+  <!-- Andrew Worthington -->
+  <g transform="translate(650, 405)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">AW</text>
+    <text x="65" y="25" class="name">Andrew Worthington</text>
+    <text x="65" y="40" class="relationship">Half 1st Cousin 2x Rem.</text>
+    <text x="65" y="55" class="years">1908-1990</text>
+  </g>
+
+  <!-- Mary Ann Worthington -->
+  <g transform="translate(850, 405)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">MAW</text>
+    <text x="65" y="25" class="name">Mary Ann Worthington</text>
+    <text x="65" y="40" class="relationship">2nd Cousin 3x Removed</text>
+    <text x="65" y="55" class="years">1869-1951</text>
+  </g>
+
+  <!-- Edith W DAVIES -->
+  <g transform="translate(1050, 405)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">ED</text>
+    <text x="65" y="25" class="name">Edith W DAVIES</text>
+    <text x="65" y="40" class="relationship">2nd Cousin 3x Removed</text>
+    <text x="65" y="55" class="years">1888-1979</text>
+  </g>
+
+  <!-- Connectors to Generation 5 -->
+  <path d="M150 470 L150 495" class="connector"/>
+  <path d="M350 470 L350 495" class="connector"/>
+  <path d="M740 470 L740 495" class="connector"/>
+  <path d="M940 470 L940 495" class="connector"/>
+  <path d="M1140 470 L1140 495" class="connector"/>
+
+  <!-- Generation 5 -->
+  <!-- Jonathan Worthington (your line) -->
+  <g transform="translate(50, 505)">
+    <rect x="0" y="0" width="200" height="65" class="person-box-highlight"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">JPW</text>
+    <text x="65" y="25" class="name">Jonathon Worthington</text>
+    <text x="65" y="40" class="relationship">Father</text>
+    <text x="65" y="55" class="years">1951-</text>
+  </g>
+
+  <!-- Christopher Bryan (DNA match) -->
+  <g transform="translate(260, 505)">
+    <rect x="0" y="0" width="180" height="75" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle-dna"/>
+    <text x="35" y="38" text-anchor="middle" class="initials-dna">CB</text>
+    <text x="65" y="25" class="name">Christopher Bryan</text>
+    <text x="65" y="40" class="relationship">3rd Cousin 1x Removed</text>
+    <text x="65" y="55" class="dna-match">12 cM | 1 segment</text>
+  </g>
+
+  <!-- Private (Half 2nd cousin 1x removed) -->
+  <g transform="translate(650, 505)">
+    <rect x="0" y="0" width="180" height="65" class="person-box-private"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle-private"/>
+    <text x="35" y="38" text-anchor="middle" class="initials-private">?</text>
+    <text x="65" y="25" class="name">Private</text>
+    <text x="65" y="40" class="relationship">Half 2nd Cousin 1x Rem.</text>
+  </g>
+
+  <!-- Stanley Davies 1896 -->
+  <g transform="translate(850, 505)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">SD</text>
+    <text x="65" y="25" class="name">Stanley Davies</text>
+    <text x="65" y="40" class="relationship">3rd Cousin 2x Removed</text>
+    <text x="65" y="55" class="years">1896-1980</text>
+  </g>
+
+  <!-- Melvin Joseph Davis -->
+  <g transform="translate(1050, 505)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">MJD</text>
+    <text x="65" y="25" class="name">Melvin Joseph Davis</text>
+    <text x="65" y="40" class="relationship">3rd Cousin 2x Removed</text>
+    <text x="65" y="55" class="years">1917-1998</text>
+  </g>
+
+  <!-- Connectors to Generation 6 -->
+  <path d="M150 570 L150 595" class="connector"/>
+  <path d="M740 570 L740 595" class="connector"/>
+  <path d="M940 570 L940 595" class="connector"/>
+  <path d="M1140 570 L1140 595" class="connector"/>
+
+  <!-- Generation 6 -->
+  <!-- Chris Worthington (YOU) -->
+  <g transform="translate(50, 605)">
+    <rect x="0" y="0" width="200" height="75" class="person-box-you"/>
+    <circle cx="35" cy="35" r="25" fill="#f5a623" stroke="#f5a623" stroke-width="2"/>
+    <text x="35" y="41" text-anchor="middle" class="initials-dna">CW</text>
+    <text x="68" y="28" class="name">Chris Worthington</text>
+    <text x="68" y="43" class="relationship" style="font-weight: 600; fill: #f5a623;">YOU</text>
+    <text x="68" y="58" class="years">Researcher</text>
+  </g>
+
+  <!-- Private (Half 3rd cousin) -->
+  <g transform="translate(650, 605)">
+    <rect x="0" y="0" width="180" height="65" class="person-box-private"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle-private"/>
+    <text x="35" y="38" text-anchor="middle" class="initials-private">?</text>
+    <text x="65" y="25" class="name">Private</text>
+    <text x="65" y="40" class="relationship">Half 3rd Cousin</text>
+  </g>
+
+  <!-- Stanley Davies 1924 -->
+  <g transform="translate(850, 605)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">SD</text>
+    <text x="65" y="25" class="name">Stanley Davies</text>
+    <text x="65" y="40" class="relationship">4th Cousin 1x Removed</text>
+    <text x="65" y="55" class="years">1924-2005</text>
+  </g>
+
+  <!-- William Rex Daws -->
+  <g transform="translate(1050, 605)">
+    <rect x="0" y="0" width="180" height="65" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle"/>
+    <text x="35" y="38" text-anchor="middle" class="initials">WRD</text>
+    <text x="65" y="25" class="name">William Rex Daws</text>
+    <text x="65" y="40" class="relationship">4th Cousin 1x Removed</text>
+  </g>
+
+  <!-- Connectors to Generation 7 -->
+  <path d="M150 680 L150 705" class="connector"/>
+  <path d="M740 670 L740 705" class="connector"/>
+  <path d="M940 670 L940 705" class="connector"/>
+  <path d="M1140 670 L1140 705" class="connector"/>
+
+  <!-- Generation 7 -->
+  <!-- Hugo and Zachary -->
+  <g transform="translate(30, 715)">
+    <rect x="0" y="0" width="120" height="55" class="person-box"/>
+    <circle cx="25" cy="27" r="16" class="photo-circle"/>
+    <text x="25" y="32" text-anchor="middle" class="initials" style="font-size: 11px;">HW</text>
+    <text x="48" y="20" class="name" style="font-size: 10px;">Hugo</text>
+    <text x="48" y="32" class="name" style="font-size: 10px;">Worthington</text>
+    <text x="48" y="45" class="years" style="font-size: 9px;">2016-</text>
+  </g>
+
+  <g transform="translate(160, 715)">
+    <rect x="0" y="0" width="120" height="55" class="person-box"/>
+    <circle cx="25" cy="27" r="16" class="photo-circle"/>
+    <text x="25" y="32" text-anchor="middle" class="initials" style="font-size: 11px;">ZW</text>
+    <text x="48" y="20" class="name" style="font-size: 10px;">Zachary</text>
+    <text x="48" y="32" class="name" style="font-size: 10px;">Worthington</text>
+    <text x="48" y="45" class="years" style="font-size: 9px;">2019-</text>
+  </g>
+
+  <!-- Ashley Stubbs (DNA match) -->
+  <g transform="translate(650, 715)">
+    <rect x="0" y="0" width="180" height="75" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle-dna"/>
+    <text x="35" y="38" text-anchor="middle" class="initials-dna">AS</text>
+    <text x="65" y="25" class="name">Ashley Stubbs</text>
+    <text x="65" y="40" class="relationship">Half 3rd Cousin 1x Rem.</text>
+    <text x="65" y="55" class="dna-match">DNA Match</text>
+  </g>
+
+  <!-- Peter Davies (DNA match) -->
+  <g transform="translate(850, 715)">
+    <rect x="0" y="0" width="180" height="75" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle-dna"/>
+    <text x="35" y="38" text-anchor="middle" class="initials-dna">PD</text>
+    <text x="65" y="25" class="name">Peter Davies</text>
+    <text x="65" y="40" class="relationship">5th Cousin</text>
+    <text x="65" y="55" class="dna-match">21 cM | 2 segments</text>
+  </g>
+
+  <!-- Jackie Marie McDonald (DNA match) -->
+  <g transform="translate(1050, 715)">
+    <rect x="0" y="0" width="180" height="75" class="person-box"/>
+    <circle cx="35" cy="32" r="22" class="photo-circle-dna"/>
+    <text x="35" y="38" text-anchor="middle" class="initials-dna">JM</text>
+    <text x="65" y="25" class="name">Jackie Marie McDonald</text>
+    <text x="65" y="40" class="relationship">5th Cousin</text>
+    <text x="65" y="55" class="dna-match">10 cM | 1 segment</text>
+  </g>
+
+  <!-- Connector to James Davies -->
+  <path d="M940 790 L940 815" class="connector"/>
+
+  <!-- Generation 8 - James Davies -->
+  <g transform="translate(850, 825)">
+    <rect x="0" y="0" width="180" height="70" class="person-box"/>
+    <circle cx="35" cy="30" r="22" class="photo-circle-dna"/>
+    <text x="35" y="36" text-anchor="middle" class="initials-dna">JD</text>
+    <text x="65" y="22" class="name">James Davies</text>
+    <text x="65" y="37" class="relationship">5th Cousin 1x Removed</text>
+    <text x="65" y="52" class="dna-match">17 cM | DNA Match</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(50, 940)">
+    <text x="0" y="0" class="subtitle" style="font-weight: 600;">Legend:</text>
+    <rect x="0" y="15" width="20" height="20" class="person-box-highlight"/>
+    <text x="28" y="30" class="relationship">Direct ancestor line</text>
+    <rect x="170" y="15" width="20" height="20" class="person-box-you"/>
+    <text x="198" y="30" class="relationship">You (researcher)</text>
+    <circle cx="340" cy="25" r="10" class="photo-circle-dna"/>
+    <text x="355" y="30" class="relationship">DNA match</text>
+    <rect x="450" y="15" width="20" height="20" class="person-box-private"/>
+    <text x="478" y="30" class="relationship">Private (living)</text>
+  </g>
+
+  <!-- Footer -->
+  <text x="750" y="1020" text-anchor="middle" class="subtitle">Generated from ThruLines data - 12 January 2026</text>
+  <text x="750" y="1040" text-anchor="middle" class="years">Chris Worthington's Genealogy Research Database - Tree ID: 1</text>
+
+</svg>

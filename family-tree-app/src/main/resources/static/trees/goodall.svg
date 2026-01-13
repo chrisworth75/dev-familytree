@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3500 2400" width="3500" height="2400">
+  <defs>
+    <style>
+      .person-box { fill: white; stroke: #e0e0e0; stroke-width: 1; rx: 6; }
+      .person-box-direct { fill: #e8f4fc; stroke: #2d9cdb; stroke-width: 2; rx: 6; }
+      .person-box-you { fill: #fff8e7; stroke: #f5a623; stroke-width: 3; rx: 6; }
+      .person-box-unknown { fill: #fff5f5; stroke: #e53e3e; stroke-width: 2; rx: 6; stroke-dasharray: 4,2; }
+      .person-box-dna { fill: #f0fdfa; stroke: #0d9488; stroke-width: 2; rx: 6; }
+      .name { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; font-weight: 600; fill: #333; }
+      .name-small { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 9px; font-weight: 600; fill: #333; }
+      .years { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 9px; fill: #888; }
+      .ahnentafel { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 8px; fill: #2d9cdb; font-weight: 600; }
+      .dna-badge { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 8px; font-weight: 600; fill: white; }
+      .dna-cm { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 8px; fill: #0d9488; font-weight: 600; }
+      .connector { stroke: #ccc; stroke-width: 1; fill: none; }
+      .connector-paternal { stroke: #3b82f6; stroke-width: 1.5; fill: none; }
+      .connector-maternal { stroke: #ec4899; stroke-width: 1.5; fill: none; }
+      .title { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 24px; font-weight: 700; fill: #333; }
+      .subtitle { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; fill: #666; }
+      .gen-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 10px; fill: #999; font-weight: 600; }
+      .branch-label { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 11px; fill: #666; font-weight: 600; }
+      .cluster-box { fill: none; stroke: #ddd; stroke-width: 1; stroke-dasharray: 5,3; rx: 10; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="3500" height="2400" fill="#fafafa"/>
+
+  <!-- Title -->
+  <text x="1750" y="40" text-anchor="middle" class="title">Chris Worthington - Complete Family Tree</text>
+  <text x="1750" y="60" text-anchor="middle" class="subtitle">Showing all known ancestors and DNA match connections | Tree ID: 1 | 284 people</text>
+
+  <!-- Generation Labels (left side) -->
+  <text x="20" y="150" class="gen-label">Gen 0: Self</text>
+  <text x="20" y="280" class="gen-label">Gen 1: Parents</text>
+  <text x="20" y="410" class="gen-label">Gen 2: Grandparents</text>
+  <text x="20" y="540" class="gen-label">Gen 3: Great-GP</text>
+  <text x="20" y="670" class="gen-label">Gen 4: 2xGreat-GP</text>
+  <text x="20" y="800" class="gen-label">Gen 5: 3xGreat-GP</text>
+  <text x="20" y="930" class="gen-label">Gen 6: 4xGreat-GP</text>
+  <text x="20" y="1060" class="gen-label">Gen 7: 5xGreat-GP</text>
+
+  <!-- ==================== GENERATION 0: SELF ==================== -->
+  <g transform="translate(1650, 100)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-you"/>
+    <text x="10" y="18" class="ahnentafel">#1</text>
+    <text x="10" y="32" class="name">Chris Worthington</text>
+    <text x="10" y="45" class="years">b. 1975 | YOU</text>
+  </g>
+
+  <!-- Connector to parents -->
+  <path d="M1750 155 L1750 180 M1250 180 L2250 180 M1250 180 L1250 210 M2250 180 L2250 210" class="connector"/>
+
+  <!-- ==================== GENERATION 1: PARENTS ==================== -->
+  <!-- Father -->
+  <g transform="translate(1150, 210)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#2 Father</text>
+    <text x="10" y="32" class="name">Jonathan Worthington</text>
+    <text x="10" y="45" class="years">b. 1951</text>
+  </g>
+  <!-- Mother -->
+  <g transform="translate(2150, 210)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#3 Mother</text>
+    <text x="10" y="32" class="name">Patricia Worthington</text>
+    <text x="10" y="45" class="years">b. 1946 (nee Wood)</text>
+  </g>
+
+  <!-- Connectors to grandparents -->
+  <path d="M1250 265 L1250 290 M850 290 L1650 290 M850 290 L850 340 M1650 290 L1650 340" class="connector-paternal"/>
+  <path d="M2250 265 L2250 290 M1850 290 L2650 290 M1850 290 L1850 340 M2650 290 L2650 340" class="connector-maternal"/>
+
+  <!-- ==================== GENERATION 2: GRANDPARENTS ==================== -->
+  <!-- Paternal Grandfather -->
+  <g transform="translate(750, 340)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#4 Pat. Grandfather</text>
+    <text x="10" y="32" class="name">Arthur Gordon Worthington</text>
+    <text x="10" y="45" class="years">1922-2000</text>
+  </g>
+  <!-- Paternal Grandmother -->
+  <g transform="translate(1550, 340)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#5 Pat. Grandmother</text>
+    <text x="10" y="32" class="name">Marjorie Goodall</text>
+    <text x="10" y="45" class="years">1920-2013</text>
+  </g>
+  <!-- Maternal Grandfather -->
+  <g transform="translate(1750, 340)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#6 Mat. Grandfather</text>
+    <text x="10" y="32" class="name">Albert Wood</text>
+    <text x="10" y="45" class="years">b. 1889</text>
+  </g>
+  <!-- Maternal Grandmother -->
+  <g transform="translate(2550, 340)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#7 Mat. Grandmother</text>
+    <text x="10" y="32" class="name">Doris Heywood</text>
+    <text x="10" y="45" class="years">1911-1961</text>
+  </g>
+
+  <!-- Connectors to great-grandparents -->
+  <path d="M850 395 L850 420 M550 420 L1150 420 M550 420 L550 470 M1150 420 L1150 470" class="connector-paternal"/>
+  <path d="M1650 395 L1650 420 M1400 420 L1700 420 M1400 420 L1400 470 M1700 420 L1700 470" class="connector-paternal"/>
+  <path d="M1850 395 L1850 420 M1900 420 L2200 420 M1900 420 L1900 470 M2200 420 L2200 470" class="connector-maternal"/>
+  <path d="M2650 395 L2650 420 M2500 420 L2800 420 M2500 420 L2500 470 M2800 420 L2800 470" class="connector-maternal"/>
+
+  <!-- ==================== GENERATION 3: GREAT-GRANDPARENTS ==================== -->
+  <!-- 8: Arthur Worthington -->
+  <g transform="translate(450, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#8</text>
+    <text x="10" y="32" class="name">Arthur Worthington</text>
+    <text x="10" y="45" class="years">1879-1957</text>
+  </g>
+  <!-- 9: Constance V. Wrathall -->
+  <g transform="translate(1050, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#9</text>
+    <text x="10" y="32" class="name">Constance V. Wrathall</text>
+    <text x="10" y="45" class="years">b. 1888</text>
+  </g>
+  <!-- 10: William Cheetham Goodall -->
+  <g transform="translate(1300, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#10</text>
+    <text x="10" y="32" class="name">William C. Goodall</text>
+    <text x="10" y="45" class="years">1878-1929</text>
+  </g>
+  <!-- 11: Ethel Amelia Virgo -->
+  <g transform="translate(1600, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#11</text>
+    <text x="10" y="32" class="name">Ethel Amelia Virgo</text>
+    <text x="10" y="45" class="years">1883-1967</text>
+  </g>
+  <!-- 12: John Wood -->
+  <g transform="translate(1800, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#12</text>
+    <text x="10" y="32" class="name">John Wood</text>
+    <text x="10" y="45" class="years">1864-1912</text>
+  </g>
+  <!-- 13: Betsy Parker -->
+  <g transform="translate(2100, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#13</text>
+    <text x="10" y="32" class="name">Betsy Parker</text>
+    <text x="10" y="45" class="years">1862-1916</text>
+  </g>
+  <!-- 14: Samuel Heywood -->
+  <g transform="translate(2400, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#14</text>
+    <text x="10" y="32" class="name">Samuel Heywood</text>
+    <text x="10" y="45" class="years">1886-1959</text>
+  </g>
+  <!-- 15: Theodora Tart -->
+  <g transform="translate(2700, 470)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#15</text>
+    <text x="10" y="32" class="name">Theodora Tart</text>
+    <text x="10" y="45" class="years">1888-1937</text>
+  </g>
+
+  <!-- Connectors to 2x great-grandparents -->
+  <path d="M550 525 L550 550 M300 550 L800 550 M300 550 L300 600 M800 550 L800 600" class="connector"/>
+  <path d="M1150 525 L1150 550 M950 550 L1350 550 M950 550 L950 600 M1350 550 L1350 600" class="connector"/>
+  <path d="M1400 525 L1400 550 L1400 600" class="connector"/>
+  <path d="M1700 525 L1700 550 M1550 550 L1850 550 M1550 550 L1550 600 M1850 550 L1850 600" class="connector"/>
+  <path d="M1900 525 L1900 550 L1900 600" class="connector"/>
+  <path d="M2500 525 L2500 550 M2350 550 L2650 550 M2350 550 L2350 600 M2650 550 L2650 600" class="connector"/>
+  <path d="M2800 525 L2800 550 M2700 550 L2900 550 M2700 550 L2700 600 M2900 550 L2900 600" class="connector"/>
+
+  <!-- ==================== GENERATION 4: 2x GREAT-GRANDPARENTS ==================== -->
+  <!-- 16: James Worthington -->
+  <g transform="translate(200, 600)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#16</text>
+    <text x="10" y="32" class="name">James Worthington</text>
+    <text x="10" y="45" class="years">1846-1899</text>
+  </g>
+  <!-- 17: Jane Hollows -->
+  <g transform="translate(700, 600)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#17</text>
+    <text x="10" y="32" class="name">Jane Hollows</text>
+    <text x="10" y="45" class="years">1846-1915</text>
+  </g>
+  <!-- 18: Henry Lonsdale Wrathall - UNKNOWN FATHER -->
+  <g transform="translate(850, 600)">
+    <rect x="0" y="0" width="200" height="65" class="person-box-unknown"/>
+    <text x="10" y="18" class="ahnentafel">#18 - UNK FATHER</text>
+    <text x="10" y="32" class="name">Henry Lonsdale Wrathall</text>
+    <text x="10" y="45" class="years">1863-1927</text>
+    <text x="10" y="58" class="dna-cm" style="fill: #e53e3e;">Father unknown - Key mystery!</text>
+  </g>
+  <!-- 19: Mary Alice Metcalfe -->
+  <g transform="translate(1250, 600)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#19</text>
+    <text x="10" y="32" class="name">Mary Alice Metcalfe</text>
+    <text x="10" y="45" class="years">1867-1948</text>
+  </g>
+  <!-- 20: William Goodall -->
+  <g transform="translate(1300, 600)">
+    <rect x="0" y="0" width="150" height="45" class="person-box"/>
+    <text x="8" y="15" class="ahnentafel">#20</text>
+    <text x="8" y="28" class="name-small">William Goodall</text>
+    <text x="8" y="40" class="years">b. 1850</text>
+  </g>
+  <!-- 22: George Virgo -->
+  <g transform="translate(1450, 600)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#22</text>
+    <text x="10" y="32" class="name">George Virgo</text>
+    <text x="10" y="45" class="years">1835-1909</text>
+  </g>
+  <!-- 23: Maria Brown -->
+  <g transform="translate(1750, 600)">
+    <rect x="0" y="0" width="150" height="45" class="person-box-direct"/>
+    <text x="8" y="15" class="ahnentafel">#23</text>
+    <text x="8" y="28" class="name-small">Maria Brown</text>
+    <text x="8" y="40" class="years">b. 1846</text>
+  </g>
+  <!-- 24+25: Wood parents unknown -->
+  <g transform="translate(1800, 600)">
+    <rect x="0" y="0" width="200" height="45" class="person-box-unknown"/>
+    <text x="10" y="18" class="ahnentafel">#24+25 - Unknown</text>
+    <text x="10" y="32" class="name">Wood parents</text>
+  </g>
+  <!-- 28: Thomas Heywood -->
+  <g transform="translate(2250, 600)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#28</text>
+    <text x="10" y="32" class="name">Thomas Heywood</text>
+    <text x="10" y="45" class="years">1856-1909</text>
+  </g>
+  <!-- 30: James Tart -->
+  <g transform="translate(2600, 600)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#30</text>
+    <text x="10" y="32" class="name">James Tart</text>
+    <text x="10" y="45" class="years">1862-1912</text>
+  </g>
+
+  <!-- Connectors to 3x great-grandparents -->
+  <path d="M300 655 L300 680 L300 730" class="connector"/>
+  <path d="M950 665 L950 690 L750 690 L750 730" class="connector"/>
+  <path d="M1050 665 L1050 690 L1250 690 L1250 730" class="connector"/>
+
+  <!-- ==================== GENERATION 5: 3x GREAT-GRANDPARENTS ==================== -->
+  <!-- 32: George WORTHINGTON -->
+  <g transform="translate(200, 730)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#32</text>
+    <text x="10" y="32" class="name">George WORTHINGTON</text>
+    <text x="10" y="45" class="years">1825-1896</text>
+  </g>
+  <!-- 37: Susan(nah) Wrathall -->
+  <g transform="translate(650, 730)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#37</text>
+    <text x="10" y="32" class="name">Susan(nah) Wrathall</text>
+    <text x="10" y="45" class="years">1842-1925</text>
+  </g>
+  <!-- 38: Richard Metcalfe -->
+  <g transform="translate(1150, 730)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#38</text>
+    <text x="10" y="32" class="name">Richard Metcalfe</text>
+    <text x="10" y="45" class="years">1830-1868</text>
+  </g>
+
+  <!-- Connectors to 4x great-grandparents -->
+  <path d="M300 785 L300 810 L300 860" class="connector"/>
+
+  <!-- ==================== GENERATION 6: 4x GREAT-GRANDPARENTS ==================== -->
+  <!-- 64: James Worthington -->
+  <g transform="translate(200, 860)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#64</text>
+    <text x="10" y="32" class="name">James Worthington</text>
+    <text x="10" y="45" class="years">1791-1857</text>
+  </g>
+
+  <!-- Connector to 5x great-grandparents -->
+  <path d="M300 915 L300 940 L300 990" class="connector"/>
+
+  <!-- ==================== GENERATION 7: 5x GREAT-GRANDPARENTS ==================== -->
+  <!-- 128: Henry Worthington -->
+  <g transform="translate(200, 990)">
+    <rect x="0" y="0" width="200" height="55" class="person-box-direct"/>
+    <text x="10" y="18" class="ahnentafel">#128</text>
+    <text x="10" y="32" class="name">Henry Worthington</text>
+    <text x="10" y="45" class="years">1777-1854</text>
+  </g>
+
+  <!-- ==================== DNA MATCH CLUSTERS ==================== -->
+
+  <!-- Cluster: Worthington Line (#128) -->
+  <rect x="80" y="1100" width="500" height="280" class="cluster-box"/>
+  <text x="100" y="1125" class="branch-label">DNA MATCHES: Henry Worthington Line (#128)</text>
+
+  <g transform="translate(100, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">sthomas14145</text>
+    <text x="10" y="35" class="dna-cm">9 cM | Half 5th cousin 1x rem.</text>
+  </g>
+  <g transform="translate(100, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Michaela Willis</text>
+    <text x="10" y="35" class="dna-cm">6th cousin (via William Worthington)</text>
+  </g>
+  <g transform="translate(100, 1260)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Christopher Bryan</text>
+    <text x="10" y="35" class="dna-cm">12 cM | 3rd cousin 1x rem.</text>
+  </g>
+  <g transform="translate(100, 1320)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Ashley Stubbs</text>
+    <text x="10" y="35" class="dna-cm">Half 3rd cousin 1x rem.</text>
+  </g>
+  <g transform="translate(340, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Peter Davies</text>
+    <text x="10" y="35" class="dna-cm">21 cM | 5th cousin</text>
+  </g>
+  <g transform="translate(340, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">James Davies</text>
+    <text x="10" y="35" class="dna-cm">17 cM | 5th cousin 1x rem.</text>
+  </g>
+  <g transform="translate(340, 1260)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Jackie Marie McDonald</text>
+    <text x="10" y="35" class="dna-cm">10 cM | 5th cousin</text>
+  </g>
+
+  <!-- Cluster: Metcalfe/Wrathall Line (#19) -->
+  <rect x="620" y="1100" width="500" height="280" class="cluster-box"/>
+  <text x="640" y="1125" class="branch-label">DNA MATCHES: Mary Alice Metcalfe Line (#19)</text>
+
+  <g transform="translate(640, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Helen Brammer</text>
+    <text x="10" y="35" class="dna-cm">113 cM | 2nd cousin 1x rem.</text>
+  </g>
+  <g transform="translate(640, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">hugh copland</text>
+    <text x="10" y="35" class="dna-cm">44 cM | 3rd cousin 1x rem.</text>
+  </g>
+  <g transform="translate(640, 1260)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Rachel Wrathall</text>
+    <text x="10" y="35" class="dna-cm">38 cM | 3rd cousin</text>
+  </g>
+  <g transform="translate(880, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Amber Pickup</text>
+    <text x="10" y="35" class="dna-cm">14 cM | Half 4th cousin 1x rem.</text>
+  </g>
+
+  <!-- Cluster: UNK-PAT (Unknown Father of HLW) -->
+  <rect x="1160" y="1100" width="500" height="340" class="cluster-box" style="stroke: #e53e3e;"/>
+  <text x="1180" y="1125" class="branch-label" style="fill: #e53e3e;">DNA MATCHES: UNK-PAT (#36 - Unknown Father)</text>
+  <text x="1180" y="1140" class="years">These matches share DNA but NOT through known Wrathall/Metcalfe lines</text>
+
+  <g transform="translate(1180, 1160)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Brenda Davey</text>
+    <text x="10" y="35" class="dna-cm">101 cM | Shares Wrathall matches</text>
+  </g>
+  <g transform="translate(1180, 1220)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Angela Ganley</text>
+    <text x="10" y="35" class="dna-cm">70 cM</text>
+  </g>
+  <g transform="translate(1180, 1280)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Ethel Hull</text>
+    <text x="10" y="35" class="dna-cm">52 cM</text>
+  </g>
+  <g transform="translate(1180, 1340)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Valerie Simpson</text>
+    <text x="10" y="35" class="dna-cm">46 cM</text>
+  </g>
+  <g transform="translate(1420, 1160)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Emily Evans</text>
+    <text x="10" y="35" class="dna-cm">40 cM</text>
+  </g>
+  <g transform="translate(1420, 1220)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Katrina Barnes</text>
+    <text x="10" y="35" class="dna-cm">39 cM</text>
+  </g>
+  <g transform="translate(1420, 1280)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">Jill Lester</text>
+    <text x="10" y="35" class="dna-cm">38 cM</text>
+  </g>
+  <g transform="translate(1420, 1340)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #e53e3e;"/>
+    <circle cx="200" cy="25" r="12" fill="#e53e3e"/>
+    <text x="192" y="30" class="dna-badge">?</text>
+    <text x="10" y="20" class="name">+ 8 more UNK-PAT matches</text>
+    <text x="10" y="35" class="dna-cm">Key to solving the mystery!</text>
+  </g>
+
+  <!-- Cluster: Virgo Line (#22+23) -->
+  <rect x="1700" y="1100" width="350" height="220" class="cluster-box"/>
+  <text x="1720" y="1125" class="branch-label">DNA MATCHES: Virgo Line (#22+23)</text>
+
+  <g transform="translate(1720, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Emily Hine</text>
+    <text x="10" y="35" class="dna-cm">134 cM</text>
+  </g>
+  <g transform="translate(1720, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">hazelhersant</text>
+    <text x="10" y="35" class="dna-cm">58 cM</text>
+  </g>
+  <g transform="translate(1720, 1260)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Toby Yates</text>
+    <text x="10" y="35" class="dna-cm">466 cM (via 26+27)</text>
+  </g>
+
+  <!-- Cluster: Heywood Line (#28+29) -->
+  <rect x="2090" y="1100" width="350" height="160" class="cluster-box"/>
+  <text x="2110" y="1125" class="branch-label">DNA MATCHES: Heywood Line (#28+29)</text>
+
+  <g transform="translate(2110, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">jane_gessler</text>
+    <text x="10" y="35" class="dna-cm">126 cM</text>
+  </g>
+  <g transform="translate(2110, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Neil Farnworth</text>
+    <text x="10" y="35" class="dna-cm">90 cM (via 30+31)</text>
+  </g>
+
+  <!-- Cluster: Wood Line (#24+25) -->
+  <rect x="2480" y="1100" width="350" height="160" class="cluster-box"/>
+  <text x="2500" y="1125" class="branch-label">DNA MATCHES: Wood Line (#24+25)</text>
+
+  <g transform="translate(2500, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">geri_wood</text>
+    <text x="10" y="35" class="dna-cm">49 cM</text>
+  </g>
+  <g transform="translate(2500, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna"/>
+    <circle cx="200" cy="25" r="12" fill="#0d9488"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Jed Wood</text>
+    <text x="10" y="35" class="dna-cm">33 cM</text>
+  </g>
+
+  <!-- Cluster: Close Family -->
+  <rect x="2870" y="1100" width="350" height="160" class="cluster-box" style="stroke: #22c55e;"/>
+  <text x="2890" y="1125" class="branch-label" style="fill: #22c55e;">CLOSE FAMILY</text>
+
+  <g transform="translate(2890, 1140)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #22c55e;"/>
+    <circle cx="200" cy="25" r="12" fill="#22c55e"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Rebecca Hyndman</text>
+    <text x="10" y="35" class="dna-cm">2699 cM | Sister</text>
+  </g>
+  <g transform="translate(2890, 1200)">
+    <rect x="0" y="0" width="220" height="50" class="person-box-dna" style="stroke: #22c55e;"/>
+    <circle cx="200" cy="25" r="12" fill="#22c55e"/>
+    <text x="192" y="30" class="dna-badge">DNA</text>
+    <text x="10" y="20" class="name">Bruce Horrocks</text>
+    <text x="10" y="35" class="dna-cm">605 cM | 1st cousin</text>
+  </g>
+
+  <!-- ==================== LEGEND ==================== -->
+  <rect x="80" y="1500" width="1200" height="120" fill="white" stroke="#ddd" rx="8"/>
+  <text x="100" y="1530" class="branch-label">LEGEND</text>
+
+  <rect x="100" y="1545" width="80" height="25" class="person-box-direct"/>
+  <text x="190" y="1562" class="name-small">Direct ancestor</text>
+
+  <rect x="100" y="1580" width="80" height="25" class="person-box-you"/>
+  <text x="190" y="1597" class="name-small">You (researcher)</text>
+
+  <rect x="320" y="1545" width="80" height="25" class="person-box-unknown"/>
+  <text x="410" y="1562" class="name-small">Unknown ancestor</text>
+
+  <rect x="320" y="1580" width="80" height="25" class="person-box-dna"/>
+  <text x="410" y="1597" class="name-small">DNA match</text>
+
+  <circle cx="570" cy="1557" r="10" fill="#0d9488"/>
+  <text x="590" y="1562" class="name-small">Confirmed MRCA</text>
+
+  <circle cx="570" cy="1592" r="10" fill="#e53e3e"/>
+  <text x="590" y="1597" class="name-small">Unknown path (UNK-PAT)</text>
+
+  <text x="760" y="1562" class="name-small">Ahnentafel: #1=self, #2=father, #3=mother, #4-7=grandparents, etc.</text>
+  <text x="760" y="1582" class="name-small">Each person's # = father is #×2, mother is #×2+1</text>
+  <text x="760" y="1602" class="name-small">Total: 284 people in tree | ~50 confirmed DNA matches</text>
+
+  <!-- Stats box -->
+  <rect x="80" y="1640" width="600" height="100" fill="white" stroke="#ddd" rx="8"/>
+  <text x="100" y="1670" class="branch-label">DATABASE STATISTICS</text>
+  <text x="100" y="1695" class="name-small">Ancestors identified: 29 of 254 possible (through 7 generations)</text>
+  <text x="100" y="1715" class="name-small">DNA matches in database: 10,000+ | Confirmed MRCAs: ~50</text>
+  <text x="100" y="1735" class="name-small">Key unknown: #36 (Father of Henry Lonsdale Wrathall) - Possible Lowther connection</text>
+
+  <!-- Footer -->
+  <text x="1750" y="1780" text-anchor="middle" class="subtitle">Generated 12 January 2026 | Chris Worthington Genealogy Research Database</text>
+
+</svg>

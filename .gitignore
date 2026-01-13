@@ -24,8 +24,8 @@ import_log.txt
 # Claude Code
 .claude/
 
-# Old project folders (not part of this repo)
-family-tree-*/
+# Old project folders (archived)
+archive/
 census/
 tree-svg-old-backup/
 files.zip

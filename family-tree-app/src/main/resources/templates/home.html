@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Family Trees</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">Family Trees</div>
+            <div class="user-info">
+                <span class="username" th:text="${username}">user</span>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <button type="submit" class="btn-logout">Log out</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <div class="page-header">
+            <h1>Your Family Trees</h1>
+            <p class="subtitle">Select a tree to explore your family history</p>
+        </div>
+
+        <div th:if="${param.error}" class="alert alert-error">
+            <span th:if="${param.error == 'notfound'}">Tree not found</span>
+            <span th:if="${param.error == 'noaccess'}">You don't have access to that tree</span>
+        </div>
+
+        <div th:if="${#lists.isEmpty(trees)}" class="empty-state">
+            <div class="empty-icon">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+            </div>
+            <h2>No trees available</h2>
+            <p>Contact the administrator to request access to family trees.</p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(trees)}" class="tree-grid">
+            <a th:each="tree : ${trees}"
+               th:href="@{/tree/{slug}(slug=${tree.slug})}"
+               class="tree-card">
+                <div class="card-avatar" th:classappend="${tree.avatarColor}">
+                    <span th:text="${tree.initials}">AB</span>
+                </div>
+                <div class="card-content">
+                    <h2 th:text="${tree.displayName}">Tree Name</h2>
+                    <p class="card-subtitle" th:text="${tree.subtitle}">Subtitle</p>
+                    <p class="card-meta" th:if="${tree.personCount != null}"
+                       th:text="${tree.personCount} + ' people'">0 people</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Family Tree Viewer</p>
+        </div>
+    </footer>
+</body>
+</html>

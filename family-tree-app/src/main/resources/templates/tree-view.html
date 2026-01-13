@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${tree.displayName()} + ' - Family Tree'">Tree - Family Tree</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">Family Trees</div>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn-logout">Log out</button>
+            </form>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        <div class="tree-view-header">
+            <div class="breadcrumb">
+                <a th:href="@{/}">Family Trees</a>
+                <span>/</span>
+                <span th:text="${tree.displayName()}">Tree Name</span>
+            </div>
+            <h1 class="tree-title" th:text="${tree.displayName()}">Tree Name</h1>
+            <p class="tree-subtitle" th:text="${tree.subtitle()}">Subtitle</p>
+        </div>
+
+        <div class="tree-diagram">
+            <h2>Family Tree</h2>
+            <div th:utext="${svgContent}" class="svg-container">
+                <!-- SVG will be inlined here -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Family Tree Viewer</p>
+        </div>
+    </footer>
+</body>
+</html>
