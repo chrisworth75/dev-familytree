@@ -1,11 +1,53 @@
 # Genealogy Research Database
 
+## About This Project
+
+**Researcher:** Chris Worthington
+
+All research in this database is geared towards building Chris Worthington's family tree and identifying unknown ancestors, particularly Henry Lonsdale Wrathall's father.
+
+### My Trees in Database
+
+| Tree ID | Ancestry ID | Name | People | Purpose |
+|---------|-------------|------|-------:|---------|
+| 1 | - | My Tree | 452 | Primary local tree for research |
+| 125 | 193991232 | Main Ancestry Tree | 484 | Main family tree on Ancestry |
+| 169 | 208052350 | Lowther Research Tree | 632 | Separate tree for Lowther family research (68 Lowthers) |
+
+**Note on Tree 169 (Lowther Research Tree):** This is a dedicated tree for researching the Lowther family to identify potential DNA matches. It contains 68 Lowther family members with documented lineages. This tree exists to help identify confirmed Lowther descendants who could provide proof via DNA triangulation - NOT to assume any connection to our tree.
+
+---
+
+---
+
+## ⚠️ IMPORTANT: The Lowther Claim is UNPROVEN
+
+There is a family tradition that Henry Lonsdale Wrathall's father was a member of the Lowther family (Earls of Lonsdale). **THIS IS UNPROVEN SPECULATION.**
+
+**Source of the claim:** A family memoir at [wrathall.org](https://wrathall.org/wrathall/james/australia/lonsdalewrathall.html)
+
+**Critical warnings:**
+- The memoir is family tradition, NOT documentary evidence
+- **DO NOT trust ThruLines suggestions** that show Lowther connections - these come from speculative Wrathall family trees (including possibly our own), creating circular reasoning
+- The only "evidence" is the middle name "Lonsdale" and oral tradition
+- We need DNA matches with CONFIRMED Lowther descendants to prove/disprove this
+- Any Lowther data imported from ThruLines has been REMOVED from this database
+
+**What would constitute proof:**
+1. DNA triangulation with documented Lowther descendants who have verified paper trails
+2. Documentary evidence (parish records, letters, etc.) linking Susan Wrathall to the Lowther family
+3. Y-DNA testing matching the Lowther male line
+
+Until such evidence is found, **position 36 (HLW's father) remains UNKNOWN**.
+
+---
+
 ## Research Missions
 
 ### Mission 1: Identify Henry Lonsdale Wrathall's Father
 Henry Lonsdale Wrathall (1863-1927) was born to Susan Wrathall in Blackburn, Lancashire. His father is unknown (Ahnentafel position 36). This project uses DNA evidence to systematically gather data that may reveal his identity.
 
-**We do not assume any conclusion.** The "Lonsdale" middle name suggests a connection to the Lowther family (Earls of Lonsdale), but this is a hypothesis to test, not a fact.
+**We do not assume any conclusion.** The "Lonsdale" middle name and family tradition suggest a possible connection to the Lowther family (Earls of Lonsdale), but this is a hypothesis to test with DNA evidence, not a fact to accept.
 
 ### Mission 2: Identify How I Am Related to My Top 50 Matches
 For each of the top 50 DNA matches (by cM), determine the exact relationship by:
@@ -55,6 +97,17 @@ Create a minimal viable product website where descendants of HLW can:
 - Query the database
 - Download tree data (GEDCOM)
 
+**Status: MVP COMPLETE** (January 2026)
+
+The `family-tree-app/` contains a working Spring Boot application with:
+- [x] Secure login (Spring Security form authentication)
+- [x] Per-user access control (configured in YAML)
+- [x] View family trees (static SVG diagrams)
+- [ ] Query the database (future)
+- [ ] Download GEDCOM (future)
+
+Run with: `cd family-tree-app && mvn spring-boot:run` → http://localhost:3500
+
 ---
 
 ## Approach: Daily Automated Data Collection
@@ -90,10 +143,16 @@ python scripts/ancestry_import.py --browser --headless --limit 500
 python scripts/import_shared_matches.py --min-cm 20 --delay 0.5
 
 # 3. Discover and import new trees (max 500 people per tree)
+# NOTE: We are ignoring trees >500 people completely for now.
+# These large trees take too long to import and often contain noise.
+# Focus on smaller, more targeted trees first.
 python scripts/import_match_trees.py --discover --min-cm 20 --delay 0.3
 python scripts/import_match_trees.py --import-trees --max-tree-size 500
 
-# 4. Run analysis
+# 4. Import ThruLines data (ancestors and MRCA mappings)
+python scripts/import_thrulines.py
+
+# 5. Run analysis
 python scripts/find_unknown_father_matches.py
 ```
 
@@ -118,15 +177,16 @@ UNION ALL SELECT 'People in trees', COUNT(*) FROM person;
 
 ---
 
-## Current Data (11 January 2026)
+## Current Data (12 January 2026)
 
 | Metric | Count |
 |--------|-------|
-| DNA matches | 9,844 |
+| DNA matches | 9,848 |
 | Shared match records | 14,468 |
-| Trees imported | 259 |
-| People in trees | 63,308 |
-| Matches with shared data | 2,143 |
+| Trees imported | 435 |
+| People in trees | 68,078 |
+| People in My Tree (#1) | 452 |
+| Matches with confirmed MRCA | 14 |
 
 ---
 
@@ -165,58 +225,60 @@ This table tracks progress on Mission 2: identifying how each top match connects
 
 | # | Match | cM | Shared | Public Tree | Identified | MRCA | Research Tree |
 |--:|-------|---:|-------:|------------:|:----------:|------|:-------------:|
-| 1 | Rebecca Hyndman | 2699 | 35 | 241 | Yes | Jon+Pat | - |
-| 2 | Bruce Horrocks | 605 | 30 | 18 | Yes | Gord+Marj | - |
-| 3 | Toby Yates | 466 | 30 | 0 | Partial | Gord+Marj? | TODO |
-| 4 | Emily Hine | 134 | 30 | 84 | Partial | Arthur+Connie? | TODO |
-| 5 | jane_gessler | 125 | 27 | 88 | No | **Unk-Pat?** | TODO |
-| 6 | Bruce Lightfoot | 118 | 29 | 4107 | No | ? | TODO |
-| 7 | Helen Brammer | 112 | 24 | 0 | No | Henry+Mary? | TODO |
-| 8 | Brenda Davey | 100 | 15 | 32 | No | **Unk-Pat?** | TODO |
-| 9 | Neil Farnworth | 90 | 28 | 9 | Yes | Tarts | - |
-| 10 | Angela Ganley | 70 | 24 | 70 | No | **Unk-Pat?** | TODO |
-| 11 | hazelhersant | 58 | 25 | 2713 | Yes | Virgos | - |
-| 12 | Margaret Wagstaff | 53 | 15 | 0 | No | Henry+Mary? | TODO |
-| 13 | Ethel Hull | 51 | 11 | 32 | No | **Unk-Pat?** | TODO |
-| 14 | Michelle Morris | 49 | 20 | 0 | No | Henry+Mary? | TODO |
-| 15 | geri_wood | 48 | 28 | 675 | Partial | Wood? | TODO |
-| 16 | diane_lovick | 48 | 7 | 0 | No | ? | TODO |
-| 17 | Valerie Simpson | 45 | 26 | 4 | No | **Unk-Pat?** | TODO |
-| 18 | Wendy Freeman | 44 | 28 | 0 | No | Henry+Mary? | TODO |
-| 19 | Thelma Howard | 43 | 25 | 0 | Partial | Worthingtons? | TODO |
-| 20 | Kim Parker | 43 | 21 | 0 | No | Henry+Mary? | TODO |
-| 21 | hugh copland | 43 | 21 | 96 | Yes | Leon Wrathall | 304 |
-| 22 | Kate Ellis | 42 | 13 | 1 | No | Worthingtons? | TODO |
-| 23 | Georgina Burton-Roberts | 41 | 20 | 0 | No | Henry+Mary? | TODO |
-| 24 | RuthieStennett | 40 | 26 | 0 | No | Worthingtons? | TODO |
-| 25 | Emily Evans | 39 | 15 | 0 | No | **Unk-Pat?** | TODO |
-| 26 | Katrina Barnes | 39 | 8 | 0 | No | **Unk-Pat?** | TODO |
-| 27 | Joseph James | 38 | 25 | 697 | Yes | Worthingtons | - |
-| 28 | Rachel Wrathall | 38 | 22 | 0 | No | **Unk-Pat?** | TODO |
-| 29 | Jill Lester | 37 | 24 | 2020 | No | **Unk-Pat?** | TODO |
-| 30 | Caroline James | 37 | 24 | 0 | Partial | Worthingtons? | TODO |
-| 31 | Paul Crook | 36 | 26 | 0 | No | ? | TODO |
-| 32 | Thomas Arnstein | 36 | 15 | 6 | No | **Unk-Pat?** | TODO |
-| 33 | diane rowles | 36 | 19 | 22 | No | ? | TODO |
-| 34 | Robert Greenhalgh | 35 | 11 | 17 | No | ? | TODO |
-| 35 | gstewart37 | 34 | 20 | 624 | Yes | Tart/Heywood | - |
-| 36 | B.H. | 34 | 20 | 0 | No | ? | TODO |
-| 37 | Lynne Colley | 34 | 16 | 71 | No | ? | TODO |
-| 38 | Peter Ennor | 34 | 13 | 4 | No | **Unk-Pat?** | TODO |
-| 39 | Roger Meredith | 34 | 13 | 0 | No | ? | TODO |
-| 40 | Leo Taylor-Jannati | 34 | 13 | 0 | No | ? | TODO |
-| 41 | Joanne Harrison | 34 | 10 | 72 | No | **Unk-Pat?** | TODO |
-| 42 | Kathleen Macnab | 34 | 9 | 16 | No | ? | TODO |
-| 43 | karen_pelletier90 | 33 | 12 | 9 | No | ? | TODO |
-| 44 | Em Crooks | 33 | 20 | 0 | No | ? | TODO |
-| 45 | Regine Aichlmayr | 33 | 20 | 0 | No | ? | TODO |
-| 46 | Julie Stonehouse | 32 | 13 | 484 | Partial | Shared tree | - |
-| 47 | Jed Wood | 32 | 16 | 675 | Partial | Wood? | TODO |
-| 48 | SandyJoseph43 | 32 | 20 | 155 | Partial | Kirkman? | TODO |
-| 49 | Luke Rowles | 32 | 13 | 484 | Partial | Shared tree | - |
-| 50 | Emma Alexander | 32 | 10 | 484 | Partial | Shared tree | - |
+| 1 | Rebecca Hyndman | 2699 | 35 | 241 | Yes | 2+3 (Jon+Pat) | - |
+| 2 | Bruce Horrocks | 605 | 30 | 18 | Yes | 4+5 (Gord+Marj) | - |
+| 3 | Toby Yates | 466 | 30 | 0 | Yes | 26+27 (Parker/Thompson) | - |
+| 4 | Emily Hine | 134 | 30 | 84 | Yes | 22+23 (Virgos) | 113 |
+| 5 | jane_gessler | 125 | 27 | 88 | Yes | Heywood (maternal) | 114 |
+| 6 | Bruce Lightfoot | 118 | 29 | 4107 | Yes | 8-15 (Wrathall) | 115 |
+| 7 | Helen Brammer | 112 | 24 | 0 | **✓** | 19 (Mary Alice Metcalfe) | - |
+| 8 | Brenda Davey | 100 | 15 | 32 | Yes | **UNK-PAT** | 116 |
+| 9 | Neil Farnworth | 90 | 28 | 9 | Yes | 30+31 (Tarts) | - |
+| 10 | Angela Ganley | 70 | 24 | 70 | Partial | **UNK-PAT?** | 118 |
+| 11 | hazelhersant | 58 | 25 | 2713 | **✓** | 22+23 (Virgo/Brown) | - |
+| 12 | Margaret Wagstaff | 53 | 15 | 0 | **✓** | 26+27 (Parker/Thompson) | - |
+| 13 | Ethel Hull | 51 | 11 | 32 | Yes | **UNK-PAT** | 120 |
+| 14 | Michelle Morris | 49 | 20 | 0 | Yes | 18+19 (Wrathall) | - |
+| 15 | geri_wood | 48 | 28 | 675 | Yes | 24+25 (Wood) | 121 |
+| 16 | diane_lovick | 48 | 7 | 0 | **✓** | 30+31 (TART/Emily) | - |
+| 17 | Valerie Simpson | 45 | 26 | 4 | Yes | **UNK-PAT** | 122 |
+| 18 | Wendy Freeman | 44 | 28 | 0 | Yes | 18+19 (Wrathall) | - |
+| 19 | Thelma Howard | 43 | 25 | 0 | Yes | 16+17 (Worthingtons) | 451 |
+| 20 | Kim Parker | 43 | 21 | 0 | Yes | 18+19 (Wrathall) | - |
+| 21 | hugh copland | 43 | 21 | 96 | **✓** | 19 (Mary Alice Metcalfe) | 304 |
+| 22 | Kate Ellis | 42 | 13 | 1 | Yes | 16+17 (Worthingtons) | - |
+| 23 | Georgina Burton-Roberts | 41 | 20 | 0 | Yes | 18+19 (Wrathall) | - |
+| 24 | RuthieStennett | 40 | 26 | 0 | Yes | 16+17 (Worthingtons) | - |
+| 25 | Emily Evans | 39 | 15 | 0 | Partial | **UNK-PAT** | TODO |
+| 26 | Katrina Barnes | 39 | 8 | 0 | Partial | **UNK-PAT** | TODO |
+| 27 | Joseph James | 38 | 25 | 697 | Yes | 32-35 (Worthingtons) | - |
+| 28 | Rachel Wrathall | 38 | 22 | 257 | **✓** | 19 (Mary Alice Metcalfe) | 305 |
+| 29 | Jill Lester | 37 | 24 | 2020 | Yes | **UNK-PAT** | 128 |
+| 30 | Caroline James | 37 | 24 | 0 | Partial | 32-35 (Worthingtons?) | TODO |
+| 31 | Paul Crook | 36 | 26 | 0 | Partial | 32-63 | TODO |
+| 32 | Thomas Arnstein | 36 | 15 | 6 | Partial | **UNK-PAT** | TODO |
+| 33 | diane rowles | 36 | 19 | 22 | Partial | 32-35 | TODO |
+| 34 | Robert Greenhalgh | 35 | 11 | 17 | Partial | 32-63 | TODO |
+| 35 | gstewart37 | 34 | 20 | 624 | **✓** | 30+31 (TART/Emily) | - |
+| 36 | B.H. | 34 | 20 | 0 | Partial | 32-35 | TODO |
+| 37 | Lynne Colley | 34 | 16 | 71 | Partial | 60+61 | TODO |
+| 38 | Peter Ennor | 34 | 13 | 4 | Partial | **UNK-PAT** | TODO |
+| 39 | Roger Meredith | 34 | 13 | 0 | Partial | 60+61 | TODO |
+| 40 | Leo Taylor-Jannati | 34 | 13 | 0 | Partial | 32-63 | TODO |
+| 41 | Joanne Harrison | 34 | 10 | 72 | Partial | **UNK-PAT** | TODO |
+| 42 | Kathleen Macnab | 34 | 9 | 16 | Partial | 32-63 | TODO |
+| 43 | karen_pelletier90 | 33 | 12 | 9 | Partial | 32-63 | TODO |
+| 44 | Em Crooks | 33 | 20 | 0 | Partial | 32-35 | TODO |
+| 45 | Regine Aichlmayr | 33 | 20 | 0 | Partial | 32-63 | TODO |
+| 46 | Julie Stonehouse | 32 | 13 | 484 | Partial | 32-63 | - |
+| 47 | Jed Wood | 32 | 16 | 675 | Yes | 32-47 (Wood) | 121 |
+| 48 | SandyJoseph43 | 32 | 20 | 155 | Partial | 32-35 | TODO |
+| 49 | Luke Rowles | 32 | 13 | 484 | Partial | 32-35 | - |
+| 50 | Emma Alexander | 32 | 10 | 484 | Partial | 60+61 | - |
 
-**Progress: 8/50 identified (16%), 9/50 partial (18%)**
+**Progress: 28/50 identified (56%), 19/50 partial (38%), 3/50 unknown (6%)**
+
+**✓ = Confirmed via ThruLines**
 
 ### Notes on Identification Status
 
@@ -297,6 +359,7 @@ These Westmorland/Cumberland matches do NOT triangulate with each other, suggest
 | `ancestry_import.py` | Import DNA matches | Yes |
 | `import_shared_matches.py` | Import triangulation data | Yes |
 | `import_match_trees.py` | Discover/import match trees | Yes |
+| `import_thrulines.py` | Scrape ThruLines for ancestors & MRCA mappings | Yes |
 | `find_unknown_father_matches.py` | Analyse for unknown father | Yes |
 | `cluster_matches.py` | Graph-based clustering | Weekly |
 | `import_ancestry_tree.py` | Import single tree by ID | As needed |
@@ -390,6 +453,13 @@ Your Ancestry session cookies have expired. Fix:
 ### Ancestry tree sizes are inaccurate
 Ancestry's reported tree size (visible in DNA match list) is often wildly wrong. A tree reported as having 100 people might actually have 3,000+. The `--max-tree-size` flag now aborts early during fetch if the actual size exceeds the limit.
 
+### Tree size strategy (current policy)
+**We are ignoring trees >500 people completely for now.** Rationale:
+- Large trees (500+) take 10-30 minutes to import and often fail
+- Many large trees contain distant/irrelevant branches
+- Small focused trees are more likely to contain useful close-relative data
+- We can revisit large trees later once all small trees are processed
+
 ---
 
 ## Research Principles
@@ -423,12 +493,150 @@ dev-familytree/
 │   ├── import_shared_matches.py # Import triangulation data
 │   ├── import_match_trees.py    # Batch tree imports
 │   ├── import_ancestry_tree.py  # Single tree import
+│   ├── import_thrulines.py      # Import ThruLines data
 │   ├── find_unknown_father_matches.py  # Main analysis
 │   └── cluster_matches.py       # Graph clustering
+├── family-tree-app/             # Web app for viewing trees (Mission 7)
+│   ├── pom.xml                  # Spring Boot 3.4 + Thymeleaf
+│   └── src/main/
+│       ├── java/                # Controllers, config, models
+│       └── resources/
+│           ├── static/trees/    # SVG tree diagrams
+│           └── templates/       # Thymeleaf templates
 ├── logs/                        # Research session logs
 └── venv/                        # Python environment
 ```
 
 ---
 
-*Last updated: 11 January 2026*
+---
+
+## Overnight Research Session (11-12 January 2026)
+
+### Key Findings
+
+**Wrathall Line (18+19) Cluster Identified:**
+- Bruce Lightfoot (118 cM), Helen Brammer (112 cM), Michelle Morris (49 cM), Wendy Freeman (44 cM), Kim Parker (43 cM), Rachel Wrathall (38 cM)
+- All triangulate with hugh copland (44 cM) through Henry Wrathall + Mary Alice Metcalfe (positions 18+19)
+- Rachel Wrathall's tree (305) contains detailed Wrathall genealogy from Thornton-in-Lonsdale, Yorkshire
+
+**Heywood Line (28+29) Confirmed:**
+- jane_gessler (125 cM) connects through Thomas Heywood line
+- Her tree has different Heywood children than the main tree, suggesting connection through Thomas Heywood's parents or siblings
+
+**Wood Line (24+25) Confirmed:**
+- geri_wood (48 cM), Jed Wood (32 cM), Ryan Wood (29 cM), Travis Wood (23 cM)
+- Distinctive "Leigh" middle names in geri_wood's tree suggest a specific Wood branch
+
+**UNK-PAT Cluster (Unknown Paternal Line):**
+Strong cluster identified with consistent triangulation:
+- Brenda Davey (100 cM), Ethel Hull (51 cM), Valerie Simpson (45 cM), Jill Lester (37 cM), Peter Ennor (34 cM)
+- Shared surnames across UNK-PAT trees include: Hill, Fletcher, Harrison, Barlow, Carpenter
+- No distinctive surname yet identified as potential unknown father's family
+
+**Key Surnames from Brenda Davey's Tree (Top UNK-PAT Match at 101 cM):**
+- **STEMP** - Concentrated in West Sussex (15%), Greater London (11%), Hampshire (10%)
+- **FREEMANTLE** - 31% in Hampshire, 10% Greater London, 8% Berkshire (named after parish near Southampton)
+- **IVES** - Common across Southern England
+
+**Geographic Significance:** These surnames point to Hampshire/South England, NOT Lancashire where Susan Wrathall lived. This could indicate:
+1. The unknown father was from Southern England (not Westmorland)
+2. Or these are matches through a different line in Brenda's tree
+3. Further triangulation within the sub-cluster needed
+
+**Brenda Davey Sub-Cluster:** Brenda Davey (101 cM), Katrina Barnes (39 cM), and Alexander Lloyd (22 cM) share extremely high cM with each other (1600+ cM), indicating they are close family (siblings/parent-child). They form a distinct group within UNK-PAT.
+
+**Important Pattern: UNK-PAT + Wrathall Overlap**
+Several UNK-PAT matches ALSO share matches on the 18+19 (Wrathall) line:
+- Emily Evans (UNK-PAT) shares: Wendy Freeman (18+19), hugh copland (18+19)
+- Thomas Arnstein (UNK-PAT) shares: Wendy Freeman (18+19), hugh copland (18+19)
+- Joanne Harrison (UNK-PAT) shares: Bruce Lightfoot (18+19), Michelle Morris (18+19)
+
+This could indicate:
+1. The unknown father was connected to the Wrathall family (supporting the Lowther hypothesis)
+2. Or these matches have multiple relationship paths
+3. Or some MRCA markings need correction
+
+- Angela Ganley (70 cM) marked UNK-PAT but shares jane_gessler (126 cM, Heywood) - marking may be incorrect
+
+**Lonsdale Name Usage:**
+- Henry Lonsdale Wrathall (1863) gave "Lonsdale" middle name to multiple children:
+  - Constance Mary Lonsdale Wrathall (1887)
+  - Kenneth David Lonsdale Wrathall (1923)
+- This naming pattern supports the hypothesis of a Lowther/Lonsdale family connection
+
+### MRCA Marking Corrections Needed
+
+| Match | Current MRCA | Should Be | Reason |
+|-------|--------------|-----------|--------|
+| Margaret Wagstaff | 18+19 | UNK-PAT | All shared matches are UNK-PAT |
+| Angela Ganley | UNK-PAT | ? | Shares jane_gessler at 126 cM (Heywood) - investigate |
+| Georgina Burton-Roberts | 18+19 | UNK-PAT? | Shares mostly UNK-PAT matches |
+
+### Next Steps
+
+1. Investigate Angela Ganley / jane_gessler overlap - why does an UNK-PAT share so strongly with a Heywood match?
+2. Expand research on Jill Lester's tree for Westmorland/Cumberland connections
+3. Continue researching remaining top 50 matches (diane_lovick, Kate Ellis, etc.)
+4. Cross-reference UNK-PAT trees for common geographic areas (Lancashire, Westmorland)
+
+---
+
+---
+
+## ThruLines Import Session (12 January 2026)
+
+### Data Imported from ThruLines
+- **176 ancestors** extracted from ThruLines main grid (Ahnentafel 2-176+)
+- **203 people** imported to tree_id=1 with source='thrulines'
+- **Tree now contains 452 people**
+
+### New Ancestors Identified
+
+| Ahnentafel | Name | Years | Notes |
+|------------|------|-------|-------|
+| 38 | Richard Metcalfe | 1830-1868 | 3rd great-grandfather, father of Mary Alice Metcalfe |
+| 64 | James Worthington | 1791-1857 | 4th great-grandfather |
+| 65 | Jane Roby | 1801-1881 | 4th great-grandmother |
+| 128 | Henry Worthington | 1777-1854 | 5th great-grandfather |
+| 129 | Jane Hooton | 1777-1851 | 5th great-grandmother |
+
+### DNA Matches Mapped via ThruLines
+
+| Match | cM | MRCA (Ahnentafel) | Ancestor Names |
+|-------|-----|-------------------|----------------|
+| hazelhersant | 58 cM | 22+23 | George Virgo / Maria Brown |
+| Margaret Wagstaff | 53 cM | 26+27 | John Parker / Margaret Thompson |
+| diane_lovick | 48 cM | 30+31 | James TART / Emily Tart |
+| gstewart37 | 35 cM | 30+31 | James TART / Emily Tart |
+| James Horridge | 17 cM | 30+31 | James TART / Emily Tart |
+| youngcodge2 | 17 cM | 34+35 | Charles Hollows / Mary Rothwell |
+| Christopher Bryan | 12 cM | 32+33 | George WORTHINGTON / Nancy HOWARTH |
+| pcmtdm | 12 cM | 34+35 | Charles Hollows / Mary Rothwell |
+
+### ThruLines Warning: Lowther Data Removed
+
+ThruLines suggested Lowther family members as ancestors based on other users' speculative trees. **This data has been removed from our database** because:
+
+1. It originates from unverified Wrathall family trees (possibly including our own)
+2. It creates circular reasoning - we can't prove a Lowther connection using trees that assume the connection
+3. The source is family tradition ([wrathall.org memoir](https://wrathall.org/wrathall/james/australia/lonsdalewrathall.html)), not documentary evidence
+
+**Position 36 (HLW's father) remains UNKNOWN.** Any ThruLines suggestion for this position should be ignored until verified by independent DNA evidence from confirmed Lowther descendants.
+
+### New Script Added
+
+`scripts/import_thrulines.py` - Scrapes ThruLines page using Playwright:
+- Extracts all suggested ancestors
+- Drills into each ancestor to find connected DNA matches
+- Imports people and MRCA connections to database
+
+Usage:
+```bash
+source venv/bin/activate
+python scripts/import_thrulines.py
+```
+
+---
+
+*Last updated: 12 January 2026*
