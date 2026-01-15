@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${tree.displayName()} + ' - Family Tree'">Tree - Family Tree</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
     <style>
         .tree-layout {
             display: flex;
@@ -159,6 +160,44 @@
             stroke: #4a7085;
             stroke-width: 3;
         }
+        .tree-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .tree-controls button {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            color: #555;
+        }
+        .tree-controls button:hover {
+            background: #f5f5f5;
+            border-color: #ccc;
+        }
+        #treeContainer {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background: #fafafa;
+            min-height: 800px;
+            overflow: auto;
+        }
+        .tree-diagram {
+            overflow: auto;
+        }
+        #treeContainer svg {
+            display: block;
+        }
+        .node .card {
+            transition: stroke 0.2s, stroke-width 0.2s;
+        }
+        .node:hover .card {
+            stroke: #4a7085;
+            stroke-width: 2;
+        }
     </style>
 </head>
 <body>
@@ -185,9 +224,14 @@
         <div class="tree-layout">
             <div class="tree-diagram" id="treeDiagram">
                 <h2>Family Tree</h2>
-                <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Click on a person to view their census records</p>
-                <div th:utext="${svgContent}" class="svg-container">
-                    <!-- SVG will be inlined here -->
+                <p style="font-size: 13px; color: #666; margin-bottom: 8px;">Click on a person to view details. Shift+click or click +/- to expand/collapse branches.</p>
+                <div class="tree-controls">
+                    <button onclick="familyTree.expandAll()">Expand All</button>
+                    <button onclick="familyTree.collapseAll()">Collapse All</button>
+                    <button onclick="familyTree.resetZoom()">Reset Zoom</button>
+                </div>
+                <div id="treeContainer">
+                    <!-- D3 tree will be rendered here -->
                 </div>
             </div>
         </div>
@@ -213,41 +257,32 @@
         </div>
     </footer>
 
-    <script>
+    <script th:src="@{/js/d3-tree.js}"></script>
+    <script th:inline="javascript">
+        let familyTree;
+
         document.addEventListener('DOMContentLoaded', function() {
+            const treeSlug = /*[[${tree.slug()}]]*/ 'wrathall';
             const sidebar = document.getElementById('personSidebar');
             const treeDiagram = document.getElementById('treeDiagram');
             const sidebarClose = document.getElementById('sidebarClose');
             const sidebarName = document.getElementById('sidebarName');
             const sidebarDates = document.getElementById('sidebarDates');
             const sidebarContent = document.getElementById('sidebarContent');
-            let selectedCard = null;
+
+            // Initialize D3 tree
+            familyTree = new FamilyTree('treeContainer');
+            familyTree.onPersonClick = function(personId, target) {
+                familyTree.selectPerson(personId);
+                loadPersonData(personId);
+            };
+            familyTree.init(treeSlug);
 
             // Close sidebar
             sidebarClose.addEventListener('click', function() {
                 sidebar.classList.remove('open');
                 treeDiagram.classList.remove('sidebar-open');
-                if (selectedCard) {
-                    selectedCard.classList.remove('selected');
-                    selectedCard = null;
-                }
-            });
-
-            // Handle clicks on person cards
-            document.querySelectorAll('.person-card').forEach(function(card) {
-                card.style.cursor = 'pointer';
-                card.addEventListener('click', function() {
-                    const personId = this.getAttribute('data-person-id');
-                    if (personId && personId !== '0') {
-                        // Update selection
-                        if (selectedCard) {
-                            selectedCard.classList.remove('selected');
-                        }
-                        selectedCard = card;
-                        card.classList.add('selected');
-                        loadPersonData(personId);
-                    }
-                });
+                familyTree.selectPerson(null);
             });
 
             async function loadPersonData(personId) {

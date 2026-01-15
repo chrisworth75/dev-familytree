@@ -12,9 +12,11 @@ Usage:
 """
 
 import argparse
+import csv
 import re
 import sqlite3
 import time
+from datetime import datetime
 from pathlib import Path
 
 from selenium import webdriver
@@ -26,7 +28,7 @@ from selenium.webdriver.chrome.options import Options
 DB_PATH = Path(__file__).parent.parent / "genealogy.db"
 
 
-def search_freecen(surname, forename=None, birth_year=None, census_year=None, headless=True):
+def search_freecen(surname, forename=None, birth_year=None, census_year=None, headless=True, fetch_details=False):
     """
     Search FreeCEN for census records using Selenium.
     No CAPTCHA required - fully automated.
@@ -209,6 +211,27 @@ def search_freecen(surname, forename=None, birth_year=None, census_year=None, he
             except:
                 pass
 
+        # Census year filter - select specific year from dropdown
+        if census_year:
+            try:
+                from selenium.webdriver.support.ui import Select
+                # The census year dropdown: id="search_query_record_type"
+                census_year_selectors = [
+                    (By.ID, "search_query_record_type"),
+                    (By.NAME, "search_query[record_type]"),
+                ]
+                for selector_type, selector in census_year_selectors:
+                    try:
+                        census_select = driver.find_element(selector_type, selector)
+                        select = Select(census_select)
+                        select.select_by_value(str(census_year))
+                        print(f"Selected census year: {census_year}")
+                        break
+                    except Exception as e:
+                        continue
+            except Exception as e:
+                print(f"Could not set census year: {e}")
+
         # Submit search - try multiple selectors
         submit_selectors = [
             (By.NAME, "commit"),
@@ -233,7 +256,7 @@ def search_freecen(surname, forename=None, birth_year=None, census_year=None, he
         print("Screenshot: /tmp/freecen_results.png")
 
         # Parse results
-        results = parse_results(driver)
+        results = parse_results(driver, fetch_details=fetch_details)
 
     except Exception as e:
         print(f"Error: {e}")
@@ -247,9 +270,10 @@ def search_freecen(surname, forename=None, birth_year=None, census_year=None, he
     return results
 
 
-def parse_results(driver):
+def parse_results(driver, fetch_details=False):
     """Parse FreeCEN search results."""
     results = []
+    detail_urls = []
 
     try:
         page_source = driver.page_source
@@ -294,7 +318,9 @@ def parse_results(driver):
                 # Find column indices
                 col_map = {}
                 for i, h in enumerate(headers):
-                    if 'individual' in h:
+                    if 'detail' in h:
+                        col_map['detail'] = i
+                    elif 'individual' in h:
                         col_map['name'] = i
                     elif 'birth county' in h:
                         col_map['birth_county'] = i
@@ -315,6 +341,14 @@ def parse_results(driver):
                     cells = row.find_elements(By.TAG_NAME, 'td')
                     if len(cells) >= 4:
                         record = {}
+
+                        # Get detail URL for later fetching
+                        if 'detail' in col_map and col_map['detail'] < len(cells):
+                            try:
+                                link = cells[col_map['detail']].find_element(By.TAG_NAME, 'a')
+                                record['detail_url'] = link.get_attribute('href')
+                            except:
+                                pass
 
                         if 'name' in col_map and col_map['name'] < len(cells):
                             record['name'] = cells[col_map['name']].text.strip()
@@ -354,12 +388,115 @@ def parse_results(driver):
 
         print(f"Parsed {len(results)} census records")
 
+        # Fetch details if requested
+        if fetch_details and results:
+            print(f"\nFetching details for {len(results)} records...")
+            for i, record in enumerate(results):
+                if record.get('detail_url'):
+                    try:
+                        detail = fetch_record_details(driver, record['detail_url'], record.get('name'))
+                        record.update(detail)
+                        if (i + 1) % 10 == 0:
+                            print(f"  Fetched {i + 1}/{len(results)} details...")
+                    except Exception as e:
+                        print(f"  Error fetching detail {i + 1}: {e}")
+                    time.sleep(0.5)  # Be nice to the server
+            print(f"  Completed fetching details")
+
     except Exception as e:
         print(f"Parse error: {e}")
         import traceback
         traceback.print_exc()
 
     return results
+
+
+def fetch_record_details(driver, url, target_name=None):
+    """Fetch relationship, occupation, and address from detail page.
+
+    The detail page has two tables:
+    - Table 0: Location details (house/street name, civil parish, etc.)
+    - Table 1: Household members (relationship, occupation, etc.)
+    """
+    details = {}
+
+    try:
+        driver.get(url)
+        time.sleep(1)
+
+        tables = driver.find_elements(By.TAG_NAME, 'table')
+
+        for table in tables:
+            headers = table.find_elements(By.TAG_NAME, 'th')
+            header_texts = [h.text.lower().strip() for h in headers]
+
+            # Table 0: Location details - extract house/street name
+            if 'house or street name' in header_texts or 'house number' in header_texts:
+                col_map = {}
+                for i, h in enumerate(header_texts):
+                    if 'house or street name' in h:
+                        col_map['address'] = i
+                    elif 'house number' in h:
+                        col_map['house_number'] = i
+                    elif 'civil parish' in h:
+                        col_map['civil_parish'] = i
+
+                rows = table.find_elements(By.TAG_NAME, 'tr')
+                if len(rows) > 1:
+                    cells = rows[1].find_elements(By.TAG_NAME, 'td')
+                    if 'address' in col_map and col_map['address'] < len(cells):
+                        details['address'] = cells[col_map['address']].text.strip()
+                    if 'house_number' in col_map and col_map['house_number'] < len(cells):
+                        house_num = cells[col_map['house_number']].text.strip()
+                        if house_num and house_num != '-':
+                            details['house_number'] = house_num
+                    if 'civil_parish' in col_map and col_map['civil_parish'] < len(cells):
+                        details['civil_parish'] = cells[col_map['civil_parish']].text.strip()
+
+            # Table 1: Household - extract relationship and occupation for searched person
+            elif 'relationship' in header_texts or 'occupation' in header_texts:
+                col_map = {}
+                for i, h in enumerate(header_texts):
+                    if 'surname' in h:
+                        col_map['surname'] = i
+                    elif 'forename' in h:
+                        col_map['forename'] = i
+                    elif 'relationship' in h:
+                        col_map['relationship'] = i
+                    elif 'occupation' in h:
+                        col_map['occupation'] = i
+                    elif 'marital' in h:
+                        col_map['marital_status'] = i
+
+                rows = table.find_elements(By.TAG_NAME, 'tr')
+                for row in rows[1:]:  # Skip header
+                    cells = row.find_elements(By.TAG_NAME, 'td')
+                    if len(cells) < 3:
+                        continue
+
+                    # FreeCEN marks searched person with weight--semibold class
+                    # or "the person found in your search" text
+                    first_cell_class = cells[0].get_attribute('class') or ''
+                    is_searched_person = 'weight--semibold' in first_cell_class
+
+                    if not is_searched_person:
+                        row_text = row.text
+                        if 'the person found' in row_text.lower():
+                            is_searched_person = True
+
+                    if is_searched_person:
+                        if 'relationship' in col_map and col_map['relationship'] < len(cells):
+                            details['relationship'] = cells[col_map['relationship']].text.strip()
+                        if 'occupation' in col_map and col_map['occupation'] < len(cells):
+                            details['occupation'] = cells[col_map['occupation']].text.strip()
+                        if 'marital_status' in col_map and col_map['marital_status'] < len(cells):
+                            details['marital_status'] = cells[col_map['marital_status']].text.strip()
+                        break
+
+    except Exception as e:
+        pass  # Silently fail for individual records
+
+    return details
 
 
 def store_results(results, person_id=None):
@@ -423,6 +560,50 @@ def store_results(results, person_id=None):
     return stored
 
 
+def write_csv(results, surname=None, output_dir=None, append=False):
+    """Write results to CSV file. Uses fixed filename, appends if file exists."""
+    if not results:
+        return None
+
+    if output_dir is None:
+        output_dir = Path(__file__).parent.parent / "output"
+    else:
+        output_dir = Path(output_dir)
+
+    output_dir.mkdir(exist_ok=True)
+
+    filename = output_dir / "freecen_results.csv"
+    file_exists = filename.exists()
+    mode = 'a' if append or file_exists else 'w'
+
+    with open(filename, mode, newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        # Write header only if new file
+        if mode == 'w' or not file_exists:
+            writer.writerow(['census_year', 'name', 'age', 'relationship', 'occupation', 'address', 'birth_place', 'county', 'district'])
+
+        for r in results:
+            # Combine house number and address if both present
+            address = r.get('address', '')
+            if r.get('house_number'):
+                address = f"{r.get('house_number')} {address}".strip()
+
+            writer.writerow([
+                r.get('year', ''),
+                r.get('name', ''),
+                r.get('age', ''),
+                r.get('relationship', ''),
+                r.get('occupation', ''),
+                address,
+                r.get('birth_place', ''),
+                r.get('county', ''),
+                r.get('district', '')
+            ])
+
+    print(f"CSV written to: {filename}")
+    return filename
+
+
 def main():
     parser = argparse.ArgumentParser(description='Search FreeCEN for UK census records')
     parser.add_argument('--surname', required=True, help='Surname to search')
@@ -435,6 +616,9 @@ def main():
     parser.add_argument('--no-headless', action='store_true', help='Show browser')
     parser.add_argument('--store', action='store_true', help='Store results in database')
     parser.add_argument('--person-id', type=int, help='Person ID to link results to')
+    parser.add_argument('--output-dir', help='Directory for CSV output')
+    parser.add_argument('--details', action='store_true',
+                       help='Fetch relationship and occupation from detail pages (slower)')
     args = parser.parse_args()
 
     headless = not args.no_headless
@@ -448,7 +632,8 @@ def main():
         forename=args.forename,
         birth_year=args.birth_year,
         census_year=args.year,
-        headless=headless
+        headless=headless,
+        fetch_details=args.details
     )
 
     if results:
@@ -461,6 +646,9 @@ def main():
             for k, v in r.items():
                 if v:
                     print(f"  {k}: {v}")
+
+        # Always write CSV
+        write_csv(results, args.surname, args.output_dir)
 
         if args.store:
             stored = store_results(results, args.person_id)

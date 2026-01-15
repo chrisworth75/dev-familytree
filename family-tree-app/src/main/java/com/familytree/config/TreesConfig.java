@@ -50,11 +50,12 @@ public class TreesConfig {
         private String initials;
         private String avatarColor;
         private Integer personCount;
+        private Long rootPersonId;
         private List<String> allowedUsers = new ArrayList<>();
 
         public FamilyTreeConfig toConfig() {
             return new FamilyTreeConfig(
-                slug, displayName, subtitle, initials, avatarColor, personCount, allowedUsers
+                slug, displayName, subtitle, initials, avatarColor, personCount, rootPersonId, allowedUsers
             );
         }
 
@@ -76,6 +77,9 @@ public class TreesConfig {
 
         public Integer getPersonCount() { return personCount; }
         public void setPersonCount(Integer personCount) { this.personCount = personCount; }
+
+        public Long getRootPersonId() { return rootPersonId; }
+        public void setRootPersonId(Long rootPersonId) { this.rootPersonId = rootPersonId; }
 
         public List<String> getAllowedUsers() { return allowedUsers; }
         public void setAllowedUsers(List<String> allowedUsers) { this.allowedUsers = allowedUsers; }

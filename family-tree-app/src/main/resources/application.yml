@@ -50,6 +50,7 @@ familytree:
       initials: WF
       avatarColor: blue
       personCount: 41
+      rootPersonId: 575426
       allowedUsers:
         - chris
         - family-au
@@ -61,6 +62,7 @@ familytree:
       initials: W
       avatarColor: teal
       personCount: 8
+      rootPersonId: 56
       allowedUsers:
         - chris
         - family-uk
@@ -71,6 +73,7 @@ familytree:
       initials: HF
       avatarColor: rust
       personCount: 3
+      rootPersonId: 37
       allowedUsers:
         - chris
         - family-uk
@@ -81,6 +84,7 @@ familytree:
       initials: WR
       avatarColor: olive
       personCount: 4
+      rootPersonId: 1
       allowedUsers:
         - chris
         - family-uk
@@ -91,6 +95,29 @@ familytree:
       initials: T
       avatarColor: brown
       personCount: 10
+      rootPersonId: 40
+      allowedUsers:
+        - chris
+        - family-uk
+
+    - slug: goodall
+      displayName: Goodall Family
+      subtitle: Lincolnshire, England
+      initials: G
+      avatarColor: green
+      personCount: 5
+      rootPersonId: 575396
+      allowedUsers:
+        - chris
+        - family-uk
+
+    - slug: virgo
+      displayName: Virgo Family
+      subtitle: Sussex, England
+      initials: V
+      avatarColor: purple
+      personCount: 7
+      rootPersonId: 10219
       allowedUsers:
         - chris
         - family-uk

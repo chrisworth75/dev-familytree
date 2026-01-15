@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620.0 945" width="620.0" height="945" data-root-x="310.0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1070.0 565" width="1070.0" height="565" data-root-x="535.0">
   <defs>
     <style>
       .card { fill: #fff; stroke: #d0d0d0; stroke-width: 1; }
@@ -24,94 +24,100 @@
 
   <rect width="100%" height="100%" fill="#fff"/>
 
-  <text x="310.0" y="30" text-anchor="middle" class="name" style="font-size: 16px;">
+  <text x="535.0" y="30" text-anchor="middle" class="name" style="font-size: 16px;">
     Tart Family Tree
   </text>
-  <text x="310.0" y="48" text-anchor="middle" class="dates">
+  <text x="535.0" y="48" text-anchor="middle" class="dates">
     Click on any person to view their details
   </text>
-  <line x1="30" y1="58" x2="590.0" y2="58" stroke="#e0e0e0"/>
+  <line x1="30" y1="58" x2="1040.0" y2="58" stroke="#e0e0e0"/>
 
   
   <g class="person-card" data-person-id="40">
-    <rect x="230.0" y="80" width="160" height="55" rx="5" class="card"/>
-    <circle cx="250.0" cy="108" r="14" class="avatar-female"/>
-    <text x="270.0" y="100" class="name">Matilda Tart</text>
-    <text x="270.0" y="113" class="dates">1843-</text>
-    <text x="270.0" y="127" class="spouse">m. James Tart</text>
+    <rect x="455.0" y="80" width="160" height="55" rx="5" class="card"/>
+    <circle cx="475.0" cy="108" r="14" class="avatar-female"/>
+    <text x="495.0" y="100" class="name">Matilda Tart</text>
+    <text x="495.0" y="113" class="dates">1843-</text>
+    <text x="495.0" y="127" class="spouse">m. James Tart</text>
   </g>
   <g class="person-card" data-person-id="39">
-    <rect x="230.0" y="250" width="160" height="55" rx="5" class="card"/>
-    <circle cx="250.0" cy="278" r="14" class="avatar-male"/>
-    <text x="270.0" y="270" class="name">James Tart</text>
-    <text x="270.0" y="283" class="dates">1862-</text>
-    <text x="270.0" y="297" class="spouse">m. Matilda Tart</text>
+    <rect x="455.0" y="180" width="160" height="55" rx="5" class="card"/>
+    <circle cx="475.0" cy="208" r="14" class="avatar-male"/>
+    <text x="495.0" y="200" class="name">James Tart</text>
+    <text x="495.0" y="213" class="dates">1862-</text>
+    <text x="495.0" y="227" class="spouse">m. Matilda Tart</text>
   </g>
   <g class="person-card" data-person-id="41">
-    <rect x="50.0" y="420" width="160" height="55" rx="5" class="card"/>
-    <circle cx="70.0" cy="448" r="14" class="avatar-female"/>
-    <text x="90.0" y="440" class="name">Eliza Ann Tart</text>
-    <text x="90.0" y="453" class="dates">1874-</text>
-    
-  </g>
-  <g class="person-card" data-person-id="71">
-    <rect x="230.0" y="420" width="160" height="55" rx="5" class="card"/>
-    <circle cx="250.0" cy="448" r="14" class="avatar-male"/>
-    <text x="270.0" y="440" class="name">John James Tart</text>
-    <text x="270.0" y="453" class="dates">1885-</text>
-    
-  </g>
-  <g class="person-card" data-person-id="51">
-    <rect x="410.0" y="420" width="160" height="55" rx="5" class="card"/>
-    <circle cx="430.0" cy="448" r="14" class="avatar-female"/>
-    <text x="450.0" y="440" class="name">Annie Tart</text>
-    <text x="450.0" y="453" class="dates">1890-</text>
+    <rect x="30.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="50.0" cy="308" r="14" class="avatar-female"/>
+    <text x="70.0" y="300" class="name">Eliza Ann Tart</text>
+    <text x="70.0" y="313" class="dates">1874-</text>
     
   </g>
   <g class="person-card" data-person-id="42">
-    <rect x="50.0" y="500" width="160" height="55" rx="5" class="card"/>
-    <circle cx="70.0" cy="528" r="14" class="avatar-male"/>
-    <text x="90.0" y="520" class="name">Elijah Tart</text>
-    <text x="90.0" y="533" class="dates">1875-</text>
+    <rect x="200.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="220.0" cy="308" r="14" class="avatar-male"/>
+    <text x="240.0" y="300" class="name">Elijah Tart</text>
+    <text x="240.0" y="313" class="dates">1875-</text>
+    
+  </g>
+  <g class="person-card" data-person-id="71">
+    <rect x="370.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="390.0" cy="308" r="14" class="avatar-male"/>
+    <text x="410.0" y="300" class="name">John James Tart</text>
+    <text x="410.0" y="313" class="dates">1885-</text>
     
   </g>
   <g class="person-card" data-person-id="38">
-    <rect x="230.0" y="500" width="160" height="55" rx="5" class="card"/>
-    <circle cx="250.0" cy="528" r="14" class="avatar-female"/>
-    <text x="270.0" y="520" class="name">Theodora Heywood</text>
-    <text x="270.0" y="533" class="dates">1888-</text>
-    <text x="270.0" y="547" class="spouse">m. Samuel Heywood</text>
+    <rect x="540.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="560.0" cy="308" r="14" class="avatar-female"/>
+    <text x="580.0" y="300" class="name">Theodora Heywood</text>
+    <text x="580.0" y="313" class="dates">1888-</text>
+    <text x="580.0" y="327" class="spouse">m. Samuel Heywood</text>
   </g>
   <g class="person-card" data-person-id="36">
-    <rect x="230.0" y="670" width="160" height="55" rx="5" class="card"/>
-    <circle cx="250.0" cy="698" r="14" class="avatar-female"/>
-    <text x="270.0" y="690" class="name">Doris Wood</text>
-    <text x="270.0" y="703" class="dates"></text>
-    <text x="270.0" y="717" class="spouse">m. Albert Wood</text>
+    <rect x="540.0" y="380" width="160" height="55" rx="5" class="card"/>
+    <circle cx="560.0" cy="408" r="14" class="avatar-female"/>
+    <text x="580.0" y="400" class="name">Doris Wood</text>
+    <text x="580.0" y="413" class="dates"></text>
+    <text x="580.0" y="427" class="spouse">m. Albert Wood</text>
   </g>
   <g class="person-card" data-person-id="34">
-    <rect x="230.0" y="840" width="160" height="55" rx="5" class="card"/>
-    <circle cx="250.0" cy="868" r="14" class="avatar-female"/>
-    <text x="270.0" y="860" class="name">Patricia Margaret Wo...</text>
-    <text x="270.0" y="873" class="dates">1946-</text>
-    <text x="270.0" y="887" class="spouse">m. Jonathon Paul Wort...</text>
-  </g>  <path d="M310.0 725 L310.0 840" class="connector"/>
-  <path d="M310.0 555 L310.0 670" class="connector"/>
+    <rect x="540.0" y="480" width="160" height="55" rx="5" class="card"/>
+    <circle cx="560.0" cy="508" r="14" class="avatar-female"/>
+    <text x="580.0" y="500" class="name">Patricia Margaret Wo...</text>
+    <text x="580.0" y="513" class="dates">1946-</text>
+    <text x="580.0" y="527" class="spouse">m. Jonathon Paul Wort...</text>
+  </g>  <path d="M620.0 435 L620.0 455" class="connector"/>
+  <path d="M620.0 455 L620.0 455" class="connector"/>
+  <path d="M620.0 455 L620.0 480" class="connector"/>
+  <path d="M620.0 335 L620.0 355" class="connector"/>
+  <path d="M620.0 355 L620.0 355" class="connector"/>
+  <path d="M620.0 355 L620.0 380" class="connector"/>
 
-  <g class="person-card" data-person-id="45">
-    <rect x="410.0" y="500" width="160" height="55" rx="5" class="card"/>
-    <circle cx="430.0" cy="528" r="14" class="avatar-male"/>
-    <text x="450.0" y="520" class="name">Isaac Horace Tart</text>
-    <text x="450.0" y="533" class="dates">1896-</text>
+  <g class="person-card" data-person-id="51">
+    <rect x="710.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="730.0" cy="308" r="14" class="avatar-female"/>
+    <text x="750.0" y="300" class="name">Annie Tart</text>
+    <text x="750.0" y="313" class="dates">1890-</text>
     
-  </g>  <path d="M310.0 305 L310.0 335" class="connector"/>
-  <path d="M130.0 335 L490.0 335" class="connector"/>
-  <path d="M130.0 335 L130.0 420" class="connector"/>
-  <path d="M310.0 335 L310.0 420" class="connector"/>
-  <path d="M490.0 335 L490.0 420" class="connector"/>
-  <path d="M130.0 335 L130.0 500" class="connector-long"/>
-  <path d="M310.0 335 L310.0 500" class="connector-long"/>
-  <path d="M490.0 335 L490.0 500" class="connector-long"/>
-  <path d="M310.0 135 L310.0 250" class="connector"/>
+  </g>
+  <g class="person-card" data-person-id="45">
+    <rect x="880.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="900.0" cy="308" r="14" class="avatar-male"/>
+    <text x="920.0" y="300" class="name">Isaac Horace Tart</text>
+    <text x="920.0" y="313" class="dates">1896-</text>
+    
+  </g>  <path d="M535.0 235 L535.0 255" class="connector"/>
+  <path d="M110.0 255 L960.0 255" class="connector"/>
+  <path d="M110.0 255 L110.0 280" class="connector"/>
+  <path d="M280.0 255 L280.0 280" class="connector"/>
+  <path d="M450.0 255 L450.0 280" class="connector"/>
+  <path d="M620.0 255 L620.0 280" class="connector"/>
+  <path d="M790.0 255 L790.0 280" class="connector"/>
+  <path d="M960.0 255 L960.0 280" class="connector"/>
+  <path d="M535.0 135 L535.0 155" class="connector"/>
+  <path d="M535.0 155 L535.0 155" class="connector"/>
+  <path d="M535.0 155 L535.0 180" class="connector"/>
 
 </svg>

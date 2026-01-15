@@ -367,27 +367,59 @@
     <circle cx="1070.0" cy="208" r="14" class="avatar-male"/>
     <text x="1090.0" y="200" class="name">William Worthington</text>
     <text x="1090.0" y="213" class="dates">1813-1894</text>
-    
+    <text x="1090.0" y="227" class="spouse">m. Sarah Worthington</text>
   </g>
   <g class="person-card" data-person-id="575315">
-    <rect x="1050.0" y="280" width="160" height="55" rx="5" class="card"/>
-    <circle cx="1070.0" cy="308" r="14" class="avatar-male"/>
-    <text x="1090.0" y="300" class="name">PETER WORTHINGTON</text>
-    <text x="1090.0" y="313" class="dates">1837-1907</text>
+    <rect x="710.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="730.0" cy="308" r="14" class="avatar-male"/>
+    <text x="750.0" y="300" class="name">PETER WORTHINGTON</text>
+    <text x="750.0" y="313" class="dates">1837-1907</text>
     
   </g>
   <g class="person-card" data-person-id="575316">
-    <rect x="1050.0" y="380" width="160" height="55" rx="5" class="card"/>
-    <circle cx="1070.0" cy="408" r="14" class="avatar-female"/>
-    <text x="1090.0" y="400" class="name">Sarah Worthington</text>
-    <text x="1090.0" y="413" class="dates">1860-1891</text>
+    <rect x="710.0" y="380" width="160" height="55" rx="5" class="card"/>
+    <circle cx="730.0" cy="408" r="14" class="avatar-female"/>
+    <text x="750.0" y="400" class="name">Sarah Worthington</text>
+    <text x="750.0" y="413" class="dates">1860-1891</text>
     
-  </g>  <path d="M1130.0 335 L1130.0 355" class="connector"/>
-  <path d="M1130.0 355 L1130.0 355" class="connector"/>
-  <path d="M1130.0 355 L1130.0 380" class="connector"/>
-  <path d="M1130.0 235 L1130.0 255" class="connector"/>
-  <path d="M1130.0 255 L1130.0 255" class="connector"/>
+  </g>  <path d="M790.0 335 L790.0 355" class="connector"/>
+  <path d="M790.0 355 L790.0 355" class="connector"/>
+  <path d="M790.0 355 L790.0 380" class="connector"/>
+
+  <g class="person-card" data-person-id="576327">
+    <rect x="880.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="900.0" cy="308" r="14" class="avatar-male"/>
+    <text x="920.0" y="300" class="name">John K Worthington</text>
+    <text x="920.0" y="313" class="dates">1841-</text>
+    
+  </g>
+  <g class="person-card" data-person-id="576328">
+    <rect x="1050.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="1070.0" cy="308" r="14" class="avatar-male"/>
+    <text x="1090.0" y="300" class="name">Thomas Worthington</text>
+    <text x="1090.0" y="313" class="dates">1843-</text>
+    
+  </g>
+  <g class="person-card" data-person-id="576329">
+    <rect x="1220.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="1240.0" cy="308" r="14" class="avatar-male"/>
+    <text x="1260.0" y="300" class="name">Edmund Worthington</text>
+    <text x="1260.0" y="313" class="dates">1845-</text>
+    
+  </g>
+  <g class="person-card" data-person-id="576330">
+    <rect x="1390.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="1410.0" cy="308" r="14" class="avatar-male"/>
+    <text x="1430.0" y="300" class="name">William K Worthington</text>
+    <text x="1430.0" y="313" class="dates">1850-</text>
+    
+  </g>  <path d="M1130.0 235 L1130.0 255" class="connector"/>
+  <path d="M790.0 255 L1470.0 255" class="connector"/>
+  <path d="M790.0 255 L790.0 280" class="connector"/>
+  <path d="M960.0 255 L960.0 280" class="connector"/>
   <path d="M1130.0 255 L1130.0 280" class="connector"/>
+  <path d="M1300.0 255 L1300.0 280" class="connector"/>
+  <path d="M1470.0 255 L1470.0 280" class="connector"/>
   <path d="M960.0 135 L960.0 155" class="connector"/>
   <path d="M790.0 155 L1130.0 155" class="connector"/>
   <path d="M790.0 155 L790.0 180" class="connector"/>

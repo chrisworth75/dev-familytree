@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 185" width="260" height="185" data-root-x="130.0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900.0 365" width="900.0" height="365" data-root-x="450.0">
   <defs>
     <style>
       .card { fill: #fff; stroke: #d0d0d0; stroke-width: 1; }
@@ -24,20 +24,72 @@
 
   <rect width="100%" height="100%" fill="#fff"/>
 
-  <text x="130.0" y="30" text-anchor="middle" class="name" style="font-size: 16px;">
+  <text x="450.0" y="30" text-anchor="middle" class="name" style="font-size: 16px;">
     Virgo Family Tree
   </text>
-  <text x="130.0" y="48" text-anchor="middle" class="dates">
+  <text x="450.0" y="48" text-anchor="middle" class="dates">
     Click on any person to view their details
   </text>
-  <line x1="30" y1="58" x2="230" y2="58" stroke="#e0e0e0"/>
+  <line x1="30" y1="58" x2="870.0" y2="58" stroke="#e0e0e0"/>
 
   
-  <g class="person-card" data-person-id="10289">
-    <rect x="50" y="80" width="160" height="55" rx="5" class="card"/>
-    <circle cx="70" cy="108" r="14" class="avatar-female"/>
-    <text x="90" y="100" class="name">Grace ( Virgo)</text>
-    <text x="90" y="113" class="dates"></text>
+  <g class="person-card" data-person-id="10219">
+    <rect x="370.0" y="80" width="160" height="55" rx="5" class="card"/>
+    <circle cx="390.0" cy="108" r="14" class="avatar-male"/>
+    <text x="410.0" y="100" class="name">Thomas Virgo</text>
+    <text x="410.0" y="113" class="dates">1819-1883</text>
     
   </g>
+  <g class="person-card" data-person-id="10214">
+    <rect x="370.0" y="180" width="160" height="55" rx="5" class="card"/>
+    <circle cx="390.0" cy="208" r="14" class="avatar-male"/>
+    <text x="410.0" y="200" class="name">George Virgo</text>
+    <text x="410.0" y="213" class="dates">1842-1911</text>
+    
+  </g>
+  <g class="person-card" data-person-id="10216">
+    <rect x="30.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="50.0" cy="308" r="14" class="avatar-female"/>
+    <text x="70.0" y="300" class="name">Maria Alexandra Virgo</text>
+    <text x="70.0" y="313" class="dates">1877-1910</text>
+    
+  </g>
+  <g class="person-card" data-person-id="10215">
+    <rect x="200.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="220.0" cy="308" r="14" class="avatar-male"/>
+    <text x="240.0" y="300" class="name">Thomas George Virgo</text>
+    <text x="240.0" y="313" class="dates">1882-</text>
+    
+  </g>
+  <g class="person-card" data-person-id="575336">
+    <rect x="370.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="390.0" cy="308" r="14" class="avatar-female"/>
+    <text x="410.0" y="300" class="name">Ethel Amelia Virgo</text>
+    <text x="410.0" y="313" class="dates">1883-1967</text>
+    
+  </g>
+  <g class="person-card" data-person-id="10217">
+    <rect x="540.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="560.0" cy="308" r="14" class="avatar-female"/>
+    <text x="580.0" y="300" class="name">Ethel Amelia Virgo</text>
+    <text x="580.0" y="313" class="dates">1884-</text>
+    
+  </g>
+  <g class="person-card" data-person-id="10218">
+    <rect x="710.0" y="280" width="160" height="55" rx="5" class="card"/>
+    <circle cx="730.0" cy="308" r="14" class="avatar-female"/>
+    <text x="750.0" y="300" class="name">Maud Lilian Virgo</text>
+    <text x="750.0" y="313" class="dates">1888-1918</text>
+    
+  </g>  <path d="M450.0 235 L450.0 255" class="connector"/>
+  <path d="M110.0 255 L790.0 255" class="connector"/>
+  <path d="M110.0 255 L110.0 280" class="connector"/>
+  <path d="M280.0 255 L280.0 280" class="connector"/>
+  <path d="M450.0 255 L450.0 280" class="connector"/>
+  <path d="M620.0 255 L620.0 280" class="connector"/>
+  <path d="M790.0 255 L790.0 280" class="connector"/>
+  <path d="M450.0 135 L450.0 155" class="connector"/>
+  <path d="M450.0 155 L450.0 155" class="connector"/>
+  <path d="M450.0 155 L450.0 180" class="connector"/>
+
 </svg>

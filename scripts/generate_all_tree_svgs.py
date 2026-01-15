@@ -36,13 +36,7 @@ FAMILY_CONFIGS = {
     },
     'goodall': {
         'surname': 'Goodall',
-        'root_query': """
-            SELECT p.id FROM person p
-            WHERE p.surname = 'Goodall' AND p.tree_id = 1
-            AND EXISTS (SELECT 1 FROM person c WHERE c.mother_id = p.id OR c.father_id = p.id)
-            ORDER BY p.birth_year_estimate ASC
-            LIMIT 1
-        """,
+        'root_id': 575396,  # John Goodall (b.1774)
     },
     'heywood': {
         'surname': 'Heywood',
@@ -50,13 +44,7 @@ FAMILY_CONFIGS = {
     },
     'virgo': {
         'surname': 'Virgo',
-        'root_query': """
-            SELECT p.id FROM person p
-            WHERE p.surname = 'Virgo' AND p.tree_id = 1
-            AND EXISTS (SELECT 1 FROM person c WHERE c.mother_id = p.id OR c.father_id = p.id)
-            ORDER BY p.birth_year_estimate ASC
-            LIMIT 1
-        """,
+        'root_id': 10219,  # Thomas Virgo (b.1819)
     },
     'tart': {
         'surname': 'Tart',

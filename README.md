@@ -102,9 +102,17 @@ Create a minimal viable product website where descendants of HLW can:
 The `family-tree-app/` contains a working Spring Boot application with:
 - [x] Secure login (Spring Security form authentication)
 - [x] Per-user access control (configured in YAML)
-- [x] View family trees (static SVG diagrams)
+- [x] View family trees (interactive D3.js timeline visualization)
+- [x] Click person cards to view details + census records in sidebar
 - [ ] Query the database (future)
 - [ ] Download GEDCOM (future)
+
+**Interactive D3.js Tree Features:**
+- Timeline layout: X position = birth year, card width = lifespan
+- Zoom and pan with mouse/trackpad
+- Collapsible nodes (click +/- or shift+click)
+- Animated transitions
+- Click person to open detail sidebar with census records
 
 Run with: `cd family-tree-app && mvn spring-boot:run` → http://localhost:3500
 
@@ -132,9 +140,9 @@ Create scripts to systematically search free UK genealogy websites for ancestor 
 |--------|--------|-------------|
 | `search_freecen.py` | ✅ Working | Search FreeCEN by surname/forename/year |
 | `batch_freecen_search.py` | ✅ Working | Batch search for all people with a surname |
-| `search_familysearch.py` | TODO | Search FamilySearch census records |
-| `search_freebmd.py` | TODO | Search FreeBMD for BMD index entries |
-| `census_crawler.py` | TODO | Crawl all free sites for a person's records |
+| `search_familysearch.py` | ✅ Working | Search FamilySearch census records (1841-1911) |
+| `search_freebmd.py` | ✅ Working | Search FreeBMD for BMD index entries |
+| `census_crawler.py` | ✅ Working | Master script - searches all free sites for a person |
 
 #### Goals
 
@@ -222,7 +230,7 @@ UNION ALL SELECT 'People in trees', COUNT(*) FROM person;
 
 ---
 
-## Current Data (12 January 2026)
+## Current Data (15 January 2026)
 
 | Metric | Count |
 |--------|-------|
@@ -684,4 +692,46 @@ python scripts/import_thrulines.py
 
 ---
 
-*Last updated: 12 January 2026*
+---
+
+## D3.js Interactive Tree Migration (15 January 2026)
+
+### Changes Made
+
+Replaced static pre-generated SVG files with interactive D3.js visualization for the family tree viewer.
+
+**New Files:**
+- `family-tree-app/src/main/java/com/familytree/controller/TreeApiController.java` - REST endpoint for tree hierarchy JSON
+- `family-tree-app/src/main/resources/static/js/d3-tree.js` - D3.js visualization module
+
+**Modified Files:**
+- `tree-view.html` - Updated to use D3.js instead of inline SVG
+- `FamilyTreeConfig.java` - Added `rootPersonId` field
+- `application.yml` - Added `rootPersonId` to each tree configuration
+
+**Features:**
+- Horizontal timeline layout (X = birth year, width = lifespan)
+- Zoom/pan with mouse wheel and drag
+- Collapsible nodes (shift+click or +/- buttons)
+- Click person cards to open sidebar with details + census records
+- Gender-colored cards (blue for male, pink for female)
+- Year marker lines every 25 years
+
+**API Endpoint:**
+```
+GET /api/trees/{slug}/hierarchy
+```
+Returns nested JSON hierarchy for D3.js:
+```json
+{
+  "id": 1,
+  "name": "Henry S. Wrathall",
+  "dates": "1843-1927",
+  "gender": "M",
+  "children": [...]
+}
+```
+
+---
+
+*Last updated: 15 January 2026*

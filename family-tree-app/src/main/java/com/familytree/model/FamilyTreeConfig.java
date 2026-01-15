@@ -13,6 +13,7 @@ public record FamilyTreeConfig(
     String initials,       // Avatar initials, e.g. "WF"
     String avatarColor,    // CSS class for avatar color: blue, teal, green, olive, brown, rust, rose, purple, slate
     Integer personCount,   // Number of people (for display)
+    Long rootPersonId,     // Root person ID for D3 tree rendering
     List<String> allowedUsers  // Usernames who can access this tree
 ) {
     public boolean isAccessibleBy(String username) {
