@@ -1,0 +1,73 @@
+=== Update at Wed 24 Dec 2025 15:42:34 GMT ===
+Wood|123
+Worthington|46
+Lightfoot|45
+Wrathall|28
+Heywood|25
+Virgo|14
+Lonsdale|9
+Tart|7
+Lowther|5
+6315 total people
+[2133/4107] Wilfred Dion
+=== Update at Wed 24 Dec 2025 15:47:34 GMT ===
+Wood|124
+Worthington|46
+Lightfoot|45
+Wrathall|28
+Heywood|25
+Virgo|14
+Lonsdale|9
+Tart|7
+Lowther|5
+6515 total people
+[2322/4107] Abby Jane Heath
+=== Update at Wed 24 Dec 2025 15:53:00 GMT ===
+Wood|131
+Worthington|46
+Lightfoot|45
+Wrathall|28
+Heywood|25
+Virgo|14
+Lonsdale|9
+Tart|7
+Lowther|5
+6715 total people
+[2518/4107] George Boxall
+=== Update at Wed 24 Dec 2025 15:58:00 GMT ===
+Wood|131
+Worthington|46
+Lightfoot|45
+Wrathall|28
+Heywood|25
+Virgo|14
+Lonsdale|9
+Tart|7
+Lowther|5
+6915 total people
+[2719/4107] William Evans
+=== Update at Wed 24 Dec 2025 17:20:24 GMT ===
+Wood|131
+Worthington|46
+Lightfoot|45
+Wrathall|28
+Heywood|25
+Virgo|14
+Lonsdale|9
+Tart|7
+Lowther|5
+7065 total people
+[2855/4107] Arlene Yvonne Anderson
+=== Update at Wed 24 Dec 2025 17:25:24 GMT ===
+Wood|132
+Worthington|46
+Lightfoot|45
+Wrathall|28
+Heywood|25
+Virgo|14
+Lonsdale|9
+Tart|7
+Lowther|5
+7265 total people
+[3053/4107] Marlene Doris Richards
+Monitoring complete

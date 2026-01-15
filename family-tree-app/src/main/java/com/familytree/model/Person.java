@@ -8,7 +8,9 @@ public record Person(
     Integer deathYearEstimate,
     String birthPlace,
     Long treeId,
-    String ancestryPersonId
+    String ancestryPersonId,
+    Long motherId,
+    Long fatherId
 ) {
     public String fullName() {
         String first = forename != null ? forename : "";

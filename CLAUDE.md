@@ -101,16 +101,27 @@ The user is researching the Wrathall family, particularly:
 - Connections to Lowther, Westmorland (now Cumbria)
 - Harry Wrathall (professional cricketer, b. ~1857)
 
-### IMPORTANT: The Lowther Claim is UNPROVEN
+### ⚠️ CRITICAL: The Lowther Claim is UNPROVEN - DO NOT TRUST THRULINES
 
 There is a family claim that Susan Wrathall (1842-1925) had a relationship with a member of the Lowther family (Earls of Lonsdale), resulting in Henry Lonsdale Wrathall (1863-1927).
 
 **THIS IS UNPROVEN SPECULATION.**
 
-- The source (wrathall.org) is a family memoir, NOT evidence
-- DO NOT cite wrathall.org as proof of anything - it is the claim we are testing
-- The only "evidence" is the middle name "Lonsdale" and family tradition
-- We need DNA matches with CONFIRMED Lowther descendants to prove/disprove this
-- Cluster 17 in the database contains matches potentially related through this unknown line
+**Source of the claim:** [wrathall.org family memoir](https://wrathall.org/wrathall/james/australia/lonsdalewrathall.html)
 
-Be alert to Westmorland/Cumberland locations, but do not assume any Lowther connection without documentary or DNA proof.
+**Critical rules:**
+- The memoir is family tradition, NOT documentary evidence
+- DO NOT cite wrathall.org as proof - it is the CLAIM we are testing
+- **NEVER trust ThruLines suggestions for Lowther ancestors** - these come from speculative Wrathall family trees (including possibly our own), creating circular reasoning
+- **NEVER import Lowther data from ThruLines or any Wrathall tree on Ancestry**
+- Any Lowther entries previously imported have been REMOVED from the database
+- The only "evidence" is the middle name "Lonsdale" and oral tradition
+- We need DNA matches with CONFIRMED Lowther descendants (verified paper trails, not family trees) to prove/disprove this
+- The UNK-PAT cluster contains 89 matches potentially related through this unknown father
+
+**What would constitute proof:**
+1. DNA triangulation with documented Lowther descendants who have verified, independent paper trails
+2. Documentary evidence (parish records, letters, court records) linking Susan Wrathall to the Lowther family
+3. Y-DNA testing matching the Lowther male line
+
+Be alert to Westmorland/Cumberland locations, but do not assume any Lowther connection without documentary or DNA proof. Position 36 (HLW's father) remains **UNKNOWN**.

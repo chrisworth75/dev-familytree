@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 850" width="900" height="850">
+  <defs>
+    <style>
+      .card { fill: #fff; stroke: #d0d0d0; stroke-width: 1; }
+      .card-match { fill: #fdf6f3; stroke: #e8a87c; stroke-width: 2; }
+      .card-you { fill: #f0f7f9; stroke: #4a90a4; stroke-width: 2; }
+      .avatar-silhouette { fill: url(#silhouetteGradient); }
+      .avatar-initials { fill: url(#initialsGradient); }
+      .avatar-you { fill: url(#youGradient); }
+      .name { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; font-weight: 600; fill: #333; }
+      .relationship { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; fill: #666; }
+      .dates { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; fill: #888; }
+      .dna-info { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; fill: #2a9d8f; font-weight: 500; }
+      .connector { stroke: #c0c0c0; stroke-width: 2; fill: none; }
+      .initials-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 16px; font-weight: 600; fill: #fff; }
+      .legend-title { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 14px; font-weight: 600; fill: #666; }
+      .legend-text { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; fill: #555; }
+      .spouse-connector { stroke: #c0c0c0; stroke-width: 1.5; fill: none; }
+    </style>
+    <linearGradient id="silhouetteGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b8e9f"/>
+      <stop offset="100%" style="stop-color:#4a7085"/>
+    </linearGradient>
+    <linearGradient id="initialsGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8a87c"/>
+      <stop offset="100%" style="stop-color:#d4896a"/>
+    </linearGradient>
+    <linearGradient id="youGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90a4"/>
+      <stop offset="100%" style="stop-color:#3a7a8a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="850" fill="#fff"/>
+
+  <!-- Title bar -->
+  <text x="30" y="35" class="name" style="font-size: 16px;">ThruLines for hugh copland</text>
+  <line x1="0" y1="50" x2="900" y2="50" stroke="#e0e0e0" stroke-width="1"/>
+
+  <!-- ===== GENERATION 1: Common Ancestors ===== -->
+
+  <!-- Henry Lonsdale Wrathall -->
+  <g transform="translate(280, 70)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card"/>
+    <circle cx="40" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="28" class="name">Henry Lonsdale Wrathall</text>
+    <text x="75" y="44" class="relationship">2nd great-grandfather</text>
+    <text x="75" y="58" class="dates">1863-1927</text>
+  </g>
+
+  <!-- Spouse connector -->
+  <line x1="500" y1="105" x2="530" y2="105" class="spouse-connector"/>
+
+  <!-- Mary Alice Metcalfe (wife) -->
+  <g transform="translate(530, 70)">
+    <rect x="0" y="0" width="180" height="70" rx="8" class="card"/>
+    <circle cx="35" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="35" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="35" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="68" y="28" class="name">Mary Alice Metcalfe</text>
+    <text x="68" y="44" class="relationship">2nd great-grandmother</text>
+    <text x="68" y="58" class="dates">1841-?</text>
+  </g>
+
+  <!-- Connector down from HLW to children -->
+  <path d="M390 140 L390 160 M390 160 L200 160 M390 160 L620 160 M200 160 L200 180 M620 160 L620 180" class="connector"/>
+
+  <!-- ===== GENERATION 2: Children of HLW ===== -->
+
+  <!-- Leon Earl Wrathall (left branch) -->
+  <g transform="translate(90, 180)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card"/>
+    <circle cx="40" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="28" class="name">Leon Earl Wrathall</text>
+    <text x="75" y="44" class="relationship">Great-granduncle</text>
+    <text x="75" y="58" class="dates">1886-1955</text>
+  </g>
+
+  <!-- Constance Wrathall (right branch) -->
+  <g transform="translate(510, 180)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card"/>
+    <circle cx="40" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="28" class="name">Constance M.L. Wrathall</text>
+    <text x="75" y="44" class="relationship">Great-grandmother</text>
+    <text x="75" y="58" class="dates">1887-1962</text>
+  </g>
+
+  <!-- Connectors to generation 3 -->
+  <path d="M200 250 L200 310" class="connector"/>
+  <path d="M620 250 L620 310" class="connector"/>
+
+  <!-- ===== GENERATION 3 ===== -->
+
+  <!-- Donald Earl Wrathall -->
+  <g transform="translate(90, 310)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card"/>
+    <circle cx="40" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="28" class="name">Donald Earl Wrathall</text>
+    <text x="75" y="44" class="relationship">1st cousin 2x removed</text>
+    <text x="75" y="58" class="dates">1914-1954</text>
+  </g>
+
+  <!-- Arthur Gordon Worthington -->
+  <g transform="translate(510, 310)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card"/>
+    <circle cx="40" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="28" class="name">Arthur Gordon Worthington</text>
+    <text x="75" y="44" class="relationship">Grandfather</text>
+    <text x="75" y="58" class="dates">1922-</text>
+  </g>
+
+  <!-- Connectors to generation 4 -->
+  <path d="M200 380 L200 420" class="connector"/>
+  <path d="M620 380 L620 420" class="connector"/>
+
+  <!-- ===== GENERATION 4 ===== -->
+
+  <!-- Private -->
+  <g transform="translate(90, 420)">
+    <rect x="0" y="0" width="220" height="60" rx="8" class="card"/>
+    <circle cx="40" cy="30" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="23" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="43" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="25" class="name">Private</text>
+    <text x="75" y="42" class="relationship">2nd cousin 1x removed</text>
+  </g>
+
+  <!-- Jonathon Paul Worthington -->
+  <g transform="translate(510, 420)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card"/>
+    <circle cx="40" cy="35" r="24" class="avatar-silhouette"/>
+    <circle cx="40" cy="28" r="9" fill="#8ab4c4"/>
+    <ellipse cx="40" cy="48" rx="15" ry="8" fill="#8ab4c4"/>
+    <text x="75" y="28" class="name">Jonathon Paul Worthington</text>
+    <text x="75" y="44" class="relationship">Father</text>
+    <text x="75" y="58" class="dates">1951-</text>
+  </g>
+
+  <!-- Connectors to generation 5 -->
+  <path d="M200 480 L200 520" class="connector"/>
+  <path d="M620 490 L620 520" class="connector"/>
+
+  <!-- ===== GENERATION 5: DNA Match and You ===== -->
+
+  <!-- hugh copland (DNA Match) -->
+  <g transform="translate(90, 520)">
+    <rect x="0" y="0" width="220" height="80" rx="8" class="card-match"/>
+    <circle cx="40" cy="35" r="24" class="avatar-initials"/>
+    <text x="40" y="40" class="initials-text" text-anchor="middle">HC</text>
+    <text x="75" y="28" class="name">hugh copland</text>
+    <text x="75" y="44" class="relationship">3rd cousin 1x removed</text>
+    <text x="75" y="62" class="dna-info">44 cM | 3 segments</text>
+    <!-- DNA badge -->
+    <circle cx="200" cy="70" r="10" fill="#2a9d8f"/>
+    <path d="M195 70 L198 73 L205 66" fill="none" stroke="#fff" stroke-width="2"/>
+  </g>
+
+  <!-- Chris Worthington (You) -->
+  <g transform="translate(510, 520)">
+    <rect x="0" y="0" width="220" height="70" rx="8" class="card-you"/>
+    <circle cx="40" cy="35" r="24" class="avatar-you"/>
+    <text x="40" y="40" class="initials-text" text-anchor="middle">CW</text>
+    <text x="75" y="28" class="name">Chris Worthington</text>
+    <text x="75" y="44" class="relationship">You</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(30, 630)">
+    <rect x="0" y="0" width="840" height="90" rx="8" fill="#f8f8f8" stroke="#e0e0e0"/>
+    <text x="15" y="22" class="legend-title">Connection Path</text>
+    <text x="15" y="42" class="legend-text">
+      <tspan font-weight="600">Henry Lonsdale Wrathall</tspan> (1863-1927) and <tspan font-weight="600">Mary Alice Metcalfe</tspan> are your 2nd great-grandparents.
+    </text>
+    <text x="15" y="58" class="legend-text">
+      Through their son <tspan font-weight="600">Leon Earl Wrathall</tspan>, hugh copland is your <tspan font-weight="600">3rd cousin 1x removed</tspan>.
+    </text>
+    <text x="15" y="74" class="legend-text">
+      You descend through their daughter <tspan font-weight="600">Constance</tspan> via the <tspan font-weight="600">Worthington</tspan> line.
+    </text>
+  </g>
+</svg>

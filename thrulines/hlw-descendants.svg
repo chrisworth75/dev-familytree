@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 1100" width="1400" height="1100">
+  <defs>
+    <style>
+      .card { fill: #fff; stroke: #d0d0d0; stroke-width: 1; }
+      .card-highlight { fill: #f8f8ff; stroke: #6b8e9f; stroke-width: 2; }
+      .card-you { fill: #f0f7f9; stroke: #4a90a4; stroke-width: 2; }
+      .card-match { fill: #fdf6f3; stroke: #e8a87c; stroke-width: 2; }
+      .card-private { fill: #f5f5f5; stroke: #999; stroke-width: 1; stroke-dasharray: 4,2; }
+      .avatar-male { fill: url(#maleGradient); }
+      .avatar-female { fill: url(#femaleGradient); }
+      .avatar-you { fill: url(#youGradient); }
+      .avatar-match { fill: url(#matchGradient); }
+      .name { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 12px; font-weight: 600; fill: #333; }
+      .name-small { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; fill: #333; }
+      .dates { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; fill: #666; }
+      .relationship { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; fill: #888; }
+      .spouse { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; fill: #666; font-style: italic; }
+      .connector { stroke: #c0c0c0; stroke-width: 1.5; fill: none; }
+      .section-label { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 11px; font-weight: 600; fill: #999; }
+      .gen-label { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 10px; fill: #aaa; }
+      .note { font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 9px; fill: #e67e22; font-weight: 500; }
+    </style>
+    <linearGradient id="maleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b8e9f"/>
+      <stop offset="100%" style="stop-color:#4a7085"/>
+    </linearGradient>
+    <linearGradient id="femaleGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#c48b9f"/>
+      <stop offset="100%" style="stop-color:#a06b7f"/>
+    </linearGradient>
+    <linearGradient id="youGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a90a4"/>
+      <stop offset="100%" style="stop-color:#3a7a8a"/>
+    </linearGradient>
+    <linearGradient id="matchGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e8a87c"/>
+      <stop offset="100%" style="stop-color:#d4896a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1400" height="1100" fill="#fff"/>
+
+  <!-- Title -->
+  <text x="700" y="30" text-anchor="middle" class="name" style="font-size: 16px;">Henry Lonsdale Wrathall (1863-1927) - All Known Descendants</text>
+  <text x="700" y="48" text-anchor="middle" class="dates" style="font-size: 11px;">Generated from Lancashire BMD, Cumbria BMD, and WikiTree data - 9 January 2026</text>
+  <line x1="50" y1="60" x2="1350" y2="60" stroke="#e0e0e0" stroke-width="1"/>
+
+  <!-- Generation Labels -->
+  <text x="20" y="105" class="gen-label">Gen 1</text>
+  <text x="20" y="205" class="gen-label">Gen 2</text>
+  <text x="20" y="335" class="gen-label">Gen 3</text>
+  <text x="20" y="485" class="gen-label">Gen 4</text>
+  <text x="20" y="635" class="gen-label">Gen 5</text>
+  <text x="20" y="785" class="gen-label">Gen 6</text>
+
+  <!-- ===== GENERATION 1: HLW + Mary ===== -->
+  <g transform="translate(550, 75)">
+    <rect x="0" y="0" width="180" height="55" rx="6" class="card-highlight"/>
+    <circle cx="28" cy="28" r="18" class="avatar-male"/>
+    <text x="55" y="22" class="name">Henry Lonsdale Wrathall</text>
+    <text x="55" y="36" class="dates">1863-1927 Blackburn</text>
+    <text x="55" y="48" class="spouse">m. Mary Alice Metcalfe</text>
+  </g>
+
+  <!-- Connector to Gen 2 -->
+  <path d="M640 130 L640 155 M640 155 L300 155 M640 155 L1000 155 M300 155 L300 175 M1000 155 L1000 175" class="connector"/>
+
+  <!-- ===== GENERATION 2: Leon and Constance ===== -->
+
+  <!-- Leon Earl Wrathall -->
+  <g transform="translate(160, 175)">
+    <rect x="0" y="0" width="180" height="55" rx="6" class="card"/>
+    <circle cx="28" cy="28" r="18" class="avatar-male"/>
+    <text x="55" y="22" class="name">Leon Earl Wrathall</text>
+    <text x="55" y="36" class="dates">1886-1955 Liverpool</text>
+    <text x="55" y="48" class="spouse">m. Evelyn Linstead Downham</text>
+  </g>
+
+  <!-- Constance Mary Lonsdale Wrathall -->
+  <g transform="translate(900, 175)">
+    <rect x="0" y="0" width="180" height="55" rx="6" class="card"/>
+    <circle cx="28" cy="28" r="18" class="avatar-female"/>
+    <text x="55" y="22" class="name">Constance M.L. Wrathall</text>
+    <text x="55" y="36" class="dates">1887-1962</text>
+    <text x="55" y="48" class="spouse">m. Arthur G. Worthington</text>
+  </g>
+
+  <!-- Connector from Leon to his children -->
+  <path d="M250 230 L250 260 M250 260 L100 260 M250 260 L400 260 M100 260 L100 280 M200 260 L200 280 M300 260 L300 280 M400 260 L400 280" class="connector"/>
+
+  <!-- Connector from Constance to Worthington line -->
+  <path d="M990 230 L990 280" class="connector"/>
+
+  <!-- ===== GENERATION 3: Leon's Children + Arthur ===== -->
+
+  <!-- Evelyn Constance Irene -->
+  <g transform="translate(30, 280)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card"/>
+    <circle cx="22" cy="25" r="15" class="avatar-female"/>
+    <text x="42" y="20" class="name-small">Evelyn C.I. Wrathall</text>
+    <text x="42" y="32" class="dates">1913-2002</text>
+    <text x="42" y="44" class="spouse">m. Sydney Richards</text>
+  </g>
+
+  <!-- Donald Earl -->
+  <g transform="translate(130, 280)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card-match"/>
+    <circle cx="22" cy="25" r="15" class="avatar-male"/>
+    <text x="42" y="20" class="name-small">Donald Earl Wrathall</text>
+    <text x="42" y="32" class="dates">1914-1954 Kendal</text>
+    <text x="42" y="44" class="spouse">m. Muriel Phillips</text>
+  </g>
+
+  <!-- Henry Linstead -->
+  <g transform="translate(230, 280)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card"/>
+    <circle cx="22" cy="25" r="15" class="avatar-male"/>
+    <text x="42" y="20" class="name-small">Henry Linstead Wrathall</text>
+    <text x="42" y="32" class="dates">1917-1980</text>
+    <text x="42" y="44" class="spouse">m. Kathleen O'Reilly</text>
+  </g>
+
+  <!-- Kenneth David Lonsdale -->
+  <g transform="translate(330, 280)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card"/>
+    <circle cx="22" cy="25" r="15" class="avatar-male"/>
+    <text x="42" y="20" class="name-small">Kenneth D.L. Wrathall</text>
+    <text x="42" y="32" class="dates">1923-1990 Preston</text>
+    <text x="42" y="44" class="spouse">m. Agnes Bamber</text>
+  </g>
+
+  <!-- Leon Shirley -->
+  <g transform="translate(430, 280)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card"/>
+    <circle cx="22" cy="25" r="15" class="avatar-male"/>
+    <text x="42" y="20" class="name-small">Leon Shirley Wrathall</text>
+    <text x="42" y="32" class="dates">1925-2014</text>
+    <text x="42" y="44" class="relationship">Marriage unknown</text>
+  </g>
+
+  <!-- Arthur Gordon Worthington -->
+  <g transform="translate(920, 280)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card"/>
+    <circle cx="22" cy="25" r="15" class="avatar-male"/>
+    <text x="42" y="20" class="name-small">Arthur G. Worthington</text>
+    <text x="42" y="32" class="dates">1922-</text>
+    <text x="42" y="44" class="relationship">Grandfather</text>
+  </g>
+
+  <!-- Connectors to Gen 4 -->
+  <path d="M200 330 L200 360 M200 360 L120 360 M200 360 L280 360 M120 360 L120 380 M200 360 L200 380 M280 360 L280 380" class="connector"/>
+  <path d="M300 330 L300 360 M300 360 L340 360 M340 360 L340 380" class="connector"/>
+  <path d="M400 330 L400 430" class="connector"/>
+  <path d="M990 330 L990 430" class="connector"/>
+
+  <!-- ===== GENERATION 4: Donald's children, Henry's children, Kenneth's children ===== -->
+
+  <!-- Donald's 5 children (PRIVATE) -->
+  <text x="200" y="395" text-anchor="middle" class="section-label">Donald's 5 Children (WikiTree: Private)</text>
+
+  <g transform="translate(60, 405)">
+    <rect x="0" y="0" width="80" height="40" rx="4" class="card-private"/>
+    <text x="40" y="18" text-anchor="middle" class="name-small">Child 1</text>
+    <text x="40" y="30" text-anchor="middle" class="dates">b. ~1939-40</text>
+  </g>
+  <g transform="translate(120, 405)">
+    <rect x="0" y="0" width="80" height="40" rx="4" class="card-private"/>
+    <text x="40" y="18" text-anchor="middle" class="name-small">Child 2</text>
+    <text x="40" y="30" text-anchor="middle" class="dates">b. ~1941-43</text>
+  </g>
+  <g transform="translate(180, 405)">
+    <rect x="0" y="0" width="80" height="40" rx="4" class="card-private"/>
+    <text x="40" y="18" text-anchor="middle" class="name-small">Child 3</text>
+    <text x="40" y="30" text-anchor="middle" class="dates">b. ~1944-46</text>
+  </g>
+  <g transform="translate(240, 405)">
+    <rect x="0" y="0" width="80" height="40" rx="4" class="card-private"/>
+    <text x="40" y="18" text-anchor="middle" class="name-small">Child 4</text>
+    <text x="40" y="30" text-anchor="middle" class="dates">b. ~1946-48</text>
+  </g>
+  <g transform="translate(300, 405)">
+    <rect x="0" y="0" width="80" height="40" rx="4" class="card-private"/>
+    <text x="40" y="18" text-anchor="middle" class="name-small">Child 5</text>
+    <text x="40" y="30" text-anchor="middle" class="dates">b. before 1949</text>
+  </g>
+
+  <!-- Henry's possible children -->
+  <text x="340" y="395" text-anchor="left" class="section-label">Henry's Children? (Unconfirmed)</text>
+
+  <g transform="translate(340, 405)">
+    <rect x="0" y="0" width="85" height="40" rx="4" class="card"/>
+    <text x="42" y="18" text-anchor="middle" class="name-small">David H Wrathall</text>
+    <text x="42" y="30" text-anchor="middle" class="dates">1944 Liverpool</text>
+  </g>
+  <g transform="translate(430, 405)">
+    <rect x="0" y="0" width="90" height="40" rx="4" class="card"/>
+    <text x="45" y="18" text-anchor="middle" class="name-small">Peter H F Wrathall</text>
+    <text x="45" y="30" text-anchor="middle" class="dates">1947 Liverpool</text>
+  </g>
+
+  <!-- Kenneth's children -->
+  <text x="620" y="395" text-anchor="left" class="section-label">Kenneth's Children (Lancashire BMD)</text>
+
+  <g transform="translate(560, 405)">
+    <rect x="0" y="0" width="95" height="45" rx="4" class="card"/>
+    <text x="48" y="16" text-anchor="middle" class="name-small">Angela Judith</text>
+    <text x="48" y="28" text-anchor="middle" class="name-small">Wrathall</text>
+    <text x="48" y="40" text-anchor="middle" class="dates">1953 Preston</text>
+  </g>
+  <g transform="translate(660, 405)">
+    <rect x="0" y="0" width="95" height="45" rx="4" class="card"/>
+    <text x="48" y="16" text-anchor="middle" class="name-small">Janet Patricia</text>
+    <text x="48" y="28" text-anchor="middle" class="name-small">Wrathall</text>
+    <text x="48" y="40" text-anchor="middle" class="dates">1954 Preston</text>
+  </g>
+  <g transform="translate(760, 405)">
+    <rect x="0" y="0" width="95" height="45" rx="4" class="card"/>
+    <text x="48" y="16" text-anchor="middle" class="name-small">Stephen John</text>
+    <text x="48" y="28" text-anchor="middle" class="name-small">Wrathall</text>
+    <text x="48" y="40" text-anchor="middle" class="dates">1958 Preston</text>
+  </g>
+  <g transform="translate(860, 405)">
+    <rect x="0" y="0" width="95" height="45" rx="4" class="card"/>
+    <text x="48" y="16" text-anchor="middle" class="name-small">Margaret Frances</text>
+    <text x="48" y="28" text-anchor="middle" class="name-small">Wrathall</text>
+    <text x="48" y="40" text-anchor="middle" class="dates">1964 Chorley</text>
+  </g>
+
+  <!-- Jonathon Paul Worthington -->
+  <g transform="translate(970, 430)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card"/>
+    <circle cx="22" cy="25" r="15" class="avatar-male"/>
+    <text x="42" y="20" class="name-small">Jonathon P. Worthington</text>
+    <text x="42" y="32" class="dates">1951-</text>
+    <text x="42" y="44" class="relationship">Father</text>
+  </g>
+
+  <!-- Connector from Donald's children to Hugh Copland line -->
+  <path d="M200 445 L200 520" class="connector"/>
+  <path d="M1040 480 L1040 530" class="connector"/>
+
+  <!-- ===== GENERATION 5: Grandchildren + You ===== -->
+
+  <!-- Hugh Copland connection -->
+  <text x="200" y="510" text-anchor="middle" class="section-label">Connection to Hugh Copland</text>
+
+  <g transform="translate(130, 520)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card-private"/>
+    <text x="70" y="18" text-anchor="middle" class="name-small">Unknown Grandchild</text>
+    <text x="70" y="32" text-anchor="middle" class="dates">of Donald Wrathall</text>
+    <text x="70" y="44" text-anchor="middle" class="note">Married into Copland family?</text>
+  </g>
+
+  <!-- Chris Worthington (You) -->
+  <g transform="translate(970, 530)">
+    <rect x="0" y="0" width="140" height="50" rx="6" class="card-you"/>
+    <circle cx="22" cy="25" r="15" class="avatar-you"/>
+    <text x="42" y="20" class="name-small">Chris Worthington</text>
+    <text x="42" y="32" class="dates">You</text>
+    <text x="42" y="44" class="relationship">3rd cousin 1x rem to Hugh</text>
+  </g>
+
+  <!-- Connector to Hugh Copland -->
+  <path d="M200 570 L200 620" class="connector"/>
+
+  <!-- ===== GENERATION 6: Hugh Copland ===== -->
+
+  <g transform="translate(130, 620)">
+    <rect x="0" y="0" width="140" height="55" rx="6" class="card-match"/>
+    <circle cx="22" cy="28" r="15" class="avatar-match"/>
+    <text x="42" y="18" class="name-small">hugh copland</text>
+    <text x="42" y="32" class="dates">DNA Match</text>
+    <text x="42" y="44" class="relationship">44 cM | 3 segments</text>
+    <text x="42" y="55" class="note">3rd cousin 1x removed</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(50, 720)">
+    <rect x="0" y="0" width="1300" height="100" rx="8" fill="#f8f8f8" stroke="#e0e0e0"/>
+    <text x="20" y="25" class="name" style="font-size: 13px;">Legend &amp; Notes</text>
+
+    <rect x="20" y="40" width="20" height="15" rx="3" class="card-highlight"/>
+    <text x="45" y="52" class="dates">Ancestor</text>
+
+    <rect x="120" y="40" width="20" height="15" rx="3" class="card-match"/>
+    <text x="145" y="52" class="dates">DNA Match Line</text>
+
+    <rect x="250" y="40" width="20" height="15" rx="3" class="card-you"/>
+    <text x="275" y="52" class="dates">You</text>
+
+    <rect x="340" y="40" width="20" height="15" rx="3" class="card-private"/>
+    <text x="365" y="52" class="dates">Private/Unknown</text>
+
+    <text x="500" y="52" class="dates">Sources: Lancashire BMD, Cumbria BMD, WikiTree, 1939 Register</text>
+
+    <text x="20" y="75" class="dates">Donald's 5 children emigrated to Australia Jan 1949, returned Apr 1949. All born Kendal/Westmorland 1939-1948.</text>
+    <text x="20" y="90" class="dates">Cumbria BMD has no coverage for Kendal area. WikiTree profiles are private (living persons).</text>
+  </g>
+</svg>

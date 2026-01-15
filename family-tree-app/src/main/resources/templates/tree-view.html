@@ -5,6 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${tree.displayName()} + ' - Family Tree'">Tree - Family Tree</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .tree-layout {
+            display: flex;
+            gap: 0;
+        }
+        .tree-diagram {
+            flex: 1;
+            min-width: 0;
+            transition: margin-right 0.3s ease;
+        }
+        .tree-diagram.sidebar-open {
+            margin-right: 360px;
+        }
+        .person-sidebar {
+            position: fixed;
+            top: 0;
+            right: -360px;
+            width: 360px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -2px 0 12px rgba(0,0,0,0.15);
+            transition: right 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .person-sidebar.open {
+            right: 0;
+        }
+        .sidebar-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: linear-gradient(135deg, #4a7085 0%, #5a8a9f 100%);
+            color: white;
+        }
+        .sidebar-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: white;
+            opacity: 0.8;
+            padding: 0;
+            line-height: 1;
+        }
+        .sidebar-close:hover {
+            opacity: 1;
+        }
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .person-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 4px 0;
+        }
+        .person-dates {
+            font-size: 14px;
+            opacity: 0.9;
+            margin: 0;
+        }
+        .section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 24px 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        .info-row {
+            display: flex;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .info-label {
+            color: #888;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        .info-value {
+            color: #333;
+        }
+        .census-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 3px solid #4a7085;
+        }
+        .census-year {
+            font-size: 15px;
+            font-weight: 600;
+            color: #4a7085;
+            margin: 0 0 10px 0;
+        }
+        .census-row {
+            display: flex;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        .census-label {
+            color: #888;
+            width: 85px;
+            flex-shrink: 0;
+        }
+        .census-value {
+            color: #333;
+        }
+        .census-confidence {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 3px 10px;
+            background: #e8f4e8;
+            color: #2d6a2d;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .no-records {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            padding: 30px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        .family-member {
+            font-size: 14px;
+            color: #333;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .family-member:last-child {
+            border-bottom: none;
+        }
+        .person-card.selected .card {
+            stroke: #4a7085;
+            stroke-width: 3;
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -27,18 +182,188 @@
             <p class="tree-subtitle" th:text="${tree.subtitle()}">Subtitle</p>
         </div>
 
-        <div class="tree-diagram">
-            <h2>Family Tree</h2>
-            <div th:utext="${svgContent}" class="svg-container">
-                <!-- SVG will be inlined here -->
+        <div class="tree-layout">
+            <div class="tree-diagram" id="treeDiagram">
+                <h2>Family Tree</h2>
+                <p style="font-size: 13px; color: #666; margin-bottom: 16px;">Click on a person to view their census records</p>
+                <div th:utext="${svgContent}" class="svg-container">
+                    <!-- SVG will be inlined here -->
+                </div>
             </div>
         </div>
     </main>
+
+    <!-- Person Sidebar -->
+    <aside class="person-sidebar" id="personSidebar">
+        <div class="sidebar-header">
+            <div>
+                <h2 class="person-name" id="sidebarName">Person Name</h2>
+                <p class="person-dates" id="sidebarDates">1850 - 1920</p>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">&times;</button>
+        </div>
+        <div class="sidebar-content" id="sidebarContent">
+            <!-- Content loaded dynamically -->
+        </div>
+    </aside>
 
     <footer class="footer">
         <div class="container">
             <p>Family Tree Viewer</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('personSidebar');
+            const treeDiagram = document.getElementById('treeDiagram');
+            const sidebarClose = document.getElementById('sidebarClose');
+            const sidebarName = document.getElementById('sidebarName');
+            const sidebarDates = document.getElementById('sidebarDates');
+            const sidebarContent = document.getElementById('sidebarContent');
+            let selectedCard = null;
+
+            // Close sidebar
+            sidebarClose.addEventListener('click', function() {
+                sidebar.classList.remove('open');
+                treeDiagram.classList.remove('sidebar-open');
+                if (selectedCard) {
+                    selectedCard.classList.remove('selected');
+                    selectedCard = null;
+                }
+            });
+
+            // Handle clicks on person cards
+            document.querySelectorAll('.person-card').forEach(function(card) {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    const personId = this.getAttribute('data-person-id');
+                    if (personId && personId !== '0') {
+                        // Update selection
+                        if (selectedCard) {
+                            selectedCard.classList.remove('selected');
+                        }
+                        selectedCard = card;
+                        card.classList.add('selected');
+                        loadPersonData(personId);
+                    }
+                });
+            });
+
+            async function loadPersonData(personId) {
+                // Show sidebar with loading state
+                sidebar.classList.add('open');
+                treeDiagram.classList.add('sidebar-open');
+                sidebarName.textContent = 'Loading...';
+                sidebarDates.textContent = '';
+                sidebarContent.innerHTML = '<div class="loading">Loading...</div>';
+
+                try {
+                    // Fetch person details and census records in parallel
+                    const [personRes, censusRes] = await Promise.all([
+                        fetch(`/api/persons/${personId}`),
+                        fetch(`/api/persons/${personId}/census`)
+                    ]);
+
+                    if (!personRes.ok) throw new Error(`Person not found (${personRes.status})`);
+
+                    const personData = await personRes.json();
+                    const censusRecords = censusRes.ok ? await censusRes.json() : [];
+
+                    // Update header
+                    const person = personData.person;
+                    sidebarName.textContent = `${person.forename || ''} ${person.surname || ''}`.trim() || 'Unknown';
+
+                    let dates = '';
+                    if (person.birthYearEstimate) dates += person.birthYearEstimate;
+                    if (person.birthYearEstimate || person.deathYearEstimate) dates += ' – ';
+                    if (person.deathYearEstimate) dates += person.deathYearEstimate;
+                    sidebarDates.textContent = dates;
+
+                    // Build content
+                    let html = '';
+
+                    // Birthplace
+                    if (person.birthPlace) {
+                        html += '<div class="section-title">Details</div>';
+                        html += `<div class="info-row">
+                            <span class="info-label">Birthplace</span>
+                            <span class="info-value">${person.birthPlace}</span>
+                        </div>`;
+                    }
+
+                    // Parents
+                    if (personData.father || personData.mother) {
+                        html += '<div class="section-title">Parents</div>';
+                        if (personData.father) {
+                            html += `<div class="family-member">${personData.father.forename || ''} ${personData.father.surname || ''}</div>`;
+                        }
+                        if (personData.mother) {
+                            html += `<div class="family-member">${personData.mother.forename || ''} ${personData.mother.surname || ''}</div>`;
+                        }
+                    }
+
+                    // Spouses
+                    if (personData.spouses && personData.spouses.length > 0) {
+                        html += '<div class="section-title">Spouse(s)</div>';
+                        personData.spouses.forEach(spouse => {
+                            let text = `${spouse.forename || ''} ${spouse.surname || ''}`.trim();
+                            if (spouse.birthYearEstimate || spouse.deathYearEstimate) {
+                                text += ` (${spouse.birthYearEstimate || '?'} – ${spouse.deathYearEstimate || ''})`;
+                            }
+                            html += `<div class="family-member">${text}</div>`;
+                        });
+                    }
+
+                    // Children
+                    if (personData.children && personData.children.length > 0) {
+                        html += '<div class="section-title">Children</div>';
+                        personData.children.forEach(child => {
+                            let childText = `${child.forename || ''} ${child.surname || ''}`.trim();
+                            if (child.birthYearEstimate) childText += ` (b. ${child.birthYearEstimate})`;
+                            html += `<div class="family-member">${childText}</div>`;
+                        });
+                    }
+
+                    // Siblings
+                    if (personData.siblings && personData.siblings.length > 0) {
+                        html += '<div class="section-title">Siblings</div>';
+                        personData.siblings.forEach(sibling => {
+                            let sibText = `${sibling.forename || ''} ${sibling.surname || ''}`.trim();
+                            if (sibling.birthYearEstimate) sibText += ` (b. ${sibling.birthYearEstimate})`;
+                            html += `<div class="family-member">${sibText}</div>`;
+                        });
+                    }
+
+                    // Census records
+                    html += '<div class="section-title">Census Records</div>';
+
+                    if (censusRecords.length === 0) {
+                        html += '<div class="no-records">No census records linked to this person</div>';
+                    } else {
+                        censusRecords.forEach(record => {
+                            html += `<div class="census-card">
+                                <div class="census-year">${record.year} Census</div>
+                                ${record.address ? `<div class="census-row"><span class="census-label">Address</span><span class="census-value">${record.address}</span></div>` : ''}
+                                ${record.registrationDistrict ? `<div class="census-row"><span class="census-label">District</span><span class="census-value">${record.registrationDistrict}</span></div>` : ''}
+                                ${record.nameAsRecorded ? `<div class="census-row"><span class="census-label">Name</span><span class="census-value">${record.nameAsRecorded}</span></div>` : ''}
+                                ${record.ageAsRecorded ? `<div class="census-row"><span class="census-label">Age</span><span class="census-value">${record.ageAsRecorded}</span></div>` : ''}
+                                ${record.relationshipToHead ? `<div class="census-row"><span class="census-label">Relation</span><span class="census-value">${record.relationshipToHead}</span></div>` : ''}
+                                ${record.occupation ? `<div class="census-row"><span class="census-label">Occupation</span><span class="census-value">${record.occupation}</span></div>` : ''}
+                                ${record.birthPlaceAsRecorded ? `<div class="census-row"><span class="census-label">Birthplace</span><span class="census-value">${record.birthPlaceAsRecorded}</span></div>` : ''}
+                                ${record.confidence ? `<span class="census-confidence">${Math.round(record.confidence * 100)}% match confidence</span>` : ''}
+                            </div>`;
+                        });
+                    }
+
+                    sidebarContent.innerHTML = html;
+
+                } catch (error) {
+                    console.error('Error loading person data:', error);
+                    sidebarContent.innerHTML = '<div class="no-records">Error loading data</div>';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

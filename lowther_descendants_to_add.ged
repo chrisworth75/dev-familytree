@@ -1,0 +1,229 @@
+0 HEAD
+1 SOUR ClaudeCode
+2 VERS 1.0
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 NOTE Descendants of Henry Lowther, 3rd Earl of Lonsdale - Missing from tree 208052350
+
+0 @I1@ INDI
+1 NAME Lady Jane Helen Harbord /Lowther/
+1 SEX F
+1 BIRT
+2 DATE 13 NOV 1947
+1 NOTE Daughter of James, 7th Earl and Tuppina Bennet (1st wife)
+1 FAMC @F1@
+
+0 @I2@ INDI
+1 NAME Lady Miranda /Lowther/
+1 SEX F
+1 BIRT
+2 DATE 1 JUL 1955
+1 NOTE Daughter of James, 7th Earl and Jennifer Lowther (2nd wife)
+1 FAMC @F2@
+
+0 @I3@ INDI
+1 NAME Hon. William James /Lowther/
+1 TITL 9th Earl of Lonsdale
+1 SEX M
+1 BIRT
+2 DATE 9 JUL 1957
+1 NOTE Current Earl of Lonsdale. Son of James, 7th Earl and Jennifer Lowther (2nd wife)
+1 FAMC @F2@
+
+0 @I4@ INDI
+1 NAME Lady Caroline /Lowther/
+1 SEX F
+1 BIRT
+2 DATE 11 MAR 1959
+1 NOTE Daughter of James, 7th Earl and Jennifer Lowther (2nd wife)
+1 FAMC @F2@
+
+0 @I5@ INDI
+1 NAME Hon. James Nicholas /Lowther/
+1 SEX M
+1 BIRT
+2 DATE 4 DEC 1964
+1 NOTE Son of James, 7th Earl and Nancy Ruth Cobbs (3rd wife)
+1 FAMC @F3@
+
+0 @I6@ INDI
+1 NAME Charles Alexander James /Lowther/
+1 SEX M
+1 BIRT
+2 DATE AFT 1975
+1 NOTE Son of James, 7th Earl and Caroline Ley (4th wife)
+1 FAMC @F4@
+
+0 @I7@ INDI
+1 NAME Lady Marie-Louisa Kate /Lowther/
+1 SEX F
+1 BIRT
+2 DATE AFT 1975
+1 NOTE Daughter of James, 7th Earl and Caroline Ley (4th wife)
+1 FAMC @F4@
+
+0 @I8@ INDI
+1 NAME George Brydges /Rodney/
+1 TITL 10th Baron Rodney
+1 SEX M
+1 BIRT
+2 DATE 3 JAN 1953
+1 DEAT
+2 DATE 13 FEB 2011
+1 NOTE Son of John, 9th Baron Rodney
+1 FAMC @F5@
+1 FAMS @F6@
+
+0 @I9@ INDI
+1 NAME Anne /Rodney/
+1 SEX F
+1 BIRT
+2 DATE 1955
+1 NOTE Daughter of John, 9th Baron Rodney
+1 FAMC @F5@
+
+0 @I10@ INDI
+1 NAME John George Brydges /Rodney/
+1 TITL 11th Baron Rodney
+1 SEX M
+1 BIRT
+2 DATE 1999
+1 NOTE Current Baron Rodney. Son of George, 10th Baron Rodney and Jane Blakeney
+1 FAMC @F6@
+
+0 @I11@ INDI
+1 NAME Jane /Blakeney/
+1 SEX F
+1 NOTE Wife of George, 10th Baron Rodney (married 1996)
+1 FAMS @F6@
+
+0 @I12@ INDI
+1 NAME Regine Elisabeth /d'Opdorp/
+1 SEX F
+1 NOTE Wife of John, 9th Baron Rodney. Full name: Regine Elisabeth Lucienne Jeanne Therese Marie Ghislaine Pangaert d'Opdorp
+1 FAMS @F5@
+
+0 @I20@ INDI
+1 NAME James Hugh William /Lowther/
+1 TITL 7th Earl of Lonsdale
+1 SEX M
+1 BIRT
+2 DATE 3 NOV 1922
+1 DEAT
+2 DATE 23 MAY 2006
+1 NOTE Already in tree - reference for family links
+1 FAMS @F1@
+1 FAMS @F2@
+1 FAMS @F3@
+1 FAMS @F4@
+
+0 @I21@ INDI
+1 NAME Tuppina Cecily Ida Harbord /Bennet/
+1 SEX F
+1 BIRT
+2 DATE 1924
+1 NOTE 1st wife of 7th Earl (married 1945, divorced 1954). Already in tree.
+1 FAMS @F1@
+
+0 @I22@ INDI
+1 NAME Jennifer /Lowther/
+1 SEX F
+1 BIRT
+2 DATE 1932
+1 NOTE 2nd wife of 7th Earl (married 1954, divorced 1962). Already in tree.
+1 FAMS @F2@
+
+0 @I23@ INDI
+1 NAME Nancy Ruth /Cobbs/
+1 SEX F
+1 BIRT
+2 DATE 1928
+1 NOTE 3rd wife of 7th Earl (married 1963, divorced 1975). Already in tree.
+1 FAMS @F3@
+
+0 @I24@ INDI
+1 NAME Caroline Sheila /Ley/
+1 SEX F
+1 BIRT
+2 DATE 1943
+1 NOTE 4th wife of 7th Earl (married 1975). Already in tree.
+1 FAMS @F4@
+
+0 @I25@ INDI
+1 NAME Hugh Clayton /Lowther/
+1 TITL 8th Earl of Lonsdale
+1 SEX M
+1 BIRT
+2 DATE 27 MAY 1949
+1 DEAT
+2 DATE 22 JUN 2021
+1 NOTE Already in tree - 8th Earl, died without children
+1 FAMC @F1@
+
+0 @I26@ INDI
+1 NAME John Francis /Rodney/
+1 TITL 9th Baron Rodney
+1 SEX M
+1 BIRT
+2 DATE 28 JUN 1920
+1 DEAT
+2 DATE 13 OCT 1992
+1 NOTE Already in tree - reference for family links
+1 FAMS @F5@
+
+0 @F1@ FAM
+1 HUSB @I20@
+1 WIFE @I21@
+1 MARR
+2 DATE 1945
+1 DIV
+2 DATE 1954
+1 CHIL @I25@
+1 CHIL @I1@
+
+0 @F2@ FAM
+1 HUSB @I20@
+1 WIFE @I22@
+1 MARR
+2 DATE 1954
+1 DIV
+2 DATE 1962
+1 CHIL @I2@
+1 CHIL @I3@
+1 CHIL @I4@
+
+0 @F3@ FAM
+1 HUSB @I20@
+1 WIFE @I23@
+1 MARR
+2 DATE 1963
+1 DIV
+2 DATE 1975
+1 CHIL @I5@
+
+0 @F4@ FAM
+1 HUSB @I20@
+1 WIFE @I24@
+1 MARR
+2 DATE 3 DEC 1975
+1 CHIL @I6@
+1 CHIL @I7@
+
+0 @F5@ FAM
+1 HUSB @I26@
+1 WIFE @I12@
+1 MARR
+2 DATE 3 NOV 1951
+1 CHIL @I8@
+1 CHIL @I9@
+
+0 @F6@ FAM
+1 HUSB @I8@
+1 WIFE @I11@
+1 MARR
+2 DATE 20 AUG 1996
+1 CHIL @I10@
+
+0 TRLR

@@ -108,6 +108,51 @@ The `family-tree-app/` contains a working Spring Boot application with:
 
 Run with: `cd family-tree-app && mvn spring-boot:run` → http://localhost:3500
 
+### Mission 8: Automate Free Census Website Searches
+Create scripts to systematically search free UK genealogy websites for ancestor and descendant records, reducing dependence on paid Ancestry subscriptions.
+
+**Status: IN PROGRESS**
+
+#### Free UK Genealogy Resources
+
+| Site | URL | Records | Access | Notes |
+|------|-----|---------|--------|-------|
+| **FreeCEN** | freecen.org.uk | Census 1841-1901 | Free, no CAPTCHA | ~52M records, partial coverage |
+| **FamilySearch** | familysearch.org | Census, BMD, parish | Free (account required) | Largest free collection |
+| **FreeBMD** | freebmd.org.uk | Birth/Marriage/Death indexes 1837-1983 | Free | Links to GRO references |
+| **UKBMD** | ukbmd.org.uk | Regional BMD office links | Free | Portal to local registrars |
+| **GRO** | gro.gov.uk/gro/content/certificates | BMD indexes | Free index, paid certificates | Official government records |
+| **1939 Register** | findmypast.co.uk | 1939 census substitute | Free index, paid images | Via FindMyPast |
+| **ScotlandsPeople** | scotlandspeople.gov.uk | Scottish records | Free index, paid images | Census, BMD, wills |
+| **GENUKI** | genuki.org.uk | County guides & links | Free | Encyclopedia of UK genealogy |
+
+#### Scripts
+
+| Script | Status | Description |
+|--------|--------|-------------|
+| `search_freecen.py` | ✅ Working | Search FreeCEN by surname/forename/year |
+| `batch_freecen_search.py` | ✅ Working | Batch search for all people with a surname |
+| `search_familysearch.py` | TODO | Search FamilySearch census records |
+| `search_freebmd.py` | TODO | Search FreeBMD for BMD index entries |
+| `census_crawler.py` | TODO | Crawl all free sites for a person's records |
+
+#### Goals
+
+1. **Automated census search**: For each person in the database born 1835-1905, search all free census sites
+2. **Match and link**: Automatically match results to database records using confidence scoring
+3. **Fill gaps**: Identify people missing from expected censuses (death? emigration? institution?)
+4. **Reduce costs**: Minimize need for Ancestry/FindMyPast subscriptions for basic census data
+
+#### Usage
+
+```bash
+# Search FreeCEN for a surname (working now)
+python scripts/search_freecen.py --surname Wrathall --forename Henry --birth-year 1863
+
+# Batch search for all Virgos in My Tree
+python scripts/batch_freecen_search.py --surname Virgo --tree-id 1 --store
+```
+
 ---
 
 ## Approach: Daily Automated Data Collection

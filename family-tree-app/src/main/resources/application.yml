@@ -49,7 +49,7 @@ familytree:
       subtitle: Yorkshire, England
       initials: WF
       avatarColor: blue
-      personCount: 156
+      personCount: 41
       allowedUsers:
         - chris
         - family-au
@@ -60,20 +60,9 @@ familytree:
       subtitle: Lancashire, England
       initials: W
       avatarColor: teal
-      personCount: 89
+      personCount: 8
       allowedUsers:
         - chris
-        - family-uk
-
-    - slug: goodall
-      displayName: Goodall Family
-      subtitle: Derbyshire, England
-      initials: GF
-      avatarColor: green
-      personCount: 124
-      allowedUsers:
-        - chris
-        - family-au
         - family-uk
 
     - slug: heywood
@@ -81,7 +70,7 @@ familytree:
       subtitle: Lancashire, England
       initials: HF
       avatarColor: rust
-      personCount: 67
+      personCount: 3
       allowedUsers:
         - chris
         - family-uk
@@ -91,6 +80,17 @@ familytree:
       subtitle: Westmorland & Yorkshire
       initials: WR
       avatarColor: olive
-      personCount: 203
+      personCount: 4
       allowedUsers:
         - chris
+        - family-uk
+
+    - slug: tart
+      displayName: Tart Family
+      subtitle: Lancashire, England
+      initials: T
+      avatarColor: brown
+      personCount: 10
+      allowedUsers:
+        - chris
+        - family-uk

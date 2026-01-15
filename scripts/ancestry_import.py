@@ -28,7 +28,7 @@ ANCESTRY_BASE_URL = "https://www.ancestry.co.uk"
 CHROME_USER_DATA = Path.home() / "Library/Application Support/Google/Chrome"
 
 
-def fetch_matches_with_browser(test_guid=None, headless=False):
+def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
     """
     Use Playwright to scrape DNA matches from Ancestry website.
     This bypasses the 200-match API limit by using actual browser automation.
@@ -36,6 +36,7 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
     Args:
         test_guid: Optional test GUID (will be auto-detected if not provided)
         headless: Run browser in headless mode (default False so you can see it working)
+        limit: Maximum number of matches to fetch
 
     Returns:
         List of match dictionaries
@@ -201,50 +202,65 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
                 print(f"\nFound pagination: {total_pages} pages, {items_per_page}/page")
                 print(f"Estimated total matches: ~{estimated_matches:,}")
             else:
-                print("\nNo pagination found, will try to extract visible matches only")
-                total_pages = 1
+                print("\nNo pagination found, will use infinite scroll to load matches")
+                total_pages = 0  # Flag to use scroll mode instead of page mode
 
             # Function to extract matches from current page
             def extract_current_page_matches():
                 return page.evaluate("""
                     () => {
                         const matches = [];
-                        const entries = document.querySelectorAll('.matchEntryGridDesktop');
+                        // Updated selector for current Ancestry page structure
+                        const entries = document.querySelectorAll('.matchEntry');
                         entries.forEach((entry) => {
                             try {
-                                const nameEl = entry.querySelector('a[data-testid="matchNameLink"]');
+                                // Find name link - look for userCard link with aria-label
+                                const nameLink = entry.querySelector('a.userCard[aria-label]');
                                 let matchGuid = null;
-                                if (nameEl && nameEl.href) {
-                                    const guidMatch = nameEl.href.match(/with\\/([A-F0-9-]+)/i);
+                                let name = null;
+                                if (nameLink) {
+                                    name = nameLink.getAttribute('aria-label');
+                                    const guidMatch = nameLink.href.match(/with\\/([A-F0-9-]+)/i);
                                     if (guidMatch) {
                                         matchGuid = guidMatch[1].toUpperCase();
                                     }
                                 }
                                 if (matchGuid) {
-                                    const name = nameEl ? nameEl.textContent.trim() : null;
-                                    const cmEl = entry.querySelector('[data-testid="sharedDnaAmount"]');
-                                    const cmText = cmEl ? cmEl.textContent : '';
+                                    // Find cM - look for sharedDNA testid or text containing cM
                                     let sharedCm = null;
+                                    const cmEl = entry.querySelector('[data-testid="sharedDNA"]');
+                                    const cmText = cmEl ? cmEl.textContent : entry.textContent;
                                     const cmMatch = cmText.match(/([\\d,]+)\\s*cM/i);
                                     if (cmMatch) {
                                         sharedCm = parseFloat(cmMatch[1].replace(/,/g, ''));
                                     }
+
+                                    // Relationship
                                     const relEl = entry.querySelector('.relationshipLabel');
                                     const relationship = relEl ? relEl.textContent.trim() : null;
-                                    const sideEl = entry.querySelector('.sharedDnaContainer .secondaryText');
+
+                                    // Side info
+                                    const sideEl = entry.querySelector('.familySideInfo');
                                     const matchSide = sideEl ? sideEl.textContent.trim() : null;
 
-                                    // Tree info
+                                    // Tree info - look for tree link in matchTreeInfo
                                     let hasTree = false;
                                     let treeSize = null;
                                     let linkedTreeId = null;
-                                    const treeLink = entry.querySelector('[data-testid="treeCountLink"]');
-                                    if (treeLink) {
-                                        hasTree = true;
-                                        const sizeMatch = treeLink.textContent.match(/(\\d[\\d,]*)\\s*people/i);
-                                        if (sizeMatch) treeSize = parseInt(sizeMatch[1].replace(/,/g, ''));
-                                        const treeIdMatch = treeLink.href.match(/family-tree\\/tree\\/(\\d+)/);
-                                        if (treeIdMatch) linkedTreeId = treeIdMatch[1];
+                                    const treeInfo = entry.querySelector('.matchTreeInfo');
+                                    if (treeInfo) {
+                                        const treeLink = treeInfo.querySelector('a[href*="family-tree"]');
+                                        if (treeLink) {
+                                            hasTree = true;
+                                            const sizeMatch = treeLink.textContent.match(/(\\d[\\d,]*)\\s*pe/i);
+                                            if (sizeMatch) treeSize = parseInt(sizeMatch[1].replace(/,/g, ''));
+                                            const treeIdMatch = treeLink.href.match(/tree\\/(\\d+)/);
+                                            if (treeIdMatch) linkedTreeId = treeIdMatch[1];
+                                        } else if (treeInfo.textContent.includes('Unlinked tree') || treeInfo.textContent.includes('Public linked tree')) {
+                                            hasTree = true;
+                                            const sizeMatch = treeInfo.textContent.match(/(\\d[\\d,]*)\\s*pe/i);
+                                            if (sizeMatch) treeSize = parseInt(sizeMatch[1].replace(/,/g, ''));
+                                        }
                                     }
 
                                     matches.push({
@@ -264,8 +280,49 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
                     }
                 """)
 
-            print(f"\nPaginating through all {total_pages} pages (this may take a while)...")
-            print(f"  Estimated time: ~{total_pages * 1.5 / 60:.0f} minutes at 1.5s per page")
+            # SCROLL MODE: When no pagination element is found, use infinite scroll
+            if total_pages == 0:
+                print("\nUsing infinite scroll to load all matches...")
+                scroll_count = 0
+                no_new_count = 0
+                max_no_new = 5  # Stop after 5 scrolls with no new matches
+
+                while no_new_count < max_no_new:
+                    # Extract current visible matches
+                    current_matches = extract_current_page_matches()
+
+                    # Count new matches
+                    new_count = 0
+                    for m in current_matches:
+                        if m['guid'] and m['guid'] not in seen_guids:
+                            seen_guids.add(m['guid'])
+                            all_matches_data.append(m)
+                            new_count += 1
+
+                    scroll_count += 1
+                    if scroll_count % 5 == 0 or scroll_count <= 3:
+                        print(f"  Scroll {scroll_count}: {len(all_matches_data)} total matches (+{new_count} new)", flush=True)
+
+                    if new_count == 0:
+                        no_new_count += 1
+                    else:
+                        no_new_count = 0
+
+                    # Scroll down to load more
+                    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
+                    time.sleep(1.5)  # Wait for content to load
+
+                    if len(all_matches_data) >= limit:
+                        print(f"  Reached limit of {limit} matches", flush=True)
+                        break
+
+                print(f"\nScroll complete: {len(all_matches_data)} matches loaded")
+
+            else:
+                # PAGINATION MODE: Use page numbers when pagination element exists
+                print(f"\nPaginating through all {total_pages} pages (this may take a while)...")
+                print(f"  Estimated time: ~{total_pages * 1.5 / 60:.0f} minutes at 1.5s per page")
+
             current_page = 1
             consecutive_failures = 0
             max_failures = 20  # Allow more failures for 500+ pages
@@ -282,7 +339,7 @@ def fetch_matches_with_browser(test_guid=None, headless=False):
                     }
                 ''')
 
-            while current_page <= total_pages and consecutive_failures < max_failures:
+            while total_pages > 0 and current_page <= total_pages and consecutive_failures < max_failures:
                 # Extract matches from current page
                 current_matches = extract_current_page_matches()
 
@@ -838,15 +895,43 @@ def fetch_all_matches(session, test_guid):
     # Strategy 2: Try discoveryui API if secure didn't work well
     if len(all_matches) < 200:
         print("\n  Strategy 2: discoveryui API...")
-        data = fetch_matches_with_bookmark(session, test_guid, None)
-        if data:
+        bookmark_page = None
+        page_num = 1
+        consecutive_empty = 0
+        while consecutive_empty < 3:
+            data = fetch_matches_with_bookmark(session, test_guid, bookmark_page)
+            if not data:
+                break
+
+            new_count = 0
             for group in data.get("matchGroups", []):
                 for match in group.get("matches", []):
                     guid = match.get("testGuid")
                     if guid and guid not in seen_guids:
                         seen_guids.add(guid)
                         all_matches.append(match)
-            print(f"    Added matches, total now: {len(all_matches)}", flush=True)
+                        new_count += 1
+
+            if page_num % 20 == 0 or page_num <= 3:
+                print(f"    Page {page_num}: +{new_count} new, {len(all_matches)} total", flush=True)
+
+            if new_count == 0:
+                consecutive_empty += 1
+            else:
+                consecutive_empty = 0
+
+            # Get next bookmark page from response
+            bookmark_data = data.get("bookmarkData", {})
+            next_page = bookmark_data.get("lastMatchesServicePageIdx")
+            if next_page is None or next_page == bookmark_page:
+                break
+            bookmark_page = next_page
+            page_num += 1
+
+            if page_num > 500:  # Safety limit
+                break
+
+        print(f"    Final: {len(all_matches)} matches from {page_num} pages", flush=True)
 
     print(f"\nTotal unique matches fetched: {len(all_matches)}")
     return all_matches
@@ -1797,7 +1882,7 @@ def main():
 
     # Browser automation mode
     if args.browser:
-        matches = fetch_matches_with_browser(test_guid=args.test_guid, headless=args.headless)
+        matches = fetch_matches_with_browser(test_guid=args.test_guid, headless=args.headless, limit=args.limit)
 
         if not matches:
             print("\nNo matches extracted. Check the saved HTML for debugging.")

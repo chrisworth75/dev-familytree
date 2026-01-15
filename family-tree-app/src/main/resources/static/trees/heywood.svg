@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 185" width="260" height="185" data-root-x="130.0">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 525" width="260" height="525" data-root-x="130.0">
   <defs>
     <style>
       .card { fill: #fff; stroke: #d0d0d0; stroke-width: 1; }
@@ -25,7 +25,7 @@
   <rect width="100%" height="100%" fill="#fff"/>
 
   <text x="130.0" y="30" text-anchor="middle" class="name" style="font-size: 16px;">
-    Goodall Family Tree
+    Heywood Family Tree
   </text>
   <text x="130.0" y="48" text-anchor="middle" class="dates">
     Click on any person to view their details
@@ -33,11 +33,27 @@
   <line x1="30" y1="58" x2="230" y2="58" stroke="#e0e0e0"/>
 
   
-  <g class="person-card" data-person-id="575396">
+  <g class="person-card" data-person-id="37">
     <rect x="50" y="80" width="160" height="55" rx="5" class="card"/>
     <circle cx="70" cy="108" r="14" class="avatar-male"/>
-    <text x="90" y="100" class="name">John Goodall</text>
-    <text x="90" y="113" class="dates">1774-1850</text>
-    
+    <text x="90" y="100" class="name">Samuel Heywood</text>
+    <text x="90" y="113" class="dates">1870-</text>
+    <text x="90" y="127" class="spouse">m. Theodora Heywood</text>
   </g>
+  <g class="person-card" data-person-id="36">
+    <rect x="50" y="250" width="160" height="55" rx="5" class="card"/>
+    <circle cx="70" cy="278" r="14" class="avatar-female"/>
+    <text x="90" y="270" class="name">Doris Wood</text>
+    <text x="90" y="283" class="dates"></text>
+    <text x="90" y="297" class="spouse">m. Albert Wood</text>
+  </g>
+  <g class="person-card" data-person-id="34">
+    <rect x="50" y="420" width="160" height="55" rx="5" class="card"/>
+    <circle cx="70" cy="448" r="14" class="avatar-female"/>
+    <text x="90" y="440" class="name">Patricia Margaret Wo...</text>
+    <text x="90" y="453" class="dates">1946-</text>
+    <text x="90" y="467" class="spouse">m. Jonathon Paul Wort...</text>
+  </g>  <path d="M130.0 305 L130.0 420" class="connector"/>
+  <path d="M130.0 135 L130.0 250" class="connector"/>
+
 </svg>

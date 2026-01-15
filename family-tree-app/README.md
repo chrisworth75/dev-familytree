@@ -8,6 +8,7 @@ A minimal Spring Boot application for sharing family tree diagrams with family m
 - **Per-User Access Control**: Each tree can be restricted to specific users
 - **Static SVG Trees**: Pre-generated tree diagrams served as inline SVG
 - **Ancestry-Style UI**: Card-based interface for tree selection
+- **REST API**: Query ancestors, descendants, and census records (no auth required)
 
 ## Tech Stack
 
@@ -25,6 +26,67 @@ mvn spring-boot:run
 ```
 
 App runs at http://localhost:3500
+
+## REST API
+
+The API is publicly accessible (no authentication required) and can be used by scripts or other applications.
+
+### Endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/persons/{id}` | Person details with immediate family (mother, father, spouses, children) |
+| GET | `/api/persons/{id}/ancestors?generations=N` | Ancestors up to N generations (default 10, max 20) |
+| GET | `/api/persons/{id}/descendants?generations=N` | Descendants down to N generations (default 10, max 20) |
+| GET | `/api/persons/{id}/census` | Linked census records with confidence scores |
+| GET | `/api/persons/search?name=X&birthPlace=Y&limit=N` | Search by name and/or birthplace (limit default 50, max 500) |
+
+### Examples
+
+```bash
+# Get person with family context
+curl http://localhost:3500/api/persons/1
+
+# Get ancestors (5 generations)
+curl "http://localhost:3500/api/persons/1/ancestors?generations=5"
+
+# Get descendants
+curl http://localhost:3500/api/persons/1/descendants
+
+# Get census records
+curl http://localhost:3500/api/persons/1/census
+
+# Search by surname
+curl "http://localhost:3500/api/persons/search?name=Wrathall"
+
+# Search by birthplace
+curl "http://localhost:3500/api/persons/search?birthPlace=Yorkshire"
+```
+
+### Response Examples
+
+**Person with family:**
+```json
+{
+  "person": {"id": 1, "forename": "Henry S.", "surname": "Wrathall", ...},
+  "mother": null,
+  "father": null,
+  "spouses": [{"id": 2, "forename": "Mary Alice", "surname": "Metcalfe", ...}],
+  "children": [{"id": 3, "forename": "Constance V.", ...}, ...]
+}
+```
+
+**Census record:**
+```json
+[{
+  "year": 1901,
+  "registrationDistrict": "West Derby",
+  "nameAsRecorded": "Henry S. Wrathall",
+  "ageAsRecorded": 58,
+  "occupation": "Chemical Merchant",
+  "confidence": 0.95
+}]
+```
 
 ## Test Users
 
@@ -80,9 +142,15 @@ family-tree-app/
     │   ├── controller/
     │   │   ├── HomeController.java      # Landing page
     │   │   ├── LoginController.java
+    │   │   ├── PersonApiController.java # REST API
     │   │   └── TreeController.java      # Tree view
-    │   └── model/
-    │       └── FamilyTreeConfig.java    # Tree record
+    │   ├── model/
+    │   │   ├── CensusRecord.java        # Census record
+    │   │   ├── FamilyTreeConfig.java    # Tree config
+    │   │   └── Person.java              # Person with family links
+    │   └── repository/
+    │       ├── CensusRepository.java    # Census queries
+    │       └── PersonRepository.java    # Person/ancestor queries
     └── resources/
         ├── application.yml
         ├── static/
@@ -97,6 +165,6 @@ family-tree-app/
 ## Future Enhancements
 
 - [ ] Database-backed user management
-- [ ] Query interface for genealogy.db
+- [x] ~~Query interface for genealogy.db~~ (REST API implemented)
 - [ ] GEDCOM export
 - [ ] Interactive SVG with person details

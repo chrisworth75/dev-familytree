@@ -1,0 +1,5533 @@
+0 HEAD
+1 SOUR ClaudeCode
+2 VERS 1.0
+2 NAME Lowther Family Tree Export
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 DATE 06 JAN 2026
+1 NOTE Complete Lowther tree - descendants of Henry Lowther 3rd Earl of Lonsdale
+2 CONT Exported from genealogy database with additional missing descendants
+2 CONT Total people: 644
+0 @I1@ INDI
+1 NAME Henry Haywarde Palgrave Pargrave, Royal family household /tutor/
+2 GIVN Henry Haywarde Palgrave Pargrave, Royal family household
+2 SURN tutor
+1 SEX M
+1 BIRT
+2 DATE 1470
+2 PLAC Thuxton, Norfolk, England
+1 DEAT
+2 DATE 1516
+0 @I2@ INDI
+1 NAME Thomas /Palgrave/
+2 GIVN Thomas
+2 SURN Palgrave
+1 SEX M
+1 BIRT
+2 DATE 1505
+2 PLAC Thruxton, Norfolk, England
+0 @I3@ INDI
+1 NAME John /Harrington/
+2 GIVN John
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 DATE 1525
+2 PLAC Stepney,  Middlesex,  England
+1 DEAT
+2 DATE 1582
+0 @I4@ INDI
+1 NAME EN Suzan Palgrave /Pargrave/
+2 GIVN EN Suzan Palgrave
+2 SURN Pargrave
+1 SEX U
+1 BIRT
+2 DATE 1539
+2 PLAC Barningham Nowood, Norwich, Norfolk, England
+0 @I5@ INDI
+1 NAME EN Briget Palgrave /Pargrave/
+2 GIVN EN Briget Palgrave
+2 SURN Pargrave
+1 SEX U
+1 BIRT
+2 DATE 1540
+2 PLAC Northwood, Barningham, Norfolk, England, United Kingdom
+1 DEAT
+2 DATE 1575
+0 @I6@ INDI
+1 NAME EN Margaret Palgrave /Pargrave/
+2 GIVN EN Margaret Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 DATE 1542
+2 PLAC Barningham Nowood, Norwich, Norfolk, England
+1 DEAT
+2 DATE 1572
+0 @I7@ INDI
+1 NAME EN Margerie Palgrave /Pargrave/
+2 GIVN EN Margerie Palgrave
+2 SURN Pargrave
+1 SEX U
+1 BIRT
+2 DATE 1542
+2 PLAC Northwood, Barningham, Norfolk, England, United Kingdom
+0 @I8@ INDI
+1 NAME EN Ursela Palgrave /Pargrave/
+2 GIVN EN Ursela Palgrave
+2 SURN Pargrave
+1 SEX U
+1 BIRT
+2 DATE 1544
+2 PLAC Northwood, Barningham, Norfolk, England, United Kingdom
+1 DEAT
+2 DATE 1575
+0 @I9@ INDI
+1 NAME James IV Harrington High Sheriff of /Kelson/
+2 GIVN James IV Harrington High Sheriff of
+2 SURN Kelson
+1 SEX M
+1 BIRT
+2 DATE 1561
+2 PLAC Kelston, Bath and North East Somerset Unitary Authority, Somerset, England
+1 DEAT
+2 DATE 1612
+0 @I10@ INDI
+1 NAME Mary Elizabeth Rogers /Harrington/
+2 GIVN Mary Elizabeth Rogers
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 DATE 1565
+2 PLAC Cannington, Somerset, Somerset, England
+0 @I11@ INDI
+1 NAME Margery /d`Oyley-Harington/
+2 GIVN Margery
+2 SURN d`Oyley-Harington
+1 SEX F
+1 BIRT
+2 DATE 1578
+2 PLAC Merton, Oxfordshire, England
+1 DEAT
+2 DATE 1658
+0 @I12@ INDI
+1 NAME Susanna /Berrie/
+2 GIVN Susanna
+2 SURN Berrie
+1 SEX F
+1 BIRT
+2 DATE 1588
+2 PLAC Walesby, Lincolnshire, England
+1 DEAT
+2 DATE 1621
+0 @I13@ INDI
+1 NAME Helena /Harrington/
+2 GIVN Helena
+2 SURN Harrington
+1 SEX U
+1 BIRT
+2 DATE 1591
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1628
+0 @I14@ INDI
+1 NAME Robert /Harrington/
+2 GIVN Robert
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 DATE 1594
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1622
+0 @I15@ INDI
+1 NAME James V /Harrington/
+2 GIVN James V
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 DATE 1595
+2 PLAC Kelston, Bath and North East Somerset Unitary Authority, Somerset, England
+1 DEAT
+2 DATE 1631
+0 @I16@ INDI
+1 NAME Major General James Harrington 3rd Baronet of Ridington Castle and /MP/
+2 GIVN Major General James Harrington 3rd Baronet of Ridington Castle and
+2 SURN MP
+1 SEX M
+1 BIRT
+2 DATE 1607
+2 PLAC England
+1 DEAT
+2 DATE 1680
+0 @I17@ INDI
+1 NAME William Lowther (of /Swillington/
+2 GIVN William Lowther (of
+2 SURN Swillington
+1 SEX M
+1 BIRT
+2 DATE 1612
+2 PLAC Lowther Hall, Westmorland, England
+1 DEAT
+2 DATE 1688
+0 @I18@ INDI
+1 NAME Jane /Busfield/
+2 GIVN Jane
+2 SURN Busfield
+1 SEX F
+1 BIRT
+2 DATE 1615
+2 PLAC Leeds, Yorkshire, England
+1 DEAT
+2 DATE 1686
+0 @I19@ INDI
+1 NAME Gervase /Norton/
+2 GIVN Gervase
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 DATE 1620
+2 PLAC Kettlethorpe, Sandal Magna, York, England
+1 DEAT
+2 DATE 1683
+0 @I20@ INDI
+1 NAME Theodosia Harrington /###/
+2 GIVN Theodosia Harrington
+2 SURN ###
+1 SEX U
+1 BIRT
+2 DATE 1623
+2 PLAC Ridlington, Norfolk, England
+1 DEAT
+2 DATE 1684
+0 @I21@ INDI
+1 NAME Thomae /Eyre/
+2 GIVN Thomae
+2 SURN Eyre
+1 SEX U
+1 BIRT
+2 DATE 1632
+2 PLAC Hope, Derbyshire, England
+1 DEAT
+2 DATE 1692
+0 @I22@ INDI
+1 NAME FRANCIS /March/
+2 GIVN FRANCIS
+2 SURN March
+1 SEX M
+1 BIRT
+2 DATE 1635
+2 PLAC Limehouse, Middlesex, England
+1 DEAT
+2 DATE 1697
+0 @I23@ INDI
+1 NAME Elizabeth Fountaine /###/
+2 GIVN Elizabeth Fountaine
+2 SURN ###
+1 SEX F
+1 BIRT
+2 DATE 1636
+2 PLAC London, Middlesex, England
+1 DEAT
+2 DATE 1639
+0 @I24@ INDI
+1 NAME Eleanor /Lowther/
+2 GIVN Eleanor
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1637
+2 PLAC Leeds Parish Church, West Yorkshire, England, United Kingdom
+0 @I25@ INDI
+1 NAME Guillaume William of Swillington - High Sheriff of Yorkshire - MP for Pontefract /Lowther/
+2 GIVN Guillaume William of Swillington - High Sheriff of Yorkshire - MP for Pontefract
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1639
+2 PLAC Leeds, Metropolitan Borough of Leeds, West Yorkshire, England
+1 DEAT
+2 DATE 1705
+0 @I26@ INDI
+1 NAME Jane /Lowther/
+2 GIVN Jane
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1640
+2 PLAC Kirkgate, Leeds, YKS, England
+1 DEAT
+2 DATE 1713
+0 @I27@ INDI
+1 NAME Richard /Lowther/
+2 GIVN Richard
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1642
+2 PLAC Leeds Parish Church., West Yorkshire, England, United Kingdom
+1 DEAT
+2 DATE 1702
+0 @I28@ INDI
+1 NAME Eleanor /Lowther/
+2 GIVN Eleanor
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1643
+2 PLAC Buslingthorpe, Yorkshire, , England
+0 @I29@ INDI
+1 NAME Elizabeth /Lowther/
+2 GIVN Elizabeth
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1645
+0 @I30@ INDI
+1 NAME Mary /Lowther/
+2 GIVN Mary
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1647
+2 PLAC Leeds Parish Church., West Yorkshire, England, United Kingdom
+0 @I31@ INDI
+1 NAME John /Lowther/
+2 GIVN John
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1650
+2 PLAC Rotterdam, Holland
+0 @I32@ INDI
+1 NAME Agnes /Lowther/
+2 GIVN Agnes
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1652
+2 PLAC Rotterdam, Zuid-Holland, Netherlands
+1 DEAT
+2 DATE 1704
+0 @I33@ INDI
+1 NAME Charles /Wood/
+2 GIVN Charles
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1652
+2 PLAC Lancashire, England, United Kingdom
+0 @I34@ INDI
+1 NAME Frances /Lowther/
+2 GIVN Frances
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1654
+2 PLAC Roundhay Grange, Yorkshire, , England
+1 DEAT
+2 DATE 1717
+0 @I35@ INDI
+1 NAME Dorothy /Lowther/
+2 GIVN Dorothy
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1655
+2 PLAC Roundhay Grange, Yorkshire, England
+0 @I36@ INDI
+1 NAME George /Lowther/
+2 GIVN George
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1655
+2 PLAC Roundhay Grange, Yorkshire, England
+0 @I37@ INDI
+1 NAME Anne Fountayne /#/
+2 GIVN Anne Fountayne
+2 SURN #
+1 SEX F
+1 BIRT
+2 DATE 1656
+2 PLAC England
+0 @I38@ INDI
+1 NAME Barbara /Lowther/
+2 GIVN Barbara
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1657
+2 PLAC Great Preston Hall, Yorkshire, England
+0 @I39@ INDI
+1 NAME John /Allen/
+2 GIVN John
+2 SURN Allen
+1 SEX M
+1 BIRT
+2 DATE 1660
+2 PLAC Fullinback, Dublin, Dublin, Leinster (S. Dublin) Ireland
+1 DEAT
+2 DATE 1726
+0 @I40@ INDI
+1 NAME William Lowther, 1st Baronet, of /Swillington/
+2 GIVN William Lowther, 1st Baronet, of
+2 SURN Swillington
+1 SEX M
+1 BIRT
+2 DATE 1663
+2 PLAC Dancers Hall, Middlesex, England
+1 DEAT
+2 DATE 1729
+0 @I41@ INDI
+1 NAME Katharina Guliel /Lowther/
+2 GIVN Katharina Guliel
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1664
+2 PLAC Swillington House, Yorkshire, , England
+1 DEAT
+2 DATE 1695
+0 @I42@ INDI
+1 NAME Mary /Lowther/
+2 GIVN Mary
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1665
+2 PLAC Great Orton Parish Register.
+0 @I43@ INDI
+1 NAME Major John /Lowther/
+2 GIVN Major John
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1666
+2 PLAC Swillington, Yorkshire, England
+1 DEAT
+2 DATE 1695
+0 @I44@ INDI
+1 NAME William /Lowther/
+2 GIVN William
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1668
+2 PLAC Great Orton Parish Register.
+1 DEAT
+2 DATE 1742
+0 @I45@ INDI
+1 NAME Richard /Lowther/
+2 GIVN Richard
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1669
+2 PLAC Kippax, Yorkshire, England, United Kingdom
+1 DEAT
+2 DATE 1715
+0 @I46@ INDI
+1 NAME Nicholas /Lowther/
+2 GIVN Nicholas
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1670
+2 PLAC Great Orton, Cumberland, England
+1 DEAT
+2 DATE 1711
+0 @I47@ INDI
+1 NAME Francis /Monckton/
+2 GIVN Francis
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 DATE 1671
+2 PLAC Derbyshire, England
+0 @I48@ INDI
+1 NAME Robert /Lowther/
+2 GIVN Robert
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1672
+2 PLAC Garforth, Yorks., Eng.
+0 @I49@ INDI
+1 NAME Thomas /Lowther/
+2 GIVN Thomas
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1673
+2 PLAC Garforth, Yorkshire, England, United Kingdom
+0 @I50@ INDI
+1 NAME Susan /Lowther/
+2 GIVN Susan
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1673
+2 PLAC Great Orton Parish Register.
+1 DEAT
+2 DATE 1674
+0 @I51@ INDI
+1 NAME Christopher /LOWTHER/
+2 GIVN Christopher
+2 SURN LOWTHER
+1 SEX U
+1 BIRT
+2 DATE 1675
+2 PLAC West Garforth Hall, Yorkshire, England
+1 DEAT
+2 DATE 1718
+0 @I52@ INDI
+1 NAME Elizabeth /Lowther/
+2 GIVN Elizabeth
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1675
+2 PLAC Great Orton Parish Register.
+1 DEAT
+2 DATE 1683
+0 @I53@ INDI
+1 NAME Mary /Lowther/
+2 GIVN Mary
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1677
+2 PLAC Garforth, Yorks., Eng.
+0 @I54@ INDI
+1 NAME Robert /Lowther/
+2 GIVN Robert
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1677
+2 PLAC Great Orton Parish Register.
+1 DEAT
+2 DATE 1686
+0 @I55@ INDI
+1 NAME Gerhard /Lowther/
+2 GIVN Gerhard
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1678
+2 PLAC Garforth, Yorkshire, England, United Kingdom
+1 DEAT
+2 DATE 1702
+0 @I56@ INDI
+1 NAME Isabel /Lowther/
+2 GIVN Isabel
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1680
+2 PLAC Great Orton Parish Register.
+0 @I57@ INDI
+1 NAME Philip Sherard, (4th Baron Sherard) 2nd Earl of /Harborough/
+2 GIVN Philip Sherard, (4th Baron Sherard) 2nd Earl of
+2 SURN Harborough
+1 SEX M
+1 BIRT
+2 DATE 1680
+2 PLAC , Rutland, England
+1 DEAT
+2 DATE 1758
+0 @I58@ INDI
+1 NAME Isabell 1682 /Lowther/
+2 GIVN Isabell 1682
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1682
+2 PLAC Lowther, Westmorland, England
+0 @I59@ INDI
+1 NAME George /Lowther/
+2 GIVN George
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1684
+2 PLAC Great Orton Parish Register.
+1 DEAT
+2 DATE 1684
+0 @I60@ INDI
+1 NAME William Molesworth, Captain, 1st /Viscount/
+2 GIVN William Molesworth, Captain, 1st
+2 SURN Viscount
+1 SEX M
+1 BIRT
+2 DATE 1688
+2 PLAC Dublin, Ireland
+1 DEAT
+2 DATE 1770
+0 @I61@ INDI
+1 NAME Thomas, 8th Earl of Westmoreland /Fane/
+2 GIVN Thomas, 8th Earl of Westmoreland
+2 SURN Fane
+1 SEX M
+1 BIRT
+2 DATE 1700
+2 PLAC Bristol, Gloucestershire, England
+1 DEAT
+2 DATE 1771
+0 @I62@ INDI
+1 NAME Jane /Lisle/
+2 GIVN Jane
+2 SURN Lisle
+1 SEX F
+1 BIRT
+2 DATE 1703
+2 PLAC Crux Easton, Hampshire, England
+1 DEAT
+2 DATE 1764
+0 @I63@ INDI
+1 NAME Elizabeth /Sherard/
+2 GIVN Elizabeth
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1705
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1765
+0 @I64@ INDI
+1 NAME Rev. Sir William, 1st Baronet of Little Preston /Lowther/
+2 GIVN Rev. Sir William, 1st Baronet of Little Preston
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1707
+2 PLAC Little Preston Hall, Yorkshire, England,
+1 DEAT
+2 DATE 1788
+0 @I65@ INDI
+1 NAME Dorothy /Sherard/
+2 GIVN Dorothy
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1707
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1781
+0 @I66@ INDI
+1 NAME Elizabeth /Swymmer/
+2 GIVN Elizabeth
+2 SURN Swymmer
+1 SEX F
+1 BIRT
+2 DATE 1708
+2 PLAC Bristol, Gloucestershire, England
+1 DEAT
+2 DATE 1782
+0 @I67@ INDI
+1 NAME Charles /Lisle/
+2 GIVN Charles
+2 SURN Lisle
+1 SEX M
+1 BIRT
+2 DATE 1708
+2 PLAC of Moyles Court, Southampton, Isle of Wight, Hampshire, England
+0 @I68@ INDI
+1 NAME Martha /LOWTHER/
+2 GIVN Martha
+2 SURN LOWTHER
+1 SEX U
+1 BIRT
+2 DATE 1709
+2 PLAC Little Preston Hall, Yorkshire, England
+0 @I69@ INDI
+1 NAME Bennet Sherard, 3rd Earl of /Harborough/
+2 GIVN Bennet Sherard, 3rd Earl of
+2 SURN Harborough
+1 SEX M
+1 BIRT
+2 DATE 1709
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1770
+0 @I70@ INDI
+1 NAME Anne /Sherard/
+2 GIVN Anne
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1712
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1724
+0 @I71@ INDI
+1 NAME John /Sherard/
+2 GIVN John
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 DATE 1713
+2 PLAC of Whissendine,Rutlandshire
+1 DEAT
+2 DATE 1746
+0 @I72@ INDI
+1 NAME Susannah /Sherard/
+2 GIVN Susannah
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1714
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1765
+0 @I73@ INDI
+1 NAME ANNA /Carey/
+2 GIVN ANNA
+2 SURN Carey
+1 SEX F
+1 BIRT
+2 DATE 1716
+2 PLAC City of Westminster,  London, England
+1 DEAT
+2 DATE 1781
+0 @I74@ INDI
+1 NAME Ursula /Sherard/
+2 GIVN Ursula
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1717
+2 PLAC Rutland, England
+1 DEAT
+2 DATE 1745
+0 @I75@ INDI
+1 NAME Thetton Robert /Sherard/
+2 GIVN Thetton Robert
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 DATE 1719
+2 PLAC Cheshire, England
+1 DEAT
+2 DATE 1799
+0 @I76@ INDI
+1 NAME Charles Francis /Zouch/
+2 GIVN Charles Francis
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 DATE 1720
+2 PLAC Sandal Magna, Yorkshire, England
+1 DEAT
+2 DATE 1731
+0 @I77@ INDI
+1 NAME Daniel /Sherard/
+2 GIVN Daniel
+2 SURN Sherard
+1 SEX U
+1 BIRT
+2 DATE 1722
+2 PLAC Rutland, England
+1 DEAT
+2 DATE 1744
+0 @I78@ INDI
+1 NAME Anne /ZOUCH/
+2 GIVN Anne
+2 SURN ZOUCH
+1 SEX F
+1 BIRT
+2 DATE 1723
+2 PLAC Sandal Magna near Wakefield, All Saints, Yorkshire, England
+1 DEAT
+2 DATE 1759
+0 @I79@ INDI
+1 NAME Anne /Sherard/
+2 GIVN Anne
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1723
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1724
+0 @I80@ INDI
+1 NAME Elizabeth /Monckton/
+2 GIVN Elizabeth
+2 SURN Monckton
+1 SEX F
+1 BIRT
+2 DATE 1724
+2 PLAC Westminster, Middlesex, England
+0 @I81@ INDI
+1 NAME Henry /Zouch/
+2 GIVN Henry
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 DATE 1725
+2 PLAC Sandal Magna, Yorkshire, England
+0 @I82@ INDI
+1 NAME Samuel /Zouch/
+2 GIVN Samuel
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 DATE 1726
+2 PLAC Wakefield, Yorkshire, England
+1 DEAT
+2 DATE 1790
+0 @I83@ INDI
+1 NAME Philip /Sherard/
+2 GIVN Philip
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 DATE 1726
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1790
+0 @I84@ INDI
+1 NAME Robert /Monckton/
+2 GIVN Robert
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 DATE 1726
+2 PLAC Serlby Hall, Nottinghamshire, England
+1 DEAT
+2 DATE 1782
+0 @I85@ INDI
+1 NAME JOHN (9th EARL of WESTMORLAND) /FANE/
+2 GIVN JOHN (9th EARL of WESTMORLAND)
+2 SURN FANE
+1 SEX M
+1 BIRT
+2 DATE 1728
+2 PLAC Fulbeck, Lincolnshire, England
+1 DEAT
+2 DATE 1774
+0 @I86@ INDI
+1 NAME JOHN (9th EARL of WESTMORLAND) /FANE/
+2 GIVN JOHN (9th EARL of WESTMORLAND)
+2 SURN FANE
+1 SEX M
+1 BIRT
+2 DATE 1728
+2 PLAC Fulbeck, Lincolnshire, England
+1 DEAT
+2 DATE 1774
+0 @I87@ INDI
+1 NAME Robert Molesworth, 5th Viscount of /Swords/
+2 GIVN Robert Molesworth, 5th Viscount of
+2 SURN Swords
+1 SEX M
+1 BIRT
+2 DATE 1729
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1813
+0 @I88@ INDI
+1 NAME Catharine /Sherard/
+2 GIVN Catharine
+2 SURN Sherard
+1 SEX U
+1 BIRT
+2 DATE 1730
+2 PLAC Whissendine, Rutland, England
+1 DEAT
+2 DATE 1730
+0 @I89@ INDI
+1 NAME Catherine /Hearst/
+2 GIVN Catherine
+2 SURN Hearst
+1 SEX F
+1 BIRT
+2 DATE 1734
+2 PLAC of The Close,Salisbury,Wiltshire
+1 DEAT
+2 DATE 1765
+0 @I90@ INDI
+1 NAME Jane /Monckton/
+2 GIVN Jane
+2 SURN Monckton
+1 SEX F
+1 BIRT
+2 DATE 1735
+2 PLAC Harworth, Nottingham, Nottinghamshire, England
+1 DEAT
+2 DATE 1763
+0 @I91@ INDI
+1 NAME Thomas ( rev & doctor) /Zouch/
+2 GIVN Thomas ( rev & doctor)
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 DATE 1737
+2 PLAC Sandal Magna, St Helen, Yorkshire, England
+1 DEAT
+2 DATE 1815
+0 @I92@ INDI
+1 NAME Richard /Molesworth/
+2 GIVN Richard
+2 SURN Molesworth
+1 SEX M
+1 BIRT
+2 DATE 1737
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1799
+0 @I93@ INDI
+1 NAME Philip /Monckton/
+2 GIVN Philip
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 DATE 1738
+2 PLAC Felkirk, Yorkshire, England
+1 DEAT
+2 DATE 1740
+0 @I94@ INDI
+1 NAME Henry Fane of Fulbeck /Hall/
+2 GIVN Henry Fane of Fulbeck
+2 SURN Hall
+1 SEX M
+1 BIRT
+2 DATE 1739
+2 PLAC Fulbeck, Lincolnshire, England
+1 DEAT
+2 DATE 1802
+0 @I95@ INDI
+1 NAME John /Monckton/
+2 GIVN John
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 DATE 1739
+2 PLAC Galway Ireland
+1 DEAT
+2 DATE 1830
+0 @I96@ INDI
+1 NAME Lt. Col Henry Monckton (Red /Coat-KIA/
+2 GIVN Lt. Col Henry Monckton (Red
+2 SURN Coat-KIA
+1 SEX M
+1 BIRT
+2 DATE 1740
+1 DEAT
+2 DATE 1778
+0 @I97@ INDI
+1 NAME James /Pears/
+2 GIVN James
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1740
+2 PLAC St Peters in Bailey, Oxfordshire, , England
+1 DEAT
+2 DATE 1804
+0 @I98@ INDI
+1 NAME Edward /Monckton/
+2 GIVN Edward
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 DATE 1744
+2 PLAC Staffordshire, Staffordshire, England, United Kingdom
+1 DEAT
+2 DATE 1832
+0 @I99@ INDI
+1 NAME Susanna/Susan /Gordon/
+2 GIVN Susanna/Susan
+2 SURN Gordon
+1 SEX F
+1 BIRT
+2 DATE 1746
+2 PLAC Speymouth, Moray, Scotland
+1 DEAT
+2 DATE 1814
+0 @I100@ INDI
+1 NAME Mary Monckton Boyle, Countess of /Cork/
+2 GIVN Mary Monckton Boyle, Countess of
+2 SURN Cork
+1 SEX F
+1 BIRT
+2 DATE 1746
+2 PLAC England
+1 DEAT
+2 DATE 1840
+0 @I101@ INDI
+1 NAME William /Lowther/
+2 GIVN William
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1757
+2 PLAC Swillington, Yorkshire, England
+1 DEAT
+2 DATE 1844
+0 @I102@ INDI
+1 NAME Susan (otherwise Susan March) /LISLE/
+2 GIVN Susan (otherwise Susan March)
+2 SURN LISLE
+1 SEX U
+1 BIRT
+2 DATE 1757
+2 PLAC London, England
+1 DEAT
+2 DATE 1838
+0 @I103@ INDI
+1 NAME John /Lowther/
+2 GIVN John
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1759
+2 PLAC Little Preston Hall, Yorkshire, England
+1 DEAT
+2 DATE 1844
+0 @I104@ INDI
+1 NAME John, 10th Earl of Westmoreland, Lord Lieutenant of Ireland /Fane/
+2 GIVN John, 10th Earl of Westmoreland, Lord Lieutenant of Ireland
+2 SURN Fane
+1 SEX M
+1 BIRT
+2 DATE 1759
+2 PLAC Charles Street, Berkeley Square, London, England
+1 DEAT
+2 DATE 1841
+0 @I105@ INDI
+1 NAME Honorable Thomas /Fane/
+2 GIVN Honorable Thomas
+2 SURN Fane
+1 SEX M
+1 BIRT
+2 DATE 1760
+2 PLAC Brimpton, Somerset, England
+1 DEAT
+2 DATE 1807
+0 @I106@ INDI
+1 NAME Augusta /Fane/
+2 GIVN Augusta
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 DATE 1761
+2 PLAC Charminster, Dorset, England
+1 DEAT
+2 DATE 1838
+0 @I107@ INDI
+1 NAME Philip (5th Earl of Harborough) /Sherard/
+2 GIVN Philip (5th Earl of Harborough)
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 DATE 1767
+2 PLAC Teigh Rutland England
+1 DEAT
+2 DATE 1807
+0 @I108@ INDI
+1 NAME Susan /Fane/
+2 GIVN Susan
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 DATE 1768
+2 PLAC Charminster, Dorset, England
+1 DEAT
+2 DATE 1793
+0 @I109@ INDI
+1 NAME Lucy Eleanor /Sherard/
+2 GIVN Lucy Eleanor
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1769
+2 PLAC of Southwell,Nottinghamshire
+1 DEAT
+2 DATE 1858
+0 @I110@ INDI
+1 NAME Elizabeth /Fane/
+2 GIVN Elizabeth
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 DATE 1770
+2 PLAC Westminster, London, England
+1 DEAT
+2 DATE 1844
+0 @I111@ INDI
+1 NAME Mary /Fane/
+2 GIVN Mary
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 DATE 1772
+2 PLAC Apethorp, Northamptonshire, England
+1 DEAT
+2 DATE 1855
+0 @I112@ INDI
+1 NAME Eleanor /Monckton/
+2 GIVN Eleanor
+2 SURN Monckton
+1 SEX F
+1 BIRT
+2 DATE 1772
+2 PLAC Fineshade, Northampshire England
+1 DEAT
+2 DATE 1809
+0 @I113@ INDI
+1 NAME Dorothea Sophia /Sherard/
+2 GIVN Dorothea Sophia
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1775
+2 PLAC Stapleford, Leicestershire, England
+1 DEAT
+2 DATE 1781
+0 @I114@ INDI
+1 NAME Mary /Radcliffe/
+2 GIVN Mary
+2 SURN Radcliffe
+1 SEX F
+1 BIRT
+2 DATE 1776
+2 PLAC Lambeth, London, Surrey, England
+1 DEAT
+2 DATE 1838
+0 @I115@ INDI
+1 NAME Thomas /Wood/
+2 GIVN Thomas
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1777
+2 PLAC Westminster, Middlesex, England
+1 DEAT
+2 DATE 1860
+0 @I116@ INDI
+1 NAME Rev. James William /Pears/
+2 GIVN Rev. James William
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1778
+2 PLAC Oxford, Oxfordshire, England
+1 DEAT
+2 DATE 1853
+0 @I117@ INDI
+1 NAME Rev. James William /Pears/
+2 GIVN Rev. James William
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1778
+2 PLAC Oxford, Oxfordshire, England
+1 DEAT
+2 DATE 1853
+0 @I118@ INDI
+1 NAME Samuel (otherwise Samuel Phillipps) /MARCH/
+2 GIVN Samuel (otherwise Samuel Phillipps)
+2 SURN MARCH
+1 SEX M
+1 BIRT
+2 DATE 1780
+2 PLAC Uttoxeter, Staffordshire, England
+1 DEAT
+2 DATE 1862
+0 @I119@ INDI
+1 NAME William Frederick Cavendish /Bentinck/
+2 GIVN William Frederick Cavendish
+2 SURN Bentinck
+1 SEX M
+1 BIRT
+2 DATE 1781
+2 PLAC England
+1 DEAT
+2 DATE 1828
+0 @I120@ INDI
+1 NAME Caroline /Stewart/
+2 GIVN Caroline
+2 SURN Stewart
+1 SEX F
+1 BIRT
+2 DATE 1781
+2 PLAC Ireland
+1 DEAT
+2 DATE 1865
+0 @I121@ INDI
+1 NAME Augusta /Lowther/
+2 GIVN Augusta
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1782
+2 PLAC London, England
+1 DEAT
+2 DATE 1789
+0 @I122@ INDI
+1 NAME Wilhelmina /Molesworth/
+2 GIVN Wilhelmina
+2 SURN Molesworth
+1 SEX U
+1 BIRT
+2 DATE 1783
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1866
+0 @I123@ INDI
+1 NAME Elizabeth /Lowther/
+2 GIVN Elizabeth
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1784
+1 DEAT
+2 DATE 1869
+0 @I124@ INDI
+1 NAME Mary /Lowther/
+2 GIVN Mary
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1785
+1 DEAT
+2 DATE 1862
+0 @I125@ INDI
+1 NAME Charity Emilia "Charemile" /Grant/
+2 GIVN Charity Emilia "Charemile"
+2 SURN Grant
+1 SEX U
+1 BIRT
+2 DATE 1785
+2 PLAC Bengal, India
+1 DEAT
+2 DATE 1826
+0 @I126@ INDI
+1 NAME Richard Pigott Molesworth 7th /Viscount/
+2 GIVN Richard Pigott Molesworth 7th
+2 SURN Viscount
+1 SEX M
+1 BIRT
+2 DATE 1786
+2 PLAC St. Giles, Camberwell, Surrey, England
+1 DEAT
+2 DATE 1875
+0 @I127@ INDI
+1 NAME William /Lowther/
+2 GIVN William
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1787
+2 PLAC Uffington, Lincolnshire, England
+1 DEAT
+2 DATE 1872
+0 @I128@ INDI
+1 NAME Thomas /Whichcote/
+2 GIVN Thomas
+2 SURN Whichcote
+1 SEX M
+1 BIRT
+2 DATE 1787
+1 DEAT
+2 DATE 1829
+0 @I129@ INDI
+1 NAME Anne /Lowther/
+2 GIVN Anne
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1788
+1 DEAT
+2 DATE 1871
+0 @I130@ INDI
+1 NAME Henry Cecil /Lowther/
+2 GIVN Henry Cecil
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1790
+2 PLAC Lowther, Westmorland, England
+1 DEAT
+2 DATE 1867
+0 @I131@ INDI
+1 NAME William Bateman /DASHWOOD/
+2 GIVN William Bateman
+2 SURN DASHWOOD
+1 SEX M
+1 BIRT
+2 DATE 1790
+2 PLAC St Neots, Huntingdonshire, England
+1 DEAT
+2 DATE 1869
+0 @I132@ INDI
+1 NAME Salome Letitia /Molesworth/
+2 GIVN Salome Letitia
+2 SURN Molesworth
+1 SEX U
+1 BIRT
+2 DATE 1791
+2 PLAC St Giles, Camberwell, Surrey, England
+1 DEAT
+2 DATE 1829
+0 @I133@ INDI
+1 NAME Lucy Eleanor /Sherard/
+2 GIVN Lucy Eleanor
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1792
+2 PLAC Lowther, Westmoreland, England
+1 DEAT
+2 DATE 1848
+0 @I134@ INDI
+1 NAME Grace Caroline /Lowther/
+2 GIVN Grace Caroline
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1792
+2 PLAC Stratton, Rutland, England
+1 DEAT
+2 DATE 1883
+0 @I135@ INDI
+1 NAME William John /Frederick/
+2 GIVN William John
+2 SURN Frederick
+1 SEX M
+1 BIRT
+2 DATE 1792
+0 @I136@ INDI
+1 NAME JAMES MURRAY GRANT, 12th of Glenmoriston and /Moy/
+2 GIVN JAMES MURRAY GRANT, 12th of Glenmoriston and
+2 SURN Moy
+1 SEX M
+1 BIRT
+2 DATE 1792
+2 PLAC Glenmoriston, Urquhart, Inverness-shire, Scotland
+1 DEAT
+2 DATE 1868
+0 @I137@ INDI
+1 NAME Anthony Oliver Molesworth, /Major/
+2 GIVN Anthony Oliver Molesworth,
+2 SURN Major
+1 SEX M
+1 BIRT
+2 DATE 1793
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1848
+0 @I138@ INDI
+1 NAME Anna Maria /Sherard/
+2 GIVN Anna Maria
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1794
+2 PLAC Cheshire, England
+1 DEAT
+2 DATE 1848
+0 @I139@ INDI
+1 NAME Anna Maria /Sherard/
+2 GIVN Anna Maria
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1794
+2 PLAC Teigh, Rutland, England
+0 @I140@ INDI
+1 NAME James Thomas /Molesworth/
+2 GIVN James Thomas
+2 SURN Molesworth
+1 SEX M
+1 BIRT
+2 DATE 1794
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1872
+0 @I141@ INDI
+1 NAME Sophia /Sherard/
+2 GIVN Sophia
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1795
+2 PLAC Stapleford, Leicestershire, England
+1 DEAT
+2 DATE 1851
+0 @I142@ INDI
+1 NAME Robert Sherard, 6th Earl of /Harborough/
+2 GIVN Robert Sherard, 6th Earl of
+2 SURN Harborough
+1 SEX M
+1 BIRT
+2 DATE 1797
+2 PLAC Fineshade Abbey, Fineshade, Corby, Northamptonshire, England
+1 DEAT
+2 DATE 1859
+0 @I143@ INDI
+1 NAME Emma Sarah /Frederick/
+2 GIVN Emma Sarah
+2 SURN Frederick
+1 SEX F
+1 BIRT
+2 DATE 1798
+2 PLAC London, Middlesex, England
+0 @I144@ INDI
+1 NAME Louisa Henrietta /Bode/
+2 GIVN Louisa Henrietta
+2 SURN Bode
+1 SEX U
+1 BIRT
+2 DATE 1798
+2 PLAC London, England
+1 DEAT
+2 DATE 1859
+0 @I145@ INDI
+1 NAME Elizabeth Winch /Pears/
+2 GIVN Elizabeth Winch
+2 SURN Pears
+1 SEX F
+1 BIRT
+2 DATE 1798
+2 PLAC Oxford
+1 DEAT
+2 DATE 1842
+0 @I146@ INDI
+1 NAME Jane /Sherard/
+2 GIVN Jane
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1799
+2 PLAC Fineshade, Corby, Northamptonshire, England
+1 DEAT
+2 DATE 1856
+0 @I147@ INDI
+1 NAME James George /Pears/
+2 GIVN James George
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1800
+2 PLAC Woodperry House
+1 DEAT
+2 DATE 1800
+0 @I148@ INDI
+1 NAME Charlotte /Sherard/
+2 GIVN Charlotte
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 DATE 1801
+2 PLAC Stapleford Park, Stapleford, Leicestershire, England
+1 DEAT
+2 DATE 1865
+0 @I149@ INDI
+1 NAME James Robert /Pears/
+2 GIVN James Robert
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1801
+2 PLAC Woodperry, Stanton St John, Oxfordshire
+1 DEAT
+2 DATE 1865
+0 @I150@ INDI
+1 NAME Caroline /Wood/
+2 GIVN Caroline
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 DATE 1802
+2 PLAC Littleton, Middlesex, England
+0 @I151@ INDI
+1 NAME Mary Anne /Pears/
+2 GIVN Mary Anne
+2 SURN Pears
+1 SEX F
+1 BIRT
+2 DATE 1803
+2 PLAC Holton, Oxfordshire, , England
+1 DEAT
+2 DATE 1870
+0 @I152@ INDI
+1 NAME Thomas /Wood/
+2 GIVN Thomas
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1804
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1872
+0 @I153@ INDI
+1 NAME William Henry /Wood/
+2 GIVN William Henry
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1805
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1834
+0 @I154@ INDI
+1 NAME Lt. William Henry /Pears/
+2 GIVN Lt. William Henry
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1806
+2 PLAC Woodperry, Oxford, Oxfordshire, England
+1 DEAT
+2 DATE 1824
+0 @I155@ INDI
+1 NAME Emily /Wood/
+2 GIVN Emily
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 DATE 1807
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1887
+0 @I156@ INDI
+1 NAME Lt. Charles Wethered /Pears/
+2 GIVN Lt. Charles Wethered
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1807
+2 PLAC Oxford, Oxfordshire, England
+1 DEAT
+2 DATE 1853
+0 @I157@ INDI
+1 NAME and Rev Annesley Henry /Gore/
+2 GIVN and Rev Annesley Henry
+2 SURN Gore
+1 SEX F
+1 BIRT
+2 DATE 1808
+2 PLAC Arran Island, Galway, Ireland
+1 DEAT
+2 DATE 1877
+0 @I158@ INDI
+1 NAME Mary Harriet Mellon /GLOVER/
+2 GIVN Mary Harriet Mellon
+2 SURN GLOVER
+1 SEX F
+1 BIRT
+2 DATE 1808
+2 PLAC Lome Hill, Lancashire, England
+0 @I159@ INDI
+1 NAME elizabeth frances /temple/
+2 GIVN elizabeth frances
+2 SURN temple
+1 SEX F
+1 BIRT
+2 DATE 1808
+2 PLAC Suffolk, England
+0 @I160@ INDI
+1 NAME Mj. Gen. Sir Thomas Townsend /Pears/
+2 GIVN Mj. Gen. Sir Thomas Townsend
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1809
+2 PLAC Marlow, Buckinghamshire, England
+1 DEAT
+2 DATE 1892
+0 @I161@ INDI
+1 NAME Charles Alexander /Wood/
+2 GIVN Charles Alexander
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1810
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1890
+0 @I162@ INDI
+1 NAME Maria Cecilia Knollis /Pears/
+2 GIVN Maria Cecilia Knollis
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1810
+2 PLAC Woodperry, Oxford, England,
+1 DEAT
+2 DATE 1832
+0 @I163@ INDI
+1 NAME Lt. Col. Arnold Christian /Pears/
+2 GIVN Lt. Col. Arnold Christian
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1811
+2 PLAC Bray, Maidenhead, Berkshire, England
+1 DEAT
+2 DATE 1891
+0 @I164@ INDI
+1 NAME David Edward /Wood/
+2 GIVN David Edward
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1812
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1894
+0 @I165@ INDI
+1 NAME William Charles Evans /Freke/
+2 GIVN William Charles Evans
+2 SURN Freke
+1 SEX M
+1 BIRT
+2 DATE 1812
+2 PLAC Wexford, Ireland
+1 DEAT
+2 DATE 1894
+0 @I166@ INDI
+1 NAME Salome /Boucher/
+2 GIVN Salome
+2 SURN Boucher
+1 SEX U
+1 BIRT
+2 DATE 1813
+2 PLAC Plaistow, Essex, , England
+1 DEAT
+2 DATE 1845
+0 @I167@ INDI
+1 NAME Rev. Edmund Ward /Pears/
+2 GIVN Rev. Edmund Ward
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1813
+2 PLAC Pirbright, Surrey, England
+1 DEAT
+2 DATE 1878
+0 @I168@ INDI
+1 NAME Robert Blucher /Wood/
+2 GIVN Robert Blucher
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1814
+2 PLAC Littleton, Chertsey, Surrey, England
+1 DEAT
+2 DATE 1871
+0 @I169@ INDI
+1 NAME Charles Spencer March /Phillipps/
+2 GIVN Charles Spencer March
+2 SURN Phillipps
+1 SEX M
+1 BIRT
+2 DATE 1815
+2 PLAC Camden, London, England
+1 DEAT
+2 DATE 1869
+0 @I170@ INDI
+1 NAME Rev. Steuart Adolphus /Pears/
+2 GIVN Rev. Steuart Adolphus
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1815
+2 PLAC Purbright, Surrey, England
+1 DEAT
+2 DATE 1875
+0 @I171@ INDI
+1 NAME Sophia Whichcote /=Turnor/
+2 GIVN Sophia Whichcote
+2 SURN =Turnor
+1 SEX F
+1 BIRT
+2 DATE 1815
+2 PLAC Stapleford, Leicestershire
+1 DEAT
+2 DATE 1868
+0 @I172@ INDI
+1 NAME William Dashwood /Fane/
+2 GIVN William Dashwood
+2 SURN Fane
+1 SEX M
+1 BIRT
+2 DATE 1816
+2 PLAC East Indies
+1 DEAT
+2 DATE 1902
+0 @I173@ INDI
+1 NAME Arthur Wellington /Wood/
+2 GIVN Arthur Wellington
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1816
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1853
+0 @I174@ INDI
+1 NAME John Otway /Cuffe/
+2 GIVN John Otway
+2 SURN Cuffe
+1 SEX M
+1 BIRT
+2 DATE 1817
+2 PLAC Cheltenham, Gloucestershire, England
+1 DEAT
+2 DATE 1899
+0 @I175@ INDI
+1 NAME George /Wood/
+2 GIVN George
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1817
+2 PLAC Littleton, Middlesex, England
+0 @I176@ INDI
+1 NAME Col. Ewen /Grant/
+2 GIVN Col. Ewen
+2 SURN Grant
+1 SEX U
+1 BIRT
+2 DATE 1817
+2 PLAC Glenmoriston, Urquhart, Inverness, Scotland
+1 DEAT
+2 DATE 1871
+0 @I177@ INDI
+1 NAME Henry /Lowther/
+2 GIVN Henry
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1818
+2 PLAC London, England
+1 DEAT
+2 DATE 1876
+0 @I178@ INDI
+1 NAME Alfred Augustus /Pears/
+2 GIVN Alfred Augustus
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1818
+2 PLAC Oxford, Oxfordshire, , England
+1 DEAT
+2 DATE 1864
+0 @I179@ INDI
+1 NAME John Talbot /Clifton/
+2 GIVN John Talbot
+2 SURN Clifton
+1 SEX M
+1 BIRT
+2 DATE 1819
+2 PLAC London, England
+1 DEAT
+2 DATE 1882
+0 @I180@ INDI
+1 NAME James Templeton /Wood/
+2 GIVN James Templeton
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 DATE 1819
+2 PLAC India
+1 DEAT
+2 DATE 1887
+0 @I181@ INDI
+1 NAME Arthur /Lowther/
+2 GIVN Arthur
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1820
+2 PLAC St Georges Hanover Square, Middlesex, England
+1 DEAT
+2 DATE 1855
+0 @I182@ INDI
+1 NAME Frances Anne Decima /Wood/
+2 GIVN Frances Anne Decima
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 DATE 1820
+2 PLAC Littleton, Middlesex, England
+1 DEAT
+2 DATE 1895
+0 @I183@ INDI
+1 NAME William /Lowther/
+2 GIVN William
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1821
+2 PLAC Cottesmore, Rutland, England
+1 DEAT
+2 DATE 1912
+0 @I184@ INDI
+1 NAME Eleanor Cecily /Lowther/
+2 GIVN Eleanor Cecily
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1822
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1894
+0 @I185@ INDI
+1 NAME Lt. Col. John /Reeve/
+2 GIVN Lt. Col. John
+2 SURN Reeve
+1 SEX M
+1 BIRT
+2 DATE 1822
+2 PLAC London, England
+1 DEAT
+2 DATE 1897
+0 @I186@ INDI
+1 NAME Robert Sherard /Calcraft/
+2 GIVN Robert Sherard
+2 SURN Calcraft
+1 SEX M
+1 BIRT
+2 DATE 1830
+0 @I187@ INDI
+1 NAME Constantia /Lowther/
+2 GIVN Constantia
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1831
+2 PLAC St Georges Hanover Square, Middlesex, England
+1 DEAT
+2 DATE 1864
+0 @I188@ INDI
+1 NAME Emily Susan /Caulfeild/
+2 GIVN Emily Susan
+2 SURN Caulfeild
+1 SEX F
+1 BIRT
+2 DATE 1832
+2 PLAC London, England
+1 DEAT
+2 DATE 1917
+0 @I189@ INDI
+1 NAME Frances Wilhelmina /Welby/
+2 GIVN Frances Wilhelmina
+2 SURN Welby
+1 SEX F
+1 BIRT
+2 DATE 1832
+2 PLAC London, England
+1 DEAT
+2 DATE 1858
+0 @I190@ INDI
+1 NAME Josephine Mary Sherard /Glover/
+2 GIVN Josephine Mary Sherard
+2 SURN Glover
+1 SEX F
+1 BIRT
+2 DATE 1836
+2 PLAC London
+0 @I191@ INDI
+1 NAME Mary Wilhelmina /Pears/
+2 GIVN Mary Wilhelmina
+2 SURN Pears
+1 SEX F
+1 BIRT
+2 DATE 1836
+2 PLAC Madras (Chennai), Tamil Nadu, India
+1 DEAT
+2 DATE 1894
+0 @I192@ INDI
+1 NAME Salome Catherine /Pears/
+2 GIVN Salome Catherine
+2 SURN Pears
+1 SEX F
+1 BIRT
+2 DATE 1837
+2 PLAC Secunderabad, Andhra Pradesh, India
+1 DEAT
+2 DATE 1923
+0 @I193@ INDI
+1 NAME John George Williams /Knox/
+2 GIVN John George Williams
+2 SURN Knox
+1 SEX M
+1 BIRT
+2 DATE 1838
+2 PLAC Leamington Priors, Warwickshire,
+1 DEAT
+2 DATE 1894
+0 @I194@ INDI
+1 NAME John Philip /Cuffe/
+2 GIVN John Philip
+2 SURN Cuffe
+1 SEX M
+1 BIRT
+2 DATE 1840
+2 PLAC Southsea, Hampshire, England
+1 DEAT
+2 DATE 1868
+0 @I195@ INDI
+1 NAME Sherard Glover /Roberts/
+2 GIVN Sherard Glover
+2 SURN Roberts
+1 SEX M
+1 BIRT
+2 DATE 1840
+2 PLAC Queen Steet, Marylebone, London, England
+0 @I196@ INDI
+1 NAME James Moyle /Pears/
+2 GIVN James Moyle
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1840
+2 PLAC Nagpore, Madras. (Indes Anglaises)
+1 DEAT
+2 DATE 1924
+0 @I197@ INDI
+1 NAME Alice Elizabeth /Pears/
+2 GIVN Alice Elizabeth
+2 SURN Pears
+1 SEX F
+1 BIRT
+2 DATE 1841
+2 PLAC Kamptee, Madras, India
+1 DEAT
+2 DATE 1887
+0 @I198@ INDI
+1 NAME Arnold Maurice /Pears/
+2 GIVN Arnold Maurice
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1842
+2 PLAC Madras, India
+1 DEAT
+2 DATE 1843
+0 @I199@ INDI
+1 NAME Maurice Arnold /Pears/
+2 GIVN Maurice Arnold
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1845
+2 PLAC Charlcombe, Somerset, England
+1 DEAT
+2 DATE 1889
+0 @I200@ INDI
+1 NAME Madeline Diana Elizabeth /Agnew/
+2 GIVN Madeline Diana Elizabeth
+2 SURN Agnew
+1 SEX F
+1 BIRT
+2 DATE 1847
+2 PLAC Oakham, Rutland, England
+1 DEAT
+2 DATE 1907
+0 @I201@ INDI
+1 NAME Alethea Beatrice /Clifton/
+2 GIVN Alethea Beatrice
+2 SURN Clifton
+1 SEX U
+1 BIRT
+2 DATE 1851
+2 PLAC Oakham, Rutland, England
+1 DEAT
+2 DATE 1851
+0 @I202@ INDI
+1 NAME Constantia Eleanor /Wood/
+2 GIVN Constantia Eleanor
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 DATE 1851
+2 PLAC 3 Grosvenor Crescent, Belgrave Square, Westminster, Middlesex, England.
+1 DEAT
+2 DATE 1940
+0 @I203@ INDI
+1 NAME Eleanor Fanny /Lowther/
+2 GIVN Eleanor Fanny
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1854
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1854
+0 @I204@ INDI
+1 NAME Elizabeth Rosamund /Pears/
+2 GIVN Elizabeth Rosamund
+2 SURN Pears
+1 SEX F
+1 BIRT
+2 DATE 1854
+2 PLAC Mhow, Bengal, India
+1 DEAT
+2 DATE 1886
+0 @I205@ INDI
+1 NAME Colonel St George Henry /Lowther/
+2 GIVN Colonel St George Henry
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1855
+2 PLAC Wilton Crescent, St George, Hanover Square, London, England
+1 DEAT
+2 DATE 1882
+0 @I206@ INDI
+1 NAME Evelyn Emily /Wood/
+2 GIVN Evelyn Emily
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 DATE 1855
+2 PLAC St Georges Hanover Square, Middlesex, England
+1 DEAT
+2 DATE 1899
+0 @I207@ INDI
+1 NAME Charles Stewart B /Pears/
+2 GIVN Charles Stewart B
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1855
+2 PLAC India
+1 DEAT
+2 DATE 1855
+0 @I208@ INDI
+1 NAME Hugh Cecil /LOWTHER*/
+2 GIVN Hugh Cecil
+2 SURN LOWTHER*
+1 SEX M
+1 BIRT
+2 DATE 1857
+2 PLAC London, United Kingdom
+1 DEAT
+2 DATE 1944
+0 @I209@ INDI
+1 NAME Arthur /Brassey/
+2 GIVN Arthur
+2 SURN Brassey
+1 SEX M
+1 BIRT
+2 DATE 1857
+2 PLAC Great Boughton, Cheshire
+1 DEAT
+2 DATE 1928
+0 @I210@ INDI
+1 NAME Charles Edwin /Lowther/
+2 GIVN Charles Edwin
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1859
+2 PLAC London,  England
+1 DEAT
+2 DATE 1888
+0 @I211@ INDI
+1 NAME Janet Little /Wood/
+2 GIVN Janet Little
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 DATE 1859
+2 PLAC St Georges Hanover Square, Middlesex, England
+1 DEAT
+2 DATE 1935
+0 @I212@ INDI
+1 NAME Constance Gladys /Herbert/
+2 GIVN Constance Gladys
+2 SURN Herbert
+1 SEX F
+1 BIRT
+2 DATE 1859
+2 PLAC Wilton, Wiltshire, England
+1 DEAT
+2 DATE 1917
+0 @I213@ INDI
+1 NAME Hugh March /Philbeffs/
+2 GIVN Hugh March
+2 SURN Philbeffs
+1 SEX M
+1 BIRT
+2 DATE 1859
+2 PLAC Tiverton, Devon, England
+1 DEAT
+2 DATE 1930
+0 @I214@ INDI
+1 NAME Steuart Durand /Pears/
+2 GIVN Steuart Durand
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1859
+2 PLAC Ooty, Tamil Nadu, India
+1 DEAT
+2 DATE 1953
+0 @I215@ INDI
+1 NAME Clare Helen /Pears/
+2 GIVN Clare Helen
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1860
+2 PLAC Ooty, Tamil Nadu, India
+1 DEAT
+2 DATE 1861
+0 @I216@ INDI
+1 NAME Robert Harborough Sherard Calcraft /Sherard/
+2 GIVN Robert Harborough Sherard Calcraft
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 DATE 1861
+2 PLAC Putney, Surrey, England
+1 DEAT
+2 DATE 1943
+0 @I217@ INDI
+1 NAME Sybil Emily /Lowther/
+2 GIVN Sybil Emily
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1862
+2 PLAC Hatton Crescent
+1 DEAT
+2 DATE 1932
+0 @I218@ INDI
+1 NAME V. Adm. Sir Edmund Radcliffe 'Uncle Ted' /Pears/
+2 GIVN V. Adm. Sir Edmund Radcliffe 'Uncle Ted'
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1862
+2 PLAC Ooty, Tamil Nadu, India
+1 DEAT
+2 DATE 1941
+0 @I219@ INDI
+1 NAME Arthur Grant /Pears/
+2 GIVN Arthur Grant
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 DATE 1863
+2 PLAC Ootacamund, Madras, India
+1 DEAT
+2 DATE 1948
+0 @I220@ INDI
+1 NAME Major Victor Albert Francis Charles Spencer. 1st Viscount Churchill /GCVO/
+2 GIVN Major Victor Albert Francis Charles Spencer. 1st Viscount Churchill
+2 SURN GCVO
+1 SEX M
+1 BIRT
+2 DATE 1864
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1934
+0 @I221@ INDI
+1 NAME Verena Mathilde /Lowther/
+2 GIVN Verena Mathilde
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1865
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1938
+0 @I222@ INDI
+1 NAME Arnold Murray /Grant/
+2 GIVN Arnold Murray
+2 SURN Grant
+1 SEX U
+1 BIRT
+2 DATE 1865
+2 PLAC Bombay, India
+1 DEAT
+2 DATE 1905
+0 @I223@ INDI
+1 NAME William /Grant/
+2 GIVN William
+2 SURN Grant
+1 SEX M
+1 BIRT
+2 DATE 1865
+2 PLAC Inverurie,Aberdeen,Scotland
+0 @I224@ INDI
+1 NAME Lancelot Edward /Lowther/
+2 GIVN Lancelot Edward
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1867
+2 PLAC Hatton Crescent
+1 DEAT
+2 DATE 1953
+0 @I225@ INDI
+1 NAME Madeline Edith /Clifton/
+2 GIVN Madeline Edith
+2 SURN Clifton
+1 SEX U
+1 BIRT
+2 DATE 1867
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1946
+0 @I226@ INDI
+1 NAME Alice Margaret /Grant/
+2 GIVN Alice Margaret
+2 SURN Grant
+1 SEX F
+1 BIRT
+2 DATE 1867
+2 PLAC Bombay, India
+0 @I227@ INDI
+1 NAME John Talbot /Clifton/
+2 GIVN John Talbot
+2 SURN Clifton
+1 SEX M
+1 BIRT
+2 DATE 1868
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1928
+0 @I228@ INDI
+1 NAME Elizabeth /Grant/
+2 GIVN Elizabeth
+2 SURN Grant
+1 SEX F
+1 BIRT
+2 DATE 1868
+2 PLAC Inverness,Inverness,Scotland
+1 DEAT
+2 DATE 1901
+0 @I229@ INDI
+1 NAME Agnes Marion /Pears/
+2 GIVN Agnes Marion
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1868
+2 PLAC Ooty, Tamil Nadu, India
+1 DEAT
+2 DATE 1947
+0 @I230@ INDI
+1 NAME Isabel F. Beatrice /Grant/
+2 GIVN Isabel F. Beatrice
+2 SURN Grant
+1 SEX U
+1 BIRT
+2 DATE 1869
+2 PLAC Nairn, Nairnshire, Scotland
+1 DEAT
+2 DATE 1952
+0 @I231@ INDI
+1 NAME Cuthbert /Clifton/
+2 GIVN Cuthbert
+2 SURN Clifton
+1 SEX U
+1 BIRT
+2 DATE 1870
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1900
+0 @I232@ INDI
+1 NAME Katharine Maude /Pears/
+2 GIVN Katharine Maude
+2 SURN Pears
+1 SEX U
+1 BIRT
+2 DATE 1870
+2 PLAC Blackheath, Kent, England
+1 DEAT
+2 DATE 1968
+0 @I233@ INDI
+1 NAME Constance Gertrude Cecily /Clifton/
+2 GIVN Constance Gertrude Cecily
+2 SURN Clifton
+1 SEX U
+1 BIRT
+2 DATE 1871
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1954
+0 @I234@ INDI
+1 NAME Col Harry Arthur /Clifton/
+2 GIVN Col Harry Arthur
+2 SURN Clifton
+1 SEX M
+1 BIRT
+2 DATE 1874
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1947
+0 @I235@ INDI
+1 NAME Lt. Col. James Archibald Innes husband of 9th /cousin/
+2 GIVN Lt. Col. James Archibald Innes husband of 9th
+2 SURN cousin
+1 SEX M
+1 BIRT
+2 DATE 1875
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1948
+0 @I236@ INDI
+1 NAME Frances Victoria /Clifton/
+2 GIVN Frances Victoria
+2 SURN Clifton
+1 SEX F
+1 BIRT
+2 DATE 1876
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1960
+0 @I237@ INDI
+1 NAME Charles Caryl /Clifton/
+2 GIVN Charles Caryl
+2 SURN Clifton
+1 SEX M
+1 BIRT
+2 DATE 1877
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1932
+0 @I238@ INDI
+1 NAME Frederick James /Dundas/
+2 GIVN Frederick James
+2 SURN Dundas
+1 SEX M
+1 BIRT
+2 DATE 1877
+2 PLAC St George Hanover Square, London, United Kingdom
+1 DEAT
+2 DATE 1950
+0 @I239@ INDI
+1 NAME Gladys Mary Juliet /Lowther/
+2 GIVN Gladys Mary Juliet
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1881
+2 PLAC The Strand, Westminster, London, England
+1 DEAT
+2 DATE 1965
+0 @I240@ INDI
+1 NAME Henry Thomas /Knox/
+2 GIVN Henry Thomas
+2 SURN Knox
+1 SEX M
+1 BIRT
+2 DATE 1887
+2 PLAC St George, Hanover Square, London
+1 DEAT
+2 DATE 1924
+0 @I241@ INDI
+1 NAME Victor Almeric Lancelot William Spencer /Churchill/
+2 GIVN Victor Almeric Lancelot William Spencer
+2 SURN Churchill
+1 SEX M
+1 BIRT
+2 DATE 1888
+2 PLAC Oakham, Rutland, Leicestershire, England, United Kingdom
+1 DEAT
+2 DATE 1888
+0 @I242@ INDI
+1 NAME Victor Alexander Spencer Viscount Churchill Baron Churchill van /Whichwood/
+2 GIVN Victor Alexander Spencer Viscount Churchill Baron Churchill van
+2 SURN Whichwood
+1 SEX M
+1 BIRT
+2 DATE 1890
+2 PLAC Chelsea, London, England
+1 DEAT
+2 DATE 1973
+0 @I243@ INDI
+1 NAME Barbara /Innes/
+2 GIVN Barbara
+2 SURN Innes
+1 SEX F
+1 BIRT
+2 DATE 1890
+2 PLAC St George Hanover Square, London, England
+0 @I244@ INDI
+1 NAME Louisa Eileen /Knox/
+2 GIVN Louisa Eileen
+2 SURN Knox
+1 SEX U
+1 BIRT
+2 DATE 1891
+2 PLAC 28 Wilton Crescent, Chelsea, London, England
+1 DEAT
+2 DATE 1971
+0 @I245@ INDI
+1 NAME George Bridges Harley /Guest/
+2 GIVN George Bridges Harley
+2 SURN Guest
+1 SEX M
+1 BIRT
+2 DATE 1891
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1973
+0 @I246@ INDI
+1 NAME Sylvia Mary /March-Phillipps/
+2 GIVN Sylvia Mary
+2 SURN March-Phillipps
+1 SEX F
+1 BIRT
+2 DATE 1891
+2 PLAC Tiverton, Devon, England
+1 DEAT
+2 DATE 1976
+0 @I247@ INDI
+1 NAME Margery Helen /March-Phillipps/
+2 GIVN Margery Helen
+2 SURN March-Phillipps
+1 SEX U
+1 BIRT
+2 DATE 1892
+2 PLAC Tiverton, Devon, England
+1 DEAT
+2 DATE 1974
+0 @I248@ INDI
+1 NAME Spencer Lisle /March-Phillipps/
+2 GIVN Spencer Lisle
+2 SURN March-Phillipps
+1 SEX U
+1 BIRT
+2 DATE 1894
+2 PLAC Weymouth, Dorset, England
+1 DEAT
+2 DATE 1917
+0 @I249@ INDI
+1 NAME Ian Geoffery /Brassey/
+2 GIVN Ian Geoffery
+2 SURN Brassey
+1 SEX U
+1 BIRT
+2 DATE 1894
+2 PLAC New South Wales
+0 @I250@ INDI
+1 NAME Ewan Authur /Brassey/
+2 GIVN Ewan Authur
+2 SURN Brassey
+1 SEX U
+1 BIRT
+2 DATE 1894
+2 PLAC Tiverton, Devon
+1 DEAT
+2 DATE 1952
+0 @I251@ INDI
+1 NAME Marjorie /Lowther/
+2 GIVN Marjorie
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1895
+2 PLAC Brenhan Gardens, London, England
+1 DEAT
+2 DATE 1968
+0 @I252@ INDI
+1 NAME Edward John Murrey /Feetham/
+2 GIVN Edward John Murrey
+2 SURN Feetham
+1 SEX M
+1 BIRT
+2 DATE 1895
+2 PLAC Henley, Oxfordshire
+0 @I253@ INDI
+1 NAME Cecil Henry /Brassey/
+2 GIVN Cecil Henry
+2 SURN Brassey
+1 SEX M
+1 BIRT
+2 DATE 1896
+2 PLAC St George Hanover Square Chelsea, London, England
+1 DEAT
+2 DATE 1949
+0 @I254@ INDI
+1 NAME Countess Muriel Frances Farrar wife of 9th /cousin/
+2 GIVN Countess Muriel Frances Farrar wife of 9th
+2 SURN cousin
+1 SEX F
+1 BIRT
+2 DATE 1896
+2 PLAC Johannesburg, Gauteng, South Africa
+1 DEAT
+2 DATE 1968
+0 @I255@ INDI
+1 NAME Victoria Ivy L /Spencer/
+2 GIVN Victoria Ivy L
+2 SURN Spencer
+1 SEX F
+1 BIRT
+2 DATE 1897
+2 PLAC Chelsea, London, England
+1 DEAT
+2 DATE 1983
+0 @I256@ INDI
+1 NAME Esther /March-Phillipps/
+2 GIVN Esther
+2 SURN March-Phillipps
+1 SEX U
+1 BIRT
+2 DATE 1897
+2 PLAC Tiverton, Devon, England
+1 DEAT
+2 DATE 1977
+0 @I257@ INDI
+1 NAME Mary Salmone Phillis /Brassey/
+2 GIVN Mary Salmone Phillis
+2 SURN Brassey
+1 SEX F
+1 BIRT
+2 DATE 1899
+2 PLAC New South Wales
+1 DEAT
+2 DATE 1890
+0 @I258@ INDI
+1 NAME Ursula /Spencer/
+2 GIVN Ursula
+2 SURN Spencer
+1 SEX F
+1 BIRT
+2 DATE 1901
+2 PLAC Chelsea, London, England
+1 DEAT
+2 DATE 1934
+0 @I259@ INDI
+1 NAME Sybil Beatrix /Lowther/
+2 GIVN Sybil Beatrix
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1901
+2 PLAC Kensington, London, England
+1 DEAT
+2 DATE 1966
+0 @I260@ INDI
+1 NAME Elizabeth Mary /Dundas/
+2 GIVN Elizabeth Mary
+2 SURN Dundas
+1 SEX F
+1 BIRT
+2 DATE 1914
+2 PLAC Doncaster, Yorkshire, England
+1 DEAT
+2 DATE 2008
+0 @I261@ INDI
+1 NAME James Innis 9th cousin 1x /removed/
+2 GIVN James Innis 9th cousin 1x
+2 SURN removed
+1 SEX M
+1 BIRT
+2 DATE 1915
+2 PLAC Chelsea, London, England
+1 DEAT
+2 DATE 2004
+0 @I262@ INDI
+1 NAME Nigel Harold Scott /Hambro/
+2 GIVN Nigel Harold Scott
+2 SURN Hambro
+1 SEX U
+1 BIRT
+2 DATE 1915
+2 PLAC Chelsea, London, England
+1 DEAT
+2 DATE 1987
+0 @I263@ INDI
+1 NAME Flt. Lt. John Charles /Dundas/
+2 GIVN Flt. Lt. John Charles
+2 SURN Dundas
+1 SEX M
+1 BIRT
+2 DATE 1915
+2 PLAC Doncaster, Yorkshire, England
+1 DEAT
+2 DATE 1940
+0 @I264@ INDI
+1 NAME Marjorie Caroline Innis 9th cousin 1x /removed/
+2 GIVN Marjorie Caroline Innis 9th cousin 1x
+2 SURN removed
+1 SEX F
+1 BIRT
+2 DATE 1917
+2 PLAC Nottingham, Nottinghamshire, England
+1 DEAT
+2 DATE 2004
+0 @I265@ INDI
+1 NAME Veronica Wenefryde Nefertari /Bethell/
+2 GIVN Veronica Wenefryde Nefertari
+2 SURN Bethell
+1 SEX U
+1 BIRT
+2 DATE 1917
+2 PLAC Marylebone, London, England
+1 DEAT
+2 DATE 2018
+0 @I266@ INDI
+1 NAME George William /Rodney/
+2 GIVN George William
+2 SURN Rodney
+1 SEX M
+1 BIRT
+2 DATE 1918
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1942
+0 @I267@ INDI
+1 NAME Alice Maud /Dundas/
+2 GIVN Alice Maud
+2 SURN Dundas
+1 SEX F
+1 BIRT
+2 DATE 1918
+2 PLAC Doncaster, Yorkshire West Riding
+1 DEAT
+2 DATE 1986
+0 @I268@ INDI
+1 NAME John Francis /Rodney/
+2 GIVN John Francis
+2 SURN Rodney
+1 SEX M
+1 BIRT
+2 DATE 1920
+2 PLAC Fort Saskatchewan, Strathcona, Alberta, Canada
+1 DEAT
+2 DATE 1992
+0 @I269@ INDI
+1 NAME Sir. Hugh Spencer Lisle /Dundas/
+2 GIVN Sir. Hugh Spencer Lisle
+2 SURN Dundas
+1 SEX M
+1 BIRT
+2 DATE 1920
+2 PLAC Barnburgh, Yorkshire, England
+1 DEAT
+2 DATE 1995
+0 @I270@ INDI
+1 NAME Julian Patrick Fane husband of 9th cousin 1x /removed/
+2 GIVN Julian Patrick Fane husband of 9th cousin 1x
+2 SURN removed
+1 SEX U
+1 BIRT
+2 DATE 1921
+2 PLAC London, London, England, United Kingdom
+1 DEAT
+2 DATE 2013
+0 @I271@ INDI
+1 NAME Earl James Hugh William Lowther 9th cousin 1x /removed/
+2 GIVN Earl James Hugh William Lowther 9th cousin 1x
+2 SURN removed
+1 SEX M
+1 BIRT
+2 DATE 1922
+2 PLAC London, England
+1 DEAT
+2 DATE 2006
+0 @I272@ INDI
+1 NAME Henry Alfred J /Hawker/
+2 GIVN Henry Alfred J
+2 SURN Hawker
+1 SEX M
+1 BIRT
+2 DATE 1923
+2 PLAC Taunton, Somerset, England
+1 DEAT
+2 DATE 2006
+0 @I273@ INDI
+1 NAME Tuppina Cecily Ida Harbord /Bennet/
+2 GIVN Tuppina Cecily Ida Harbord
+2 SURN Bennet
+1 SEX U
+1 BIRT
+2 DATE 1924
+2 PLAC Grantham, Lincolnshire, England
+0 @I274@ INDI
+1 NAME Diana Rosemary /Rodney/
+2 GIVN Diana Rosemary
+2 SURN Rodney
+1 SEX F
+1 BIRT
+2 DATE 1924
+2 PLAC St Martin, London, England
+1 DEAT
+2 DATE 2022
+0 @I275@ INDI
+1 NAME Timothy L E /Lowther/
+2 GIVN Timothy L E
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1925
+2 PLAC Oakham, Rutland, England
+1 DEAT
+2 DATE 1984
+0 @I276@ INDI
+1 NAME Anthony George Lowther 9th cousin 1x /removed/
+2 GIVN Anthony George Lowther 9th cousin 1x
+2 SURN removed
+1 SEX M
+1 BIRT
+2 DATE 1925
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1981
+0 @I277@ INDI
+1 NAME Richard John /Palmer/
+2 GIVN Richard John
+2 SURN Palmer
+1 SEX M
+1 BIRT
+2 DATE 1926
+2 PLAC St George Hanover Square, London, England
+0 @I278@ INDI
+1 NAME Michael Christopher /Rodney/
+2 GIVN Michael Christopher
+2 SURN Rodney
+1 SEX U
+1 BIRT
+2 DATE 1926
+2 PLAC Fort Saskatchewan, Strathcona, Alberta, Canada
+1 DEAT
+2 DATE 1993
+0 @I279@ INDI
+1 NAME Margaret E J /Herring/
+2 GIVN Margaret E J
+2 SURN Herring
+1 SEX F
+1 BIRT
+2 DATE 1927
+1 DEAT
+2 DATE 2017
+0 @I280@ INDI
+1 NAME Ann Mary Lowther 9th cousin 1x /removed/
+2 GIVN Ann Mary Lowther 9th cousin 1x
+2 SURN removed
+1 SEX F
+1 BIRT
+2 DATE 1927
+2 PLAC Marylebone, London, England
+1 DEAT
+2 DATE 1956
+0 @I281@ INDI
+1 NAME Nancy Ruth /Cobbs/
+2 GIVN Nancy Ruth
+2 SURN Cobbs
+1 SEX U
+1 BIRT
+2 DATE 1928
+2 PLAC San Bernardino, California, USA
+1 DEAT
+2 DATE 1999
+0 @I282@ INDI
+1 NAME John Dawnay /Innes/
+2 GIVN John Dawnay
+2 SURN Innes
+1 SEX M
+1 BIRT
+2 DATE 1930
+2 PLAC Chelsea, London
+1 DEAT
+2 DATE 1966
+0 @I283@ INDI
+1 NAME Sylvia Corisande /Rodney/
+2 GIVN Sylvia Corisande
+2 SURN Rodney
+1 SEX U
+1 BIRT
+2 DATE 1930
+2 PLAC Alberta, Canada
+1 DEAT
+2 DATE 1985
+0 @I284@ INDI
+1 NAME Sarah Faith Georgina /Spencer/
+2 GIVN Sarah Faith Georgina
+2 SURN Spencer
+1 SEX F
+1 BIRT
+2 DATE 1931
+2 PLAC Paddington, London, England
+1 DEAT
+2 DATE 2015
+0 @I285@ INDI
+1 NAME Lavinia /Lowther/
+2 GIVN Lavinia
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 DATE 1931
+2 PLAC Los Angeles, Los Angeles County, California, United States of America
+1 DEAT
+2 DATE 2003
+0 @I286@ INDI
+1 NAME Charmian /Dundas/
+2 GIVN Charmian
+2 SURN Dundas
+1 SEX U
+1 BIRT
+2 DATE 1931
+2 PLAC Penistone, Yorkshire, England
+1 DEAT
+2 DATE 2013
+0 @I287@ INDI
+1 NAME Jennifer /Lowther/
+2 GIVN Jennifer
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1932
+2 PLAC Marylebone, London, England
+1 DEAT
+2 DATE 2021
+0 @I288@ INDI
+1 NAME Delia M /Innes/
+2 GIVN Delia M
+2 SURN Innes
+1 SEX U
+1 BIRT
+2 DATE 1933
+2 PLAC St George Hanover Square, London, England
+1 DEAT
+2 DATE 1997
+0 @I289@ INDI
+1 NAME Victor George /Spencer/
+2 GIVN Victor George
+2 SURN Spencer
+1 SEX M
+1 BIRT
+2 DATE 1934
+2 PLAC Paddington, London, England
+1 DEAT
+2 DATE 2017
+0 @I290@ INDI
+1 NAME Susan Ann /Smallwood/
+2 GIVN Susan Ann
+2 SURN Smallwood
+1 SEX F
+1 BIRT
+2 DATE 1934
+2 PLAC Kensington, Greater London
+1 DEAT
+2 DATE 2023
+0 @I291@ INDI
+1 NAME John David /Caldecott/
+2 GIVN John David
+2 SURN Caldecott
+1 SEX M
+1 BIRT
+2 DATE 1935
+2 PLAC Gloucester, Gloucestershire, England
+1 DEAT
+2 DATE 2010
+0 @I292@ INDI
+1 NAME Caroline Sheila /Ley/
+2 GIVN Caroline Sheila
+2 SURN Ley
+1 SEX F
+1 BIRT
+2 DATE 1943
+2 PLAC Chelsea, London,  England
+1 DEAT
+2 DATE 2019
+0 @I293@ INDI
+1 NAME Olga Diana /Hambro/
+2 GIVN Olga Diana
+2 SURN Hambro
+1 SEX F
+1 BIRT
+2 DATE 1944
+2 PLAC Surrey South Western, Surrey, England
+1 DEAT
+2 DATE 2012
+0 @I294@ INDI
+1 NAME Hugh Clayton /Lowther/
+2 GIVN Hugh Clayton
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 1949
+2 PLAC Northumberland West, Northumberland
+1 DEAT
+2 DATE 2021
+0 @I295@ INDI
+1 NAME Augusta Mary /Lowther/
+2 GIVN Augusta Mary
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 PLAC St Georges Hanover Square, Middlesex, England
+1 DEAT
+2 DATE 1916
+0 @I296@ INDI
+1 NAME Elisabeth /MAUDE/
+2 GIVN Elisabeth
+2 SURN MAUDE
+1 SEX U
+1 BIRT
+2 PLAC Alverthorpe, Yorkshire, England
+1 DEAT
+2 DATE 1751
+0 @I297@ INDI
+1 NAME Dorothy /Norton/
+2 GIVN Dorothy
+2 SURN Norton
+1 SEX F
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+1 DEAT
+2 DATE 1760
+0 @I298@ INDI
+1 NAME Samuel /Norton/
+2 GIVN Samuel
+2 SURN Norton
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1697
+0 @I299@ INDI
+1 NAME Ann /Wood/
+2 GIVN Ann
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+1 DEAT
+2 DATE 1730
+0 @I300@ INDI
+1 NAME Dorothy /Norton/
+2 GIVN Dorothy
+2 SURN Norton
+1 SEX F
+0 @I301@ INDI
+1 NAME Rev. Charles /Zouch/
+2 GIVN Rev. Charles
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, St Helen, Yorkshire, England
+1 DEAT
+2 DATE 1754
+0 @I302@ INDI
+1 NAME Elizabetha Dorothea /Zouch/
+2 GIVN Elizabetha Dorothea
+2 SURN Zouch
+1 SEX F
+1 DEAT
+2 DATE 1792
+0 @I303@ INDI
+1 NAME Arthur /Zouch/
+2 GIVN Arthur
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, Yorkshire, England
+1 DEAT
+2 DATE 1731
+0 @I304@ INDI
+1 NAME Elizabeth /Zouch/
+2 GIVN Elizabeth
+2 SURN Zouch
+1 SEX F
+0 @I305@ INDI
+1 NAME Francis /Zouch/
+2 GIVN Francis
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, Yorkshire, England
+0 @I306@ INDI
+1 NAME Gervase /Norton/
+2 GIVN Gervase
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1730
+0 @I307@ INDI
+1 NAME Samuel /Norton/
+2 GIVN Samuel
+2 SURN Norton
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1690
+0 @I308@ INDI
+1 NAME John /Norton/
+2 GIVN John
+2 SURN Norton
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, York, England
+0 @I309@ INDI
+1 NAME Robert /Norton/
+2 GIVN Robert
+2 SURN Norton
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1691
+0 @I310@ INDI
+1 NAME Thomas /Norton/
+2 GIVN Thomas
+2 SURN Norton
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1749
+0 @I311@ INDI
+1 NAME Anne /Norton/
+2 GIVN Anne
+2 SURN Norton
+1 SEX F
+1 BIRT
+2 PLAC Sandal Magna, York, England
+0 @I312@ INDI
+1 NAME Augusta /Bertie/
+2 GIVN Augusta
+2 SURN Bertie
+1 SEX F
+1 BIRT
+2 PLAC Grimsthorpe, Lincolnshire, England
+1 DEAT
+2 DATE 1766
+0 @I313@ INDI
+1 NAME Anne /Fane/
+2 GIVN Anne
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 PLAC Bristol, Gloucestershire, England
+1 DEAT
+2 DATE 1764
+0 @I314@ INDI
+1 NAME Mary /Fane/
+2 GIVN Mary
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 PLAC Bristol, Gloucestershire, England
+0 @I315@ INDI
+1 NAME Jane /Reeve/
+2 GIVN Jane
+2 SURN Reeve
+1 SEX F
+1 BIRT
+2 PLAC Melton Mowbray, Leicestershire, England
+1 DEAT
+2 DATE 1770
+0 @I316@ INDI
+1 NAME Susan /Sherard/
+2 GIVN Susan
+2 SURN Sherard
+1 SEX U
+1 BIRT
+2 PLAC Fineshade, Northamptonshire, England
+1 DEAT
+2 DATE 1877
+0 @I317@ INDI
+1 NAME Jane /Sherard/
+2 GIVN Jane
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 PLAC England
+0 @I318@ INDI
+1 NAME Katherine Harrison /Lowther/
+2 GIVN Katherine Harrison
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 PLAC St. Botolph Aldgate, London, London, England, United Kingdom
+1 DEAT
+2 DATE 1708
+0 @I319@ INDI
+1 NAME Amabell /Lowther/
+2 GIVN Amabell
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 PLAC Swillington, Yorkshire, England, United Kingdom
+0 @I320@ INDI
+1 NAME Jane /Lowther/
+2 GIVN Jane
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 PLAC Swillington, Yorkshire, England, United Kingdom
+1 DEAT
+2 DATE 1705
+0 @I321@ INDI
+1 NAME Henry /Lowther/
+2 GIVN Henry
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 PLAC Swillington, Yorkshire, England, United Kingdom
+0 @I322@ INDI
+1 NAME Martha /Lowther/
+2 GIVN Martha
+2 SURN Lowther
+1 SEX U
+1 BIRT
+2 PLAC of Kirkgait, Yorks, Eng.
+0 @I323@ INDI
+1 NAME Mary /Adams/
+2 GIVN Mary
+2 SURN Adams
+1 SEX F
+1 BIRT
+2 PLAC Great Orton, Cumberland, England
+1 DEAT
+2 DATE 1699
+0 @I324@ INDI
+1 NAME John /Lowther/
+2 GIVN John
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 PLAC Great Orton, Cumberland, England
+1 DEAT
+2 DATE 1688
+0 @I325@ INDI
+1 NAME Sarah /Rayner/
+2 GIVN Sarah
+2 SURN Rayner
+1 SEX F
+0 @I326@ INDI
+1 NAME Henry /Lowther/
+2 GIVN Henry
+2 SURN Lowther
+1 SEX M
+0 @I327@ INDI
+1 NAME Robert /Lowther/
+2 GIVN Robert
+2 SURN Lowther
+1 SEX M
+0 @I328@ INDI
+1 NAME John /Lowther/
+2 GIVN John
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 PLAC Leeds, Yorkshire, England
+1 DEAT
+2 DATE 1639
+0 @I329@ INDI
+1 NAME Jeremy /MAUDE/
+2 GIVN Jeremy
+2 SURN MAUDE
+1 SEX U
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+0 @I330@ INDI
+1 NAME Fanny /Staveley/
+2 GIVN Fanny
+2 SURN Staveley
+1 SEX F
+0 @I331@ INDI
+1 NAME Jeremie /Maud/
+2 GIVN Jeremie
+2 SURN Maud
+1 SEX U
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+0 @I332@ INDI
+1 NAME Jeremiah /Maud/
+2 GIVN Jeremiah
+2 SURN Maud
+1 SEX U
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+0 @I333@ INDI
+1 NAME Hellen /Siddall/
+2 GIVN Hellen
+2 SURN Siddall
+1 SEX U
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+0 @I334@ INDI
+1 NAME Anne /Pedley/
+2 GIVN Anne
+2 SURN Pedley
+1 SEX F
+1 BIRT
+2 PLAC of, Washingley, Huntingdonshire, England
+1 DEAT
+2 DATE 1750
+0 @I335@ INDI
+1 NAME Dorothy /Roberts/
+2 GIVN Dorothy
+2 SURN Roberts
+1 SEX F
+1 BIRT
+2 PLAC of, Glaiston, , Rutland, England
+1 DEAT
+2 DATE 1781
+0 @I336@ INDI
+1 NAME Lucy /Sherard/
+2 GIVN Lucy
+2 SURN Sherard
+1 SEX F
+1 BIRT
+2 PLAC of Whissendine,Rutlandshire
+1 DEAT
+2 DATE 1781
+0 @I337@ INDI
+1 NAME John Monckton, 1st Viscount /Galway/
+2 GIVN John Monckton, 1st Viscount
+2 SURN Galway
+1 SEX M
+1 BIRT
+2 PLAC Belvoir, Melton Borough, Leicestershire, England
+1 DEAT
+2 DATE 1751
+0 @I338@ INDI
+1 NAME Jane Westenra of Rathleague, Viscountess /Galway/
+2 GIVN Jane Westenra of Rathleague, Viscountess
+2 SURN Galway
+1 SEX F
+1 BIRT
+2 PLAC Dublin, Dublin, Leinster, Ireland
+1 DEAT
+2 DATE 1788
+0 @I339@ INDI
+1 NAME Ann Adams /Monckton/
+2 GIVN Ann Adams
+2 SURN Monckton
+1 SEX F
+1 BIRT
+2 PLAC England
+1 DEAT
+2 DATE 1807
+0 @I340@ INDI
+1 NAME Mary Anne Monckton /Pigot/
+2 GIVN Mary Anne Monckton
+2 SURN Pigot
+1 SEX F
+1 BIRT
+2 PLAC England
+1 DEAT
+2 DATE 1833
+0 @I341@ INDI
+1 NAME William Monckton-Arundell, 2nd Viscount /Galway/
+2 GIVN William Monckton-Arundell, 2nd Viscount
+2 SURN Galway
+1 SEX M
+1 BIRT
+2 PLAC Serlby Hall, Nottinghamshire, England
+1 DEAT
+2 DATE 1772
+0 @I342@ INDI
+1 NAME Anthony Ed /Lowther/
+2 GIVN Anthony Ed
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 PLAC Asfordby, Leicestershire, England
+1 DEAT
+2 DATE 1949
+0 @I343@ INDI
+1 NAME Viscount /Churchill/
+2 GIVN Viscount
+2 SURN Churchill
+1 SEX M
+0 @I344@ INDI
+1 NAME Christine /Sinclair/
+2 GIVN Christine
+2 SURN Sinclair
+1 SEX U
+0 @I345@ INDI
+1 NAME David Archibald Innes 9th cousin 1x /removed/
+2 GIVN David Archibald Innes 9th cousin 1x
+2 SURN removed
+1 SEX U
+1 BIRT
+2 PLAC ABT 1915
+0 @I346@ INDI
+1 NAME Victor Herbert Miller husband of 9th /cousin/
+2 GIVN Victor Herbert Miller husband of 9th
+2 SURN cousin
+1 SEX M
+1 BIRT
+2 PLAC Milan, Italy
+1 DEAT
+2 DATE 1931
+0 @I347@ INDI
+1 NAME Alec F /Tod/
+2 GIVN Alec F
+2 SURN Tod
+1 SEX U
+0 @I348@ INDI
+1 NAME William Otway /Cuffe/
+2 GIVN William Otway
+2 SURN Cuffe
+1 SEX M
+1 BIRT
+2 PLAC Killaghy, Castle, Kilkenny County, Ireland
+1 DEAT
+2 DATE 1848
+0 @I349@ INDI
+1 NAME John B /Hall/
+2 GIVN John B
+2 SURN Hall
+1 SEX M
+0 @I350@ INDI
+1 NAME Caroline /David/
+2 GIVN Caroline
+2 SURN David
+1 SEX F
+0 @I351@ INDI
+1 NAME  /Julia/
+2 SURN Julia
+1 SEX U
+0 @I352@ INDI
+1 NAME Edwina M /Stanley/
+2 GIVN Edwina M
+2 SURN Stanley
+1 SEX U
+0 @I353@ INDI
+1 NAME George Augustus Frederick /Cavendish-Bentinck-Portland/
+2 GIVN George Augustus Frederick
+2 SURN Cavendish-Bentinck-Portland
+1 SEX M
+1 BIRT
+2 PLAC Westminster, Middlesex, England
+1 DEAT
+2 DATE 1891
+0 @I354@ INDI
+1 NAME George Augustus Frederick /Bentinck/
+2 GIVN George Augustus Frederick
+2 SURN Bentinck
+1 SEX M
+0 @I355@ INDI
+1 NAME Prudence P C /Bentinck/
+2 GIVN Prudence P C
+2 SURN Bentinck
+1 SEX U
+1 BIRT
+2 PLAC Co Mongham Ireland
+0 @I356@ INDI
+1 NAME Jessica C /Bentinck/
+2 GIVN Jessica C
+2 SURN Bentinck
+1 SEX U
+1 BIRT
+2 PLAC Westminster, Middlesex, England
+0 @I357@ INDI
+1 NAME William J F /Bentinck/
+2 GIVN William J F
+2 SURN Bentinck
+1 SEX M
+1 BIRT
+2 PLAC Westminster, Middlesex, England
+0 @I358@ INDI
+1 NAME Charles /Zouch/
+2 GIVN Charles
+2 SURN Zouch
+1 SEX M
+1 BIRT
+2 PLAC England
+0 @I359@ INDI
+1 NAME Elizabeth /Ship/
+2 GIVN Elizabeth
+2 SURN Ship
+1 SEX F
+0 @I360@ INDI
+1 NAME  /Judith/
+2 SURN Judith
+1 SEX U
+1 BIRT
+2 PLAC of Sandal Magna, York, England
+1 DEAT
+2 DATE 1689
+0 @I361@ INDI
+1 NAME Rd. /Norton/
+2 GIVN Rd.
+2 SURN Norton
+1 SEX U
+0 @I362@ INDI
+1 NAME Susannah /Norton/
+2 GIVN Susannah
+2 SURN Norton
+1 SEX F
+1 BIRT
+2 PLAC Sandal Magna, York, England
+0 @I363@ INDI
+1 NAME Gervase /Norton/
+2 GIVN Gervase
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1654
+0 @I364@ INDI
+1 NAME Joseph /Norton/
+2 GIVN Joseph
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 PLAC Sandal Magna, York, England
+1 DEAT
+2 DATE 1697
+0 @I365@ INDI
+1 NAME Judith /Norton/
+2 GIVN Judith
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 PLAC Sandal Magna, York, England
+0 @I366@ INDI
+1 NAME John /Wood/
+2 GIVN John
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 PLAC Burnley, Lancashire, England, United Kingdom
+0 @I367@ INDI
+1 NAME Hannah /Hollingwood/
+2 GIVN Hannah
+2 SURN Hollingwood
+1 SEX F
+1 BIRT
+2 PLAC Burnley, Lancashire, England, United Kingdom
+0 @I368@ INDI
+1 NAME John /Wood/
+2 GIVN John
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 PLAC Royston, Yorkshire, England, United Kingdom
+0 @I369@ INDI
+1 NAME Jane /Wood/
+2 GIVN Jane
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 PLAC Royston, Yorkshire, England, United Kingdom
+0 @I370@ INDI
+1 NAME Anne /Wood/
+2 GIVN Anne
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 PLAC Royston, Yorkshire, England, United Kingdom
+0 @I371@ INDI
+1 NAME John /Wood/
+2 GIVN John
+2 SURN Wood
+1 SEX M
+1 BIRT
+2 PLAC Royston, Yorkshire, England, United Kingdom
+0 @I372@ INDI
+1 NAME Jane /Wood/
+2 GIVN Jane
+2 SURN Wood
+1 SEX F
+1 BIRT
+2 PLAC Royston, Yorkshire, England, United Kingdom
+0 @I373@ INDI
+1 NAME Gervase /Norton/
+2 GIVN Gervase
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 PLAC Kettlethorpe, Sandal Magna, York, England
+1 DEAT
+2 DATE 1649
+0 @I374@ INDI
+1 NAME Anthony /Norton/
+2 GIVN Anthony
+2 SURN Norton
+1 SEX M
+1 BIRT
+2 PLAC Sandal Magna, Yorkshire, England
+1 DEAT
+2 DATE 1604
+0 @I375@ INDI
+1 NAME Beatrice Allot /Norton/
+2 GIVN Beatrice Allot
+2 SURN Norton
+1 SEX U
+1 BIRT
+2 PLAC of Kettlethorpe, Sandal Magna, York, England
+0 @I376@ INDI
+1 NAME Editha /Maude/
+2 GIVN Editha
+2 SURN Maude
+1 SEX U
+1 BIRT
+2 PLAC of Sandal Magna, York, England
+1 DEAT
+2 DATE 1663
+0 @I377@ INDI
+1 NAME John /Maude/
+2 GIVN John
+2 SURN Maude
+1 SEX M
+1 BIRT
+2 PLAC , of Yorkshire, England
+0 @I378@ INDI
+1 NAME Mr /Maude/
+2 GIVN Mr
+2 SURN Maude
+1 SEX M
+1 BIRT
+2 PLAC York, Yorkshire, England
+0 @I379@ INDI
+1 NAME Mrs /Maude/
+2 GIVN Mrs
+2 SURN Maude
+1 SEX F
+1 BIRT
+2 PLAC York, Yorkshire, England
+0 @I380@ INDI
+1 NAME  /Wife/
+2 SURN Wife
+1 SEX U
+1 BIRT
+2 PLAC , of Yorkshire, England
+0 @I381@ INDI
+1 NAME John /Allot/
+2 GIVN John
+2 SURN Allot
+1 SEX M
+1 BIRT
+2 PLAC Crigglestone, Yorkshire, England
+0 @I382@ INDI
+1 NAME Robert /Allott/
+2 GIVN Robert
+2 SURN Allott
+1 SEX M
+1 BIRT
+2 PLAC Bentley Grange, Yorkshire, England
+0 @I383@ INDI
+1 NAME Elizabeth /Wade/
+2 GIVN Elizabeth
+2 SURN Wade
+1 SEX F
+1 BIRT
+2 PLAC Kilnsea In Craven, Yorkshire, England
+1 DEAT
+2 DATE 1567
+0 @I384@ INDI
+1 NAME Isabel Elizabeth /Speight/
+2 GIVN Isabel Elizabeth
+2 SURN Speight
+1 SEX F
+1 BIRT
+2 PLAC Almondbury, Yorkshire, England
+1 DEAT
+2 DATE 1603
+0 @I385@ INDI
+1 NAME ELIZABETH /COMYN/
+2 GIVN ELIZABETH
+2 SURN COMYN
+1 SEX F
+1 BIRT
+2 PLAC Allwoodly, Yorkshire
+0 @I386@ INDI
+1 NAME John /Reeve/
+2 GIVN John
+2 SURN Reeve
+1 SEX M
+1 BIRT
+2 PLAC Casterton, Rutland, Leicestershire, England, United Kingdom
+1 DEAT
+2 DATE 1863
+0 @I387@ INDI
+1 NAME Susan Millicent /Reeve/
+2 GIVN Susan Millicent
+2 SURN Reeve
+1 SEX U
+1 BIRT
+2 PLAC Leadenham, Lincolnshire, England, United Kingdom
+1 DEAT
+2 DATE 1877
+0 @I388@ INDI
+1 NAME Emma /Reeve/
+2 GIVN Emma
+2 SURN Reeve
+1 SEX F
+1 BIRT
+2 PLAC Leadenham, Lincolnshire, England, United Kingdom
+1 DEAT
+2 DATE 1884
+0 @I389@ INDI
+1 NAME W H /Reeves/
+2 GIVN W H
+2 SURN Reeves
+1 SEX U
+1 BIRT
+2 PLAC Devon, England
+1 DEAT
+2 DATE 1893
+0 @I390@ INDI
+1 NAME C P /Reeves/
+2 GIVN C P
+2 SURN Reeves
+1 SEX U
+1 BIRT
+2 PLAC London, London, England, United Kingdom
+0 @I391@ INDI
+1 NAME Caroline Theresa /Wilkins/
+2 GIVN Caroline Theresa
+2 SURN Wilkins
+1 SEX F
+1 BIRT
+2 PLAC Cannington, Somerset, England
+1 DEAT
+2 DATE 1894
+0 @I392@ INDI
+1 NAME Maurice Sherard Oscar /Cuffe/
+2 GIVN Maurice Sherard Oscar
+2 SURN Cuffe
+1 SEX U
+1 BIRT
+2 PLAC Little Missenden, Buckinghamshire, England
+1 DEAT
+2 DATE 1889
+0 @I393@ INDI
+1 NAME Alice Evelyn /Woodman/
+2 GIVN Alice Evelyn
+2 SURN Woodman
+1 SEX F
+1 BIRT
+2 PLAC Redhill, Surrey, England
+0 @I394@ INDI
+1 NAME Grace Susan /Fane/
+2 GIVN Grace Susan
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 PLAC St Johns Paddington, Middlesex, England
+1 DEAT
+2 DATE 1947
+0 @I395@ INDI
+1 NAME Millicent Emma Rachel /Fane/
+2 GIVN Millicent Emma Rachel
+2 SURN Fane
+1 SEX F
+1 BIRT
+2 PLAC St Johns Paddington, Middlesex, England
+1 DEAT
+2 DATE 1939
+0 @I396@ INDI
+1 NAME William Vere Reeve /Fane/
+2 GIVN William Vere Reeve
+2 SURN Fane
+1 SEX M
+1 BIRT
+2 PLAC St Johns Paddington, Middlesex, England
+1 DEAT
+2 DATE 1943
+0 @I397@ INDI
+1 NAME Lucy /Burton/
+2 GIVN Lucy
+2 SURN Burton
+1 SEX F
+1 BIRT
+2 PLAC Withcall, Lincolnshire, England
+0 @I398@ INDI
+1 NAME Mary A /Burton/
+2 GIVN Mary A
+2 SURN Burton
+1 SEX F
+1 BIRT
+2 PLAC Withcall, Lincolnshire, England
+0 @I399@ INDI
+1 NAME Silvester /Reeve/
+2 GIVN Silvester
+2 SURN Reeve
+1 SEX U
+1 BIRT
+2 PLAC Diss, Norfolk, England
+1 DEAT
+2 DATE 1909
+0 @I400@ INDI
+1 NAME Edith Anne /Dundas/
+2 GIVN Edith Anne
+2 SURN Dundas
+1 SEX F
+1 BIRT
+2 PLAC Henny Rectory, Essex, England
+0 @I401@ INDI
+1 NAME John Sherard /Reeve/
+2 GIVN John Sherard
+2 SURN Reeve
+1 SEX M
+1 BIRT
+2 PLAC London, England
+0 @I402@ INDI
+1 NAME mary eliza /temple/
+2 GIVN mary eliza
+2 SURN temple
+1 SEX F
+1 BIRT
+2 PLAC Stowe, Buckinghamshire, England
+1 DEAT
+2 DATE 1886
+0 @I403@ INDI
+1 NAME Bennet Sherard Calcraft /Kennedy/
+2 GIVN Bennet Sherard Calcraft
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Camberwell, Middlesex, England
+1 DEAT
+2 DATE 1886
+0 @I404@ INDI
+1 NAME Edward Sherard Calcraft /Kennedy/
+2 GIVN Edward Sherard Calcraft
+2 SURN Kennedy
+1 SEX M
+1 BIRT
+2 PLAC Regh Pk, Middlesex, England
+1 DEAT
+2 DATE 1900
+0 @I405@ INDI
+1 NAME Julia /GLOVER/
+2 GIVN Julia
+2 SURN GLOVER
+1 SEX U
+1 BIRT
+2 PLAC France
+0 @I406@ INDI
+1 NAME Frederick George /GLOVER/
+2 GIVN Frederick George
+2 SURN GLOVER
+1 SEX M
+1 BIRT
+2 PLAC Marylebone, Middlesex
+0 @I407@ INDI
+1 NAME William Glover /Sherard/
+2 GIVN William Glover
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 PLAC Fulham, Middlesex, England
+0 @I408@ INDI
+1 NAME Jane Y /Mirehouse/
+2 GIVN Jane Y
+2 SURN Mirehouse
+1 SEX F
+1 BIRT
+2 PLAC Middlesex
+1 DEAT
+2 DATE 1926
+0 @I409@ INDI
+1 NAME Robbinetta Sherard /Glover/
+2 GIVN Robbinetta Sherard
+2 SURN Glover
+1 SEX U
+1 BIRT
+2 PLAC Middlesex, England
+1 DEAT
+2 DATE 1841
+0 @I410@ INDI
+1 NAME Robert /Sherard/
+2 GIVN Robert
+2 SURN Sherard
+1 SEX M
+1 BIRT
+2 PLAC Stapleford Park, Leicestershire, England
+0 @I411@ INDI
+1 NAME Emma Sarah /Kennedy/
+2 GIVN Emma Sarah
+2 SURN Kennedy
+1 SEX F
+1 BIRT
+2 PLAC London, Middlesex, England
+1 DEAT
+2 DATE 1881
+0 @I412@ INDI
+1 NAME Bennet Sherard Calcraft /Kennedy/
+2 GIVN Bennet Sherard Calcraft
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Camberwell, Middlesex, England
+1 DEAT
+2 DATE 1886
+0 @I413@ INDI
+1 NAME Bennet Sherard Calcraft /Kennedy/
+2 GIVN Bennet Sherard Calcraft
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Camberwell, Middlesex, England
+1 DEAT
+2 DATE 1886
+0 @I414@ INDI
+1 NAME Jane S C /Kennedy/
+2 GIVN Jane S C
+2 SURN Kennedy
+1 SEX F
+1 BIRT
+2 PLAC Moresby, Cumberland, England
+0 @I415@ INDI
+1 NAME Mary H C /Kennedy/
+2 GIVN Mary H C
+2 SURN Kennedy
+1 SEX F
+1 BIRT
+2 PLAC Harrington, Cumberland, England
+0 @I416@ INDI
+1 NAME Wordsworth S C /Kennedy/
+2 GIVN Wordsworth S C
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Harrington, Cumberland, England
+0 @I417@ INDI
+1 NAME Emmeline D C /Kennedy/
+2 GIVN Emmeline D C
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Harrington, Cumberland, England
+0 @I418@ INDI
+1 NAME Thomas H /Clifton/
+2 GIVN Thomas H
+2 SURN Clifton
+1 SEX M
+1 BIRT
+2 PLAC London, Middlesex, England
+1 DEAT
+2 DATE 1880
+0 @I419@ INDI
+1 NAME Cole Gerard S /Noel/
+2 GIVN Cole Gerard S
+2 SURN Noel
+1 SEX M
+1 BIRT
+2 PLAC London England
+0 @I420@ INDI
+1 NAME Robert /Monckton/
+2 GIVN Robert
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 PLAC Highlow, Hope, Derbyshire, England
+1 DEAT
+2 DATE 1722
+0 @I421@ INDI
+1 NAME Robert /Monckton/
+2 GIVN Robert
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 PLAC Highlow, Hope, Derbyshire, England
+1 DEAT
+2 DATE 1722
+0 @I422@ INDI
+1 NAME Theodosia /Fountayne/
+2 GIVN Theodosia
+2 SURN Fountayne
+1 SEX U
+1 BIRT
+2 PLAC High Melton, Doncaster, Yorkshire, England
+1 DEAT
+2 DATE 1722
+0 @I423@ INDI
+1 NAME Henry Warner /Westenra/
+2 GIVN Henry Warner
+2 SURN Westenra
+1 SEX M
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I424@ INDI
+1 NAME Eleanor /Allen/
+2 GIVN Eleanor
+2 SURN Allen
+1 SEX F
+1 BIRT
+2 PLAC Dublin, Dublin, Ireland
+1 DEAT
+2 DATE 1769
+0 @I425@ INDI
+1 NAME Marie Mary Wybrow /Wybrandt?/
+2 GIVN Marie Mary Wybrow
+2 SURN Wybrandt?
+1 SEX F
+1 BIRT
+2 PLAC Colchester, England., Essex, England, United Kingdom
+1 DEAT
+2 DATE 1709
+0 @I426@ INDI
+1 NAME Joshua /Allen/
+2 GIVN Joshua
+2 SURN Allen
+1 SEX U
+1 BIRT
+2 PLAC Dublin, Ireland., Dublin, Leinster, Ireland
+1 DEAT
+2 DATE 1691
+0 @I427@ INDI
+1 NAME Elizabeth /Wybrants/
+2 GIVN Elizabeth
+2 SURN Wybrants
+1 SEX F
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I428@ INDI
+1 NAME Warner /Westenra/
+2 GIVN Warner
+2 SURN Westenra
+1 SEX U
+1 BIRT
+2 PLAC Wassenburgh, Netherlands
+0 @I429@ INDI
+1 NAME Elizabeth Monckton (sole /heir/
+2 GIVN Elizabeth Monckton (sole
+2 SURN heir
+1 SEX F
+1 BIRT
+2 PLAC Lincolns Inn, Norfolk, England, United Kingdom
+1 DEAT
+2 DATE 1701
+0 @I430@ INDI
+1 NAME John Fountayne /###/
+2 GIVN John Fountayne
+2 SURN ###
+1 SEX M
+1 BIRT
+2 PLAC Norfolk, England
+0 @I431@ INDI
+1 NAME John Fountaine /###/
+2 GIVN John Fountaine
+2 SURN ###
+1 SEX M
+1 BIRT
+2 PLAC Wood Dalling, Salle, Nofolk, England
+1 DEAT
+2 DATE 1671
+0 @I432@ INDI
+1 NAME Elizabeth Fountayne /#/
+2 GIVN Elizabeth Fountayne
+2 SURN #
+1 SEX F
+1 BIRT
+2 PLAC Holroyd, Yorkshire, England
+1 DEAT
+2 DATE 1697
+0 @I433@ INDI
+1 NAME Sarah Jane Fountagne /#/
+2 GIVN Sarah Jane Fountagne
+2 SURN #
+1 SEX F
+1 BIRT
+2 PLAC Filtwick, Bedford, Bedfordshire, England
+1 DEAT
+2 DATE 1698
+0 @I434@ INDI
+1 NAME Thomas Fountaine /###/
+2 GIVN Thomas Fountaine
+2 SURN ###
+1 SEX M
+1 BIRT
+2 PLAC London, Middlesex, England
+1 DEAT
+2 DATE 1709
+0 @I435@ INDI
+1 NAME Frances /Fountayne/
+2 GIVN Frances
+2 SURN Fountayne
+1 SEX F
+1 BIRT
+2 PLAC London, England
+0 @I436@ INDI
+1 NAME Harrington Fountayne /###/
+2 GIVN Harrington Fountayne
+2 SURN ###
+1 SEX U
+1 BIRT
+2 PLAC Westminster, London, England
+0 @I437@ INDI
+1 NAME Eleanor Fountayne /#/
+2 GIVN Eleanor Fountayne
+2 SURN #
+1 SEX F
+1 BIRT
+2 PLAC England
+1 DEAT
+2 DATE 1671
+0 @I438@ INDI
+1 NAME Anne /Eyre/
+2 GIVN Anne
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Highlow, Derbyshire, England
+0 @I439@ INDI
+1 NAME Robert /Eyre/
+2 GIVN Robert
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Hope, Derbyshire, England
+1 DEAT
+2 DATE 1662
+0 @I440@ INDI
+1 NAME Ann /Wells/
+2 GIVN Ann
+2 SURN Wells
+1 SEX F
+1 BIRT
+2 PLAC Hathersage, Derbyshire, England
+0 @I441@ INDI
+1 NAME Phillip /Monkerton/
+2 GIVN Phillip
+2 SURN Monkerton
+1 SEX U
+1 BIRT
+2 PLAC Derbyshire, England
+1 DEAT
+2 DATE 1679
+0 @I442@ INDI
+1 NAME William /Monckton/
+2 GIVN William
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 PLAC England
+0 @I443@ INDI
+1 NAME Margaret /Monckton/
+2 GIVN Margaret
+2 SURN Monckton
+1 SEX F
+0 @I444@ INDI
+1 NAME Anne /Monckton/
+2 GIVN Anne
+2 SURN Monckton
+1 SEX F
+0 @I445@ INDI
+1 NAME Adam /Eyre/
+2 GIVN Adam
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC 1660697, Derbyshire, England
+0 @I446@ INDI
+1 NAME Adam /Eyre/
+2 GIVN Adam
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC 1660697, Derbyshire, England
+0 @I447@ INDI
+1 NAME Margaret * /Eyre/
+2 GIVN Margaret *
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Birchfield, Hope, Derbyshire, England
+1 DEAT
+2 DATE 1706
+0 @I448@ INDI
+1 NAME Margaret /eyre/
+2 GIVN Margaret
+2 SURN eyre
+1 SEX F
+1 BIRT
+2 PLAC Birchfield, Hope, Derbyshire, England
+1 DEAT
+2 DATE 1706
+0 @I449@ INDI
+1 NAME Ellena /Eyre/
+2 GIVN Ellena
+2 SURN Eyre
+1 SEX U
+1 BIRT
+2 PLAC Ladybower, Hope, Derbyshire, England
+1 DEAT
+2 DATE 1698
+0 @I450@ INDI
+1 NAME Robert /Eyre/
+2 GIVN Robert
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Hope, Derbyshire, England
+1 DEAT
+2 DATE 1656
+0 @I451@ INDI
+1 NAME Robert /Eyre/
+2 GIVN Robert
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Hope, Derbyshire, England
+1 DEAT
+2 DATE 1656
+0 @I452@ INDI
+1 NAME Thomas /Eyre/
+2 GIVN Thomas
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Highlow, Hathersage, Derbyshire, England
+0 @I453@ INDI
+1 NAME Maria /Eyre/
+2 GIVN Maria
+2 SURN Eyre
+1 SEX U
+1 BIRT
+2 PLAC Edale, Derbyshire, England
+1 DEAT
+2 DATE 1692
+0 @I454@ INDI
+1 NAME Ann /Eyre/
+2 GIVN Ann
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Bradwell
+0 @I455@ INDI
+1 NAME George /Eyre/
+2 GIVN George
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Edale, Derbyshire, England
+0 @I456@ INDI
+1 NAME Adam /Eyre/
+2 GIVN Adam
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC 1660697, Derbyshire, England
+0 @I457@ INDI
+1 NAME William /Eyre/
+2 GIVN William
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Highlow Hall Hope Derbyshire England
+1 DEAT
+2 DATE 1706
+0 @I458@ INDI
+1 NAME Richard /Eyre/
+2 GIVN Richard
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Hope Derbyshire
+0 @I459@ INDI
+1 NAME Barbara /Eyre/
+2 GIVN Barbara
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Highlow, Derbyshire, England
+0 @I460@ INDI
+1 NAME Barbara /Eyre/
+2 GIVN Barbara
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Hope, Derbyshire, England
+0 @I461@ INDI
+1 NAME Arthur /Eyre/
+2 GIVN Arthur
+2 SURN Eyre
+1 SEX M
+1 BIRT
+2 PLAC Hope Derbyshire
+0 @I462@ INDI
+1 NAME John (Johannes) /EYRE/
+2 GIVN John (Johannes)
+2 SURN EYRE
+1 SEX F
+1 BIRT
+2 PLAC Hope, Derbyshire, England
+1 DEAT
+2 DATE 1711
+0 @I463@ INDI
+1 NAME Jane /Eyre/
+2 GIVN Jane
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Bradwell
+0 @I464@ INDI
+1 NAME Jane /Eyre/
+2 GIVN Jane
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Bradwell, Derbyshire, England
+0 @I465@ INDI
+1 NAME Elizabeth /Eyre/
+2 GIVN Elizabeth
+2 SURN Eyre
+1 SEX F
+1 BIRT
+2 PLAC Edale, Derbyshire, England
+1 DEAT
+2 DATE 1728
+0 @I466@ INDI
+1 NAME Sarah /Eyre/
+2 GIVN Sarah
+2 SURN Eyre
+1 SEX F
+0 @I467@ INDI
+1 NAME Benjamin /Eyre/
+2 GIVN Benjamin
+2 SURN Eyre
+1 SEX U
+0 @I468@ INDI
+1 NAME John Wybrow /Wybrandt?/
+2 GIVN John Wybrow
+2 SURN Wybrandt?
+1 SEX M
+1 BIRT
+2 PLAC Ireland
+0 @I469@ INDI
+1 NAME Wibrough /Allen/
+2 GIVN Wibrough
+2 SURN Allen
+1 SEX U
+0 @I470@ INDI
+1 NAME Mary /Allen/
+2 GIVN Mary
+2 SURN Allen
+1 SEX F
+1 BIRT
+2 PLAC Mullinaback, Dublin, Dublin, Ireland
+1 DEAT
+2 DATE 1709
+0 @I471@ INDI
+1 NAME  /Francis/
+2 SURN Francis
+1 SEX M
+1 BIRT
+2 PLAC England
+0 @I472@ INDI
+1 NAME Henry /Westenra/
+2 GIVN Henry
+2 SURN Westenra
+1 SEX M
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I473@ INDI
+1 NAME Mary /Westenra/
+2 GIVN Mary
+2 SURN Westenra
+1 SEX F
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I474@ INDI
+1 NAME Annette /Westenra/
+2 GIVN Annette
+2 SURN Westenra
+1 SEX F
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I475@ INDI
+1 NAME Peter /Westenra/
+2 GIVN Peter
+2 SURN Westenra
+1 SEX U
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I476@ INDI
+1 NAME Elizabeth /Westenra/
+2 GIVN Elizabeth
+2 SURN Westenra
+1 SEX F
+1 BIRT
+2 PLAC Ireland
+0 @I477@ INDI
+1 NAME Eleanor /Westenra/
+2 GIVN Eleanor
+2 SURN Westenra
+1 SEX F
+1 BIRT
+2 PLAC of Dublin, Dublin, Irln.
+0 @I478@ INDI
+1 NAME Warner /Westenra/
+2 GIVN Warner
+2 SURN Westenra
+1 SEX U
+1 BIRT
+2 PLAC Dublin, Ireland
+1 DEAT
+2 DATE 1772
+0 @I479@ INDI
+1 NAME Penelope /Westenra/
+2 GIVN Penelope
+2 SURN Westenra
+1 SEX U
+1 BIRT
+2 PLAC Dublin, Ireland
+0 @I480@ INDI
+1 NAME Joshua /Allen/
+2 GIVN Joshua
+2 SURN Allen
+1 SEX U
+1 BIRT
+2 PLAC Mullinaback, Dublin, Dublin, Ireland
+0 @I481@ INDI
+1 NAME Caleb /Allen/
+2 GIVN Caleb
+2 SURN Allen
+1 SEX U
+1 BIRT
+2 PLAC Mullinaback, Dublin, Dublin, Ireland
+0 @I482@ INDI
+1 NAME Richard /Allen/
+2 GIVN Richard
+2 SURN Allen
+1 SEX M
+1 BIRT
+2 PLAC Mullinaback, Dublin, Dublin, Ireland
+0 @I483@ INDI
+1 NAME Wybrow /Allen/
+2 GIVN Wybrow
+2 SURN Allen
+1 SEX U
+1 BIRT
+2 PLAC Mullinaback, Dublin, Dublin, Ireland
+0 @I484@ INDI
+1 NAME Jeanette /Allen/
+2 GIVN Jeanette
+2 SURN Allen
+1 SEX U
+1 BIRT
+2 PLAC Ireland
+1 DEAT
+2 DATE 1715
+0 @I485@ INDI
+1 NAME Elizabeth /Allen/
+2 GIVN Elizabeth
+2 SURN Allen
+1 SEX F
+0 @I486@ INDI
+1 NAME Thoms /Adams/
+2 GIVN Thoms
+2 SURN Adams
+1 SEX M
+0 @I487@ INDI
+1 NAME Ann /Adams/
+2 GIVN Ann
+2 SURN Adams
+1 SEX F
+0 @I488@ INDI
+1 NAME Jane /Monckton/
+2 GIVN Jane
+2 SURN Monckton
+1 SEX F
+1 DEAT
+2 DATE 1805
+0 @I489@ INDI
+1 NAME edward d'albee /temple/
+2 GIVN edward d'albee
+2 SURN temple
+1 SEX M
+1 BIRT
+2 PLAC Mutford, Suffolk, England
+0 @I490@ INDI
+1 NAME caroline ann /honywood/
+2 GIVN caroline ann
+2 SURN honywood
+1 SEX F
+1 BIRT
+2 PLAC Elmstead, Kent, England
+0 @I491@ INDI
+1 NAME maj. thomas william /claggett/
+2 GIVN maj. thomas william
+2 SURN claggett
+1 SEX M
+1 BIRT
+2 PLAC Lambeth, London, England
+1 DEAT
+2 DATE 1885
+0 @I492@ INDI
+1 NAME anna eliza frances /temple/
+2 GIVN anna eliza frances
+2 SURN temple
+1 SEX F
+1 BIRT
+2 PLAC Dover, Kent, England
+1 DEAT
+2 DATE 1888
+0 @I493@ INDI
+1 NAME frederic augustus courtenay /temple/
+2 GIVN frederic augustus courtenay
+2 SURN temple
+1 SEX U
+1 BIRT
+2 PLAC Dover, Kent, England
+0 @I494@ INDI
+1 NAME courtenay george henry /temple/
+2 GIVN courtenay george henry
+2 SURN temple
+1 SEX M
+1 BIRT
+2 PLAC Newcastle Upon Tyne, Northumberland, England
+0 @I495@ INDI
+1 NAME Jane Stanley C /Wordsworth/
+2 GIVN Jane Stanley C
+2 SURN Wordsworth
+1 SEX F
+1 BIRT
+2 PLAC Moresby, Cumberland, England
+1 DEAT
+2 DATE 1912
+0 @I496@ INDI
+1 NAME Mary Henrietta /Kennedy/
+2 GIVN Mary Henrietta
+2 SURN Kennedy
+1 SEX F
+1 BIRT
+2 PLAC Harrington, Cumberland, England
+1 DEAT
+2 DATE 1938
+0 @I497@ INDI
+1 NAME Wordsworth Sherard /Kennedy/
+2 GIVN Wordsworth Sherard
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Harrington, Cumberland, England
+1 DEAT
+2 DATE 1931
+0 @I498@ INDI
+1 NAME Emmeline Dorothea C /Kennedy/
+2 GIVN Emmeline Dorothea C
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Harrington, Cumberland, England
+1 DEAT
+2 DATE 1932
+0 @I499@ INDI
+1 NAME Edward Stanley Curwen /Kennedy/
+2 GIVN Edward Stanley Curwen
+2 SURN Kennedy
+1 SEX M
+1 BIRT
+2 PLAC Droxford, Hampshire, England
+1 DEAT
+2 DATE 1927
+0 @I500@ INDI
+1 NAME Bennet Christian Huntington Caleraft /Kennedy/
+2 GIVN Bennet Christian Huntington Caleraft
+2 SURN Kennedy
+1 SEX U
+1 BIRT
+2 PLAC Lucca, Toscana, Italy, British Subject
+1 DEAT
+2 DATE 1935
+0 @I501@ INDI
+1 NAME Arthur William Leigh /Mirehouse/
+2 GIVN Arthur William Leigh
+2 SURN Mirehouse
+1 SEX M
+1 DEAT
+2 DATE 1927
+0 @I502@ INDI
+1 NAME Charles /Herbert/
+2 GIVN Charles
+2 SURN Herbert
+1 SEX M
+1 BIRT
+2 PLAC UK
+0 @I503@ INDI
+1 NAME Margaret Frances /Herbert/
+2 GIVN Margaret Frances
+2 SURN Herbert
+1 SEX F
+1 BIRT
+2 PLAC Belgravia, St. George Hanover Square, London, England
+1 DEAT
+2 DATE 1932
+0 @I504@ INDI
+1 NAME Edward /Feetham/
+2 GIVN Edward
+2 SURN Feetham
+1 SEX M
+1 BIRT
+2 PLAC Bremhill, Wiltshire, England
+1 DEAT
+2 DATE 1918
+0 @I505@ INDI
+1 NAME William /Feetham/
+2 GIVN William
+2 SURN Feetham
+1 SEX M
+1 BIRT
+2 PLAC Westminster, Middlesex, England
+0 @I506@ INDI
+1 NAME Mary /Feetham/
+2 GIVN Mary
+2 SURN Feetham
+1 SEX F
+1 BIRT
+2 PLAC Bryngwyn, Monmouthshire, Wales
+0 @I507@ INDI
+1 NAME Mary /Feetham/
+2 GIVN Mary
+2 SURN Feetham
+1 SEX F
+1 BIRT
+2 PLAC Bremhill, Wiltshire, England
+0 @I508@ INDI
+1 NAME Charles /Feetham/
+2 GIVN Charles
+2 SURN Feetham
+1 SEX M
+1 BIRT
+2 PLAC Ragland, Monmouthshire, Wales
+0 @I509@ INDI
+1 NAME Alice /Feetham/
+2 GIVN Alice
+2 SURN Feetham
+1 SEX F
+1 BIRT
+2 PLAC Penrhos, Monmouthshire, Wales
+0 @I510@ INDI
+1 NAME Henrietta Mary Ailer /Grant/
+2 GIVN Henrietta Mary Ailer
+2 SURN Grant
+1 SEX F
+1 BIRT
+2 PLAC Ootacamund, Madras, India
+1 DEAT
+2 DATE 1938
+0 @I511@ INDI
+1 NAME James /Grant/
+2 GIVN James
+2 SURN Grant
+1 SEX M
+1 BIRT
+2 PLAC Sprinbaro, Lanarkshire, or: Inverness, Scotland
+0 @I512@ INDI
+1 NAME Hugh /March/
+2 GIVN Hugh
+2 SURN March
+1 SEX M
+0 @I513@ INDI
+1 NAME Henrietta Glennevis /Cameron/
+2 GIVN Henrietta Glennevis
+2 SURN Cameron
+1 SEX U
+1 BIRT
+2 PLAC Glenevis,  Inverness-shire,  ,  Scotland
+1 DEAT
+2 DATE 1871
+0 @I514@ INDI
+1 NAME Georgiana Theophila /Dashwood/
+2 GIVN Georgiana Theophila
+2 SURN Dashwood
+1 SEX U
+1 BIRT
+2 PLAC Knighton, Berkshire, England
+1 DEAT
+2 DATE 1886
+0 @I515@ INDI
+1 NAME Thomas March /Phillips/
+2 GIVN Thomas March
+2 SURN Phillips
+1 SEX M
+1 BIRT
+2 PLAC St Peter-le-Poor, Broad-Street, London, England
+1 DEAT
+2 DATE 1817
+0 @I516@ INDI
+1 NAME Thomas /March/
+2 GIVN Thomas
+2 SURN March
+1 SEX M
+1 BIRT
+2 PLAC Stepney, City of London
+1 DEAT
+2 DATE 1754
+0 @I517@ INDI
+1 NAME Mary /Dunster/
+2 GIVN Mary
+2 SURN Dunster
+1 SEX F
+1 BIRT
+2 PLAC Jenningsbury, England
+0 @I518@ INDI
+1 NAME Edward of Crux Easton /Lisle/
+2 GIVN Edward of Crux Easton
+2 SURN Lisle
+1 SEX M
+1 BIRT
+2 PLAC Crux Easton, Hampshire, England
+1 DEAT
+2 DATE 1727
+0 @I519@ INDI
+1 NAME Mary /Phillipps/
+2 GIVN Mary
+2 SURN Phillipps
+1 SEX F
+1 BIRT
+2 PLAC Garendon Park, Leicestershire, England
+1 DEAT
+2 DATE 1749
+0 @I520@ INDI
+1 NAME Francis /March/
+2 GIVN Francis
+2 SURN March
+1 SEX M
+1 BIRT
+2 PLAC Stepney
+1 DEAT
+2 DATE 1689
+0 @I521@ INDI
+1 NAME Thomas /march/
+2 GIVN Thomas
+2 SURN march
+1 SEX M
+0 @I522@ INDI
+1 NAME ELIZABETH /Ivatt/
+2 GIVN ELIZABETH
+2 SURN Ivatt
+1 SEX F
+1 BIRT
+2 PLAC St Botolph Aldgate, London, London, England, United Kingdom
+0 @I523@ INDI
+1 NAME Oliver Jewett /Ivatt/
+2 GIVN Oliver Jewett
+2 SURN Ivatt
+1 SEX U
+1 BIRT
+2 PLAC St Botolph Aldgate, London, England
+1 DEAT
+2 DATE 1613
+0 @I524@ INDI
+1 NAME Frances /Marsh/
+2 GIVN Frances
+2 SURN Marsh
+1 SEX F
+1 BIRT
+2 PLAC St Botolph Aldgate, London, England
+0 @I525@ INDI
+1 NAME Richard /Waring/
+2 GIVN Richard
+2 SURN Waring
+1 SEX M
+1 BIRT
+2 PLAC Sydenham Damerel, Devon, England
+0 @I526@ INDI
+1 NAME *Richard 1646 WARING or /Warren/
+2 GIVN *Richard 1646 WARING or
+2 SURN Warren
+1 SEX M
+1 BIRT
+2 PLAC Nassau, New York, United States
+0 @I527@ INDI
+1 NAME Edward of Crux Easton /Lisle/
+2 GIVN Edward of Crux Easton
+2 SURN Lisle
+1 SEX M
+1 BIRT
+2 PLAC Crux Easton, Hampshire, England
+1 DEAT
+2 DATE 1727
+0 @I528@ INDI
+1 NAME Mary /Phillipps/
+2 GIVN Mary
+2 SURN Phillipps
+1 SEX F
+1 BIRT
+2 PLAC Garendon Park, Leicestershire, England
+1 DEAT
+2 DATE 1749
+0 @I529@ INDI
+1 NAME NICHOLAS /Carey/
+2 GIVN NICHOLAS
+2 SURN Carey
+1 SEX M
+0 @I530@ INDI
+1 NAME SUSAN Rickards / /Riccards/
+2 GIVN SUSAN Rickards /
+2 SURN Riccards
+1 SEX U
+1 BIRT
+2 PLAC London, England
+0 @I531@ INDI
+1 NAME NICHOLAS /Carey/
+2 GIVN NICHOLAS
+2 SURN Carey
+1 SEX M
+0 @I532@ INDI
+1 NAME WILLIAM /Riccards/
+2 GIVN WILLIAM
+2 SURN Riccards
+1 SEX M
+0 @I533@ INDI
+1 NAME John /Boucher/
+2 GIVN John
+2 SURN Boucher
+1 SEX M
+1 BIRT
+2 PLAC Camberwell, London, England
+0 @I534@ INDI
+1 NAME John /Boucher/
+2 GIVN John
+2 SURN Boucher
+1 SEX M
+1 BIRT
+2 PLAC Camberwell, London, England
+0 @I535@ INDI
+1 NAME Anne /Adair/
+2 GIVN Anne
+2 SURN Adair
+1 SEX F
+1 BIRT
+2 PLAC Holybrook, co. Wicklow, Ireland
+0 @I536@ INDI
+1 NAME Catherine /Cobb/
+2 GIVN Catherine
+2 SURN Cobb
+1 SEX F
+1 BIRT
+2 PLAC Twickenham, Middlesex, England
+1 DEAT
+2 DATE 1826
+0 @I537@ INDI
+1 NAME St. George Catherine /Molesworth/
+2 GIVN St. George Catherine
+2 SURN Molesworth
+1 SEX F
+1 BIRT
+2 PLAC St Giles, Camberwell, Surrey, England
+1 DEAT
+2 DATE 1858
+0 @I538@ INDI
+1 NAME William /MOLESWORTH/
+2 GIVN William
+2 SURN MOLESWORTH
+1 SEX M
+1 BIRT
+2 PLAC Kensington, London, England
+0 @I539@ INDI
+1 NAME Francis Molesworth, Lieutenant, Royal /Navy/
+2 GIVN Francis Molesworth, Lieutenant, Royal
+2 SURN Navy
+1 SEX M
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1812
+0 @I540@ INDI
+1 NAME John Molesworth, Commander Royal /Navy/
+2 GIVN John Molesworth, Commander Royal
+2 SURN Navy
+1 SEX M
+1 BIRT
+2 PLAC St Giles, Camberwell, Surrey, England
+1 DEAT
+2 DATE 1858
+0 @I541@ INDI
+1 NAME Letitia /Molesworth/
+2 GIVN Letitia
+2 SURN Molesworth
+1 SEX U
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1764
+0 @I542@ INDI
+1 NAME Juliana /Molesworth/
+2 GIVN Juliana
+2 SURN Molesworth
+1 SEX U
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+0 @I543@ INDI
+1 NAME John Molesworth, /Rev/
+2 GIVN John Molesworth,
+2 SURN Rev
+1 SEX M
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1753
+0 @I544@ INDI
+1 NAME Nicholas /Molesworth/
+2 GIVN Nicholas
+2 SURN Molesworth
+1 SEX M
+1 BIRT
+2 PLAC Dublin,  Ireland
+0 @I545@ INDI
+1 NAME Isabella /Molesworth/
+2 GIVN Isabella
+2 SURN Molesworth
+1 SEX U
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+0 @I546@ INDI
+1 NAME Charlotte Amelia /Molesworth/
+2 GIVN Charlotte Amelia
+2 SURN Molesworth
+1 SEX F
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1819
+0 @I547@ INDI
+1 NAME Jane /Molesworth/
+2 GIVN Jane
+2 SURN Molesworth
+1 SEX F
+1 BIRT
+2 PLAC Phillipstown, Offaly, Ireland
+1 DEAT
+2 DATE 1786
+0 @I548@ INDI
+1 NAME Elizabeth /Beale/
+2 GIVN Elizabeth
+2 SURN Beale
+1 SEX F
+1 BIRT
+2 PLAC Hurstbourne Priors in Hampshire.
+1 DEAT
+2 DATE 1816
+0 @I549@ INDI
+1 NAME James /Pears/
+2 GIVN James
+2 SURN Pears
+1 SEX M
+0 @I550@ INDI
+1 NAME Elizabeth Ann /Pears/
+2 GIVN Elizabeth Ann
+2 SURN Pears
+1 SEX F
+1 DEAT
+2 DATE 1793
+0 @I551@ INDI
+1 NAME William Beale /Pears/
+2 GIVN William Beale
+2 SURN Pears
+1 SEX M
+1 BIRT
+2 PLAC Oxford
+1 DEAT
+2 DATE 1793
+0 @I552@ INDI
+1 NAME Mary Oldfield, /*//
+2 GIVN Mary Oldfield,
+2 SURN */
+1 SEX F
+1 BIRT
+2 PLAC Oldfield, Yorkshire, England
+0 @I553@ INDI
+1 NAME Thomas /Oldfield/
+2 GIVN Thomas
+2 SURN Oldfield
+1 SEX M
+1 BIRT
+2 PLAC Dymchurch, Kent, England
+0 @I554@ INDI
+1 NAME Elizabeth /Hills/
+2 GIVN Elizabeth
+2 SURN Hills
+1 SEX F
+1 BIRT
+2 PLAC Dymchurch, Kent, England
+0 @I555@ INDI
+1 NAME John /Monckton/
+2 GIVN John
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 PLAC Thornhill, Yorkshire, England
+0 @I556@ INDI
+1 NAME Martha /Oldfield/
+2 GIVN Martha
+2 SURN Oldfield
+1 SEX U
+1 BIRT
+2 PLAC Dymchurch, Kent, England
+0 @I557@ INDI
+1 NAME Thomas /Berrie/
+2 GIVN Thomas
+2 SURN Berrie
+1 SEX M
+1 BIRT
+2 PLAC Walesby, Lincolnshire, England
+1 DEAT
+2 DATE 1592
+0 @I558@ INDI
+1 NAME Jane /Doe/
+2 GIVN Jane
+2 SURN Doe
+1 SEX F
+1 BIRT
+2 PLAC Waleby, Lincolnshire, England
+0 @I559@ INDI
+1 NAME John /Monckton/
+2 GIVN John
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 PLAC Eastrington, Yorkshire, England
+0 @I560@ INDI
+1 NAME Henry /Monckton/
+2 GIVN Henry
+2 SURN Monckton
+1 SEX M
+1 BIRT
+2 PLAC England
+1 DEAT
+2 DATE 1616
+0 @I561@ INDI
+1 NAME Elizabeth /Monckton/
+2 GIVN Elizabeth
+2 SURN Monckton
+1 SEX F
+1 BIRT
+2 PLAC Yorkshire, England
+0 @I562@ INDI
+1 NAME Prudens /Monckton/
+2 GIVN Prudens
+2 SURN Monckton
+1 SEX U
+1 DEAT
+2 DATE 1648
+0 @I563@ INDI
+1 NAME Edward Sherriff Rutland nd Baronet /Harington/
+2 GIVN Edward Sherriff Rutland nd Baronet
+2 SURN Harington
+1 SEX M
+1 BIRT
+2 PLAC Ridlington, Norfolk, England
+1 DEAT
+2 DATE 1653
+0 @I564@ INDI
+1 NAME Bridget Harrington /Gore/
+2 GIVN Bridget Harrington
+2 SURN Gore
+1 SEX U
+1 BIRT
+2 PLAC 1602 - Astwood or Elton, Buckinghamshire, England.
+1 DEAT
+2 DATE 1657
+0 @I565@ INDI
+1 NAME Anne /Harrington/
+2 GIVN Anne
+2 SURN Harrington
+1 SEX F
+0 @I566@ INDI
+1 NAME Elizabeth /Harrington/
+2 GIVN Elizabeth
+2 SURN Harrington
+1 SEX F
+0 @I567@ INDI
+1 NAME John /Harrington/
+2 GIVN John
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Exton, Rutland, England
+0 @I568@ INDI
+1 NAME Lucy /Harrington/
+2 GIVN Lucy
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Exton, Rutland, England
+1 DEAT
+2 DATE 1660
+0 @I569@ INDI
+1 NAME Thomas /Harrington/
+2 GIVN Thomas
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Northampton, Virginia, United States
+1 DEAT
+2 DATE 1713
+0 @I570@ INDI
+1 NAME Elizabeth /Harrington/
+2 GIVN Elizabeth
+2 SURN Harrington
+1 SEX F
+0 @I571@ INDI
+1 NAME William /Harrington/
+2 GIVN William
+2 SURN Harrington
+1 SEX M
+0 @I572@ INDI
+1 NAME Nicholas /Harrington/
+2 GIVN Nicholas
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Farleton,  Lancashire,  England
+1 DEAT
+2 DATE 1404
+0 @I573@ INDI
+1 NAME Joan /Harrington/
+2 GIVN Joan
+2 SURN Harrington
+1 SEX U
+1 BIRT
+2 PLAC Wakefield, Yorkshire, England
+0 @I574@ INDI
+1 NAME James /Harrington/
+2 GIVN James
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Cannington, Somerset, England
+1 DEAT
+2 DATE 1612
+0 @I575@ INDI
+1 NAME Lucy Countess of Bedford /Harrington/
+2 GIVN Lucy Countess of Bedford
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Stepney, Middlesex, England
+1 DEAT
+2 DATE 1627
+0 @I576@ INDI
+1 NAME Sidenham /Harirngton/
+2 GIVN Sidenham
+2 SURN Harirngton
+1 SEX U
+1 DEAT
+2 DATE 1611
+0 @I577@ INDI
+1 NAME Frances /Harrington/
+2 GIVN Frances
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Kelston, Somerset, England
+0 @I578@ INDI
+1 NAME John /Harrington/
+2 GIVN John
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Bath, Somerset, England
+0 @I579@ INDI
+1 NAME George "The Immigrant" /Harrington/
+2 GIVN George "The Immigrant"
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1665
+0 @I580@ INDI
+1 NAME John /Harrington/
+2 GIVN John
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC St Dunstan's, Kent, England
+1 DEAT
+2 DATE 1654
+0 @I581@ INDI
+1 NAME John, The Puritan Esquire /Harrington/
+2 GIVN John, The Puritan Esquire
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Kelston, Bath, Somerset County, England
+1 DEAT
+2 DATE 1653
+0 @I582@ INDI
+1 NAME Henry /Harrington/
+2 GIVN Henry
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Kelston, Somersetshire, England
+1 DEAT
+2 DATE 1604
+0 @I583@ INDI
+1 NAME Jane /Harrington/
+2 GIVN Jane
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Kelston Manor, Somerset, England
+1 DEAT
+2 DATE 1672
+0 @I584@ INDI
+1 NAME George /Harington/
+2 GIVN George
+2 SURN Harington
+1 SEX M
+1 DEAT
+2 DATE 1665
+0 @I585@ INDI
+1 NAME James /Harrington/
+2 GIVN James
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1630
+0 @I586@ INDI
+1 NAME Robert /Harrington/
+2 GIVN Robert
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Somerset, England
+1 DEAT
+2 DATE 1604
+0 @I587@ INDI
+1 NAME Baron Edward 9thGGF /Harrington/
+2 GIVN Baron Edward 9thGGF
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Bath, Somerset, England
+0 @I588@ INDI
+1 NAME John Robert "The Puritan" /Harrington/
+2 GIVN John Robert "The Puritan"
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Kelston, Bath and North East Somerset Unitary Authority, Somerset, England
+1 DEAT
+2 DATE 1630
+0 @I589@ INDI
+1 NAME Elizabeth /Harrington/
+2 GIVN Elizabeth
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1626
+0 @I590@ INDI
+1 NAME Mary /Harrington/
+2 GIVN Mary
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1662
+0 @I591@ INDI
+1 NAME Hannah /Harrington/
+2 GIVN Hannah
+2 SURN Harrington
+1 SEX F
+1 BIRT
+2 PLAC Carrington, Somerset, England
+1 DEAT
+2 DATE 1672
+0 @I592@ INDI
+1 NAME Robert /Harrington/
+2 GIVN Robert
+2 SURN Harrington
+1 SEX M
+1 BIRT
+2 PLAC Bath, Somerset, England
+1 DEAT
+2 DATE 1622
+0 @I593@ INDI
+1 NAME Anne /Stanhow/
+2 GIVN Anne
+2 SURN Stanhow
+1 SEX F
+1 BIRT
+2 PLAC England
+0 @I594@ INDI
+1 NAME Anne /Stanhow/
+2 GIVN Anne
+2 SURN Stanhow
+1 SEX F
+1 BIRT
+2 PLAC England
+0 @I595@ INDI
+1 NAME John /Stanhowe/
+2 GIVN John
+2 SURN Stanhowe
+1 SEX M
+0 @I596@ INDI
+1 NAME  /Unknown/
+2 SURN Unknown
+1 SEX U
+0 @I597@ INDI
+1 NAME Arthur /Fountaine/
+2 GIVN Arthur
+2 SURN Fountaine
+1 SEX M
+1 BIRT
+2 PLAC Salle, Norfolk, , England
+1 DEAT
+2 DATE 1611
+0 @I598@ INDI
+1 NAME Arthur FOUNTAINE (Funteyne), Esq. of /Salle/
+2 GIVN Arthur FOUNTAINE (Funteyne), Esq. of
+2 SURN Salle
+1 SEX M
+1 BIRT
+2 PLAC Salle, Norfolk, England
+1 DEAT
+2 DATE 1585
+0 @I599@ INDI
+1 NAME Mathei Fountaine /Ffunteyn?/
+2 GIVN Mathei Fountaine
+2 SURN Ffunteyn?
+1 SEX U
+1 BIRT
+2 PLAC Salle, Norfolk, England
+0 @I600@ INDI
+1 NAME Elizabeth /WALSHE/
+2 GIVN Elizabeth
+2 SURN WALSHE
+1 SEX F
+1 BIRT
+2 PLAC Colbye, Norfolk, England
+0 @I601@ INDI
+1 NAME Frances /Palgrave/
+2 GIVN Frances
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Bradfield, County Norfolkshire, England
+1 DEAT
+2 DATE 1595
+0 @I602@ INDI
+1 NAME John /Fountaine/
+2 GIVN John
+2 SURN Fountaine
+1 SEX M
+0 @I603@ INDI
+1 NAME Frances /Palgrave/
+2 GIVN Frances
+2 SURN Palgrave
+1 SEX F
+0 @I604@ INDI
+1 NAME Martine /Funteyne/
+2 GIVN Martine
+2 SURN Funteyne
+1 SEX U
+1 BIRT
+2 PLAC Salle, Norfolk, England
+0 @I605@ INDI
+1 NAME EN Sir Clement Clemence Clements Palgrave /Pargrave/
+2 GIVN EN Sir Clement Clemence Clements Palgrave
+2 SURN Pargrave
+1 SEX M
+1 BIRT
+2 PLAC Northwood, Barningham, Norfolk, England
+1 DEAT
+2 DATE 1583
+0 @I606@ INDI
+1 NAME Anne Glemham (Palgrave /Pagrave/
+2 GIVN Anne Glemham (Palgrave
+2 SURN Pagrave
+1 SEX F
+1 BIRT
+2 PLAC Great Glemham Parva, Suffolk, England
+1 DEAT
+2 DATE 1516
+0 @I607@ INDI
+1 NAME EN Lady Margery aka Margaret De Read (Palgrave /Pargrave/
+2 GIVN EN Lady Margery aka Margaret De Read (Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+1 DEAT
+2 DATE 1564
+0 @I608@ INDI
+1 NAME Frances /Palgrave/
+2 GIVN Frances
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Bradfield, Norfolk,  England
+0 @I609@ INDI
+1 NAME Dorothy Dorothie Palgrave Pargrave /Palmer/
+2 GIVN Dorothy Dorothie Palgrave Pargrave
+2 SURN Palmer
+1 SEX F
+1 BIRT
+2 PLAC Northwood, Barningham, Norfolk, England
+1 DEAT
+2 DATE 1572
+0 @I610@ INDI
+1 NAME EN Anne Palgrave /Pargrave/
+2 GIVN EN Anne Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 PLAC of Norwood, Breningham, Norfolk, England
+0 @I611@ INDI
+1 NAME EN Elizabeth Palgrave /Pargrave/
+2 GIVN EN Elizabeth Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 PLAC Bradfield, Norfolkshire, England, United Kingdom
+0 @I612@ INDI
+1 NAME Margery "Lady" De /Reade/
+2 GIVN Margery "Lady" De
+2 SURN Reade
+1 SEX U
+1 BIRT
+2 PLAC Thuxton, Norfolk, England
+1 DEAT
+2 DATE 1564
+0 @I613@ INDI
+1 NAME EN Frances /Palgrave/
+2 GIVN EN Frances
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Bradfield, Norfolk,  England
+0 @I614@ INDI
+1 NAME EN John Palgrave /Pargrave/
+2 GIVN EN John Palgrave
+2 SURN Pargrave
+1 SEX M
+1 BIRT
+2 PLAC Barningham, Norwood, Norwich, Norfolk, England
+1 DEAT
+2 DATE 1611
+0 @I615@ INDI
+1 NAME EN John /Palgrave/
+2 GIVN EN John
+2 SURN Palgrave
+1 SEX M
+1 BIRT
+2 PLAC Barningham Norwood, Norwich, Norfolk, England
+1 DEAT
+2 DATE 1611
+0 @I616@ INDI
+1 NAME EN Anne Palgrave /Pargrave/
+2 GIVN EN Anne Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 PLAC North Barningham, Norfolkshire, England, United Kingdom
+0 @I617@ INDI
+1 NAME EN Elizabeth Palgrave /Pargrave/
+2 GIVN EN Elizabeth Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 PLAC Bradfield, Norfolkshire, England
+0 @I618@ INDI
+1 NAME EN Dorothy Palgrave /Pargrave/
+2 GIVN EN Dorothy Palgrave
+2 SURN Pargrave
+1 SEX F
+1 BIRT
+2 PLAC Norwood, Breningham, Norfolk, England
+0 @I619@ INDI
+1 NAME EN Thomas Palgrave /Pargrave/
+2 GIVN EN Thomas Palgrave
+2 SURN Pargrave
+1 SEX M
+1 BIRT
+2 PLAC Northwood, Barningham, Norfolk, England
+0 @I620@ INDI
+1 NAME EN Joane Palgrave /Pargrave/
+2 GIVN EN Joane Palgrave
+2 SURN Pargrave
+1 SEX U
+1 BIRT
+2 PLAC Northwood, Barningham, Norfolk, England
+0 @I621@ INDI
+1 NAME EN Robert Palgrave /Pargrave/
+2 GIVN EN Robert Palgrave
+2 SURN Pargrave
+1 SEX M
+1 BIRT
+2 PLAC Bradfield, Norfolkshire, England
+0 @I622@ INDI
+1 NAME Frances /Palgrave/
+2 GIVN Frances
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+0 @I623@ INDI
+1 NAME John /Palgrave/
+2 GIVN John
+2 SURN Palgrave
+1 SEX M
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+0 @I624@ INDI
+1 NAME Elizabeth /Palgrave/
+2 GIVN Elizabeth
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+0 @I625@ INDI
+1 NAME James /Palgrave/
+2 GIVN James
+2 SURN Palgrave
+1 SEX M
+1 BIRT
+2 PLAC Thruxton, Herefordshire, England
+0 @I626@ INDI
+1 NAME Elianor /Palgrave/
+2 GIVN Elianor
+2 SURN Palgrave
+1 SEX U
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+0 @I627@ INDI
+1 NAME Henry /Palgrave/
+2 GIVN Henry
+2 SURN Palgrave
+1 SEX M
+1 BIRT
+2 PLAC Palgrave, Norfolk, England
+0 @I628@ INDI
+1 NAME Elizabeth /Palgrave/
+2 GIVN Elizabeth
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+0 @I629@ INDI
+1 NAME Anne /Pagrave/
+2 GIVN Anne
+2 SURN Pagrave
+1 SEX F
+1 BIRT
+2 PLAC Palgrave, Norfolk, England
+0 @I630@ INDI
+1 NAME George /Palgrave/
+2 GIVN George
+2 SURN Palgrave
+1 SEX M
+1 BIRT
+2 PLAC Thruxton, Norfolk, England
+0 @I631@ INDI
+1 NAME Frances /Palgrave/
+2 GIVN Frances
+2 SURN Palgrave
+1 SEX F
+1 BIRT
+2 PLAC Thuxton, Dereham, Norfolk, England
+0 @I632@ INDI
+1 NAME Thomas /Whichcote/
+2 GIVN Thomas
+2 SURN Whichcote
+1 SEX M
+1 BIRT
+2 PLAC Stapleford Park, Melton Mowbray
+0 @I633@ INDI
+1 NAME Jane Helen Harbord /Lowther/
+2 GIVN Jane Helen Harbord
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 13 NOV 1947
+1 NOTE First child of James 7th Earl and Tuppina Bennet
+0 @I634@ INDI
+1 NAME Miranda /Lowther/
+2 GIVN Miranda
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 1 JUL 1955
+1 NOTE Daughter of James 7th Earl and Jennifer Lowther
+0 @I635@ INDI
+1 NAME William James /Lowther/
+2 GIVN William James
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 9 JUL 1957
+1 NOTE CURRENT 9TH EARL OF LONSDALE. Son of James 7th Earl and Jennifer Lowther
+0 @I636@ INDI
+1 NAME Caroline /Lowther/
+2 GIVN Caroline
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE 11 MAR 1959
+1 NOTE Daughter of James 7th Earl and Jennifer Lowther
+0 @I637@ INDI
+1 NAME James Nicholas /Lowther/
+2 GIVN James Nicholas
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE 4 DEC 1964
+1 NOTE Son of James 7th Earl and Nancy Ruth Cobbs
+0 @I638@ INDI
+1 NAME Charles Alexander James /Lowther/
+2 GIVN Charles Alexander James
+2 SURN Lowther
+1 SEX M
+1 BIRT
+2 DATE ABT 1976
+1 NOTE Son of James 7th Earl and Caroline Ley
+0 @I639@ INDI
+1 NAME Marie-Louisa Kate /Lowther/
+2 GIVN Marie-Louisa Kate
+2 SURN Lowther
+1 SEX F
+1 BIRT
+2 DATE ABT 1978
+1 NOTE Daughter of James 7th Earl and Caroline Ley
+0 @I640@ INDI
+1 NAME Regine Elisabeth Pangaert d /Opdorp/
+2 GIVN Regine Elisabeth Pangaert d
+2 SURN Opdorp
+1 SEX F
+1 NOTE Wife of John Francis Rodney 9th Baron. Married 3 NOV 1951
+0 @I641@ INDI
+1 NAME George Brydges /Rodney/
+2 GIVN George Brydges
+2 SURN Rodney
+1 SEX M
+1 BIRT
+2 DATE 3 JAN 1953
+1 DEAT
+2 DATE 13 FEB 2011
+1 NOTE 10th Baron Rodney. Son of John 9th Baron
+0 @I642@ INDI
+1 NAME Anne /Rodney/
+2 GIVN Anne
+2 SURN Rodney
+1 SEX F
+1 BIRT
+2 DATE 1955
+1 NOTE Daughter of John Francis Rodney 9th Baron
+0 @I643@ INDI
+1 NAME Jane /Blakeney/
+2 GIVN Jane
+2 SURN Blakeney
+1 SEX F
+1 NOTE Wife of George 10th Baron Rodney. Married 20 AUG 1996
+0 @I644@ INDI
+1 NAME John George Brydges /Rodney/
+2 GIVN John George Brydges
+2 SURN Rodney
+1 SEX M
+1 BIRT
+2 DATE 1999
+1 NOTE CURRENT 11TH BARON RODNEY. Son of George 10th Baron
+0 TRLR

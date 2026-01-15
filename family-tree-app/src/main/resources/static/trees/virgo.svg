@@ -25,7 +25,7 @@
   <rect width="100%" height="100%" fill="#fff"/>
 
   <text x="130.0" y="30" text-anchor="middle" class="name" style="font-size: 16px;">
-    Goodall Family Tree
+    Virgo Family Tree
   </text>
   <text x="130.0" y="48" text-anchor="middle" class="dates">
     Click on any person to view their details
@@ -33,11 +33,11 @@
   <line x1="30" y1="58" x2="230" y2="58" stroke="#e0e0e0"/>
 
   
-  <g class="person-card" data-person-id="575396">
+  <g class="person-card" data-person-id="10289">
     <rect x="50" y="80" width="160" height="55" rx="5" class="card"/>
-    <circle cx="70" cy="108" r="14" class="avatar-male"/>
-    <text x="90" y="100" class="name">John Goodall</text>
-    <text x="90" y="113" class="dates">1774-1850</text>
+    <circle cx="70" cy="108" r="14" class="avatar-female"/>
+    <text x="90" y="100" class="name">Grace ( Virgo)</text>
+    <text x="90" y="113" class="dates"></text>
     
   </g>
 </svg>
