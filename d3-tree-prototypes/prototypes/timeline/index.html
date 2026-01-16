@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horizontal Timeline Tree | D3 Prototypes</title>
+  <link rel="stylesheet" href="../../css/tree.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    .node-card.selected rect {
+      stroke-width: 3;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+  </style>
+</head>
+<body>
+  <div id="tree-container" class="tree-container">
+    <div class="loading">Loading tree data</div>
+  </div>
+
+  <div class="controls">
+    <button id="btn-reset">Reset View</button>
+    <button id="btn-expand">Expand All</button>
+    <button id="btn-collapse">Collapse All</button>
+    <a href="../../index.html"><button>Back to Index</button></a>
+  </div>
+
+  <div id="info-panel" class="info-panel">
+    <button class="close-btn" id="btn-close-panel">&times;</button>
+    <h3 id="panel-name">Person Name</h3>
+    <dl>
+      <dt>Born</dt>
+      <dd id="panel-birth">-</dd>
+      <dt>Died</dt>
+      <dd id="panel-death">-</dd>
+      <dt>Birthplace</dt>
+      <dd id="panel-birthplace">-</dd>
+      <dt>Occupation</dt>
+      <dd id="panel-occupation">-</dd>
+    </dl>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-color male"></div>
+      <span>Male</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-color female"></div>
+      <span>Female</span>
+    </div>
+  </div>
+
+  <script type="module">
+    import { loadTreeData, enrichTreeData } from '../../js/data-loader.js';
+    import { createHorizontalTree } from '../../js/layouts/horizontal.js';
+
+    const container = document.getElementById('tree-container');
+    const infoPanel = document.getElementById('info-panel');
+
+    async function init() {
+      try {
+        // Load data
+        const rawData = await loadTreeData('../../data/sample-tree.json');
+        const data = enrichTreeData(rawData);
+
+        // Clear loading message
+        container.innerHTML = '';
+
+        // Create tree
+        const tree = createHorizontalTree(container, data);
+
+        // Wire up controls
+        document.getElementById('btn-reset').addEventListener('click', tree.reset);
+        document.getElementById('btn-expand').addEventListener('click', tree.expandAll);
+        document.getElementById('btn-collapse').addEventListener('click', tree.collapseAll);
+        document.getElementById('btn-close-panel').addEventListener('click', hidePanel);
+
+        // Handle node selection
+        tree.onSelect((person) => {
+          if (person) {
+            showPanel(person);
+          } else {
+            hidePanel();
+          }
+        });
+
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            container.innerHTML = '';
+            const newTree = createHorizontalTree(container, data);
+            newTree.onSelect((person) => {
+              if (person) showPanel(person);
+              else hidePanel();
+            });
+          }, 250);
+        });
+
+      } catch (err) {
+        console.error('Failed to load tree:', err);
+        container.innerHTML = `<div class="error">Error: ${err.message}</div>`;
+      }
+    }
+
+    function showPanel(person) {
+      document.getElementById('panel-name').textContent = person.name || 'Unknown';
+      document.getElementById('panel-birth').textContent = person.birthYear || 'Unknown';
+      document.getElementById('panel-death').textContent = person.deathYear || (person.birthYear ? 'Living' : 'Unknown');
+      document.getElementById('panel-birthplace').textContent = person.birthPlace || '-';
+      document.getElementById('panel-occupation').textContent = person.occupation || '-';
+      infoPanel.classList.add('visible');
+    }
+
+    function hidePanel() {
+      infoPanel.classList.remove('visible');
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D3 Family Tree Prototypes</title>
+  <style>
+    :root {
+      --color-primary: #4a90d9;
+      --color-text: #333;
+      --color-text-light: #666;
+      --color-bg: #fff;
+      --color-bg-alt: #f8f9fa;
+      --border-radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      color: var(--color-text);
+      background: var(--color-bg-alt);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin: 0 0 0.5rem 0;
+      color: var(--color-primary);
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      margin: 0 0 2rem 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--color-bg);
+      border-radius: var(--border-radius);
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      border-color: var(--color-primary);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      margin: 0 0 8px 0;
+      color: var(--color-primary);
+    }
+
+    .card p {
+      margin: 0 0 12px 0;
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .card .status {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status.ready {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status.wip {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status.planned {
+      background: #e2e3e5;
+      color: #383d41;
+    }
+
+    .features {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid #eee;
+    }
+
+    .features h3 {
+      font-size: 0.85rem;
+      margin: 0 0 8px 0;
+      color: var(--color-text-light);
+      font-weight: 500;
+    }
+
+    .features ul {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    .features li {
+      margin-bottom: 4px;
+    }
+
+    footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+      text-align: center;
+      color: var(--color-text-light);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--color-primary);
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 24px 16px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>D3 Family Tree Prototypes</h1>
+    <p class="subtitle">Explore different visualization layouts for genealogical data</p>
+
+    <div class="grid">
+      <a href="prototypes/timeline/index.html" class="card">
+        <h2>Horizontal Timeline</h2>
+        <p>Timeline-based layout where X axis represents time (birth year) and card width shows lifespan.</p>
+        <span class="status ready">Ready</span>
+        <div class="features">
+          <h3>Features</h3>
+          <ul>
+            <li>Zoom and pan</li>
+            <li>Collapsible nodes</li>
+            <li>Click to view details</li>
+            <li>Year markers</li>
+            <li>Gender-colored cards</li>
+          </ul>
+        </div>
+      </a>
+
+      <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+        <h2>Vertical Tree</h2>
+        <p>Traditional top-down ancestor chart with root at top and descendants below.</p>
+        <span class="status planned">Planned</span>
+        <div class="features">
+          <h3>Planned Features</h3>
+          <ul>
+            <li>Classic genealogy layout</li>
+            <li>Spouse positioning</li>
+            <li>Generation labels</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+        <h2>Radial/Circular</h2>
+        <p>Root person at center with generations radiating outward in concentric circles.</p>
+        <span class="status planned">Planned</span>
+        <div class="features">
+          <h3>Planned Features</h3>
+          <ul>
+            <li>Compact view of large trees</li>
+            <li>Fan chart option</li>
+            <li>Generation rings</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+        <h2>Indented List</h2>
+        <p>Collapsible outline view optimized for mobile and quick navigation.</p>
+        <span class="status planned">Planned</span>
+        <div class="features">
+          <h3>Planned Features</h3>
+          <ul>
+            <li>Mobile-first design</li>
+            <li>Fast navigation</li>
+            <li>Search/filter</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="opacity: 0.6; cursor: not-allowed;">
+        <h2>Mobile Layout</h2>
+        <p>Touch-optimized layouts for viewing family trees on phones and tablets.</p>
+        <span class="status planned">Planned</span>
+        <div class="features">
+          <h3>Planned Features</h3>
+          <ul>
+            <li>Touch gestures</li>
+            <li>Swipe navigation</li>
+            <li>Responsive cards</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>D3.js Family Tree Prototypes &mdash; Vanilla JS implementation</p>
+      <p>Future: React / React Native versions</p>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,374 @@
+/* D3 Tree Prototypes - Shared Styles */
+
+:root {
+  --color-male: #4a90d9;
+  --color-male-light: #e8f1fa;
+  --color-female: #d94a8c;
+  --color-female-light: #fae8f1;
+  --color-unknown: #888;
+  --color-unknown-light: #f0f0f0;
+  --color-link: #999;
+  --color-text: #333;
+  --color-text-light: #666;
+  --color-bg: #fff;
+  --color-bg-alt: #f5f5f5;
+  --border-radius: 6px;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --transition: 0.3s ease;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+/* Container */
+.tree-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Controls */
+.controls {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  background: var(--color-bg);
+  cursor: pointer;
+  font-size: 14px;
+  transition: var(--transition);
+}
+
+.controls button:hover {
+  background: var(--color-bg-alt);
+  border-color: #bbb;
+}
+
+.controls button:active {
+  transform: scale(0.98);
+}
+
+/* Info panel */
+.info-panel {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 100;
+  background: var(--color-bg);
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 16px;
+  min-width: 250px;
+  max-width: 350px;
+  box-shadow: var(--shadow);
+  display: none;
+}
+
+.info-panel.visible {
+  display: block;
+}
+
+.info-panel h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.info-panel .close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--color-text-light);
+  padding: 4px 8px;
+}
+
+.info-panel .close-btn:hover {
+  color: var(--color-text);
+}
+
+.info-panel dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 12px;
+}
+
+.info-panel dt {
+  color: var(--color-text-light);
+  font-size: 12px;
+}
+
+.info-panel dd {
+  margin: 0;
+  font-weight: 500;
+}
+
+/* SVG Tree */
+svg.tree {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+svg.tree:active {
+  cursor: grabbing;
+}
+
+/* Node cards */
+.node-card {
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.node-card:hover {
+  filter: brightness(0.95);
+}
+
+.node-card rect {
+  stroke-width: 2;
+  rx: 4;
+  ry: 4;
+}
+
+.node-card.male rect {
+  fill: var(--color-male-light);
+  stroke: var(--color-male);
+}
+
+.node-card.female rect {
+  fill: var(--color-female-light);
+  stroke: var(--color-female);
+}
+
+.node-card.unknown rect {
+  fill: var(--color-unknown-light);
+  stroke: var(--color-unknown);
+}
+
+.node-card text.name {
+  font-weight: 600;
+  font-size: 12px;
+  fill: var(--color-text);
+}
+
+.node-card text.dates {
+  font-size: 10px;
+  fill: var(--color-text-light);
+}
+
+.node-card text.details {
+  font-size: 9px;
+  fill: var(--color-text-light);
+}
+
+/* Collapse/expand button */
+.node-card .toggle-btn {
+  cursor: pointer;
+}
+
+.node-card .toggle-btn circle {
+  fill: var(--color-bg);
+  stroke: #ccc;
+  stroke-width: 1;
+}
+
+.node-card .toggle-btn:hover circle {
+  stroke: #999;
+}
+
+.node-card .toggle-btn text {
+  font-size: 12px;
+  font-weight: bold;
+  fill: var(--color-text-light);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Links */
+.link {
+  fill: none;
+  stroke: var(--color-link);
+  stroke-width: 1.5;
+}
+
+/* Year markers */
+.year-marker {
+  stroke: #eee;
+  stroke-width: 1;
+}
+
+.year-label {
+  font-size: 11px;
+  fill: #bbb;
+}
+
+/* Legend */
+.legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 100;
+  background: var(--color-bg);
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  padding: 12px 16px;
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 2px solid;
+}
+
+.legend-color.male {
+  background: var(--color-male-light);
+  border-color: var(--color-male);
+}
+
+.legend-color.female {
+  background: var(--color-female-light);
+  border-color: var(--color-female);
+}
+
+/* Tooltip */
+.tooltip {
+  position: absolute;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  font-size: 12px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  max-width: 300px;
+}
+
+.tooltip.visible {
+  opacity: 1;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .controls {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+  }
+
+  .controls button {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .info-panel {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-width: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .legend {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    justify-content: center;
+  }
+
+  .node-card text.name {
+    font-size: 11px;
+  }
+
+  .node-card text.dates {
+    font-size: 9px;
+  }
+}
+
+/* Touch-friendly on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .node-card {
+    cursor: default;
+  }
+
+  .controls button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Loading state */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  font-size: 16px;
+  color: var(--color-text-light);
+}
+
+.loading::after {
+  content: '';
+  width: 24px;
+  height: 24px;
+  margin-left: 12px;
+  border: 3px solid #eee;
+  border-top-color: var(--color-male);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error state */
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #c00;
+  font-size: 16px;
+}

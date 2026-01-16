@@ -156,4 +156,61 @@ public class PersonRepository {
             """;
         return jdbc.query(sql, PERSON_MAPPER, personId, personId, personId, personId, personId);
     }
+
+    public Long save(String forename, String surname, Integer birthYear, Integer deathYear,
+                     String birthPlace, Long treeId, Long motherId, Long fatherId) {
+        String sql = """
+            INSERT INTO person (forename, surname, birth_year_estimate, death_year_estimate,
+                               birth_place, tree_id, mother_id, father_id, source)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'family-chart')
+            """;
+        jdbc.update(sql, forename, surname, birthYear, deathYear, birthPlace, treeId, motherId, fatherId);
+
+        // Get the last inserted ID
+        Long id = jdbc.queryForObject("SELECT last_insert_rowid()", Long.class);
+        return id;
+    }
+
+    public void update(Long id, String forename, String surname, Integer birthYear,
+                       Integer deathYear, String birthPlace) {
+        String sql = """
+            UPDATE person SET forename = ?, surname = ?, birth_year_estimate = ?,
+                             death_year_estimate = ?, birth_place = ?
+            WHERE id = ?
+            """;
+        jdbc.update(sql, forename, surname, birthYear, deathYear, birthPlace, id);
+    }
+
+    public void updateParents(Long id, Long motherId, Long fatherId) {
+        jdbc.update("UPDATE person SET mother_id = ?, father_id = ? WHERE id = ?",
+                    motherId, fatherId, id);
+    }
+
+    public void delete(Long id) {
+        // First remove any marriage records
+        jdbc.update("DELETE FROM marriage WHERE person_id_1 = ? OR person_id_2 = ?", id, id);
+        // Then delete the person
+        jdbc.update("DELETE FROM person WHERE id = ?", id);
+    }
+
+    public void addMarriage(Long person1Id, Long person2Id) {
+        // Check if marriage already exists
+        String checkSql = """
+            SELECT COUNT(*) FROM marriage
+            WHERE (person_id_1 = ? AND person_id_2 = ?) OR (person_id_1 = ? AND person_id_2 = ?)
+            """;
+        Integer count = jdbc.queryForObject(checkSql, Integer.class, person1Id, person2Id, person2Id, person1Id);
+        if (count == null || count == 0) {
+            jdbc.update("INSERT INTO marriage (person_id_1, person_id_2, source) VALUES (?, ?, 'family-chart')",
+                       person1Id, person2Id);
+        }
+    }
+
+    public void removeMarriage(Long person1Id, Long person2Id) {
+        String sql = """
+            DELETE FROM marriage
+            WHERE (person_id_1 = ? AND person_id_2 = ?) OR (person_id_1 = ? AND person_id_2 = ?)
+            """;
+        jdbc.update(sql, person1Id, person2Id, person2Id, person1Id);
+    }
 }

@@ -22,6 +22,167 @@ public class PersonApiController {
         this.censusRepository = censusRepository;
     }
 
+    // ========== CREATE/UPDATE/DELETE ==========
+
+    @PostMapping
+    public ResponseEntity<Map<String, Object>> createPerson(@RequestBody Map<String, Object> body) {
+        String forename = (String) body.get("forename");
+        String surname = (String) body.get("surname");
+        Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
+        Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
+        String birthPlace = (String) body.get("birthPlace");
+        Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
+        Long motherId = body.get("motherId") != null ? ((Number) body.get("motherId")).longValue() : null;
+        Long fatherId = body.get("fatherId") != null ? ((Number) body.get("fatherId")).longValue() : null;
+
+        Long id = personRepository.save(forename, surname, birthYear, deathYear, birthPlace, treeId, motherId, fatherId);
+
+        return personRepository.findById(id)
+            .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
+            .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updatePerson(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        if (personRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String forename = (String) body.get("forename");
+        String surname = (String) body.get("surname");
+        Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
+        Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
+        String birthPlace = (String) body.get("birthPlace");
+
+        personRepository.update(id, forename, surname, birthYear, deathYear, birthPlace);
+
+        return personRepository.findById(id)
+            .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePerson(@PathVariable Long id) {
+        if (personRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        personRepository.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ========== RELATIONSHIP MANAGEMENT ==========
+
+    @PostMapping("/{id}/parent")
+    public ResponseEntity<Map<String, Object>> addParent(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        if (personRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String gender = (String) body.get("gender");
+        Long existingParentId = body.get("parentId") != null ? ((Number) body.get("parentId")).longValue() : null;
+
+        Long parentId;
+        if (existingParentId != null) {
+            // Link to existing person
+            parentId = existingParentId;
+        } else {
+            // Create new parent
+            String forename = (String) body.get("forename");
+            String surname = (String) body.get("surname");
+            Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
+            Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
+            parentId = personRepository.save(forename, surname, birthYear, null, null, treeId, null, null);
+        }
+
+        // Update child's parent reference
+        Person child = personRepository.findById(id).get();
+        if ("F".equalsIgnoreCase(gender)) {
+            personRepository.updateParents(id, parentId, child.fatherId());
+        } else {
+            personRepository.updateParents(id, child.motherId(), parentId);
+        }
+
+        return personRepository.findById(parentId)
+            .map(parent -> ResponseEntity.ok(Map.of("id", parentId, "person", parent)))
+            .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @PostMapping("/{id}/child")
+    public ResponseEntity<Map<String, Object>> addChild(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        Person parent = personRepository.findById(id).orElse(null);
+        if (parent == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String gender = (String) body.get("gender");
+        Long existingChildId = body.get("childId") != null ? ((Number) body.get("childId")).longValue() : null;
+        String parentGender = (String) body.get("parentGender"); // Gender of the person at {id}
+
+        Long childId;
+        if (existingChildId != null) {
+            childId = existingChildId;
+        } else {
+            String forename = (String) body.get("forename");
+            String surname = (String) body.get("surname");
+            Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
+            Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
+
+            Long motherId = "F".equalsIgnoreCase(parentGender) ? id : null;
+            Long fatherId = "M".equalsIgnoreCase(parentGender) ? id : null;
+
+            childId = personRepository.save(forename, surname, birthYear, null, null, treeId, motherId, fatherId);
+        }
+
+        // If linking existing child, update their parent reference
+        if (existingChildId != null) {
+            Person child = personRepository.findById(childId).get();
+            if ("F".equalsIgnoreCase(parentGender)) {
+                personRepository.updateParents(childId, id, child.fatherId());
+            } else {
+                personRepository.updateParents(childId, child.motherId(), id);
+            }
+        }
+
+        return personRepository.findById(childId)
+            .map(child -> ResponseEntity.ok(Map.of("id", childId, "person", child)))
+            .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @PostMapping("/{id}/spouse")
+    public ResponseEntity<Map<String, Object>> addSpouse(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        if (personRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Long existingSpouseId = body.get("spouseId") != null ? ((Number) body.get("spouseId")).longValue() : null;
+
+        Long spouseId;
+        if (existingSpouseId != null) {
+            spouseId = existingSpouseId;
+        } else {
+            String forename = (String) body.get("forename");
+            String surname = (String) body.get("surname");
+            Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
+            Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
+            spouseId = personRepository.save(forename, surname, birthYear, null, null, treeId, null, null);
+        }
+
+        // Create marriage record
+        personRepository.addMarriage(id, spouseId);
+
+        return personRepository.findById(spouseId)
+            .map(spouse -> ResponseEntity.ok(Map.of("id", spouseId, "person", spouse)))
+            .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @DeleteMapping("/{id}/spouse/{spouseId}")
+    public ResponseEntity<Void> removeSpouse(@PathVariable Long id, @PathVariable Long spouseId) {
+        personRepository.removeMarriage(id, spouseId);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ========== READ OPERATIONS ==========
+
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getPerson(@PathVariable Long id) {
         return personRepository.findById(id)

@@ -1,0 +1,15 @@
+{
+  "name": "d3-tree-prototypes",
+  "version": "1.0.0",
+  "description": "Vanilla JavaScript prototypes for visualizing family trees using D3.js.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "family-chart": "^0.9.0"
+  }
+}

@@ -1,0 +1,83 @@
+[
+  {
+    "id": "25",
+    "data": {
+      "gender": "M",
+      "first name": "Arthur Goodall",
+      "last name": "Worthington",
+      "db_id": 25
+    },
+    "rels": {
+      "spouses": ["26"],
+      "children": ["30", "31"]
+    }
+  },
+  {
+    "id": "26",
+    "data": {
+      "gender": "F",
+      "first name": "Constance Mary Lamothe",
+      "last name": "Worthington",
+      "deathday": "1960",
+      "db_id": 26
+    },
+    "rels": {
+      "spouses": ["25"],
+      "children": ["30", "31"]
+    }
+  },
+  {
+    "id": "30",
+    "data": {
+      "gender": "M",
+      "first name": "Arthur Gordon",
+      "last name": "Worthington",
+      "birthday": "1922",
+      "db_id": 30
+    },
+    "rels": {
+      "parents": ["25", "26"],
+      "spouses": ["32"],
+      "children": ["33"]
+    }
+  },
+  {
+    "id": "31",
+    "data": {
+      "gender": "M",
+      "first name": "Bryan",
+      "last name": "Worthington",
+      "birthday": "1924",
+      "db_id": 31
+    },
+    "rels": {
+      "parents": ["25", "26"]
+    }
+  },
+  {
+    "id": "32",
+    "data": {
+      "gender": "F",
+      "first name": "Marjorie",
+      "last name": "Worthington",
+      "db_id": 32
+    },
+    "rels": {
+      "spouses": ["30"],
+      "children": ["33"]
+    }
+  },
+  {
+    "id": "33",
+    "data": {
+      "gender": "M",
+      "first name": "Jonathon Paul",
+      "last name": "Worthington",
+      "birthday": "1951",
+      "db_id": 33
+    },
+    "rels": {
+      "parents": ["30", "32"]
+    }
+  }
+]

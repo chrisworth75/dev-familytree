@@ -1,0 +1,132 @@
+{
+  "id": 1,
+  "name": "Henry Lonsdale Wrathall",
+  "birthYear": 1863,
+  "deathYear": 1927,
+  "gender": "M",
+  "birthPlace": "Blackburn, Lancashire",
+  "occupation": "Cotton Weaver",
+  "children": [
+    {
+      "id": 2,
+      "name": "Arthur Wrathall",
+      "birthYear": 1887,
+      "deathYear": 1965,
+      "gender": "M",
+      "birthPlace": "Bolton, Lancashire",
+      "occupation": "Mill Worker",
+      "children": [
+        {
+          "id": 5,
+          "name": "Gordon Wrathall",
+          "birthYear": 1920,
+          "deathYear": 2005,
+          "gender": "M",
+          "birthPlace": "Bolton, Lancashire",
+          "children": [
+            {
+              "id": 10,
+              "name": "Jonathan Wrathall",
+              "birthYear": 1952,
+              "gender": "M",
+              "children": [
+                {
+                  "id": 15,
+                  "name": "Chris Worthington",
+                  "birthYear": 1982,
+                  "gender": "M",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": 11,
+              "name": "Patricia Wrathall",
+              "birthYear": 1955,
+              "gender": "F",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "name": "Marjorie Grace Wrathall",
+          "birthYear": 1922,
+          "deathYear": 2010,
+          "gender": "F",
+          "birthPlace": "Bolton, Lancashire",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Constance Mary Lonsdale Wrathall",
+      "birthYear": 1889,
+      "deathYear": 1972,
+      "gender": "F",
+      "birthPlace": "Bolton, Lancashire",
+      "children": [
+        {
+          "id": 7,
+          "name": "Emily Thompson",
+          "birthYear": 1915,
+          "deathYear": 1998,
+          "gender": "F",
+          "children": [
+            {
+              "id": 12,
+              "name": "Margaret Thompson",
+              "birthYear": 1940,
+              "gender": "F",
+              "children": []
+            },
+            {
+              "id": 13,
+              "name": "Robert Thompson",
+              "birthYear": 1943,
+              "deathYear": 2018,
+              "gender": "M",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "name": "William Thompson",
+          "birthYear": 1918,
+          "deathYear": 1995,
+          "gender": "M",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Kenneth David Lonsdale Wrathall",
+      "birthYear": 1891,
+      "deathYear": 1955,
+      "gender": "M",
+      "birthPlace": "Bolton, Lancashire",
+      "occupation": "Clerk",
+      "children": [
+        {
+          "id": 9,
+          "name": "David Wrathall",
+          "birthYear": 1925,
+          "deathYear": 2002,
+          "gender": "M",
+          "children": [
+            {
+              "id": 14,
+              "name": "Sarah Wrathall",
+              "birthYear": 1958,
+              "gender": "F",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

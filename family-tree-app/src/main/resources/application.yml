@@ -44,6 +44,16 @@ logging:
 
 familytree:
   trees:
+    - slug: my-family
+      displayName: My Direct Line
+      subtitle: Worthington
+      initials: CW
+      avatarColor: rose
+      personCount: 25
+      rootPersonId: 4004
+      allowedUsers:
+        - chris
+
     - slug: worthington
       displayName: Worthington Family
       subtitle: Yorkshire, England
