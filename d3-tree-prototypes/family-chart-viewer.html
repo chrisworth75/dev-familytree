@@ -174,19 +174,19 @@
     const TREE_SLUG = new URLSearchParams(window.location.search).get('tree') || null;
     let apiAvailable = false;
 
-    // Check if API is available
+    // Check if API is available (use tree endpoint since person IDs may vary)
     try {
-      const healthCheck = await fetch(`${API_BASE}/api/persons/1`, {
+      const healthCheck = await fetch(`${API_BASE}/api/trees/${TREE_SLUG || 'my-family'}/family-chart`, {
         method: 'GET',
         mode: 'cors',
-        signal: AbortSignal.timeout(2000)
+        signal: AbortSignal.timeout(3000)
       });
       if (healthCheck.ok) {
         apiAvailable = true;
         console.log('API available at', API_BASE);
       }
     } catch (e) {
-      console.log('API not available, using static data');
+      console.log('API not available, using static data:', e.message);
     }
 
     // Load tree data - prefer API if available and tree slug provided
