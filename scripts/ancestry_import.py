@@ -136,9 +136,16 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
                 browser.close()
                 return []
 
-            # Wait for matches to load - save HTML first to find correct selectors
+            # Wait for matches to load - use wait_for_selector instead of fixed sleep
             print("Waiting for matches to load...", flush=True)
-            time.sleep(3)
+            try:
+                # Wait for either a match entry OR pagination element to appear
+                page.wait_for_selector('.matchEntry, ui-pagination[data-testid="paginator"], .matchGroupList', timeout=30000)
+                print("  Match content detected, waiting for full render...", flush=True)
+                time.sleep(3)  # Additional wait for JS to finish rendering
+            except Exception as e:
+                print(f"  Warning: Timeout waiting for matches ({e}), continuing anyway...", flush=True)
+                time.sleep(5)  # Fallback longer wait
 
             # Dismiss any popup dialogs (like "Welcome to Pro Tools for DNA!")
             try:
@@ -280,15 +287,35 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
                     }
                 """)
 
-            # SCROLL MODE: When no pagination element is found, use infinite scroll
+            # URL-BASED PAGINATION: Navigate through pages using URL parameter
+            # Ancestry's new UI doesn't show pagination UI but supports ?currentPage=N
             if total_pages == 0:
-                print("\nUsing infinite scroll to load all matches...")
-                scroll_count = 0
-                no_new_count = 0
-                max_no_new = 5  # Stop after 5 scrolls with no new matches
+                print("\nUsing URL-based pagination (Ancestry 2026 UI)...")
+                base_url = f"{ANCESTRY_BASE_URL}/discoveryui-matches/list/{test_guid}?sharedDna=allMatches"
 
-                while no_new_count < max_no_new:
-                    # Extract current visible matches
+                current_page = 1
+                consecutive_empty = 0
+                max_empty = 3  # Stop after 3 pages with no new matches
+
+                while consecutive_empty < max_empty:
+                    # Navigate to page with retry logic
+                    page_url = f"{base_url}&currentPage={current_page}"
+                    retries = 3
+                    for attempt in range(retries):
+                        try:
+                            page.goto(page_url, wait_until="networkidle", timeout=45000)
+                            time.sleep(2)
+                            break
+                        except Exception as e:
+                            if attempt < retries - 1:
+                                print(f"  Page {current_page}: retry {attempt+1} after error", flush=True)
+                                time.sleep(5)
+                            else:
+                                print(f"  Page {current_page}: failed after {retries} attempts, skipping", flush=True)
+                                current_page += 1
+                                continue
+
+                    # Extract matches from this page
                     current_matches = extract_current_page_matches()
 
                     # Count new matches
@@ -299,24 +326,26 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
                             all_matches_data.append(m)
                             new_count += 1
 
-                    scroll_count += 1
-                    if scroll_count % 5 == 0 or scroll_count <= 3:
-                        print(f"  Scroll {scroll_count}: {len(all_matches_data)} total matches (+{new_count} new)", flush=True)
+                    if current_page % 20 == 0 or current_page <= 5:
+                        print(f"  Page {current_page}: {len(all_matches_data)} total (+{new_count} new)", flush=True)
 
                     if new_count == 0:
-                        no_new_count += 1
+                        consecutive_empty += 1
                     else:
-                        no_new_count = 0
+                        consecutive_empty = 0
 
-                    # Scroll down to load more
-                    page.evaluate('window.scrollTo(0, document.body.scrollHeight)')
-                    time.sleep(1.5)  # Wait for content to load
+                    current_page += 1
 
                     if len(all_matches_data) >= limit:
                         print(f"  Reached limit of {limit} matches", flush=True)
                         break
 
-                print(f"\nScroll complete: {len(all_matches_data)} matches loaded")
+                    # Safety limit - about 1320 pages for ~26k matches at 20/page
+                    if current_page > 1500:
+                        print(f"  Safety limit reached at page {current_page}", flush=True)
+                        break
+
+                print(f"\nURL pagination complete: {len(all_matches_data)} matches from {current_page-1} pages")
 
             else:
                 # PAGINATION MODE: Use page numbers when pagination element exists
@@ -475,6 +504,25 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
             print(f"\nError during browser automation: {e}", flush=True)
             import traceback
             traceback.print_exc()
+            # Save any matches collected before the error
+            if 'all_matches_data' in dir() and all_matches_data:
+                print(f"\nSaving {len(all_matches_data)} matches collected before error...", flush=True)
+                for m in all_matches_data:
+                    side_text = m.get('matchSide', '') or ''
+                    side = 'unknown'
+                    if 'Paternal' in side_text: side = 'paternal'
+                    elif 'Maternal' in side_text: side = 'maternal'
+                    elif 'Both sides' in side_text: side = 'both'
+                    matches.append({
+                        'name': m.get('name'),
+                        'shared_cm': m.get('sharedCm'),
+                        'predicted_relationship': m.get('relationship'),
+                        'ancestry_id': m.get('guid'),
+                        'match_side': side,
+                        'tree_size': m.get('treeSize'),
+                        'has_tree': m.get('hasTree', False),
+                        'linked_tree_id': m.get('linkedTreeId')
+                    })
 
         finally:
             print("\nClosing browser...", flush=True)
