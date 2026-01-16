@@ -295,25 +295,28 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
 
                 current_page = 1
                 consecutive_empty = 0
-                max_empty = 3  # Stop after 3 pages with no new matches
+                max_empty = 10  # Stop after 10 pages with no new matches (allow for occasional extraction failures)
 
                 while consecutive_empty < max_empty:
                     # Navigate to page with retry logic
                     page_url = f"{base_url}&currentPage={current_page}"
-                    retries = 3
-                    for attempt in range(retries):
+                    page_loaded = False
+                    for attempt in range(3):
                         try:
                             page.goto(page_url, wait_until="networkidle", timeout=45000)
-                            time.sleep(2)
+                            time.sleep(3)  # Longer delay to avoid rate limiting
+                            page_loaded = True
                             break
                         except Exception as e:
-                            if attempt < retries - 1:
+                            if attempt < 2:
                                 print(f"  Page {current_page}: retry {attempt+1} after error", flush=True)
                                 time.sleep(5)
                             else:
-                                print(f"  Page {current_page}: failed after {retries} attempts, skipping", flush=True)
-                                current_page += 1
-                                continue
+                                print(f"  Page {current_page}: failed after 3 attempts, skipping", flush=True)
+
+                    if not page_loaded:
+                        current_page += 1
+                        continue  # Skip extraction, move to next page
 
                     # Extract matches from this page
                     current_matches = extract_current_page_matches()
