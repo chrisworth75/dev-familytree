@@ -72,25 +72,25 @@ public class SecurityConfig {
 
         UserDetails chris = User.builder()
             .username("chris")
-            .password(encoder.encode("changeme"))  // CHANGE THIS
+            .password(encoder.encode("chris"))
             .roles("USER", "ADMIN")
             .build();
 
         UserDetails familyAu = User.builder()
             .username("family-au")
-            .password(encoder.encode("changeme"))  // CHANGE THIS
+            .password(encoder.encode("chris"))
             .roles("USER")
             .build();
 
         UserDetails familyCa = User.builder()
             .username("family-ca")
-            .password(encoder.encode("changeme"))  // CHANGE THIS
+            .password(encoder.encode("chris"))
             .roles("USER")
             .build();
 
         UserDetails familyUk = User.builder()
             .username("family-uk")
-            .password(encoder.encode("changeme"))  // CHANGE THIS
+            .password(encoder.encode("chris"))
             .roles("USER")
             .build();
 

@@ -60,7 +60,7 @@ familytree:
       initials: WF
       avatarColor: blue
       personCount: 41
-      rootPersonId: 575426
+      rootPersonId: 8000
       allowedUsers:
         - chris
         - family-au

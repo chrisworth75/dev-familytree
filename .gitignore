@@ -28,3 +28,6 @@ import_log.txt
 archive/
 tree-svg-old-backup/
 files.zip
+node_modules/
+test-results/
+playwright-report/
