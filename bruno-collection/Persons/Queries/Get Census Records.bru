@@ -1,0 +1,22 @@
+meta {
+  name: Get Census Records
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{personId}}/census
+  body: none
+  auth: none
+}
+
+docs {
+  Get all census records linked to a person.
+
+  Returns a list of CensusRecord objects containing historical census data.
+
+  Useful IDs (env vars):
+  - {{arthur}} (4004) - Arthur Worthington, 4 census records
+  - {{george}} (6000) - George Worthington, 1851 census
+  - {{james}} (5000) - James Worthington b1846
+}

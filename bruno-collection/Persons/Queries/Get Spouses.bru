@@ -1,0 +1,17 @@
+meta {
+  name: Get Spouses
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{personId}}/spouses
+  body: none
+  auth: none
+}
+
+docs {
+  Get all spouses of a person.
+
+  Returns a list of spouse Person objects.
+}

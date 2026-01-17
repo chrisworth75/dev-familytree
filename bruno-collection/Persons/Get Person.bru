@@ -1,0 +1,23 @@
+meta {
+  name: Get Person
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{personId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Get a person by ID with all their relationships.
+
+  Returns:
+  - person: The person object
+  - mother: Mother's person object (if exists)
+  - father: Father's person object (if exists)
+  - spouses: List of spouse person objects
+  - children: List of children person objects
+  - siblings: List of sibling person objects
+}

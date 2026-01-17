@@ -1,0 +1,16 @@
+meta {
+  name: Delete Person
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/persons/{{personId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Delete a person by ID.
+  Returns 204 No Content on success.
+}

@@ -1,0 +1,24 @@
+meta {
+  name: Get Ancestors
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{personId}}/ancestors
+  body: none
+  auth: none
+}
+
+params:query {
+  ~generations: 10
+}
+
+docs {
+  Get all ancestors of a person up to N generations.
+
+  Query parameters:
+  - generations: Number of generations to retrieve (default: 10, max: 20)
+
+  Returns a flat list of ancestor Person objects.
+}

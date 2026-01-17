@@ -1,0 +1,21 @@
+meta {
+  name: Get Ancestors (Chris)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/persons/1000/ancestors
+  body: none
+  auth: none
+}
+
+params:query {
+  ~generations: 10
+}
+
+docs {
+  Get ancestors of Chris Worthington (b1975).
+
+  ID: 1000
+}

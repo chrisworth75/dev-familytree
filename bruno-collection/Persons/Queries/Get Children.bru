@@ -1,0 +1,21 @@
+meta {
+  name: Get Children
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{personId}}/children
+  body: none
+  auth: none
+}
+
+docs {
+  Get all children of a person.
+
+  Returns a list of children Person objects.
+
+  Useful IDs (env vars):
+  - {{george}} (6000) - George Worthington, 3 children
+  - {{arthur}} (4004) - Arthur Worthington, has children
+}

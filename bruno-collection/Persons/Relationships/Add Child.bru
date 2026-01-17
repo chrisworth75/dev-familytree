@@ -1,0 +1,35 @@
+meta {
+  name: Add Child
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/persons/{{personId}}/child
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "parentGender": "M",
+    "forename": "James",
+    "surname": "Smith",
+    "birthYear": 1880,
+    "treeId": 1
+  }
+}
+
+docs {
+  Add a child to a person. Can either create a new child or link to an existing person.
+
+  Request body:
+  - parentGender: Gender of the person at {personId} - "M" or "F" (required)
+  - childId: ID of existing person to link as child (optional)
+
+  If childId is not provided, creates a new person:
+  - forename: First name (string)
+  - surname: Last name (string)
+  - birthYear: Birth year estimate (integer, optional)
+  - treeId: Tree ID (integer, default: 1)
+}

@@ -1,0 +1,18 @@
+meta {
+  name: Get Siblings (Chris)
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/persons/1000/siblings
+  body: none
+  auth: none
+}
+
+docs {
+  Get siblings of Chris Worthington (b1975).
+  Returns Tim, Rebecca, and Jennifer.
+
+  ID: 1000
+}

@@ -1,0 +1,38 @@
+meta {
+  name: Create Person
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/persons
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "forename": "John",
+    "surname": "Smith",
+    "birthYear": 1850,
+    "deathYear": 1920,
+    "birthPlace": "London, England",
+    "treeId": 1,
+    "motherId": null,
+    "fatherId": null
+  }
+}
+
+docs {
+  Create a new person in the database.
+
+  Request body:
+  - forename: First name (string)
+  - surname: Last name (string)
+  - birthYear: Birth year estimate (integer, optional)
+  - deathYear: Death year estimate (integer, optional)
+  - birthPlace: Birth place (string, optional)
+  - treeId: Tree ID (integer, default: 1)
+  - motherId: Mother's person ID (integer, optional)
+  - fatherId: Father's person ID (integer, optional)
+}

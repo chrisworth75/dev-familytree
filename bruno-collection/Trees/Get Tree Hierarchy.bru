@@ -1,0 +1,16 @@
+meta {
+  name: Get Tree Hierarchy
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/trees/{{slug}}/hierarchy
+  body: none
+  auth: none
+}
+
+docs {
+  Get tree hierarchy as nested JSON for D3.js visualization.
+  Returns the root person with all descendants nested as children.
+}

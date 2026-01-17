@@ -1,0 +1,32 @@
+meta {
+  name: Update Person
+  type: http
+  seq: 3
+}
+
+put {
+  url: {{baseUrl}}/api/persons/{{personId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "forename": "John",
+    "surname": "Smith",
+    "birthYear": 1850,
+    "deathYear": 1920,
+    "birthPlace": "London, England"
+  }
+}
+
+docs {
+  Update an existing person's details.
+
+  Request body:
+  - forename: First name (string)
+  - surname: Last name (string)
+  - birthYear: Birth year estimate (integer, optional)
+  - deathYear: Death year estimate (integer, optional)
+  - birthPlace: Birth place (string, optional)
+}

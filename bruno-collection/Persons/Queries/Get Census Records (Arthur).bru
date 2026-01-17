@@ -1,0 +1,18 @@
+meta {
+  name: Get Census Records (Arthur)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/persons/4004/census
+  body: none
+  auth: none
+}
+
+docs {
+  Get census records for Arthur Worthington (b1879).
+  Arthur has 4 linked census records (1881, 1891, 1901, 1911).
+
+  ID: 4004
+}

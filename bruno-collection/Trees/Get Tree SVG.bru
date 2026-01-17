@@ -1,0 +1,16 @@
+meta {
+  name: Get Tree SVG
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/tree/{{slug}}/svg
+  body: none
+  auth: none
+}
+
+docs {
+  Get the tree as an SVG image.
+  Returns a static SVG file if available, otherwise a placeholder.
+}

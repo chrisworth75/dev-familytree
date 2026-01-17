@@ -1,0 +1,17 @@
+meta {
+  name: Remove Spouse
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/persons/{{personId}}/spouse/2
+  body: none
+  auth: none
+}
+
+docs {
+  Remove the marriage relationship between two persons.
+  Does not delete either person, only removes the marriage link.
+  Returns 204 No Content on success.
+}

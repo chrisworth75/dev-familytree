@@ -1,0 +1,28 @@
+meta {
+  name: Get Descendants
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{personId}}/descendants
+  body: none
+  auth: none
+}
+
+params:query {
+  ~generations: 10
+}
+
+docs {
+  Get all descendants of a person up to N generations.
+
+  Query parameters:
+  - generations: Number of generations to retrieve (default: 10, max: 20)
+
+  Returns a flat list of descendant Person objects.
+
+  Useful IDs (env vars):
+  - {{george}} (6000) - George Worthington b1825, 22 descendants
+  - {{hlw}} (511036) - Henry Lonsdale Wrathall, 10 descendants
+}

@@ -1,0 +1,22 @@
+meta {
+  name: Get Descendants (George)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/persons/6000/descendants
+  body: none
+  auth: none
+}
+
+params:query {
+  ~generations: 5
+}
+
+docs {
+  Get descendants of George Worthington (b1825, your great-great-great grandfather).
+  George has 22 descendants across 5 generations.
+
+  ID: 6000
+}

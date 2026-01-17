@@ -1,0 +1,23 @@
+meta {
+  name: Get Family Chart Data
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/trees/{{slug}}/family-chart
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 15
+}
+
+docs {
+  Get tree data in family-chart format (flat array with bidirectional relationships).
+  This format is compatible with the family-chart library.
+
+  Query parameters:
+  - maxDepth: Maximum depth to traverse (default: 15, max: 20)
+}

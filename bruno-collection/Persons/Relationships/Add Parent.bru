@@ -1,0 +1,35 @@
+meta {
+  name: Add Parent
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/persons/{{personId}}/parent
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "gender": "M",
+    "forename": "William",
+    "surname": "Smith",
+    "birthYear": 1820,
+    "treeId": 1
+  }
+}
+
+docs {
+  Add a parent to a person. Can either create a new parent or link to an existing person.
+
+  Request body:
+  - gender: "M" for father, "F" for mother (required)
+  - parentId: ID of existing person to link as parent (optional)
+
+  If parentId is not provided, creates a new person:
+  - forename: First name (string)
+  - surname: Last name (string)
+  - birthYear: Birth year estimate (integer, optional)
+  - treeId: Tree ID (integer, default: 1)
+}

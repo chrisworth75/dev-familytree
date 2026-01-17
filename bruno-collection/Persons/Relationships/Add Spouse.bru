@@ -1,0 +1,35 @@
+meta {
+  name: Add Spouse
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/persons/{{personId}}/spouse
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "forename": "Mary",
+    "surname": "Jones",
+    "birthYear": 1855,
+    "treeId": 1
+  }
+}
+
+docs {
+  Add a spouse to a person. Can either create a new spouse or link to an existing person.
+
+  Request body:
+  - spouseId: ID of existing person to link as spouse (optional)
+
+  If spouseId is not provided, creates a new person:
+  - forename: First name (string)
+  - surname: Last name (string)
+  - birthYear: Birth year estimate (integer, optional)
+  - treeId: Tree ID (integer, default: 1)
+
+  Creates a marriage record linking both persons.
+}
