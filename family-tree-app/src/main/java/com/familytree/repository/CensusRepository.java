@@ -38,6 +38,23 @@ public class CensusRepository {
         this.jdbc = jdbc;
     }
 
+    public List<CensusRecord> searchBySurname(String surname, Integer year, int limit) {
+        StringBuilder sql = new StringBuilder("""
+            SELECT cr.*, NULL as confidence, NULL as reasoning
+            FROM census_record cr
+            WHERE cr.name_as_recorded LIKE ?
+            """);
+
+        if (year != null) {
+            sql.append(" AND cr.year = ").append(year);
+        }
+
+        sql.append(" ORDER BY cr.year, cr.name_as_recorded LIMIT ").append(Math.min(limit, 500));
+
+        String pattern = "%" + surname + "%";
+        return jdbc.query(sql.toString(), CENSUS_MAPPER, pattern);
+    }
+
     public List<CensusRecord> findByPersonId(Long personId) {
         // Query both link tables: person_census_link (with confidence) and person_census (from import)
         String sql = """
