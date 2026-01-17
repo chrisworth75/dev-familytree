@@ -65,6 +65,14 @@
       border-bottom: 1px solid #0f3460;
       background: #0f3460;
     }
+    .sidebar-photo {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      background: #1a1a2e;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
     .sidebar-header h2 {
       font-size: 1.1rem;
       font-weight: 600;
@@ -139,11 +147,73 @@
       background: #5c1313;
       color: #f87171;
     }
+    .external-links {
+      margin-bottom: 1rem;
+    }
+    .external-links h3 {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .external-link {
+      display: block;
+      background: #1a1a2e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      text-decoration: none;
+      color: #eee;
+      transition: all 0.2s;
+    }
+    .external-link:hover {
+      border-color: #e94560;
+      background: #0f3460;
+    }
+    .external-link-title {
+      font-weight: 500;
+      color: #4fc3f7;
+      margin-bottom: 0.25rem;
+    }
+    .external-link-url {
+      font-size: 0.75rem;
+      color: #666;
+      word-break: break-all;
+    }
     .no-records {
       color: #666;
       font-style: italic;
       text-align: center;
       padding: 1rem;
+    }
+    .bio-section {
+      background: #1a1a2e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .bio-section h3 {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bio-text {
+      color: #ccc;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      font-style: italic;
+    }
+    .bio-attribution {
+      color: #666;
+      font-size: 0.75rem;
+      margin-top: 0.75rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #0f3460;
     }
 
     /* Ancestor selection cards */
@@ -224,7 +294,7 @@
     // At Henry Lonsdale Wrathall level for most, George Worthington for James's line
     const ANCESTOR_CARDS = [
       { db_id: 6000, name: 'George Worthington', info: 'Worthington Line', years: '1825–?' },
-      { db_id: 511036, name: 'Henry Lonsdale Wrathall', info: 'Wrathall Line', years: '1863–1927' }
+      { db_id: 575341, name: 'Henry Lonsdale Wrathall', info: 'Wrathall Line', years: '1863–1927' }
     ];
 
     // Load tree data from API (same origin, no CORS needed)
@@ -389,7 +459,30 @@
       return [];
     }
 
-    // Display census records in sidebar
+    // Fetch URLs from API
+    async function fetchUrlsFromAPI(dbId) {
+      try {
+        const response = await fetch(`/api/persons/${dbId}/urls`);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (e) {
+        console.error('URL fetch failed:', e);
+      }
+      return [];
+    }
+
+    // Get favicon URL for a domain
+    function getFaviconUrl(url) {
+      try {
+        const domain = new URL(url).hostname;
+        return `https://www.google.com/s2/favicons?domain=${domain}&sz=32`;
+      } catch {
+        return null;
+      }
+    }
+
+    // Display person details in sidebar (URLs + census records)
     async function showCensusRecords(person) {
       const nameEl = document.getElementById('sidebar-name');
       const yearsEl = document.getElementById('sidebar-years');
@@ -407,56 +500,102 @@
       }
 
       // Show loading state
-      contentEl.innerHTML = '<div class="sidebar-placeholder">Loading census records...</div>';
+      contentEl.innerHTML = '<div class="sidebar-placeholder">Loading...</div>';
 
       const dbId = person.data.db_id;
-      const records = dbId ? await fetchCensusFromAPI(dbId) : [];
 
-      if (records.length === 0) {
-        contentEl.innerHTML = `
-          <div class="no-records">
-            No census records found for ${fullName}.<br><br>
-            <small>Census records are matched by database ID. This person may not have records linked yet.</small>
-          </div>
-        `;
-        return;
+      // Fetch URLs and census records in parallel
+      const [urls, records] = await Promise.all([
+        dbId ? fetchUrlsFromAPI(dbId) : [],
+        dbId ? fetchCensusFromAPI(dbId) : []
+      ]);
+
+      let html = '';
+
+      // Display photo first if available
+      const photoUrl = person.data.avatar;
+      if (photoUrl) {
+        html += `<img src="${photoUrl}" alt="${fullName}" class="sidebar-photo">`;
       }
 
-      // Sort by year
-      records.sort((a, b) => a.year - b.year);
-
-      contentEl.innerHTML = records.map(record => {
-        const confidence = record.confidence || 0;
-        const nameRecorded = record.nameAsRecorded || '';
-        const district = record.registrationDistrict || '';
-        const relationship = record.relationshipToHead || '';
-        const age = record.ageAsRecorded || '';
-        const birthPlace = record.birthPlaceAsRecorded || '';
-
-        let confidenceClass = 'confidence-low';
-        let confidenceLabel = 'Low confidence';
-        if (confidence >= 0.85) {
-          confidenceClass = 'confidence-high';
-          confidenceLabel = 'High confidence';
-        } else if (confidence >= 0.65) {
-          confidenceClass = 'confidence-medium';
-          confidenceLabel = 'Moderate confidence';
-        }
-
-        return `
-          <div class="census-record">
-            <div class="census-year">${record.year} Census</div>
-            ${record.address ? `<div class="census-field"><span class="census-label">Address</span><span class="census-value">${escapeHtml(record.address)}</span></div>` : ''}
-            ${district ? `<div class="census-field"><span class="census-label">District</span><span class="census-value">${escapeHtml(district)}</span></div>` : ''}
-            <div class="census-field"><span class="census-label">Name recorded</span><span class="census-value">${escapeHtml(nameRecorded)}</span></div>
-            ${relationship ? `<div class="census-field"><span class="census-label">Relationship</span><span class="census-value">${escapeHtml(relationship)}</span></div>` : ''}
-            ${age ? `<div class="census-field"><span class="census-label">Age</span><span class="census-value">${age}</span></div>` : ''}
-            ${record.occupation ? `<div class="census-field"><span class="census-label">Occupation</span><span class="census-value">${escapeHtml(record.occupation)}</span></div>` : ''}
-            ${birthPlace ? `<div class="census-field"><span class="census-label">Birthplace</span><span class="census-value">${escapeHtml(birthPlace)}</span></div>` : ''}
-            <span class="confidence-badge ${confidenceClass}">${confidenceLabel} (${(confidence * 100).toFixed(0)}%)</span>
+      // Display bio section if available
+      const bio = person.data.bio;
+      if (bio) {
+        html += `
+          <div class="bio-section">
+            <h3>Biography</h3>
+            <div class="bio-text">"${escapeHtml(bio)}"</div>
+            <div class="bio-attribution">— From Leslie Gordon Wrathall's memoir</div>
           </div>
         `;
-      }).join('');
+      }
+
+      // Display external links (prominently)
+      if (urls.length > 0) {
+        html += '<div class="external-links"><h3>External Links</h3>';
+        html += urls.map(link => {
+          const favicon = getFaviconUrl(link.url);
+          return `
+            <a href="${escapeHtml(link.url)}" target="_blank" rel="noopener" class="external-link">
+              <div class="external-link-title">
+                ${favicon ? `<img src="${favicon}" alt="" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;">` : ''}
+                ${escapeHtml(link.description || 'External Link')}
+              </div>
+              <div class="external-link-url">${escapeHtml(link.url)}</div>
+            </a>
+          `;
+        }).join('');
+        html += '</div>';
+      }
+
+      // Display census records
+      if (records.length > 0) {
+        records.sort((a, b) => a.year - b.year);
+
+        html += records.map(record => {
+          const confidence = record.confidence || 0;
+          const nameRecorded = record.nameAsRecorded || '';
+          const district = record.registrationDistrict || '';
+          const relationship = record.relationshipToHead || '';
+          const age = record.ageAsRecorded || '';
+          const birthPlace = record.birthPlaceAsRecorded || '';
+
+          let confidenceClass = 'confidence-low';
+          let confidenceLabel = 'Low confidence';
+          if (confidence >= 0.85) {
+            confidenceClass = 'confidence-high';
+            confidenceLabel = 'High confidence';
+          } else if (confidence >= 0.65) {
+            confidenceClass = 'confidence-medium';
+            confidenceLabel = 'Moderate confidence';
+          }
+
+          return `
+            <div class="census-record">
+              <div class="census-year">${record.year} Census</div>
+              ${record.address ? `<div class="census-field"><span class="census-label">Address</span><span class="census-value">${escapeHtml(record.address)}</span></div>` : ''}
+              ${district ? `<div class="census-field"><span class="census-label">District</span><span class="census-value">${escapeHtml(district)}</span></div>` : ''}
+              <div class="census-field"><span class="census-label">Name recorded</span><span class="census-value">${escapeHtml(nameRecorded)}</span></div>
+              ${relationship ? `<div class="census-field"><span class="census-label">Relationship</span><span class="census-value">${escapeHtml(relationship)}</span></div>` : ''}
+              ${age ? `<div class="census-field"><span class="census-label">Age</span><span class="census-value">${age}</span></div>` : ''}
+              ${record.occupation ? `<div class="census-field"><span class="census-label">Occupation</span><span class="census-value">${escapeHtml(record.occupation)}</span></div>` : ''}
+              ${birthPlace ? `<div class="census-field"><span class="census-label">Birthplace</span><span class="census-value">${escapeHtml(birthPlace)}</span></div>` : ''}
+              <span class="confidence-badge ${confidenceClass}">${confidenceLabel} (${(confidence * 100).toFixed(0)}%)</span>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (html === '') {
+        html = `
+          <div class="no-records">
+            No records found for ${fullName}.<br><br>
+            <small>This person may not have external links or census records linked yet.</small>
+          </div>
+        `;
+      }
+
+      contentEl.innerHTML = html;
     }
 
     function escapeHtml(text) {

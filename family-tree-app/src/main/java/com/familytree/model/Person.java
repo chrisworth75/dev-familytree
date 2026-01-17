@@ -12,7 +12,8 @@ public record Person(
     Long motherId,
     Long fatherId,
     String gender,
-    String photoUrl
+    String photoUrl,
+    String bio
 ) {
     public String fullName() {
         String first = forename != null ? forename : "";

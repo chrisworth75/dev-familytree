@@ -25,7 +25,8 @@ public class PersonRepository {
         rs.getObject("mother_id") != null ? rs.getLong("mother_id") : null,
         rs.getObject("father_id") != null ? rs.getLong("father_id") : null,
         rs.getString("gender"),
-        rs.getString("photo_url")
+        rs.getString("photo_url"),
+        rs.getString("bio")
     );
 
     public PersonRepository(JdbcTemplate jdbc) {
@@ -54,19 +55,19 @@ public class PersonRepository {
             WITH RECURSIVE ancestors AS (
                 SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
                        birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                       gender, photo_url, 1 as generation
+                       gender, photo_url, bio, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.forename, p.surname, p.birth_year_estimate, p.death_year_estimate,
                        p.birth_place, p.tree_id, p.ancestry_person_id, p.mother_id, p.father_id,
-                       p.gender, p.photo_url, a.generation + 1
+                       p.gender, p.photo_url, p.bio, a.generation + 1
                 FROM person p
                 JOIN ancestors a ON p.id = a.mother_id OR p.id = a.father_id
                 WHERE a.generation < ?
             )
             SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
                    birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                   gender, photo_url
+                   gender, photo_url, bio
             FROM ancestors
             WHERE generation > 1
             ORDER BY generation, surname, forename
@@ -79,19 +80,19 @@ public class PersonRepository {
             WITH RECURSIVE descendants AS (
                 SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
                        birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                       gender, photo_url, 1 as generation
+                       gender, photo_url, bio, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.forename, p.surname, p.birth_year_estimate, p.death_year_estimate,
                        p.birth_place, p.tree_id, p.ancestry_person_id, p.mother_id, p.father_id,
-                       p.gender, p.photo_url, d.generation + 1
+                       p.gender, p.photo_url, p.bio, d.generation + 1
                 FROM person p
                 JOIN descendants d ON p.mother_id = d.id OR p.father_id = d.id
                 WHERE d.generation < ?
             )
             SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
                    birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                   gender, photo_url
+                   gender, photo_url, bio
             FROM descendants
             WHERE generation > 1
             ORDER BY generation, surname, forename

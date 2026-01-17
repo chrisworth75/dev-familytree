@@ -184,6 +184,21 @@ public class TreeApiController {
         }
         peopleMap.put(person.id(), person);
 
+        // Add siblings (including half-siblings)
+        List<Person> siblings = personRepository.findSiblings(person.id());
+        for (Person sibling : siblings) {
+            if (!peopleMap.containsKey(sibling.id())) {
+                peopleMap.put(sibling.id(), sibling);
+                // Also collect sibling's spouses
+                List<Person> siblingSpouses = personRepository.findSpouses(sibling.id());
+                for (Person sibSpouse : siblingSpouses) {
+                    if (!peopleMap.containsKey(sibSpouse.id())) {
+                        peopleMap.put(sibSpouse.id(), sibSpouse);
+                    }
+                }
+            }
+        }
+
         // Add spouses
         List<Person> spouses = personRepository.findSpouses(person.id());
         for (Person spouse : spouses) {
@@ -191,6 +206,13 @@ public class TreeApiController {
                 peopleMap.put(spouse.id(), spouse);
                 // Also collect spouse's ancestors
                 collectAncestors(spouse, peopleMap, depth - 1);
+                // Also collect spouse's siblings
+                List<Person> spouseSiblings = personRepository.findSiblings(spouse.id());
+                for (Person sibling : spouseSiblings) {
+                    if (!peopleMap.containsKey(sibling.id())) {
+                        peopleMap.put(sibling.id(), sibling);
+                    }
+                }
             }
         }
 
@@ -259,6 +281,7 @@ public class TreeApiController {
         if (person.deathYearEstimate() != null) data.put("deathday", String.valueOf(person.deathYearEstimate()));
         if (person.birthPlace() != null) data.put("birthPlace", person.birthPlace());
         if (person.photoUrl() != null) data.put("avatar", person.photoUrl());
+        if (person.bio() != null) data.put("bio", person.bio());
         data.put("db_id", person.id());  // Include database ID for API lookups
         node.put("data", data);
 
