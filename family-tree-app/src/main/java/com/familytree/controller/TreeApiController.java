@@ -74,6 +74,7 @@ public class TreeApiController {
         node.put("dates", formatDates(person));
         node.put("gender", detectGender(person));
         node.put("birthPlace", person.birthPlace());
+        node.put("photoUrl", person.photoUrl());
 
         // Get spouse info
         List<Person> spouses = personRepository.findSpouses(person.id());
@@ -127,6 +128,11 @@ public class TreeApiController {
     }
 
     private String detectGender(Person person) {
+        // Use database gender if set
+        if (person.gender() != null && !person.gender().isBlank()) {
+            return person.gender();
+        }
+        // Fall back to name detection
         if (person.forename() == null) return "U";
         String firstName = person.forename().toLowerCase().split(" ")[0];
         return FEMALE_NAMES.contains(firstName) ? "F" : "M";
@@ -252,6 +258,7 @@ public class TreeApiController {
         if (person.birthYearEstimate() != null) data.put("birthday", String.valueOf(person.birthYearEstimate()));
         if (person.deathYearEstimate() != null) data.put("deathday", String.valueOf(person.deathYearEstimate()));
         if (person.birthPlace() != null) data.put("birthPlace", person.birthPlace());
+        if (person.photoUrl() != null) data.put("avatar", person.photoUrl());
         data.put("db_id", person.id());  // Include database ID for API lookups
         node.put("data", data);
 

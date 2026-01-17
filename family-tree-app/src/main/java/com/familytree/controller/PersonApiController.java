@@ -2,8 +2,10 @@ package com.familytree.controller;
 
 import com.familytree.model.CensusRecord;
 import com.familytree.model.Person;
+import com.familytree.model.PersonUrl;
 import com.familytree.repository.CensusRepository;
 import com.familytree.repository.PersonRepository;
+import com.familytree.repository.PersonUrlRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,10 +18,12 @@ public class PersonApiController {
 
     private final PersonRepository personRepository;
     private final CensusRepository censusRepository;
+    private final PersonUrlRepository personUrlRepository;
 
-    public PersonApiController(PersonRepository personRepository, CensusRepository censusRepository) {
+    public PersonApiController(PersonRepository personRepository, CensusRepository censusRepository, PersonUrlRepository personUrlRepository) {
         this.personRepository = personRepository;
         this.censusRepository = censusRepository;
+        this.personUrlRepository = personUrlRepository;
     }
 
     // ========== CREATE/UPDATE/DELETE ==========
@@ -291,5 +295,35 @@ public class PersonApiController {
 
         List<Person> spouses = personRepository.findSpouses(id);
         return ResponseEntity.ok(spouses);
+    }
+
+    @GetMapping("/{id}/urls")
+    public ResponseEntity<List<PersonUrl>> getUrls(@PathVariable Long id) {
+        if (!personRepository.findById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        List<PersonUrl> urls = personUrlRepository.findByPersonId(id);
+        return ResponseEntity.ok(urls);
+    }
+
+    @PostMapping("/{id}/urls")
+    public ResponseEntity<Map<String, Object>> addUrl(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        if (!personRepository.findById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String url = (String) body.get("url");
+        String description = (String) body.get("description");
+        String source = (String) body.get("source");
+
+        Long urlId = personUrlRepository.save(id, url, description, source);
+        return ResponseEntity.ok(Map.of("id", urlId));
+    }
+
+    @DeleteMapping("/{id}/urls/{urlId}")
+    public ResponseEntity<Void> deleteUrl(@PathVariable Long id, @PathVariable Long urlId) {
+        personUrlRepository.delete(urlId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,0 +1,21 @@
+meta {
+  name: Get Descendants (Lons)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/persons/{{lons}}/descendants
+  body: none
+  auth: none
+}
+
+params:query {
+  ~generations: 10
+}
+
+docs {
+  Get descendants of Constance Mary Wrathall "Lons" (b1887).
+
+  ID: 4005
+}
