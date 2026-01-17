@@ -1,0 +1,21 @@
+meta {
+  name: Get Ancestors (Albert)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/persons/3000/ancestors
+  body: none
+  auth: none
+}
+
+params:query {
+  ~generations: 10
+}
+
+docs {
+  Get ancestors of Albert Wood (b1889).
+
+  ID: 3000
+}

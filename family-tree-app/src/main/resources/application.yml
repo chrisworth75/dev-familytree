@@ -93,8 +93,8 @@ familytree:
       subtitle: Westmorland & Yorkshire
       initials: WR
       avatarColor: olive
-      personCount: 4
-      rootPersonId: 1
+      personCount: 50
+      rootPersonId: 575341
       allowedUsers:
         - chris
         - family-uk

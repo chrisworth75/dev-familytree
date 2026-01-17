@@ -10,7 +10,9 @@ public record Person(
     Long treeId,
     String ancestryPersonId,
     Long motherId,
-    Long fatherId
+    Long fatherId,
+    String gender,
+    String photoUrl
 ) {
     public String fullName() {
         String first = forename != null ? forename : "";
