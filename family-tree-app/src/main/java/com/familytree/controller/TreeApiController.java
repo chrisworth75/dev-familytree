@@ -131,4 +131,166 @@ public class TreeApiController {
         String firstName = person.forename().toLowerCase().split(" ")[0];
         return FEMALE_NAMES.contains(firstName) ? "F" : "M";
     }
+
+    /**
+     * Get tree data in family-chart format (flat array with bidirectional relationships).
+     * This format is compatible with the family-chart library (https://github.com/donatso/family-chart).
+     */
+    @GetMapping("/{slug}/family-chart")
+    public ResponseEntity<List<Map<String, Object>>> getFamilyChartData(
+            @PathVariable String slug,
+            @RequestParam(defaultValue = "15") int maxDepth) {
+
+        FamilyTreeConfig tree = treesConfig.getTreeBySlug(slug);
+        if (tree == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Long rootId = tree.rootPersonId();
+        if (rootId == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Optional<Person> rootOpt = personRepository.findById(rootId);
+        if (rootOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Collect all people in the tree
+        Map<Long, Person> peopleMap = new LinkedHashMap<>();
+        collectPeople(rootOpt.get(), peopleMap, Math.min(maxDepth, 20));
+
+        // Build family-chart format
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Person person : peopleMap.values()) {
+            result.add(buildFamilyChartNode(person, peopleMap));
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
+    /**
+     * Recursively collect all people in the tree (ancestors, descendants, and their spouses).
+     */
+    private void collectPeople(Person person, Map<Long, Person> peopleMap, int depth) {
+        if (person == null || peopleMap.containsKey(person.id()) || depth <= 0) {
+            return;
+        }
+        peopleMap.put(person.id(), person);
+
+        // Add spouses
+        List<Person> spouses = personRepository.findSpouses(person.id());
+        for (Person spouse : spouses) {
+            if (!peopleMap.containsKey(spouse.id())) {
+                peopleMap.put(spouse.id(), spouse);
+                // Also collect spouse's ancestors
+                collectAncestors(spouse, peopleMap, depth - 1);
+            }
+        }
+
+        // Recursively add ancestors
+        collectAncestors(person, peopleMap, depth);
+
+        // Recursively add children
+        List<Person> children = personRepository.findChildren(person.id());
+        for (Person child : children) {
+            collectPeople(child, peopleMap, depth - 1);
+        }
+    }
+
+    /**
+     * Recursively collect ancestors (parents, grandparents, etc.)
+     */
+    private void collectAncestors(Person person, Map<Long, Person> peopleMap, int depth) {
+        if (person == null || depth <= 0) {
+            return;
+        }
+
+        // Add mother and her ancestors
+        if (person.motherId() != null && !peopleMap.containsKey(person.motherId())) {
+            personRepository.findById(person.motherId()).ifPresent(mother -> {
+                peopleMap.put(mother.id(), mother);
+                // Add mother's spouse (father of person, if different)
+                List<Person> motherSpouses = personRepository.findSpouses(mother.id());
+                for (Person spouse : motherSpouses) {
+                    if (!peopleMap.containsKey(spouse.id())) {
+                        peopleMap.put(spouse.id(), spouse);
+                    }
+                }
+                collectAncestors(mother, peopleMap, depth - 1);
+            });
+        }
+
+        // Add father and his ancestors
+        if (person.fatherId() != null && !peopleMap.containsKey(person.fatherId())) {
+            personRepository.findById(person.fatherId()).ifPresent(father -> {
+                peopleMap.put(father.id(), father);
+                // Add father's spouse (mother of person, if different)
+                List<Person> fatherSpouses = personRepository.findSpouses(father.id());
+                for (Person spouse : fatherSpouses) {
+                    if (!peopleMap.containsKey(spouse.id())) {
+                        peopleMap.put(spouse.id(), spouse);
+                    }
+                }
+                collectAncestors(father, peopleMap, depth - 1);
+            });
+        }
+    }
+
+    /**
+     * Build a single person node in family-chart format.
+     */
+    private Map<String, Object> buildFamilyChartNode(Person person, Map<Long, Person> peopleMap) {
+        Map<String, Object> node = new LinkedHashMap<>();
+        node.put("id", String.valueOf(person.id()));
+
+        // Data object
+        Map<String, Object> data = new LinkedHashMap<>();
+        data.put("gender", detectGender(person));
+        if (person.forename() != null) data.put("first name", person.forename());
+        if (person.surname() != null) data.put("last name", person.surname());
+        if (person.birthYearEstimate() != null) data.put("birthday", String.valueOf(person.birthYearEstimate()));
+        if (person.deathYearEstimate() != null) data.put("deathday", String.valueOf(person.deathYearEstimate()));
+        if (person.birthPlace() != null) data.put("birthPlace", person.birthPlace());
+        data.put("db_id", person.id());  // Include database ID for API lookups
+        node.put("data", data);
+
+        // Relationships object
+        Map<String, Object> rels = new LinkedHashMap<>();
+
+        // Parents (only include if they're in the tree)
+        List<String> parentIds = new ArrayList<>();
+        if (person.motherId() != null && peopleMap.containsKey(person.motherId())) {
+            parentIds.add(String.valueOf(person.motherId()));
+        }
+        if (person.fatherId() != null && peopleMap.containsKey(person.fatherId())) {
+            parentIds.add(String.valueOf(person.fatherId()));
+        }
+        if (!parentIds.isEmpty()) {
+            rels.put("parents", parentIds);
+        }
+
+        // Spouses (only include if they're in the tree)
+        List<Person> spouses = personRepository.findSpouses(person.id());
+        List<String> spouseIds = spouses.stream()
+            .filter(s -> peopleMap.containsKey(s.id()))
+            .map(s -> String.valueOf(s.id()))
+            .toList();
+        if (!spouseIds.isEmpty()) {
+            rels.put("spouses", spouseIds);
+        }
+
+        // Children (only include if they're in the tree)
+        List<Person> children = personRepository.findChildren(person.id());
+        List<String> childIds = children.stream()
+            .filter(c -> peopleMap.containsKey(c.id()))
+            .map(c -> String.valueOf(c.id()))
+            .toList();
+        if (!childIds.isEmpty()) {
+            rels.put("children", childIds);
+        }
+
+        node.put("rels", rels);
+        return node;
+    }
 }

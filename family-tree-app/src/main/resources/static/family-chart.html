@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Tree Viewer</title>
+  <script src="https://unpkg.com/d3@7"></script>
+  <link rel="stylesheet" href="https://unpkg.com/family-chart@latest/dist/styles/family-chart.css">
+  <script type="module" src="https://unpkg.com/family-chart@latest"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+    header {
+      background: #16213e;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid #0f3460;
+      color: #eee;
+      flex-shrink: 0;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    header p {
+      color: #888;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+    }
+    .main-container {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    #FamilyChart {
+      flex: 1;
+      background-color: #1a1a2e;
+      color: #fff;
+    }
+    #sidebar {
+      width: 380px;
+      background: #16213e;
+      border-left: 1px solid #0f3460;
+      color: #eee;
+      overflow-y: auto;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    #sidebar.collapsed {
+      width: 0;
+      border-left: none;
+    }
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid #0f3460;
+      background: #0f3460;
+    }
+    .sidebar-header h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e94560;
+      margin-bottom: 0.25rem;
+    }
+    .sidebar-header .person-years {
+      color: #888;
+      font-size: 0.9rem;
+    }
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+    .sidebar-placeholder {
+      color: #666;
+      text-align: center;
+      padding: 2rem;
+    }
+    .census-record {
+      background: #1a1a2e;
+      border: 1px solid #0f3460;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .census-record:hover {
+      border-color: #e94560;
+    }
+    .census-year {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #e94560;
+      margin-bottom: 0.5rem;
+    }
+    .census-field {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid #0f3460;
+      font-size: 0.85rem;
+    }
+    .census-field:last-child {
+      border-bottom: none;
+    }
+    .census-label {
+      color: #888;
+    }
+    .census-value {
+      color: #eee;
+      text-align: right;
+      max-width: 60%;
+    }
+    .confidence-badge {
+      display: inline-block;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+    .confidence-high {
+      background: #1e5128;
+      color: #4ade80;
+    }
+    .confidence-medium {
+      background: #5c4813;
+      color: #fbbf24;
+    }
+    .confidence-low {
+      background: #5c1313;
+      color: #f87171;
+    }
+    .no-records {
+      color: #666;
+      font-style: italic;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* Ancestor selection cards */
+    .ancestor-bar {
+      background: #0f3460;
+      padding: 0.75rem 2rem;
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      border-bottom: 1px solid #16213e;
+      flex-shrink: 0;
+    }
+    .ancestor-card {
+      background: #16213e;
+      border: 2px solid #1a1a2e;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 180px;
+      flex-shrink: 0;
+    }
+    .ancestor-card:hover {
+      border-color: #e94560;
+      background: #1a1a2e;
+    }
+    .ancestor-card.active {
+      border-color: #e94560;
+      background: #1a1a2e;
+    }
+    .ancestor-card-name {
+      font-weight: 600;
+      color: #eee;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .ancestor-card-info {
+      color: #888;
+      font-size: 0.8rem;
+    }
+    .ancestor-card-years {
+      color: #e94560;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="tree-title">Family Tree</h1>
+    <p>Click on a person to view their census records.</p>
+  </header>
+
+  <div class="ancestor-bar" id="ancestor-bar">
+    <!-- Populated by JavaScript -->
+  </div>
+
+  <div class="main-container">
+    <div id="FamilyChart" class="f3"></div>
+    <div id="sidebar">
+      <div class="sidebar-header">
+        <h2 id="sidebar-name">Select a Person</h2>
+        <div class="person-years" id="sidebar-years"></div>
+      </div>
+      <div class="sidebar-content" id="sidebar-content">
+        <div class="sidebar-placeholder">
+          Click on a person in the tree to view their census records.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    // Get tree slug from URL
+    const TREE_SLUG = new URLSearchParams(window.location.search).get('tree') || 'my-family';
+
+    // Ancestor cards configuration
+    // At Henry Lonsdale Wrathall level for most, George Worthington for James's line
+    const ANCESTOR_CARDS = [
+      { db_id: 6000, name: 'George Worthington', info: 'Worthington Line', years: '1825–?' },
+      { db_id: 511036, name: 'Henry Lonsdale Wrathall', info: 'Wrathall Line', years: '1863–1927' }
+    ];
+
+    // Load tree data from API (same origin, no CORS needed)
+    let data;
+    try {
+      console.log(`Loading tree "${TREE_SLUG}" from API...`);
+      const treeResponse = await fetch(`/api/trees/${TREE_SLUG}/family-chart`);
+      if (treeResponse.ok) {
+        data = await treeResponse.json();
+        console.log(`Loaded ${data.length} people from API`);
+        // Update title
+        const treeName = TREE_SLUG.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        document.getElementById('tree-title').textContent = `${treeName} Family Tree`;
+      } else {
+        throw new Error(`Tree "${TREE_SLUG}" not found`);
+      }
+    } catch (e) {
+      console.error('Failed to load tree:', e);
+      document.getElementById('FamilyChart').innerHTML = `
+        <div style="padding: 2rem; color: #e94560;">
+          <h2>Error Loading Tree</h2>
+          <p>Could not load tree "${TREE_SLUG}". Please check the URL and try again.</p>
+          <p style="color: #666; margin-top: 1rem;">${e.message}</p>
+        </div>
+      `;
+      throw e;
+    }
+
+    // Create the chart
+    const f3Chart = f3.createChart('#FamilyChart', data)
+      .setTransitionTime(800)
+      .setCardXSpacing(250)
+      .setCardYSpacing(150);
+
+    // Configure card display with click handler
+    f3Chart.setCardHtml()
+      .setCardDisplay([
+        ["first name", "last name"],
+        ["birthday", "deathday"]
+      ])
+      .setOnCardClick((e, d) => {
+        // Center on clicked person
+        f3Chart.updateMainId(d.data.id);
+        f3Chart.updateTree({});
+        // Show census records in sidebar
+        showCensusRecords(d.data);
+      });
+
+    // Configure EditTree for add/edit functionality (if available)
+    try {
+      if (typeof f3Chart.editTree === 'function') {
+        const editTree = f3Chart.editTree()
+          .setFields([
+            {type: 'text', label: 'First Name', id: 'first name'},
+            {type: 'text', label: 'Last Name', id: 'last name'},
+            {type: 'text', label: 'Birth Year', id: 'birthday'},
+            {type: 'text', label: 'Death Year', id: 'deathday'},
+            {type: 'text', label: 'Birthplace', id: 'birthPlace'}
+          ])
+          .setOnSubmit(async (e, datum, applyChanges, postSubmit) => {
+            e.preventDefault();
+            const personData = datum.data;
+            const dbId = personData.db_id;
+            const apiData = {
+              forename: personData['first name'] || '',
+              surname: personData['last name'] || '',
+              birthYear: personData.birthday ? parseInt(personData.birthday) : null,
+              deathYear: personData.deathday ? parseInt(personData.deathday) : null,
+              birthPlace: personData.birthPlace || null,
+              treeId: 1
+            };
+            try {
+              if (dbId) {
+                const response = await fetch(`/api/persons/${dbId}`, {
+                  method: 'PUT',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify(apiData)
+                });
+                if (!response.ok) throw new Error('Update failed');
+              } else {
+                const response = await fetch(`/api/persons`, {
+                  method: 'POST',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify(apiData)
+                });
+                if (!response.ok) throw new Error('Create failed');
+                const result = await response.json();
+                personData.db_id = result.id;
+              }
+              applyChanges();
+              postSubmit();
+            } catch (err) {
+              console.error('Save failed:', err);
+              alert('Failed to save: ' + err.message);
+            }
+          });
+        console.log('EditTree enabled');
+      }
+    } catch (err) {
+      console.log('EditTree not available:', err.message);
+    }
+
+    // Initial render
+    f3Chart.updateTree({initial: true});
+
+    // Render ancestor selection cards
+    function renderAncestorCards() {
+      const bar = document.getElementById('ancestor-bar');
+      bar.innerHTML = ANCESTOR_CARDS.map(ancestor => {
+        // Find the person in the loaded data by db_id
+        const person = data.find(p => p.data.db_id === ancestor.db_id);
+        const hasData = !!person;
+
+        return `
+          <div class="ancestor-card ${!hasData ? 'disabled' : ''}"
+               data-db-id="${ancestor.db_id}"
+               data-id="${person ? person.id : ''}"
+               ${!hasData ? 'style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+            <div class="ancestor-card-name">${ancestor.name}</div>
+            <div class="ancestor-card-info">${ancestor.info}</div>
+            <div class="ancestor-card-years">${ancestor.years}</div>
+          </div>
+        `;
+      }).join('');
+
+      // Add click handlers
+      bar.querySelectorAll('.ancestor-card:not(.disabled)').forEach(card => {
+        card.addEventListener('click', () => {
+          const personId = card.dataset.id;
+          const dbId = parseInt(card.dataset.dbId);
+          if (personId) {
+            // Update active state
+            bar.querySelectorAll('.ancestor-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+
+            // Center chart on this person
+            f3Chart.updateMainId(personId);
+            f3Chart.updateTree({});
+
+            // Show their census records
+            const person = data.find(p => p.id === personId);
+            if (person) {
+              showCensusRecords(person);
+            }
+          }
+        });
+      });
+    }
+
+    renderAncestorCards();
+
+    // Fetch census records from API
+    async function fetchCensusFromAPI(dbId) {
+      try {
+        const response = await fetch(`/api/persons/${dbId}/census`);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (e) {
+        console.error('API fetch failed:', e);
+      }
+      return [];
+    }
+
+    // Display census records in sidebar
+    async function showCensusRecords(person) {
+      const nameEl = document.getElementById('sidebar-name');
+      const yearsEl = document.getElementById('sidebar-years');
+      const contentEl = document.getElementById('sidebar-content');
+
+      const fullName = `${person.data['first name'] || ''} ${person.data['last name'] || ''}`.trim();
+      nameEl.textContent = fullName;
+
+      const birth = person.data.birthday;
+      const death = person.data.deathday;
+      if (birth || death) {
+        yearsEl.textContent = birth && death ? `${birth} – ${death}` : birth ? `b. ${birth}` : `d. ${death}`;
+      } else {
+        yearsEl.textContent = '';
+      }
+
+      // Show loading state
+      contentEl.innerHTML = '<div class="sidebar-placeholder">Loading census records...</div>';
+
+      const dbId = person.data.db_id;
+      const records = dbId ? await fetchCensusFromAPI(dbId) : [];
+
+      if (records.length === 0) {
+        contentEl.innerHTML = `
+          <div class="no-records">
+            No census records found for ${fullName}.<br><br>
+            <small>Census records are matched by database ID. This person may not have records linked yet.</small>
+          </div>
+        `;
+        return;
+      }
+
+      // Sort by year
+      records.sort((a, b) => a.year - b.year);
+
+      contentEl.innerHTML = records.map(record => {
+        const confidence = record.confidence || 0;
+        const nameRecorded = record.nameAsRecorded || '';
+        const district = record.registrationDistrict || '';
+        const relationship = record.relationshipToHead || '';
+        const age = record.ageAsRecorded || '';
+        const birthPlace = record.birthPlaceAsRecorded || '';
+
+        let confidenceClass = 'confidence-low';
+        let confidenceLabel = 'Low confidence';
+        if (confidence >= 0.85) {
+          confidenceClass = 'confidence-high';
+          confidenceLabel = 'High confidence';
+        } else if (confidence >= 0.65) {
+          confidenceClass = 'confidence-medium';
+          confidenceLabel = 'Moderate confidence';
+        }
+
+        return `
+          <div class="census-record">
+            <div class="census-year">${record.year} Census</div>
+            ${record.address ? `<div class="census-field"><span class="census-label">Address</span><span class="census-value">${escapeHtml(record.address)}</span></div>` : ''}
+            ${district ? `<div class="census-field"><span class="census-label">District</span><span class="census-value">${escapeHtml(district)}</span></div>` : ''}
+            <div class="census-field"><span class="census-label">Name recorded</span><span class="census-value">${escapeHtml(nameRecorded)}</span></div>
+            ${relationship ? `<div class="census-field"><span class="census-label">Relationship</span><span class="census-value">${escapeHtml(relationship)}</span></div>` : ''}
+            ${age ? `<div class="census-field"><span class="census-label">Age</span><span class="census-value">${age}</span></div>` : ''}
+            ${record.occupation ? `<div class="census-field"><span class="census-label">Occupation</span><span class="census-value">${escapeHtml(record.occupation)}</span></div>` : ''}
+            ${birthPlace ? `<div class="census-field"><span class="census-label">Birthplace</span><span class="census-value">${escapeHtml(birthPlace)}</span></div>` : ''}
+            <span class="confidence-badge ${confidenceClass}">${confidenceLabel} (${(confidence * 100).toFixed(0)}%)</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

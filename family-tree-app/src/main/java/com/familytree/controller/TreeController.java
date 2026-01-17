@@ -41,10 +41,8 @@ public class TreeController {
             return "redirect:/?error=noaccess";
         }
 
-        model.addAttribute("tree", tree);
-        model.addAttribute("svgContent", getSvgContent(tree));
-
-        return "tree-view";
+        // Redirect to family-chart viewer
+        return "redirect:/family-chart.html?tree=" + slug;
     }
 
     private String getSvgContent(FamilyTreeConfig tree) {
