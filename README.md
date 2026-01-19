@@ -230,16 +230,17 @@ UNION ALL SELECT 'People in trees', COUNT(*) FROM person;
 
 ---
 
-## Current Data (15 January 2026)
+## Current Data (19 January 2026)
 
 | Metric | Count |
 |--------|-------|
-| DNA matches | 9,848 |
+| DNA matches | 9,985 |
 | Shared match records | 14,468 |
 | Trees imported | 435 |
 | People in trees | 68,078 |
 | People in My Tree (#1) | 452 |
-| Matches with confirmed MRCA | 14 |
+| Matches assigned to clusters | 30 |
+| Clusters with matches | 9 |
 
 ---
 
@@ -734,4 +735,87 @@ Returns nested JSON hierarchy for D3.js:
 
 ---
 
-*Last updated: 15 January 2026*
+---
+
+## Ahnentafel Cluster System (19 January 2026)
+
+### Overview
+
+Rebuilt the DNA match clustering system from scratch using ahnentafel positions. Each cluster represents an ancestral line, not necessarily descent from that specific ancestor.
+
+**Key principle:** Assigning a match to cluster 18 (HLW) means "the DNA we share likely comes through the HLW ancestral line" - NOT "this person descends from HLW." The match could descend from HLW, HLW's sibling, HLW's uncle, etc.
+
+### Cluster Structure
+
+Created 127 clusters covering ahnentafel positions 2-128:
+
+| Generation | Positions | Example |
+|------------|-----------|---------|
+| Parents | 2-3 | Jonathan Worthington, Patricia Wood |
+| Grandparents | 4-7 | Arthur GL Worthington, Marjorie Goodall |
+| Great-GP | 8-15 | Arthur Worthington, Constance Wrathall |
+| 2x Great-GP | 16-31 | James Worthington, HLW, Emily Tart |
+| 3x Great-GP | 32-63 | George Worthington, Charles Hollows, Mary Rothwell |
+| 4x Great-GP | 64-127 | James Worthington Sr, Henry Worthington |
+
+### Compound Clusters
+
+For close relatives who match through multiple ancestors:
+- **203 (2+3)** - Full siblings (both parents)
+- **405 (4+5)** - Paternal grandparent descendants (1st cousins)
+
+### Current Cluster Assignments (ThruLines-verified)
+
+| Pos | Ancestor | Matches | Top Match (cM) |
+|-----|----------|---------|----------------|
+| 18 | Henry L Wrathall (HLW) | 3 | Helen Brammer (113) |
+| 31 | Emily Tart | 9 | diane_lovick (48) |
+| 32 | George Worthington | 5 | Peter Davies (21) |
+| 34 | Charles Hollows | 2 | youngcodge2 (17) |
+| 35 | Mary Rothwell | 6 | noel booth (27) |
+| 38 | Richard Metcalfe | 1 | john durling (13) |
+| 64 | James Worthington | 1 | sthomas14145 (9) |
+| 203 | 2+3 (Sibling) | 1 | Rebecca Hyndman (2699) |
+| 405 | 4+5 (Paternal GP) | 2 | Bruce Horrocks (605) |
+
+**Total: 30 matches across 9 clusters**
+
+### Validation Discovery
+
+During cluster validation, discovered that the previous "Unknown HLW Father" cluster (position 36) was incorrectly assigned. Confirmed HLW descendants (Rachel Wrathall, Helen Brammer, Bruce Lightfoot) did NOT share with that cluster's members, indicating it was not the paternal line.
+
+The cluster system has been reset. Only ThruLines-verified connections are now assigned.
+
+### Database Schema
+
+```sql
+-- Cluster table
+CREATE TABLE cluster (
+    id INTEGER PRIMARY KEY,
+    assigned_ahnentafel INTEGER,  -- NULL for compound clusters
+    description TEXT,
+    created_at DATETIME
+);
+
+-- DNA match cluster assignment
+dna_match.cluster_id  -- FK to cluster.id
+dna_match.mrca        -- Text like "18", "4+5", "32"
+```
+
+### Query Examples
+
+```sql
+-- View all clustered matches
+SELECT c.id, c.description, dm.name, dm.shared_cm
+FROM dna_match dm
+JOIN cluster c ON dm.cluster_id = c.id
+ORDER BY c.id, dm.shared_cm DESC;
+
+-- Find matches in a specific ancestral line
+SELECT name, shared_cm FROM dna_match
+WHERE cluster_id = 18;  -- HLW line
+```
+
+---
+
+*Last updated: 19 January 2026*
