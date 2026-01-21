@@ -1,0 +1,26 @@
+meta {
+  name: Get Matches by Person
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/matches?person_id={{personId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Get DNA matches linked to a specific person.
+
+  Query Parameters:
+  - person_id: The person ID to filter by
+  - minCm: Minimum shared cM (optional)
+  - limit: Max results, default 100 (optional)
+
+  Examples:
+  - person_id=1000 (Chris)
+  - person_id=1002 (Rebecca Worthington/Hyndman)
+
+  Returns a list of DNA match objects sorted by shared_cm descending.
+}
