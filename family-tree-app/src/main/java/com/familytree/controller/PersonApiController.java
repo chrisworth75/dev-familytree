@@ -30,16 +30,18 @@ public class PersonApiController {
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> createPerson(@RequestBody Map<String, Object> body) {
-        String forename = (String) body.get("forename");
+        String firstName = (String) body.get("firstName");
+        if (firstName == null) firstName = (String) body.get("forename"); // backwards compat
         String surname = (String) body.get("surname");
         Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
         Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
         String birthPlace = (String) body.get("birthPlace");
-        Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
-        Long motherId = body.get("motherId") != null ? ((Number) body.get("motherId")).longValue() : null;
-        Long fatherId = body.get("fatherId") != null ? ((Number) body.get("fatherId")).longValue() : null;
+        Long parent1Id = body.get("parent1Id") != null ? ((Number) body.get("parent1Id")).longValue() : null;
+        if (parent1Id == null) parent1Id = body.get("fatherId") != null ? ((Number) body.get("fatherId")).longValue() : null;
+        Long parent2Id = body.get("parent2Id") != null ? ((Number) body.get("parent2Id")).longValue() : null;
+        if (parent2Id == null) parent2Id = body.get("motherId") != null ? ((Number) body.get("motherId")).longValue() : null;
 
-        Long id = personRepository.save(forename, surname, birthYear, deathYear, birthPlace, treeId, motherId, fatherId);
+        Long id = personRepository.save(firstName, surname, birthYear, deathYear, birthPlace, parent1Id, parent2Id);
 
         return personRepository.findById(id)
             .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
@@ -52,13 +54,14 @@ public class PersonApiController {
             return ResponseEntity.notFound().build();
         }
 
-        String forename = (String) body.get("forename");
+        String firstName = (String) body.get("firstName");
+        if (firstName == null) firstName = (String) body.get("forename");
         String surname = (String) body.get("surname");
         Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
         Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
         String birthPlace = (String) body.get("birthPlace");
 
-        personRepository.update(id, forename, surname, birthYear, deathYear, birthPlace);
+        personRepository.update(id, firstName, surname, birthYear, deathYear, birthPlace);
 
         return personRepository.findById(id)
             .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
@@ -87,23 +90,23 @@ public class PersonApiController {
 
         Long parentId;
         if (existingParentId != null) {
-            // Link to existing person
             parentId = existingParentId;
         } else {
-            // Create new parent
-            String forename = (String) body.get("forename");
+            String firstName = (String) body.get("firstName");
+            if (firstName == null) firstName = (String) body.get("forename");
             String surname = (String) body.get("surname");
             Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
-            parentId = personRepository.save(forename, surname, birthYear, null, null, treeId, null, null);
+            parentId = personRepository.save(firstName, surname, birthYear, null, null, null, null);
         }
 
         // Update child's parent reference
         Person child = personRepository.findById(id).get();
         if ("F".equalsIgnoreCase(gender)) {
-            personRepository.updateParents(id, parentId, child.fatherId());
+            // Female parent = parent_2_id (mother)
+            personRepository.updateParents(id, child.fatherId(), parentId);
         } else {
-            personRepository.updateParents(id, child.motherId(), parentId);
+            // Male parent = parent_1_id (father)
+            personRepository.updateParents(id, parentId, child.motherId());
         }
 
         return personRepository.findById(parentId)
@@ -118,32 +121,31 @@ public class PersonApiController {
             return ResponseEntity.notFound().build();
         }
 
-        String gender = (String) body.get("gender");
         Long existingChildId = body.get("childId") != null ? ((Number) body.get("childId")).longValue() : null;
-        String parentGender = (String) body.get("parentGender"); // Gender of the person at {id}
+        String parentGender = (String) body.get("parentGender");
 
         Long childId;
         if (existingChildId != null) {
             childId = existingChildId;
         } else {
-            String forename = (String) body.get("forename");
+            String firstName = (String) body.get("firstName");
+            if (firstName == null) firstName = (String) body.get("forename");
             String surname = (String) body.get("surname");
             Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
 
-            Long motherId = "F".equalsIgnoreCase(parentGender) ? id : null;
-            Long fatherId = "M".equalsIgnoreCase(parentGender) ? id : null;
+            Long parent1Id = "M".equalsIgnoreCase(parentGender) ? id : null;
+            Long parent2Id = "F".equalsIgnoreCase(parentGender) ? id : null;
 
-            childId = personRepository.save(forename, surname, birthYear, null, null, treeId, motherId, fatherId);
+            childId = personRepository.save(firstName, surname, birthYear, null, null, parent1Id, parent2Id);
         }
 
         // If linking existing child, update their parent reference
         if (existingChildId != null) {
             Person child = personRepository.findById(childId).get();
             if ("F".equalsIgnoreCase(parentGender)) {
-                personRepository.updateParents(childId, id, child.fatherId());
+                personRepository.updateParents(childId, child.fatherId(), id);
             } else {
-                personRepository.updateParents(childId, child.motherId(), id);
+                personRepository.updateParents(childId, id, child.motherId());
             }
         }
 
@@ -164,14 +166,13 @@ public class PersonApiController {
         if (existingSpouseId != null) {
             spouseId = existingSpouseId;
         } else {
-            String forename = (String) body.get("forename");
+            String firstName = (String) body.get("firstName");
+            if (firstName == null) firstName = (String) body.get("forename");
             String surname = (String) body.get("surname");
             Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            Long treeId = body.get("treeId") != null ? ((Number) body.get("treeId")).longValue() : 1L;
-            spouseId = personRepository.save(forename, surname, birthYear, null, null, treeId, null, null);
+            spouseId = personRepository.save(firstName, surname, birthYear, null, null, null, null);
         }
 
-        // Create marriage record
         personRepository.addMarriage(id, spouseId);
 
         return personRepository.findById(spouseId)
@@ -223,7 +224,7 @@ public class PersonApiController {
             return ResponseEntity.notFound().build();
         }
 
-        int maxGen = Math.min(generations, 20); // Cap at 20 generations
+        int maxGen = Math.min(generations, 20);
         List<Person> ancestors = personRepository.findAncestors(id, maxGen);
         return ResponseEntity.ok(ancestors);
     }
@@ -237,7 +238,7 @@ public class PersonApiController {
             return ResponseEntity.notFound().build();
         }
 
-        int maxGen = Math.min(generations, 20); // Cap at 20 generations
+        int maxGen = Math.min(generations, 20);
         List<Person> descendants = personRepository.findDescendants(id, maxGen);
         return ResponseEntity.ok(descendants);
     }
@@ -252,7 +253,7 @@ public class PersonApiController {
             return ResponseEntity.badRequest().build();
         }
 
-        int maxLimit = Math.min(limit, 500); // Cap at 500 results
+        int maxLimit = Math.min(limit, 500);
         List<Person> results = personRepository.search(name, birthPlace, maxLimit);
         return ResponseEntity.ok(results);
     }
@@ -315,9 +316,8 @@ public class PersonApiController {
 
         String url = (String) body.get("url");
         String description = (String) body.get("description");
-        String source = (String) body.get("source");
 
-        Long urlId = personUrlRepository.save(id, url, description, source);
+        Long urlId = personUrlRepository.save(id, url, description);
         return ResponseEntity.ok(Map.of("id", urlId));
     }
 

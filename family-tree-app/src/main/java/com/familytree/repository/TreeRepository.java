@@ -16,10 +16,10 @@ public class TreeRepository {
     private static final RowMapper<Tree> TREE_MAPPER = (rs, rowNum) -> new Tree(
         rs.getLong("id"),
         rs.getString("name"),
+        rs.getString("source"),
         rs.getString("owner_name"),
-        rs.getObject("person_count") != null ? rs.getInt("person_count") : null,
-        rs.getString("tree_type"),
-        rs.getString("ancestry_tree_id")
+        rs.getObject("match_person_id") != null ? rs.getLong("match_person_id") : null,
+        rs.getString("notes")
     );
 
     public TreeRepository(JdbcTemplate jdbc) {
@@ -27,8 +27,12 @@ public class TreeRepository {
     }
 
     public List<Tree> findAllWithMembers() {
-        return jdbc.query(
-            "SELECT * FROM tree WHERE person_count > 0 ORDER BY name",
+        // Trees with at least one relationship entry
+        return jdbc.query("""
+            SELECT DISTINCT t.* FROM tree t
+            JOIN tree_relationship tr ON t.id = tr.tree_id
+            ORDER BY t.name
+            """,
             TREE_MAPPER
         );
     }

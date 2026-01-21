@@ -216,6 +216,26 @@
       border-top: 1px solid #0f3460;
     }
 
+    /* Private person cards - grey styling */
+    .private-card {
+      background: #4a4a4a !important;
+    }
+
+    /* Style for foreignObject containing Private cards */
+    foreignObject:has(.private-card) {
+      width: 120px !important;
+      height: 60px !important;
+    }
+
+    /* Fallback: target SVG cards by data attribute if we add them */
+    [data-private="true"] rect {
+      fill: #4a4a4a !important;
+      stroke: #666 !important;
+    }
+    [data-private="true"] text {
+      fill: #999 !important;
+    }
+
     /* Ancestor selection cards */
     .ancestor-bar {
       background: #0f3460;
@@ -305,6 +325,38 @@
       if (treeResponse.ok) {
         data = await treeResponse.json();
         console.log(`Loaded ${data.length} people from API`);
+
+        // Calculate descendant counts for each person
+        const childrenMap = new Map();
+        data.forEach(p => {
+          const children = p.rels?.children || [];
+          children.forEach(childId => {
+            if (!childrenMap.has(p.id)) childrenMap.set(p.id, []);
+            childrenMap.get(p.id).push(childId);
+          });
+        });
+
+        function countDescendants(personId, visited = new Set()) {
+          if (visited.has(personId)) return 0;
+          visited.add(personId);
+          const person = data.find(p => p.id === personId);
+          if (!person) return 0;
+          const children = person.rels?.children || [];
+          let count = children.length;
+          children.forEach(childId => {
+            count += countDescendants(childId, visited);
+          });
+          return count;
+        }
+
+        // Add descendant count to each person's data
+        data.forEach(p => {
+          const count = countDescendants(p.id);
+          if (count > 0) {
+            p.data.descendants = `${count} descendant${count > 1 ? 's' : ''}`;
+          }
+        });
+
         // Update title
         const treeName = TREE_SLUG.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
         document.getElementById('tree-title').textContent = `${treeName} Family Tree`;
@@ -330,12 +382,69 @@
       .setCardYSpacing(150);
 
     // Configure card display with click handler
-    f3Chart.setCardHtml()
-      .setCardDisplay([
-        ["first name", "last name"],
-        ["birthday", "deathday"]
-      ])
-      .setOnCardClick((e, d) => {
+    const cardHtml = f3Chart.setCardHtml();
+
+    // Set card style
+    cardHtml.setStyle('rect');
+
+    // Custom card creator for Private people (smaller, grey)
+    cardHtml.setCardInnerHtmlCreator((d) => {
+      // Debug: log structure once
+      if (!window._cardDebugLogged) {
+        console.log('Card data structure:', d);
+        window._cardDebugLogged = true;
+      }
+
+      // Try both possible data paths
+      const data = d.data?.data || d.data || d;
+      const fullFirstName = data['first name'] || data.firstName || '';
+      // Extract just the first word (no middle names)
+      const firstName = fullFirstName.split(' ')[0] || '';
+      const lastName = data['last name'] || data.lastName || '';
+      const isPrivate = firstName === 'Private';
+      const birth = data.birthday || '';
+      const death = data.deathday || '';
+      const sharedCm = data.shared_cm || '';
+      const descendants = data.descendants || '';
+      const avatar = data.avatar;
+
+      if (isPrivate) {
+        // Smaller grey card for Private people
+        return `
+          <div class="private-card" style="
+            width: 100px;
+            height: 50px;
+            background: #4a4a4a;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 12px;
+            border: 1px solid #666;
+          ">Private</div>
+        `;
+      }
+
+      // Normal card
+      const dates = birth || death ? `${birth}–${death}` : '';
+      const line3 = [sharedCm, descendants].filter(Boolean).join(' · ');
+      const avatarHtml = avatar ? `<img src="${avatar}" style="width:40px;height:40px;border-radius:50%;margin-right:8px;object-fit:cover;">` : '';
+
+      return `
+        <div style="display:flex;align-items:center;padding:8px;">
+          ${avatarHtml}
+          <div>
+            <div style="font-weight:600;color:#fff;">${firstName}</div>
+            ${lastName ? `<div style="color:#ccc;font-size:12px;">${lastName}</div>` : ''}
+            ${dates ? `<div style="color:#888;font-size:11px;">${dates}</div>` : ''}
+            ${line3 ? `<div style="color:#e94560;font-size:10px;">${line3}</div>` : ''}
+          </div>
+        </div>
+      `;
+    });
+
+    cardHtml.setOnCardClick((e, d) => {
         // Center on clicked person
         f3Chart.updateMainId(d.data.id);
         f3Chart.updateTree({});
@@ -399,6 +508,7 @@
 
     // Initial render
     f3Chart.updateTree({initial: true});
+
 
     // Render ancestor selection cards
     function renderAncestorCards() {

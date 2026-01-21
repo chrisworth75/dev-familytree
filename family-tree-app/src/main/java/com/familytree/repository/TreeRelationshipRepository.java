@@ -15,24 +15,21 @@ public class TreeRelationshipRepository {
     private static final RowMapper<TreeRelationship> RELATIONSHIP_MAPPER = (rs, rowNum) -> new TreeRelationship(
         rs.getLong("id"),
         rs.getLong("tree_id"),
-        rs.getString("ancestry_person_id"),
-        rs.getString("father_id"),
-        rs.getString("mother_id"),
-        rs.getString("spouse_ids")
+        rs.getLong("person_id"),
+        rs.getString("ancestry_id"),
+        rs.getString("parent_1_ancestry_id"),
+        rs.getString("parent_2_ancestry_id")
     );
 
     public TreeRelationshipRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
     }
 
-    /**
-     * Find relationships by ancestry_tree_id (which is what tree_relationship.tree_id stores)
-     */
-    public List<TreeRelationship> findByAncestryTreeId(String ancestryTreeId) {
+    public List<TreeRelationship> findByTreeId(Long treeId) {
         return jdbc.query(
             "SELECT * FROM tree_relationship WHERE tree_id = ?",
             RELATIONSHIP_MAPPER,
-            ancestryTreeId
+            treeId
         );
     }
 }

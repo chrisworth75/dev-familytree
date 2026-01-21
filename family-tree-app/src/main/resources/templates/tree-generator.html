@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tree Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        h1 { color: #e94560; margin-bottom: 1rem; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 1.5rem; }
+        label { display: block; margin-bottom: 0.5rem; color: #4fc3f7; }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #0f3460;
+            border-radius: 8px;
+            background: #16213e;
+            color: #eee;
+            font-size: 1rem;
+        }
+        select:focus, input:focus {
+            outline: none;
+            border-color: #e94560;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+        button {
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover { background: #ff6b6b; }
+        .back-link {
+            color: #4fc3f7;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .help-text { color: #888; font-size: 0.85rem; margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">&larr; Back to home</a>
+        <h1>Tree Generator</h1>
+        <p style="margin-bottom: 2rem; color: #888;">Generate a complete ancestor tree as SVG</p>
+
+        <form th:action="@{/tree-gen/render}" method="get">
+            <div class="form-group">
+                <label for="ancestorId">Starting Person</label>
+                <select id="ancestorId" name="ancestorId" required>
+                    <option value="">-- Select a person --</option>
+                    <option th:each="person : ${people}"
+                            th:value="${person.id}"
+                            th:text="${person.forename + ' ' + person.surname + (person.birthYearEstimate != null ? ' (' + person.birthYearEstimate + ')' : '')}">
+                    </option>
+                </select>
+                <p class="help-text">The tree will show ancestors of this person</p>
+            </div>
+
+            <div class="form-group">
+                <label for="generations">Generations</label>
+                <input type="number" id="generations" name="generations" value="4" min="1" max="10">
+                <p class="help-text">How many generations up to show (1-10)</p>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="includeSpouses" name="includeSpouses" value="true">
+                    <label for="includeSpouses" style="margin-bottom: 0;">Include spouses</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showDates" name="showDates" value="true" checked>
+                    <label for="showDates" style="margin-bottom: 0;">Show birth/death years</label>
+                </div>
+            </div>
+
+            <button type="submit">Generate Tree</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,36 +1,72 @@
 package com.familytree.model;
 
+import java.time.LocalDate;
+
 public record Person(
     Long id,
-    String forename,
+    String firstName,
+    String middleNames,
     String surname,
-    Integer birthYearEstimate,
-    Integer deathYearEstimate,
+    LocalDate birthDate,
+    Integer birthYearApprox,
     String birthPlace,
-    Long treeId,
-    String ancestryPersonId,
-    Long motherId,
-    Long fatherId,
+    LocalDate deathDate,
+    Integer deathYearApprox,
+    String deathPlace,
     String gender,
-    String photoUrl,
-    String bio
+    Long parent1Id,
+    Long parent2Id,
+    String notes,
+    Integer ahnentafel
 ) {
     public String fullName() {
-        String first = forename != null ? forename : "";
+        StringBuilder sb = new StringBuilder();
+        if (firstName != null && !firstName.isBlank()) {
+            sb.append(firstName);
+        }
+        if (middleNames != null && !middleNames.isBlank()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(middleNames);
+        }
+        if (surname != null && !surname.isBlank()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(surname);
+        }
+        return sb.length() == 0 ? "Unknown" : sb.toString();
+    }
+
+    public String displayName() {
+        String first = firstName != null ? firstName : "";
         String last = surname != null ? surname : "";
         String full = (first + " " + last).trim();
         return full.isEmpty() ? "Unknown" : full;
     }
 
     public String lifespan() {
-        if (birthYearEstimate == null && deathYearEstimate == null) {
+        Integer birth = birthYear();
+        Integer death = deathYear();
+        if (birth == null && death == null) {
             return "";
         }
-        String birth = birthYearEstimate != null ? String.valueOf(birthYearEstimate) : "?";
-        String death = deathYearEstimate != null ? String.valueOf(deathYearEstimate) : "";
-        if (death.isEmpty() && birthYearEstimate != null) {
-            return "b. " + birth;
+        String birthStr = birth != null ? String.valueOf(birth) : "?";
+        String deathStr = death != null ? String.valueOf(death) : "";
+        if (deathStr.isEmpty() && birth != null) {
+            return "b. " + birthStr;
         }
-        return birth + " - " + death;
+        return birthStr + " - " + deathStr;
     }
+
+    public Integer birthYear() {
+        if (birthDate != null) return birthDate.getYear();
+        return birthYearApprox;
+    }
+
+    public Integer deathYear() {
+        if (deathDate != null) return deathDate.getYear();
+        return deathYearApprox;
+    }
+
+    // Convenience getters for backwards compatibility
+    public Long motherId() { return parent2Id; }
+    public Long fatherId() { return parent1Id; }
 }

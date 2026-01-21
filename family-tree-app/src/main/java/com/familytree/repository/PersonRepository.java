@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,21 +14,27 @@ public class PersonRepository {
 
     private final JdbcTemplate jdbc;
 
-    private static final RowMapper<Person> PERSON_MAPPER = (rs, rowNum) -> new Person(
-        rs.getLong("id"),
-        rs.getString("forename"),
-        rs.getString("surname"),
-        rs.getObject("birth_year_estimate") != null ? rs.getInt("birth_year_estimate") : null,
-        rs.getObject("death_year_estimate") != null ? rs.getInt("death_year_estimate") : null,
-        rs.getString("birth_place"),
-        rs.getLong("tree_id"),
-        rs.getString("ancestry_person_id"),
-        rs.getObject("mother_id") != null ? rs.getLong("mother_id") : null,
-        rs.getObject("father_id") != null ? rs.getLong("father_id") : null,
-        rs.getString("gender"),
-        rs.getString("photo_url"),
-        rs.getString("bio")
-    );
+    private static final RowMapper<Person> PERSON_MAPPER = (rs, rowNum) -> {
+        Date birthDate = rs.getDate("birth_date");
+        Date deathDate = rs.getDate("death_date");
+        return new Person(
+            rs.getLong("id"),
+            rs.getString("first_name"),
+            rs.getString("middle_names"),
+            rs.getString("surname"),
+            birthDate != null ? birthDate.toLocalDate() : null,
+            (Integer) rs.getObject("birth_year_approx"),
+            rs.getString("birth_place"),
+            deathDate != null ? deathDate.toLocalDate() : null,
+            (Integer) rs.getObject("death_year_approx"),
+            rs.getString("death_place"),
+            rs.getString("gender"),
+            rs.getObject("parent_1_id") != null ? rs.getLong("parent_1_id") : null,
+            rs.getObject("parent_2_id") != null ? rs.getLong("parent_2_id") : null,
+            rs.getString("notes"),
+            (Integer) rs.getObject("ahnentafel")
+        );
+    };
 
     public PersonRepository(JdbcTemplate jdbc) {
         this.jdbc = jdbc;
@@ -42,35 +49,31 @@ public class PersonRepository {
         return results.isEmpty() ? Optional.empty() : Optional.of(results.get(0));
     }
 
-    public List<Person> findByTreeId(Long treeId) {
-        return jdbc.query(
-            "SELECT * FROM person WHERE tree_id = ? ORDER BY surname, forename",
-            PERSON_MAPPER,
-            treeId
-        );
+    public List<Person> findAll() {
+        return jdbc.query("SELECT * FROM person ORDER BY surname, first_name", PERSON_MAPPER);
     }
 
     public List<Person> findAncestors(Long personId, int maxGenerations) {
         String sql = """
             WITH RECURSIVE ancestors AS (
-                SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
-                       birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                       gender, photo_url, bio, 1 as generation
+                SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
+                       birth_place, death_date, death_date_approx, death_place, gender,
+                       parent_1_id, parent_2_id, notes, ahnentafel, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
-                SELECT p.id, p.forename, p.surname, p.birth_year_estimate, p.death_year_estimate,
-                       p.birth_place, p.tree_id, p.ancestry_person_id, p.mother_id, p.father_id,
-                       p.gender, p.photo_url, p.bio, a.generation + 1
+                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_date_approx,
+                       p.birth_place, p.death_date, p.death_date_approx, p.death_place, p.gender,
+                       p.parent_1_id, p.parent_2_id, p.notes, p.ahnentafel, a.generation + 1
                 FROM person p
-                JOIN ancestors a ON p.id = a.mother_id OR p.id = a.father_id
+                JOIN ancestors a ON p.id = a.parent_1_id OR p.id = a.parent_2_id
                 WHERE a.generation < ?
             )
-            SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
-                   birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                   gender, photo_url, bio
+            SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
+                   birth_place, death_date, death_date_approx, death_place, gender,
+                   parent_1_id, parent_2_id, notes, ahnentafel
             FROM ancestors
             WHERE generation > 1
-            ORDER BY generation, surname, forename
+            ORDER BY generation, surname, first_name
             """;
         return jdbc.query(sql, PERSON_MAPPER, personId, maxGenerations);
     }
@@ -78,24 +81,24 @@ public class PersonRepository {
     public List<Person> findDescendants(Long personId, int maxGenerations) {
         String sql = """
             WITH RECURSIVE descendants AS (
-                SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
-                       birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                       gender, photo_url, bio, 1 as generation
+                SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
+                       birth_place, death_date, death_date_approx, death_place, gender,
+                       parent_1_id, parent_2_id, notes, ahnentafel, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
-                SELECT p.id, p.forename, p.surname, p.birth_year_estimate, p.death_year_estimate,
-                       p.birth_place, p.tree_id, p.ancestry_person_id, p.mother_id, p.father_id,
-                       p.gender, p.photo_url, p.bio, d.generation + 1
+                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_date_approx,
+                       p.birth_place, p.death_date, p.death_date_approx, p.death_place, p.gender,
+                       p.parent_1_id, p.parent_2_id, p.notes, p.ahnentafel, d.generation + 1
                 FROM person p
-                JOIN descendants d ON p.mother_id = d.id OR p.father_id = d.id
+                JOIN descendants d ON p.parent_1_id = d.id OR p.parent_2_id = d.id
                 WHERE d.generation < ?
             )
-            SELECT id, forename, surname, birth_year_estimate, death_year_estimate,
-                   birth_place, tree_id, ancestry_person_id, mother_id, father_id,
-                   gender, photo_url, bio
+            SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
+                   birth_place, death_date, death_date_approx, death_place, gender,
+                   parent_1_id, parent_2_id, notes, ahnentafel
             FROM descendants
             WHERE generation > 1
-            ORDER BY generation, surname, forename
+            ORDER BY generation, surname, first_name
             """;
         return jdbc.query(sql, PERSON_MAPPER, personId, maxGenerations);
     }
@@ -105,7 +108,7 @@ public class PersonRepository {
         java.util.ArrayList<Object> params = new java.util.ArrayList<>();
 
         if (name != null && !name.isBlank()) {
-            sql.append(" AND (forename LIKE ? OR surname LIKE ? OR (forename || ' ' || surname) LIKE ?)");
+            sql.append(" AND (first_name ILIKE ? OR surname ILIKE ? OR (first_name || ' ' || surname) ILIKE ?)");
             String pattern = "%" + name.trim() + "%";
             params.add(pattern);
             params.add(pattern);
@@ -113,11 +116,11 @@ public class PersonRepository {
         }
 
         if (birthPlace != null && !birthPlace.isBlank()) {
-            sql.append(" AND birth_place LIKE ?");
+            sql.append(" AND birth_place ILIKE ?");
             params.add("%" + birthPlace.trim() + "%");
         }
 
-        sql.append(" ORDER BY surname, forename LIMIT ?");
+        sql.append(" ORDER BY surname, first_name LIMIT ?");
         params.add(limit);
 
         return jdbc.query(sql.toString(), PERSON_MAPPER, params.toArray());
@@ -125,7 +128,7 @@ public class PersonRepository {
 
     public List<Person> findChildren(Long personId) {
         return jdbc.query(
-            "SELECT * FROM person WHERE mother_id = ? OR father_id = ? ORDER BY birth_year_estimate",
+            "SELECT * FROM person WHERE parent_1_id = ? OR parent_2_id = ? ORDER BY birth_date",
             PERSON_MAPPER,
             personId, personId
         );
@@ -134,88 +137,96 @@ public class PersonRepository {
     public List<Person> findSpouses(Long personId) {
         String sql = """
             SELECT p.* FROM person p
-            JOIN marriage m ON (m.person_id_1 = p.id OR m.person_id_2 = p.id)
-            WHERE (m.person_id_1 = ? OR m.person_id_2 = ?) AND p.id != ?
+            JOIN partnership m ON (m.person_1_id = p.id OR m.person_2_id = p.id)
+            WHERE (m.person_1_id = ? OR m.person_2_id = ?) AND p.id != ?
             """;
         return jdbc.query(sql, PERSON_MAPPER, personId, personId, personId);
     }
 
     public List<Person> findSiblings(Long personId) {
-        // Find siblings: people who share at least one parent (mother or father)
-        // Also include explicit sibling relationships from the relationship table
         String sql = """
             SELECT DISTINCT p.* FROM person p
             JOIN person target ON target.id = ?
             WHERE p.id != ?
             AND (
-                (p.mother_id IS NOT NULL AND p.mother_id = target.mother_id)
-                OR (p.father_id IS NOT NULL AND p.father_id = target.father_id)
+                (p.parent_1_id IS NOT NULL AND p.parent_1_id = target.parent_1_id)
+                OR (p.parent_2_id IS NOT NULL AND p.parent_2_id = target.parent_2_id)
             )
-            UNION
-            SELECT p.* FROM person p
-            JOIN relationship r ON (r.person_id_1 = p.id OR r.person_id_2 = p.id)
-            WHERE (r.person_id_1 = ? OR r.person_id_2 = ?)
-            AND r.relationship_type IN ('sibling', 'half_sibling', 'twin')
-            AND p.id != ?
-            ORDER BY birth_year_estimate, forename
+            ORDER BY birth_date, first_name
             """;
-        return jdbc.query(sql, PERSON_MAPPER, personId, personId, personId, personId, personId);
+        return jdbc.query(sql, PERSON_MAPPER, personId, personId);
     }
 
-    public Long save(String forename, String surname, Integer birthYear, Integer deathYear,
-                     String birthPlace, Long treeId, Long motherId, Long fatherId) {
+    public Long save(String firstName, String surname, Integer birthYear, Integer deathYear,
+                     String birthPlace, Long parent1Id, Long parent2Id) {
         String sql = """
-            INSERT INTO person (forename, surname, birth_year_estimate, death_year_estimate,
-                               birth_place, tree_id, mother_id, father_id, source)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'family-chart')
+            INSERT INTO person (first_name, surname, birth_date, death_date,
+                               birth_place, parent_1_id, parent_2_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            RETURNING id
             """;
-        jdbc.update(sql, forename, surname, birthYear, deathYear, birthPlace, treeId, motherId, fatherId);
-
-        // Get the last inserted ID
-        Long id = jdbc.queryForObject("SELECT last_insert_rowid()", Long.class);
-        return id;
+        java.sql.Date birthDate = birthYear != null ? java.sql.Date.valueOf(birthYear + "-01-01") : null;
+        java.sql.Date deathDate = deathYear != null ? java.sql.Date.valueOf(deathYear + "-01-01") : null;
+        return jdbc.queryForObject(sql, Long.class, firstName, surname, birthDate, deathDate,
+                                   birthPlace, parent1Id, parent2Id);
     }
 
-    public void update(Long id, String forename, String surname, Integer birthYear,
+    public void update(Long id, String firstName, String surname, Integer birthYear,
                        Integer deathYear, String birthPlace) {
         String sql = """
-            UPDATE person SET forename = ?, surname = ?, birth_year_estimate = ?,
-                             death_year_estimate = ?, birth_place = ?
+            UPDATE person SET first_name = ?, surname = ?, birth_date = ?,
+                             death_date = ?, birth_place = ?, updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
             """;
-        jdbc.update(sql, forename, surname, birthYear, deathYear, birthPlace, id);
+        java.sql.Date birthDate = birthYear != null ? java.sql.Date.valueOf(birthYear + "-01-01") : null;
+        java.sql.Date deathDate = deathYear != null ? java.sql.Date.valueOf(deathYear + "-01-01") : null;
+        jdbc.update(sql, firstName, surname, birthDate, deathDate, birthPlace, id);
     }
 
-    public void updateParents(Long id, Long motherId, Long fatherId) {
-        jdbc.update("UPDATE person SET mother_id = ?, father_id = ? WHERE id = ?",
-                    motherId, fatherId, id);
+    public void updateParents(Long id, Long parent1Id, Long parent2Id) {
+        jdbc.update("UPDATE person SET parent_1_id = ?, parent_2_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+                    parent1Id, parent2Id, id);
     }
 
     public void delete(Long id) {
-        // First remove any marriage records
-        jdbc.update("DELETE FROM marriage WHERE person_id_1 = ? OR person_id_2 = ?", id, id);
+        // First remove any partnership records
+        jdbc.update("DELETE FROM partnership WHERE person_1_id = ? OR person_2_id = ?", id, id);
         // Then delete the person
         jdbc.update("DELETE FROM person WHERE id = ?", id);
     }
 
     public void addMarriage(Long person1Id, Long person2Id) {
-        // Check if marriage already exists
+        // Check if partnership already exists
         String checkSql = """
-            SELECT COUNT(*) FROM marriage
-            WHERE (person_id_1 = ? AND person_id_2 = ?) OR (person_id_1 = ? AND person_id_2 = ?)
+            SELECT COUNT(*) FROM partnership
+            WHERE (person_1_id = ? AND person_2_id = ?) OR (person_1_id = ? AND person_2_id = ?)
             """;
         Integer count = jdbc.queryForObject(checkSql, Integer.class, person1Id, person2Id, person2Id, person1Id);
         if (count == null || count == 0) {
-            jdbc.update("INSERT INTO marriage (person_id_1, person_id_2, source) VALUES (?, ?, 'family-chart')",
+            jdbc.update("INSERT INTO partnership (person_1_id, person_2_id) VALUES (?, ?)",
                        person1Id, person2Id);
         }
     }
 
     public void removeMarriage(Long person1Id, Long person2Id) {
         String sql = """
-            DELETE FROM marriage
-            WHERE (person_id_1 = ? AND person_id_2 = ?) OR (person_id_1 = ? AND person_id_2 = ?)
+            DELETE FROM partnership
+            WHERE (person_1_id = ? AND person_2_id = ?) OR (person_1_id = ? AND person_2_id = ?)
             """;
         jdbc.update(sql, person1Id, person2Id, person2Id, person1Id);
+    }
+
+    /**
+     * Find DNA match info by person ID.
+     * Returns shared_cm if found, null otherwise.
+     */
+    public Double findDnaMatchCm(Long personId) {
+        String sql = """
+            SELECT shared_cm FROM dna_match
+            WHERE person_1_id = ? OR person_2_id = ?
+            ORDER BY shared_cm DESC LIMIT 1
+            """;
+        List<Double> results = jdbc.query(sql, (rs, rowNum) -> rs.getDouble("shared_cm"), personId, personId);
+        return results.isEmpty() ? null : results.get(0);
     }
 }

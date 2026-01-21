@@ -26,4 +26,9 @@ public class HomeController {
         model.addAttribute("username", user.getUsername());
         return "home";
     }
+
+    @GetMapping("/svg")
+    public String svgRedirect() {
+        return "redirect:/prototype/svg";
+    }
 }

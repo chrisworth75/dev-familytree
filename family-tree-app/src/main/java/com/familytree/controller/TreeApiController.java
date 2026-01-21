@@ -74,7 +74,6 @@ public class TreeApiController {
         node.put("dates", formatDates(person));
         node.put("gender", detectGender(person));
         node.put("birthPlace", person.birthPlace());
-        node.put("photoUrl", person.photoUrl());
 
         // Get spouse info
         List<Person> spouses = personRepository.findSpouses(person.id());
@@ -109,20 +108,17 @@ public class TreeApiController {
     }
 
     private String formatName(Person person) {
-        String name = "";
-        if (person.forename() != null) name += person.forename();
-        if (person.surname() != null) name += " " + person.surname();
-        return name.trim();
+        return person.displayName();
     }
 
     private String formatDates(Person person) {
         String dates = "";
-        if (person.birthYearEstimate() != null) {
-            dates += person.birthYearEstimate();
+        if (person.birthYear() != null) {
+            dates += person.birthYear();
         }
         dates += "-";
-        if (person.deathYearEstimate() != null) {
-            dates += person.deathYearEstimate();
+        if (person.deathYear() != null) {
+            dates += person.deathYear();
         }
         return dates;
     }
@@ -133,8 +129,8 @@ public class TreeApiController {
             return person.gender();
         }
         // Fall back to name detection
-        if (person.forename() == null) return "U";
-        String firstName = person.forename().toLowerCase().split(" ")[0];
+        if (person.firstName() == null) return "U";
+        String firstName = person.firstName().toLowerCase().split(" ")[0];
         return FEMALE_NAMES.contains(firstName) ? "F" : "M";
     }
 
@@ -166,6 +162,45 @@ public class TreeApiController {
         Map<Long, Person> peopleMap = new LinkedHashMap<>();
         collectPeople(rootOpt.get(), peopleMap, Math.min(maxDepth, 20));
 
+        // Ensure all relatives of people in the map are also collected
+        // This handles cases where processing might skip some relatives
+        Set<Long> idsToProcess = new HashSet<>(peopleMap.keySet());
+        for (Long personId : idsToProcess) {
+            Person person = peopleMap.get(personId);
+            if (person != null) {
+                // Get children and add them if not already in map
+                List<Person> children = personRepository.findChildren(personId);
+                for (Person child : children) {
+                    if (!peopleMap.containsKey(child.id())) {
+                        collectPeople(child, peopleMap, 10);
+                    }
+                }
+                // Get spouses and add them if not already in map
+                List<Person> spouses = personRepository.findSpouses(personId);
+                for (Person spouse : spouses) {
+                    if (!peopleMap.containsKey(spouse.id())) {
+                        peopleMap.put(spouse.id(), spouse);
+                    }
+                }
+                // Get ancestors and add them if not already in map
+                collectAncestors(person, peopleMap, 10);
+            }
+        }
+
+        // Second pass to ensure ancestors' siblings are included
+        idsToProcess = new HashSet<>(peopleMap.keySet());
+        for (Long personId : idsToProcess) {
+            Person person = peopleMap.get(personId);
+            if (person != null) {
+                List<Person> siblings = personRepository.findSiblings(personId);
+                for (Person sibling : siblings) {
+                    if (!peopleMap.containsKey(sibling.id())) {
+                        collectPeople(sibling, peopleMap, 10);
+                    }
+                }
+            }
+        }
+
         // Build family-chart format
         List<Map<String, Object>> result = new ArrayList<>();
         for (Person person : peopleMap.values()) {
@@ -184,22 +219,16 @@ public class TreeApiController {
         }
         peopleMap.put(person.id(), person);
 
-        // Add siblings (including half-siblings)
+        // Add siblings (including half-siblings) and their descendants
         List<Person> siblings = personRepository.findSiblings(person.id());
         for (Person sibling : siblings) {
             if (!peopleMap.containsKey(sibling.id())) {
-                peopleMap.put(sibling.id(), sibling);
-                // Also collect sibling's spouses
-                List<Person> siblingSpouses = personRepository.findSpouses(sibling.id());
-                for (Person sibSpouse : siblingSpouses) {
-                    if (!peopleMap.containsKey(sibSpouse.id())) {
-                        peopleMap.put(sibSpouse.id(), sibSpouse);
-                    }
-                }
+                // Recursively collect sibling and their descendants
+                collectPeople(sibling, peopleMap, depth - 1);
             }
         }
 
-        // Add spouses
+        // Add spouses and their shared children
         List<Person> spouses = personRepository.findSpouses(person.id());
         for (Person spouse : spouses) {
             if (!peopleMap.containsKey(spouse.id())) {
@@ -234,7 +263,7 @@ public class TreeApiController {
             return;
         }
 
-        // Add mother and her ancestors
+        // Add mother (parent_2) and her ancestors
         if (person.motherId() != null && !peopleMap.containsKey(person.motherId())) {
             personRepository.findById(person.motherId()).ifPresent(mother -> {
                 peopleMap.put(mother.id(), mother);
@@ -249,7 +278,7 @@ public class TreeApiController {
             });
         }
 
-        // Add father and his ancestors
+        // Add father (parent_1) and his ancestors
         if (person.fatherId() != null && !peopleMap.containsKey(person.fatherId())) {
             personRepository.findById(person.fatherId()).ifPresent(father -> {
                 peopleMap.put(father.id(), father);
@@ -275,14 +304,19 @@ public class TreeApiController {
         // Data object
         Map<String, Object> data = new LinkedHashMap<>();
         data.put("gender", detectGender(person));
-        if (person.forename() != null) data.put("first name", person.forename());
+        if (person.firstName() != null) data.put("first name", person.firstName());
         if (person.surname() != null) data.put("last name", person.surname());
-        if (person.birthYearEstimate() != null) data.put("birthday", String.valueOf(person.birthYearEstimate()));
-        if (person.deathYearEstimate() != null) data.put("deathday", String.valueOf(person.deathYearEstimate()));
+        if (person.birthYear() != null) data.put("birthday", String.valueOf(person.birthYear()));
+        if (person.deathYear() != null) data.put("deathday", String.valueOf(person.deathYear()));
         if (person.birthPlace() != null) data.put("birthPlace", person.birthPlace());
-        if (person.photoUrl() != null) data.put("avatar", person.photoUrl());
-        if (person.bio() != null) data.put("bio", person.bio());
+        if (person.notes() != null) data.put("bio", person.notes());
         data.put("db_id", person.id());  // Include database ID for API lookups
+
+        // Check if this person is a DNA match and add shared cM
+        Double sharedCm = personRepository.findDnaMatchCm(person.id());
+        if (sharedCm != null && sharedCm > 0) {
+            data.put("shared_cm", String.format("%.0f cM", sharedCm));
+        }
         node.put("data", data);
 
         // Relationships object

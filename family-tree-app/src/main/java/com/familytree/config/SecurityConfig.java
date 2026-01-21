@@ -33,6 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/photos/**").permitAll()
                 .requestMatchers("/login", "/error").permitAll()
                 .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/prototype/**").permitAll()
+                .requestMatchers("/tree-gen/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

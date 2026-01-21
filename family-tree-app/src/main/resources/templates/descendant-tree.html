@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Descendants of ' + ${rootPerson.forename} + ' ' + ${rootPerson.surname}">Descendant Tree</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+        }
+        header {
+            background: #16213e;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #0f3460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        header h1 { font-size: 1.25rem; font-weight: 500; color: #e94560; }
+        .back-link { color: #4fc3f7; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+
+        .tree-container {
+            overflow: auto;
+            padding: 2rem;
+        }
+
+        /* SVG styles */
+        .connector-line {
+            stroke: #0f3460;
+            stroke-width: 2;
+            fill: none;
+        }
+        .person-rect {
+            fill: #16213e;
+            stroke-width: 2;
+            rx: 6;
+        }
+        .person-rect.worthington { stroke: #e94560; }
+        .person-rect.other { stroke: #888; }
+        .person-name {
+            fill: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        .person-surname {
+            fill: #aaa;
+            font-size: 10px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        .person-dates {
+            fill: #666;
+            font-size: 9px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 th:text="'Descendants of ' + ${rootPerson.forename} + ' ' + ${rootPerson.surname}">Descendant Tree</h1>
+        <a href="/" class="back-link">&larr; Back to home</a>
+    </header>
+
+    <div class="tree-container">
+        <svg th:attr="width=${svgWidth}, height=${svgHeight}" xmlns="http://www.w3.org/2000/svg">
+            <!-- Draw connector lines first (behind cards) -->
+            <line th:each="line : ${lines}"
+                  th:x1="${line.x1}" th:y1="${line.y1}"
+                  th:x2="${line.x2}" th:y2="${line.y2}"
+                  class="connector-line"/>
+
+            <!-- Draw each person node -->
+            <g th:each="node : ${nodes}">
+                <!-- Card rectangle - red for Worthington, grey for others -->
+                <rect th:x="${node.x}" th:y="${node.y}"
+                      th:width="${cardWidth}" th:height="${cardHeight}"
+                      th:class="${'person-rect ' + (node.person.surname != null and node.person.surname.toLowerCase() == 'worthington' ? 'worthington' : 'other')}"/>
+
+                <!-- First name only (no middle names) -->
+                <text th:x="${node.x + cardWidth/2}" th:y="${node.y + 14}"
+                      class="person-name"
+                      th:text="${#strings.arraySplit(node.person.forename, ' ')[0]}">Name</text>
+
+                <!-- Surname -->
+                <text th:if="${node.person.surname != null}"
+                      th:x="${node.x + cardWidth/2}" th:y="${node.y + 26}"
+                      class="person-surname"
+                      th:text="${node.person.surname}">Surname</text>
+
+                <!-- Birth/Death years -->
+                <text th:if="${node.person.birthYearEstimate != null or node.person.deathYearEstimate != null}"
+                      th:x="${node.x + cardWidth/2}" th:y="${node.y + 38}"
+                      class="person-dates"
+                      th:text="${(node.person.birthYearEstimate != null ? node.person.birthYearEstimate : '?') + '–' + (node.person.deathYearEstimate != null ? node.person.deathYearEstimate : '')}">Dates</text>
+            </g>
+        </svg>
+    </div>
+</body>
+</html>

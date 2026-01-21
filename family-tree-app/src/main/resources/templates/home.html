@@ -25,6 +25,17 @@
             <p class="subtitle">Select a tree to explore your family history</p>
         </div>
 
+        <!-- TLeaf Prototype Link -->
+        <div style="margin-bottom: 2rem; padding: 1rem; background: linear-gradient(135deg, #e94560 0%, #0f3460 100%); border-radius: 12px;">
+            <a href="/prototype" style="display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff;">
+                <div>
+                    <div style="font-size: 1.2rem; font-weight: 600;">TLeaf Prototype</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Server-side rendered tree navigation</div>
+                </div>
+                <div style="font-size: 2rem;">&rarr;</div>
+            </a>
+        </div>
+
         <div th:if="${param.error}" class="alert alert-error">
             <span th:if="${param.error == 'notfound'}">Tree not found</span>
             <span th:if="${param.error == 'noaccess'}">You don't have access to that tree</span>

@@ -16,8 +16,7 @@ public class PersonUrlRepository {
         rs.getLong("id"),
         rs.getLong("person_id"),
         rs.getString("url"),
-        rs.getString("description"),
-        rs.getString("source")
+        rs.getString("description")
     );
 
     public PersonUrlRepository(JdbcTemplate jdbc) {
@@ -32,12 +31,12 @@ public class PersonUrlRepository {
         );
     }
 
-    public Long save(Long personId, String url, String description, String source) {
-        jdbc.update(
-            "INSERT INTO person_url (person_id, url, description, source) VALUES (?, ?, ?, ?)",
-            personId, url, description, source
+    public Long save(Long personId, String url, String description) {
+        return jdbc.queryForObject(
+            "INSERT INTO person_url (person_id, url, description) VALUES (?, ?, ?) RETURNING id",
+            Long.class,
+            personId, url, description
         );
-        return jdbc.queryForObject("SELECT last_insert_rowid()", Long.class);
     }
 
     public void delete(Long id) {

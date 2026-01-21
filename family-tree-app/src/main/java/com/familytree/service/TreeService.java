@@ -34,7 +34,9 @@ public class TreeService {
     }
 
     public List<Person> getPersonsForTree(Long treeId) {
-        return personRepository.findByTreeId(treeId);
+        // Note: In the new schema, persons are not directly linked to trees via tree_id
+        // Tree relationships are now managed through tree_relationship table
+        return List.of();
     }
 
     public TreeData getTreeData(Long treeId) {
@@ -43,37 +45,39 @@ public class TreeService {
             return new TreeData(List.of(), List.of());
         }
 
-        List<Person> persons = personRepository.findByTreeId(treeId);
+        // Get relationships for this tree
+        List<TreeRelationship> relationships = relationshipRepository.findByTreeId(treeId);
 
-        // Get relationships using ancestry_tree_id
-        List<TreeRelationship> relationships = tree.ancestryTreeId() != null
-            ? relationshipRepository.findByAncestryTreeId(tree.ancestryTreeId())
-            : List.of();
-
-        // Build members list for SVG
-        List<SvgMember> members = new ArrayList<>();
-        for (Person p : persons) {
-            members.add(new SvgMember(
-                p.ancestryPersonId() != null ? p.ancestryPersonId() : String.valueOf(p.id()),
-                p.fullName(),
-                p.birthYearEstimate(),
-                p.deathYearEstimate()
-            ));
+        // Build members list from relationships
+        Set<Long> personIds = new HashSet<>();
+        for (TreeRelationship rel : relationships) {
+            personIds.add(rel.personId());
         }
 
-        // Build parent-child relationships for SVG
+        List<SvgMember> members = new ArrayList<>();
+        for (Long personId : personIds) {
+            personRepository.findById(personId).ifPresent(p -> {
+                members.add(new SvgMember(
+                    String.valueOf(p.id()),
+                    p.fullName(),
+                    p.birthYear(),
+                    p.deathYear()
+                ));
+            });
+        }
+
+        // Build parent-child relationships for SVG using ancestry IDs from tree_relationship
         List<SvgRelationship> svgRelationships = new ArrayList<>();
         for (TreeRelationship rel : relationships) {
-            String childId = rel.ancestryPersonId();
+            String childId = rel.ancestryId();
+            if (childId == null) childId = String.valueOf(rel.personId());
 
-            // Add father relationship
-            if (rel.fatherId() != null && !rel.fatherId().isBlank()) {
-                svgRelationships.add(new SvgRelationship("parent-child", rel.fatherId(), childId));
+            // Add parent relationships
+            if (rel.parent1AncestryId() != null && !rel.parent1AncestryId().isBlank()) {
+                svgRelationships.add(new SvgRelationship("parent-child", rel.parent1AncestryId(), childId));
             }
-
-            // Add mother relationship
-            if (rel.motherId() != null && !rel.motherId().isBlank()) {
-                svgRelationships.add(new SvgRelationship("parent-child", rel.motherId(), childId));
+            if (rel.parent2AncestryId() != null && !rel.parent2AncestryId().isBlank()) {
+                svgRelationships.add(new SvgRelationship("parent-child", rel.parent2AncestryId(), childId));
             }
         }
 

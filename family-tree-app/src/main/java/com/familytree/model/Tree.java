@@ -3,10 +3,10 @@ package com.familytree.model;
 public record Tree(
     Long id,
     String name,
+    String source,
     String ownerName,
-    Integer personCount,
-    String treeType,
-    String ancestryTreeId
+    Long matchPersonId,
+    String notes
 ) {
     public String displayName() {
         if (name != null && !name.startsWith("Tree ")) {

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Ancestors of ' + ${rootPerson.forename} + ' ' + ${rootPerson.surname}">Family Tree</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+        }
+        header {
+            background: #16213e;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid #0f3460;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { font-size: 1.25rem; font-weight: 500; color: #e94560; }
+        .back-link { color: #4fc3f7; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+
+        .tree-container {
+            overflow: auto;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* SVG styles */
+        .connector-line {
+            stroke: #0f3460;
+            stroke-width: 2;
+            fill: none;
+        }
+        .person-rect {
+            fill: #16213e;
+            stroke: #e94560;
+            stroke-width: 2;
+        }
+        .spouse-rect {
+            fill: #16213e;
+            stroke: #4fc3f7;
+            stroke-width: 2;
+        }
+        .person-name {
+            fill: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        .person-dates {
+            fill: #888;
+            font-size: 9px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        .spouse-connector {
+            fill: #e94560;
+            font-size: 12px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 th:text="'Ancestors of ' + ${rootPerson.forename} + ' ' + ${rootPerson.surname}">Family Tree</h1>
+        <a href="/tree-gen" class="back-link">&larr; Generate another</a>
+    </header>
+
+    <div class="tree-container">
+        <svg th:attr="width=${svgWidth}, height=${svgHeight}" xmlns="http://www.w3.org/2000/svg">
+            <!-- Draw connector lines first (behind cards) -->
+            <line th:each="line : ${lines}"
+                  th:attr="x1=${line.x1}, y1=${line.y1}, x2=${line.x2}, y2=${line.y2}"
+                  class="connector-line"/>
+
+            <!-- Draw each node -->
+            <g th:each="node : ${nodes}">
+                <!-- Main person card -->
+                <rect th:attr="x=${node.x}, y=${node.y}, width=140, height=50"
+                      rx="6" class="person-rect"/>
+
+                <!-- Person name -->
+                <text th:attr="x=${node.x + 70}, y=${node.y + (showDates ? 18 : 25)}"
+                      class="person-name">
+                    <tspan th:text="${#strings.abbreviate(node.person.forename + ' ' + (node.person.surname != null ? node.person.surname : ''), 20)}"></tspan>
+                </text>
+
+                <!-- Person dates (if enabled) -->
+                <text th:if="${showDates and (node.person.birthYearEstimate != null or node.person.deathYearEstimate != null)}"
+                      th:attr="x=${node.x + 70}, y=${node.y + 35}"
+                      class="person-dates">
+                    <tspan th:text="${(node.person.birthYearEstimate != null ? node.person.birthYearEstimate : '?') + ' - ' + (node.person.deathYearEstimate != null ? node.person.deathYearEstimate : '')}"></tspan>
+                </text>
+
+                <!-- Spouse card (if present) -->
+                <g th:if="${node.spouse != null}">
+                    <!-- Heart connector -->
+                    <text th:attr="x=${node.x + 145}, y=${node.y + 25}" class="spouse-connector">♥</text>
+
+                    <!-- Spouse rect -->
+                    <rect th:attr="x=${node.x + 150}, y=${node.y}, width=140, height=50"
+                          rx="6" class="spouse-rect"/>
+
+                    <!-- Spouse name -->
+                    <text th:attr="x=${node.x + 220}, y=${node.y + (showDates ? 18 : 25)}"
+                          class="person-name">
+                        <tspan th:text="${#strings.abbreviate(node.spouse.forename + ' ' + (node.spouse.surname != null ? node.spouse.surname : ''), 20)}"></tspan>
+                    </text>
+
+                    <!-- Spouse dates -->
+                    <text th:if="${showDates and (node.spouse.birthYearEstimate != null or node.spouse.deathYearEstimate != null)}"
+                          th:attr="x=${node.x + 220}, y=${node.y + 35}"
+                          class="person-dates">
+                        <tspan th:text="${(node.spouse.birthYearEstimate != null ? node.spouse.birthYearEstimate : '?') + ' - ' + (node.spouse.deathYearEstimate != null ? node.spouse.deathYearEstimate : '')}"></tspan>
+                    </text>
+                </g>
+            </g>
+        </svg>
+    </div>
+</body>
+</html>

@@ -12,14 +12,15 @@ public class CensusRepository {
 
     private final JdbcTemplate jdbc;
 
+    // Maps source_record table (with JSONB data) to CensusRecord model
     private static final RowMapper<CensusRecord> CENSUS_MAPPER = (rs, rowNum) -> new CensusRecord(
         rs.getLong("id"),
-        rs.getObject("year") != null ? rs.getInt("year") : null,
-        rs.getString("piece_folio"),
-        rs.getString("registration_district"),
-        rs.getString("sub_district"),
-        rs.getString("parish"),
-        rs.getString("address"),
+        rs.getObject("record_year") != null ? rs.getInt("record_year") : null,
+        rs.getString("reference"),
+        null, // registration_district - not stored separately
+        null, // sub_district - not stored separately
+        null, // parish - not stored separately
+        rs.getString("location"),
         rs.getString("name_as_recorded"),
         rs.getString("relationship_to_head"),
         rs.getString("marital_status"),
@@ -29,8 +30,8 @@ public class CensusRepository {
         rs.getString("birth_place_as_recorded"),
         rs.getString("household_id"),
         rs.getObject("schedule_number") != null ? rs.getInt("schedule_number") : null,
-        rs.getString("source_url"),
-        rs.getObject("confidence") != null ? rs.getDouble("confidence") : null,
+        rs.getString("url"),
+        rs.getObject("confidence_score") != null ? rs.getDouble("confidence_score") : null,
         rs.getString("reasoning")
     );
 
@@ -40,35 +41,67 @@ public class CensusRepository {
 
     public List<CensusRecord> searchBySurname(String surname, Integer year, int limit) {
         StringBuilder sql = new StringBuilder("""
-            SELECT cr.*, NULL as confidence, NULL as reasoning
-            FROM census_record cr
-            WHERE cr.name_as_recorded LIKE ?
+            SELECT sr.id,
+                   EXTRACT(YEAR FROM sr.record_date)::int as record_year,
+                   sr.reference,
+                   sr.location,
+                   sr.url,
+                   sr.data->>'name_as_recorded' as name_as_recorded,
+                   sr.data->>'relationship_to_head' as relationship_to_head,
+                   sr.data->>'marital_status' as marital_status,
+                   (sr.data->>'age_as_recorded')::int as age_as_recorded,
+                   sr.data->>'sex' as sex,
+                   sr.data->>'occupation' as occupation,
+                   sr.data->>'birth_place_as_recorded' as birth_place_as_recorded,
+                   sr.data->>'household_id' as household_id,
+                   (sr.data->>'schedule_number')::int as schedule_number,
+                   NULL::double precision as confidence_score,
+                   NULL as reasoning
+            FROM source_record sr
+            WHERE sr.record_type = 'census'
+            AND sr.data->>'name_as_recorded' ILIKE ?
             """);
 
         if (year != null) {
-            sql.append(" AND cr.year = ").append(year);
+            sql.append(" AND EXTRACT(YEAR FROM sr.record_date) = ").append(year);
         }
 
-        sql.append(" ORDER BY cr.year, cr.name_as_recorded LIMIT ").append(Math.min(limit, 500));
+        sql.append(" ORDER BY sr.record_date, sr.data->>'name_as_recorded' LIMIT ").append(Math.min(limit, 500));
 
         String pattern = "%" + surname + "%";
         return jdbc.query(sql.toString(), CENSUS_MAPPER, pattern);
     }
 
     public List<CensusRecord> findByPersonId(Long personId) {
-        // Query both link tables: person_census_link (with confidence) and person_census (from import)
         String sql = """
-            SELECT cr.*, pcl.confidence, pcl.reasoning
-            FROM census_record cr
-            JOIN person_census_link pcl ON cr.id = pcl.census_record_id
-            WHERE pcl.person_id = ?
-            UNION
-            SELECT cr.*, 1.0 as confidence, 'Imported from Ancestry' as reasoning
-            FROM census_record cr
-            JOIN person_census pc ON cr.id = pc.census_record_id
-            WHERE pc.person_id = ?
-            ORDER BY year
+            SELECT sr.id,
+                   EXTRACT(YEAR FROM sr.record_date)::int as record_year,
+                   sr.reference,
+                   sr.location,
+                   sr.url,
+                   sr.data->>'name_as_recorded' as name_as_recorded,
+                   sr.data->>'relationship_to_head' as relationship_to_head,
+                   sr.data->>'marital_status' as marital_status,
+                   (sr.data->>'age_as_recorded')::int as age_as_recorded,
+                   sr.data->>'sex' as sex,
+                   sr.data->>'occupation' as occupation,
+                   sr.data->>'birth_place_as_recorded' as birth_place_as_recorded,
+                   sr.data->>'household_id' as household_id,
+                   (sr.data->>'schedule_number')::int as schedule_number,
+                   CASE ps.confidence
+                       WHEN 'certain' THEN 1.0
+                       WHEN 'probable' THEN 0.8
+                       WHEN 'possible' THEN 0.6
+                       WHEN 'speculative' THEN 0.4
+                       ELSE NULL
+                   END as confidence_score,
+                   ps.notes as reasoning
+            FROM source_record sr
+            JOIN person_source ps ON sr.id = ps.source_record_id
+            WHERE ps.person_id = ?
+            AND sr.record_type = 'census'
+            ORDER BY sr.record_date
             """;
-        return jdbc.query(sql, CENSUS_MAPPER, personId, personId);
+        return jdbc.query(sql, CENSUS_MAPPER, personId);
     }
 }

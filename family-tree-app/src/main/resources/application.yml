@@ -2,12 +2,21 @@ spring:
   application:
     name: family-tree-app
 
-  # SQLite Database (for future use with genealogy.db)
+  # PostgreSQL Database
   datasource:
-    url: jdbc:sqlite:${GENEALOGY_DB:../genealogy.db}
-    driver-class-name: org.sqlite.JDBC
-    hikari:
-      maximum-pool-size: 1
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:familytree}
+    username: ${DB_USER:familytree}
+    password: ${DB_PASSWORD:familytree}
+    driver-class-name: org.postgresql.Driver
+
+  # Flyway Database Migrations
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: '1'
+    baseline-description: 'Baseline existing schema'
+    locations: classpath:db/migration
+    validate-on-migrate: true
 
   # Thymeleaf
   thymeleaf:
@@ -20,7 +29,7 @@ spring:
       password: unused
 
 server:
-  port: ${PORT:3500}
+  port: ${PORT:3200}
 
 logging:
   level:
