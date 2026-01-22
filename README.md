@@ -220,22 +220,27 @@ python scripts/import_match_trees.py --import-trees --max-tree-size 2000
 
 ### Check Progress
 ```bash
+# PostgreSQL (DNA graph)
+PGPASSWORD=familytree psql -h localhost -U familytree -d familytree -c "
+SELECT 'DNA nodes' as metric, COUNT(*) as count FROM ancestry_person
+UNION ALL SELECT 'DNA edges', COUNT(*) FROM ancestry_match;
+"
+
+# SQLite (trees and legacy data)
 sqlite3 genealogy.db "
-SELECT 'DNA matches' as metric, COUNT(*) as count FROM dna_match
-UNION ALL SELECT 'Shared match records', COUNT(*) FROM shared_match
-UNION ALL SELECT 'Trees imported', COUNT(*) FROM tree
+SELECT 'Trees imported' as metric, COUNT(*) as count FROM tree
 UNION ALL SELECT 'People in trees', COUNT(*) FROM person;
 "
 ```
 
 ---
 
-## Current Data (19 January 2026)
+## Current Data (22 January 2026)
 
 | Metric | Count |
 |--------|-------|
-| DNA matches | 9,985 |
-| Shared match records | 14,468 |
+| DNA graph nodes (ancestry_person) | 12,173 |
+| DNA graph edges (ancestry_match) | 23,637 |
 | Trees imported | 435 |
 | People in trees | 68,078 |
 | People in My Tree (#1) | 452 |
@@ -415,21 +420,68 @@ These Westmorland/Cumberland matches do NOT triangulate with each other, suggest
 | `import_match_trees.py` | Discover/import match trees | Yes |
 | `import_thrulines.py` | Scrape ThruLines for ancestors & MRCA mappings | Yes |
 | `find_unknown_father_matches.py` | Analyse for unknown father | Yes |
-| `cluster_matches.py` | Graph-based clustering | Weekly |
+| `cluster_matches.py` | SQLite-based clustering (legacy) | Deprecated |
 | `import_ancestry_tree.py` | Import single tree by ID | As needed |
 | `import_census_from_tree.py` | Import census records for people in a tree | As needed |
+| `migrate_to_ancestry_graph.py` | Migrate dna_match to new graph schema | One-time |
+
+### DNA Clustering (NEW)
+
+The `dna_clustering.py` script (in project root) uses the new PostgreSQL graph schema:
+
+```bash
+# Quick analysis (skip slow clique finding)
+python dna_clustering.py --no-cliques
+
+# Higher cM threshold for clearer clusters
+python dna_clustering.py --min-cm 50
+
+# Full analysis with cliques
+python dna_clustering.py --min-cm 50 --limit 20
+```
+
+**Output includes:**
+- Connected components (main component has 4,896 nodes)
+- Louvain community detection (71 communities)
+- Maximal cliques (fully connected groups like the Wood family)
 
 ---
 
 ## Database Schema
 
-**Location:** `genealogy.db`
+### PostgreSQL (Primary - `familytree` database)
 
-### Key Tables
+**Connection:** `localhost:5432`, user/pass: `familytree/familytree`
+
+#### DNA Graph Schema (NEW - January 2026)
+
 | Table | Purpose |
 |-------|---------|
-| `dna_match` | DNA matches with cM, side, tree info |
-| `shared_match` | Who shares DNA with whom (triangulation) |
+| `ancestry_person` | DNA match nodes (12,173 people) |
+| `ancestry_match` | DNA relationship edges (23,637 connections) |
+| `person` | Family tree people |
+| `tree` | Imported family trees |
+
+**ancestry_person columns:**
+- `ancestry_id` (PK) - Ancestry GUID
+- `name`, `admin_level`, `has_tree`, `tree_size`
+- `person_id` → links to known tree person
+- `predicted_relationship` - Ancestry's guess (e.g., "4th cousin")
+- `match_side` - paternal/maternal/both/unknown
+- `mrca` - Ahnentafel position (e.g., "18+19", "UNK-PAT")
+- `mrca_confidence` - confirmed/high/medium/low
+- `notes`
+
+**ancestry_match columns:**
+- `person1_id`, `person2_id` (composite PK)
+- `shared_cm`, `shared_segments`
+
+### SQLite (Legacy - `genealogy.db`)
+
+| Table | Purpose |
+|-------|---------|
+| `dna_match` | Legacy DNA matches (use PostgreSQL instead) |
+| `shared_match` | Source data for ancestry_match edges |
 | `tree` | Imported family trees |
 | `person` | People from imported trees |
 | `relationship` | Family relationships in trees |
@@ -464,35 +516,42 @@ source TEXT DEFAULT 'import'        -- 'import', 'census', 'bmd', 'research'
 3. Add people from census/BMD → `source='census'` or `source='bmd'`
 4. Original tree remains unchanged for future re-imports
 
-### Useful Queries
+### Useful Queries (PostgreSQL)
+
 ```sql
--- Find matches with Westmorland connections
-SELECT dm.name, dm.shared_cm, p.birth_place
-FROM dna_match dm
-JOIN tree t ON t.ancestry_tree_id = dm.linked_tree_id
-JOIN person p ON p.tree_id = t.id
-WHERE p.birth_place LIKE '%Westmorland%';
+-- Find all UNK-PAT matches (unknown paternal line)
+SELECT name, mrca, mrca_confidence, predicted_relationship
+FROM ancestry_person
+WHERE mrca = 'UNK-PAT'
+ORDER BY mrca_confidence DESC;
 
--- Check triangulation between two matches
-SELECT * FROM shared_match
-WHERE match1_id = X AND match2_id = Y;
+-- Find matches by side (paternal/maternal)
+SELECT match_side, COUNT(*) FROM ancestry_person GROUP BY match_side;
 
--- Find matches without imported trees
-SELECT name, shared_cm FROM dna_match
-WHERE has_tree = 1 AND linked_tree_id IS NULL
-ORDER BY shared_cm DESC;
+-- Check DNA connection between two people
+SELECT ap1.name, ap2.name, am.shared_cm
+FROM ancestry_match am
+JOIN ancestry_person ap1 ON ap1.ancestry_id = am.person1_id
+JOIN ancestry_person ap2 ON ap2.ancestry_id = am.person2_id
+WHERE ap1.name LIKE '%Smith%' OR ap2.name LIKE '%Smith%'
+ORDER BY am.shared_cm DESC;
 
--- Find research trees and their sources
-SELECT r.name as research_tree, i.name as source_tree
-FROM tree r
-JOIN tree i ON r.source_tree_id = i.id
-WHERE r.tree_type = 'research';
+-- Find all people who share DNA with a specific match
+SELECT ap2.name, am.shared_cm
+FROM ancestry_match am
+JOIN ancestry_person ap1 ON ap1.ancestry_id = am.person1_id
+JOIN ancestry_person ap2 ON ap2.ancestry_id = am.person2_id
+WHERE ap1.name = 'Bruce Horrocks'
+ORDER BY am.shared_cm DESC;
 
--- Find people added from census records
-SELECT p.name, p.birth_year_estimate, p.source, t.name as tree
-FROM person p
-JOIN tree t ON p.tree_id = t.id
-WHERE p.source = 'census';
+-- Top matches by cM (edges involving Chris)
+SELECT ap.name, am.shared_cm
+FROM ancestry_match am
+JOIN ancestry_person ap ON (ap.ancestry_id = am.person1_id OR ap.ancestry_id = am.person2_id)
+WHERE am.person1_id = 'E756DE6C-0C8D-443B-8793-ADDB6F35FD6A'
+   OR am.person2_id = 'E756DE6C-0C8D-443B-8793-ADDB6F35FD6A'
+ORDER BY am.shared_cm DESC
+LIMIT 50;
 ```
 
 ---
@@ -818,4 +877,49 @@ WHERE cluster_id = 18;  -- HLW line
 
 ---
 
-*Last updated: 19 January 2026*
+---
+
+## DNA Graph Schema Migration (22 January 2026)
+
+### What Changed
+
+Migrated from a single `dna_match` table to a proper graph schema with nodes and edges:
+
+**Old Schema (DEPRECATED):**
+```
+dna_match (9,929 rows) - each row = one DNA match
+```
+
+**New Schema:**
+```
+ancestry_person (12,173 nodes) - people in the DNA network
+ancestry_match (23,637 edges) - DNA relationships between people
+```
+
+### Why This Matters
+
+The old schema only stored "Person X shares Y cM with Chris" - a star graph. The new schema stores:
+- Chris ↔ match edges (9,929)
+- Match ↔ match edges (13,708) - from shared match data
+
+This enables proper graph analysis: finding cliques (fully connected groups), communities (Louvain clustering), and triangulation patterns.
+
+### Data Migrated
+
+| Source | Destination | Records |
+|--------|-------------|---------|
+| PostgreSQL `dna_match` | `ancestry_person` | 9,929 |
+| PostgreSQL `dna_match` | `ancestry_match` (Chris↔match) | 9,929 |
+| SQLite `shared_match` | `ancestry_match` (match↔match) | 13,708 |
+| SQLite `dna_match` columns | `ancestry_person` (match_side, mrca, etc.) | 9,939 |
+
+### Key Findings from Graph Analysis
+
+- **Main component:** 4,896 connected nodes (including Chris)
+- **71 communities** detected via Louvain algorithm
+- **Largest cliques:** Wood family (7 members), Snee family (5 members)
+- **7,170 total connected components** (most are small isolated groups)
+
+---
+
+*Last updated: 22 January 2026*
