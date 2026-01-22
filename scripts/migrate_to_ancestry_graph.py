@@ -280,6 +280,41 @@ def retry_failed_edges(sqlite_cursor, pg_cursor, id_to_ancestry, name_to_ancestr
     return edges_created
 
 
+def fix_chris_edge_weights(sqlite_cursor, pg_cursor):
+    """Fix Chris's edge weights using correct cM values from SQLite.
+
+    The shared_match import can overwrite Chris↔match edges with incorrect
+    match1↔match2 cM values. This function restores the correct values.
+    """
+    print("\n" + "=" * 60)
+    print("STEP 7: Fix Chris edge weights")
+    print("=" * 60)
+
+    # Get correct cM values from SQLite dna_match
+    sqlite_cursor.execute("SELECT ancestry_id, shared_cm FROM dna_match WHERE ancestry_id IS NOT NULL")
+    correct_cm = {row[0]: row[1] for row in sqlite_cursor.fetchall()}
+    print(f"Loaded {len(correct_cm)} correct cM values from SQLite")
+
+    updated = 0
+    for ancestry_id, cm in correct_cm.items():
+        if cm is None:
+            continue
+
+        # Ensure consistent ordering (smaller ID first)
+        p1, p2 = sorted([CHRIS_ANCESTRY_ID, ancestry_id])
+
+        pg_cursor.execute("""
+            UPDATE ancestry_match
+            SET shared_cm = %s
+            WHERE person1_id = %s AND person2_id = %s
+        """, (cm, p1, p2))
+        if pg_cursor.rowcount > 0:
+            updated += 1
+
+    print(f"Updated {updated} Chris edges with correct cM values")
+    return updated
+
+
 def verify_migration(pg_cursor):
     """Verify the migration results."""
     print("\n" + "=" * 60)
@@ -350,6 +385,10 @@ def main():
 
         # Step 6: Retry failed edges
         retry_failed_edges(sqlite_cursor, pg_cursor, id_to_ancestry, name_to_ancestry, missing_people)
+        pg_conn.commit()
+
+        # Step 7: Fix Chris edge weights (shared_match import can overwrite with wrong values)
+        fix_chris_edge_weights(sqlite_cursor, pg_cursor)
         pg_conn.commit()
 
         # Verify
