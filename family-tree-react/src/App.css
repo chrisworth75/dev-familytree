@@ -1,0 +1,113 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.nav {
+    background: #1a1a2e;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-links a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: white;
+}
+
+.page {
+    padding: 2rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.stat-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1a1a2e;
+}
+
+.stat-label {
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.ancestors-list {
+    margin-top: 1rem;
+}
+
+.ancestor-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.ancestor-rank {
+    font-weight: bold;
+    color: #666;
+    width: 2rem;
+}
+
+.ancestor-name {
+    flex: 1;
+    font-weight: 500;
+}
+
+.ancestor-year {
+    color: #888;
+}
+
+.ancestor-count {
+    color: #1a1a2e;
+    font-weight: bold;
+}
+
+.ancestor-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+a.ancestor-card {
+    text-decoration: none;
+    color: inherit;
+}
+
+a.ancestor-card:hover {
+    background: #eee;
+}
