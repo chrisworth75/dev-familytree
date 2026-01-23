@@ -1,0 +1,30 @@
+meta {
+  name: Render Any Person
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{d3TreeUrl}}/render
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+script:pre-request {
+  const axios = require('axios');
+  const baseUrl = bru.getEnvVar('baseUrl');
+  const personId = bru.getEnvVar('personId');
+  const response = await axios.get(`${baseUrl}/api/persons/${personId}/descendants/hierarchy`);
+  req.setBody(response.data);
+}
+
+docs {
+  Render descendants tree for any person.
+  Set the personId environment variable to the desired person ID.
+
+  Returns SVG image (Content-Type: image/svg+xml)
+}

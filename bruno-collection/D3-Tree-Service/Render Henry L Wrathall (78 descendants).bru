@@ -1,0 +1,29 @@
+meta {
+  name: Render Henry L Wrathall (78 descendants)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{d3TreeUrl}}/render
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+script:pre-request {
+  const axios = require('axios');
+  const baseUrl = bru.getEnvVar('baseUrl');
+  const response = await axios.get(`${baseUrl}/api/persons/575341/descendants/hierarchy`);
+  req.setBody(response.data);
+}
+
+docs {
+  Render descendants tree for Henry L Wrathall (ID: 575341)
+  78 descendants
+
+  Returns SVG image (Content-Type: image/svg+xml)
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Render Susannah Wrathall (79 descendants)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{d3TreeUrl}}/render
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+script:pre-request {
+  const axios = require('axios');
+  const baseUrl = bru.getEnvVar('baseUrl');
+  const response = await axios.get(`${baseUrl}/api/persons/575356/descendants/hierarchy`);
+  req.setBody(response.data);
+}
+
+docs {
+  Render descendants tree for Susannah Wrathall (ID: 575356)
+  79 descendants
+
+  Returns SVG image (Content-Type: image/svg+xml)
+}
