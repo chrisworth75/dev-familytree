@@ -26,7 +26,7 @@ public class DnaMatchApiController {
         List<DnaMatch> matches;
 
         if (personId != null) {
-            matches = dnaMatchRepository.findByPersonId(personId);
+            matches = dnaMatchRepository.findByMatchedToPersonId(personId);
         } else if (minCm != null) {
             matches = dnaMatchRepository.findByMinCm(minCm, Math.min(limit, 500));
         } else {

@@ -30,7 +30,8 @@ public class SecurityConfig {
                 .ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/photos/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/photos/**", "/trees/**").permitAll()
+                .requestMatchers(new AntPathRequestMatcher("/**", "GET")).permitAll() // Allow all static resources
                 .requestMatchers("/login", "/error").permitAll()
                 .requestMatchers("/api/**").permitAll()
                 .requestMatchers("/prototype/**").permitAll()
@@ -59,6 +60,9 @@ public class SecurityConfig {
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", configuration);
+        source.registerCorsConfiguration("/images/**", configuration);
+        source.registerCorsConfiguration("/photos/**", configuration);
+        source.registerCorsConfiguration("/trees/**", configuration);
         return source;
     }
 

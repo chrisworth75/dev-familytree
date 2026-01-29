@@ -13,5 +13,6 @@ public record DnaMatch(
     Boolean hasTree,
     Integer treeSize,
     String notes,
+    Long matchedToPersonId,
     Long personId
 ) {}

@@ -10,6 +10,7 @@
 -- New state:
 --   - dna_match is a standalone entity with ancestry_id (GUID) as primary key
 --   - Contains match details: name, shared_cm, shared_segments, etc.
+--   - matched_to_person_id is a required FK to person whose match list this appears on (e.g. me)
 --   - person_id is a nullable FK for when we've identified the match in our tree
 --   - match_cluster references dna_match.ancestry_id
 --   - tree references dna_match.ancestry_id
@@ -29,6 +30,7 @@ CREATE TABLE dna_match_new (
     has_tree BOOLEAN DEFAULT FALSE,
     tree_size INTEGER,
     notes TEXT,
+    matched_to_person_id INTEGER NOT NULL,
     person_id INTEGER,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -37,6 +39,7 @@ CREATE TABLE dna_match_new (
 
 COMMENT ON COLUMN dna_match_new.ancestry_id IS 'Ancestry.com test GUID - uniquely identifies this DNA match';
 COMMENT ON COLUMN dna_match_new.name IS 'Display name of the DNA match (username or real name from Ancestry)';
+COMMENT ON COLUMN dna_match_new.matched_to_person_id IS 'The person in our tree whose DNA test this match appears on (e.g. person 1 = me)';
 COMMENT ON COLUMN dna_match_new.person_id IS 'Optional link to person record when match has been identified in our family tree';
 COMMENT ON COLUMN dna_match_new.admin_level IS 'Ancestry admin level: 0=viewer, 1=contributor, 2=editor, 3=manager, 4=owner';
 
@@ -46,6 +49,7 @@ COMMENT ON COLUMN dna_match_new.admin_level IS 'Ancestry admin level: 0=viewer, 
 
 -- Insert data joining old dna_match with person table to get ancestry_guid and name
 -- We only migrate records where we have an ancestry_guid (the Ancestry GUID)
+-- matched_to_person_id comes from person_1_id (the person whose match list this appears on)
 INSERT INTO dna_match_new (
     ancestry_id,
     name,
@@ -53,6 +57,7 @@ INSERT INTO dna_match_new (
     shared_segments,
     source,
     notes,
+    matched_to_person_id,
     created_at
 )
 SELECT DISTINCT ON (p.ancestry_guid)
@@ -62,6 +67,7 @@ SELECT DISTINCT ON (p.ancestry_guid)
     dm.shared_segments,
     dm.source,
     dm.notes,
+    dm.person_1_id,
     dm.created_at
 FROM dna_match dm
 JOIN person p ON p.id = dm.person_2_id
@@ -118,7 +124,13 @@ CREATE INDEX idx_tree_dna_match ON tree(dna_match_id);
 
 CREATE INDEX idx_dna_match_new_name ON dna_match_new(name);
 CREATE INDEX idx_dna_match_new_shared_cm ON dna_match_new(shared_cm);
+CREATE INDEX idx_dna_match_new_matched_to_person ON dna_match_new(matched_to_person_id);
 CREATE INDEX idx_dna_match_new_person_id ON dna_match_new(person_id) WHERE person_id IS NOT NULL;
+
+-- Add foreign key for matched_to_person_id
+ALTER TABLE dna_match_new
+ADD CONSTRAINT dna_match_new_matched_to_person_id_fkey
+FOREIGN KEY (matched_to_person_id) REFERENCES person(id);
 
 -- Add foreign key for person_id
 ALTER TABLE dna_match_new
@@ -148,11 +160,13 @@ ALTER TABLE dna_match_new RENAME TO dna_match;
 
 -- Rename constraints to match new table name
 ALTER TABLE dna_match RENAME CONSTRAINT dna_match_new_pkey TO dna_match_pkey;
+ALTER TABLE dna_match RENAME CONSTRAINT dna_match_new_matched_to_person_id_fkey TO dna_match_matched_to_person_id_fkey;
 ALTER TABLE dna_match RENAME CONSTRAINT dna_match_new_person_id_fkey TO dna_match_person_id_fkey;
 
 -- Rename indexes
 ALTER INDEX idx_dna_match_new_name RENAME TO idx_dna_match_name;
 ALTER INDEX idx_dna_match_new_shared_cm RENAME TO idx_dna_match_shared_cm;
+ALTER INDEX idx_dna_match_new_matched_to_person RENAME TO idx_dna_match_matched_to_person;
 ALTER INDEX idx_dna_match_new_person_id RENAME TO idx_dna_match_person_id;
 
 -- Update match_cluster constraint name

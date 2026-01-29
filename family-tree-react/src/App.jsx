@@ -1,100 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
 import { BrowserRouter, Routes, Route, NavLink, Link, useParams } from 'react-router-dom'
+import Nav from './components/Nav'
+import Trees from './components/Trees'
+import DNA from './components/DNA'
+import Search from './components/Search'
+import Home from './components/Home'
 import * as d3 from 'd3'
 import './App.css'
 
-function Nav() {
-    return (
-        <nav className="nav">
-            <div className="nav-brand">Family Tree</div>
-            <div className="nav-links">
-                <NavLink to="/">Home</NavLink>
-                <NavLink to="/trees">Trees</NavLink>
-                <NavLink to="/dna">DNA Matches</NavLink>
-                <NavLink to="/search">Search</NavLink>
-            </div>
-        </nav>
-    )
-}
 
-function Home() {
-    const [stats, setStats] = useState(null)
-    const [topAncestors, setTopAncestors] = useState([])
-    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        Promise.all([
-            fetch('http://localhost:3200/api/stats').then(res => res.json()),
-            fetch('http://localhost:3200/api/stats/top-ancestors').then(res => res.json())
-        ])
-            .then(([statsData, ancestorsData]) => {
-                setStats(statsData)
-                setTopAncestors(ancestorsData)
-                setLoading(false)
-            })
-            .catch(err => {
-                console.error('Failed to fetch:', err)
-                setLoading(false)
-            })
-    }, [])
-
-    if (loading) return <div className="page">Loading...</div>
-    if (!stats) return <div className="page">Failed to load stats</div>
-
-    return (
-        <div className="page">
-            <h1>Dashboard</h1>
-            <div className="stats-grid">
-                <div className="stat-card">
-                    <div className="stat-value">{stats.treeSize.toLocaleString()}</div>
-                    <div className="stat-label">People in Tree</div>
-                </div>
-                <div className="stat-card">
-                    <div className="stat-value">{stats.dnaMatchCount.toLocaleString()}</div>
-                    <div className="stat-label">DNA Matches</div>
-                </div>
-                <div className="stat-card">
-                    <div className="stat-value">{stats.linkedMatches}</div>
-                    <div className="stat-label">Identified</div>
-                </div>
-                <div className="stat-card">
-                    <div className="stat-value">{stats.unlinkedMatches.toLocaleString()}</div>
-                    <div className="stat-label">Unidentified</div>
-                </div>
-            </div>
-
-            <h2 style={{marginTop: '2rem'}}>Top Ancestors by Descendants</h2>
-            <div className="ancestors-list">
-                {topAncestors.map((ancestor, index) => (
-                    <Link to={'/tree/' + ancestor.id} key={ancestor.id} className="ancestor-card">
-                        <span className="ancestor-rank">#{index + 1}</span>
-                        <img
-                            src={'http://localhost:3200/images/' + ancestor.id + '.png'}
-                            alt=""
-                            className="ancestor-photo"
-                            onError={(e) => { e.target.style.display = 'none' }}
-                        />
-                        <span className="ancestor-name">{ancestor.name}</span>
-                        {ancestor.birthYear && <span className="ancestor-year">b. {ancestor.birthYear}</span>}
-                        <span className="ancestor-count">{ancestor.descendantCount} descendants</span>
-                    </Link>
-                ))}
-            </div>
-        </div>
-    )
-}
-
-function Trees() {
-    return <div className="page"><h1>Trees</h1><p>List of family trees</p></div>
-}
-
-function DNA() {
-    return <div className="page"><h1>DNA Matches</h1><p>Clustering visualizations</p></div>
-}
-
-function Search() {
-    return <div className="page"><h1>Search</h1><p>Person search</p></div>
-}
 
 function Tree() {
     const { id } = useParams()

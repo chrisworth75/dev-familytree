@@ -56,20 +56,20 @@ public class PersonRepository {
     public List<Person> findAncestors(Long personId, int maxGenerations) {
         String sql = """
             WITH RECURSIVE ancestors AS (
-                SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
-                       birth_place, death_date, death_date_approx, death_place, gender,
+                SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+                       birth_place, death_date, death_year_approx, death_place, gender,
                        parent_1_id, parent_2_id, notes, ahnentafel, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
-                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_date_approx,
-                       p.birth_place, p.death_date, p.death_date_approx, p.death_place, p.gender,
+                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
+                       p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
                        p.parent_1_id, p.parent_2_id, p.notes, p.ahnentafel, a.generation + 1
                 FROM person p
                 JOIN ancestors a ON p.id = a.parent_1_id OR p.id = a.parent_2_id
                 WHERE a.generation < ?
             )
-            SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
-                   birth_place, death_date, death_date_approx, death_place, gender,
+            SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+                   birth_place, death_date, death_year_approx, death_place, gender,
                    parent_1_id, parent_2_id, notes, ahnentafel
             FROM ancestors
             WHERE generation > 1
@@ -81,20 +81,20 @@ public class PersonRepository {
     public List<Person> findDescendants(Long personId, int maxGenerations) {
         String sql = """
             WITH RECURSIVE descendants AS (
-                SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
-                       birth_place, death_date, death_date_approx, death_place, gender,
+                SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+                       birth_place, death_date, death_year_approx, death_place, gender,
                        parent_1_id, parent_2_id, notes, ahnentafel, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
-                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_date_approx,
-                       p.birth_place, p.death_date, p.death_date_approx, p.death_place, p.gender,
+                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
+                       p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
                        p.parent_1_id, p.parent_2_id, p.notes, p.ahnentafel, d.generation + 1
                 FROM person p
                 JOIN descendants d ON p.parent_1_id = d.id OR p.parent_2_id = d.id
                 WHERE d.generation < ?
             )
-            SELECT id, first_name, middle_names, surname, birth_date, birth_date_approx,
-                   birth_place, death_date, death_date_approx, death_place, gender,
+            SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+                   birth_place, death_date, death_year_approx, death_place, gender,
                    parent_1_id, parent_2_id, notes, ahnentafel
             FROM descendants
             WHERE generation > 1

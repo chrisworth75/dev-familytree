@@ -23,6 +23,7 @@ public class DnaMatchRepository {
         rs.getObject("has_tree") != null ? rs.getBoolean("has_tree") : null,
         rs.getObject("tree_size") != null ? rs.getInt("tree_size") : null,
         rs.getString("notes"),
+        rs.getLong("matched_to_person_id"),
         rs.getObject("person_id") != null ? rs.getLong("person_id") : null
     );
 
@@ -38,9 +39,9 @@ public class DnaMatchRepository {
         );
     }
 
-    public List<DnaMatch> findByPersonId(Long personId) {
+    public List<DnaMatch> findByMatchedToPersonId(Long personId) {
         return jdbc.query(
-            "SELECT * FROM dna_match WHERE person_id = ? ORDER BY shared_cm DESC",
+            "SELECT * FROM dna_match WHERE matched_to_person_id = ? ORDER BY shared_cm DESC",
             MATCH_MAPPER,
             personId
         );
