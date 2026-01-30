@@ -13,17 +13,14 @@ public class DnaMatchRepository {
     private final JdbcTemplate jdbc;
 
     private static final RowMapper<DnaMatch> MATCH_MAPPER = (rs, rowNum) -> new DnaMatch(
-        rs.getString("ancestry_id"),
+        rs.getString("dna_test_id"),
         rs.getString("name"),
         rs.getBigDecimal("shared_cm"),
         rs.getObject("shared_segments") != null ? rs.getInt("shared_segments") : null,
         rs.getString("predicted_relationship"),
-        rs.getString("source"),
-        rs.getObject("admin_level") != null ? rs.getInt("admin_level") : null,
+        rs.getString("match_side"),
         rs.getObject("has_tree") != null ? rs.getBoolean("has_tree") : null,
         rs.getObject("tree_size") != null ? rs.getInt("tree_size") : null,
-        rs.getString("notes"),
-        rs.getLong("matched_to_person_id"),
         rs.getObject("person_id") != null ? rs.getLong("person_id") : null
     );
 
@@ -33,25 +30,33 @@ public class DnaMatchRepository {
 
     public List<DnaMatch> findAll(int limit) {
         return jdbc.query(
-            "SELECT * FROM dna_match ORDER BY shared_cm DESC LIMIT ?",
+            "SELECT * FROM my_dna_matches LIMIT ?",
             MATCH_MAPPER,
             limit
         );
     }
 
-    public List<DnaMatch> findByMatchedToPersonId(Long personId) {
+    public List<DnaMatch> findByMinCm(double minCm, int limit) {
         return jdbc.query(
-            "SELECT * FROM dna_match WHERE matched_to_person_id = ? ORDER BY shared_cm DESC",
+            "SELECT * FROM my_dna_matches WHERE shared_cm >= ? LIMIT ?",
             MATCH_MAPPER,
-            personId
+            minCm, limit
         );
     }
 
-    public List<DnaMatch> findByMinCm(double minCm, int limit) {
+    public List<DnaMatch> findByMatchSide(String side, int limit) {
         return jdbc.query(
-            "SELECT * FROM dna_match WHERE shared_cm >= ? ORDER BY shared_cm DESC LIMIT ?",
+            "SELECT * FROM my_dna_matches WHERE match_side = ? LIMIT ?",
             MATCH_MAPPER,
-            minCm, limit
+            side, limit
+        );
+    }
+
+    public List<DnaMatch> findLinked(int limit) {
+        return jdbc.query(
+            "SELECT * FROM my_dna_matches WHERE person_id IS NOT NULL LIMIT ?",
+            MATCH_MAPPER,
+            limit
         );
     }
 }

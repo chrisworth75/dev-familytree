@@ -24,10 +24,10 @@ public class StatsApiController {
         return jdbc.queryForObject("""
             SELECT
                 (SELECT COUNT(*) FROM person) AS tree_size,
-                (SELECT COUNT(*) FROM ancestry_person) AS dna_match_count,
-                (SELECT COUNT(*) FROM ancestry_person WHERE person_id IS NOT NULL) AS linked_matches,
-                (SELECT COUNT(*) FROM ancestry_person WHERE person_id IS NULL) AS unlinked_matches,
-                (SELECT COUNT(DISTINCT person_id) FROM ancestry_person WHERE person_id IS NOT NULL) AS linked_people_count
+                (SELECT COUNT(*) FROM ancestry_tester) AS dna_match_count,
+                (SELECT COUNT(*) FROM ancestry_tester WHERE person_id IS NOT NULL) AS linked_matches,
+                (SELECT COUNT(*) FROM ancestry_tester WHERE person_id IS NULL) AS unlinked_matches,
+                (SELECT COUNT(DISTINCT person_id) FROM ancestry_tester WHERE person_id IS NOT NULL) AS linked_people_count
             """,
             (rs, rowNum) -> Map.of(
                 "treeSize", rs.getLong("tree_size"),

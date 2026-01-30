@@ -19,18 +19,22 @@ public class DnaMatchApiController {
 
     @GetMapping
     public ResponseEntity<List<DnaMatch>> getMatches(
-            @RequestParam(name = "person_id", required = false) Long personId,
             @RequestParam(required = false) Double minCm,
+            @RequestParam(required = false) String side,
+            @RequestParam(required = false) Boolean linked,
             @RequestParam(defaultValue = "100") int limit) {
 
         List<DnaMatch> matches;
+        int maxLimit = Math.min(limit, 500);
 
-        if (personId != null) {
-            matches = dnaMatchRepository.findByMatchedToPersonId(personId);
-        } else if (minCm != null) {
-            matches = dnaMatchRepository.findByMinCm(minCm, Math.min(limit, 500));
+        if (minCm != null) {
+            matches = dnaMatchRepository.findByMinCm(minCm, maxLimit);
+        } else if (side != null) {
+            matches = dnaMatchRepository.findByMatchSide(side, maxLimit);
+        } else if (Boolean.TRUE.equals(linked)) {
+            matches = dnaMatchRepository.findLinked(maxLimit);
         } else {
-            matches = dnaMatchRepository.findAll(Math.min(limit, 500));
+            matches = dnaMatchRepository.findAll(maxLimit);
         }
 
         return ResponseEntity.ok(matches);

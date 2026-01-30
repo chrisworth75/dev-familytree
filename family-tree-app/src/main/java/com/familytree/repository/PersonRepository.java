@@ -32,7 +32,7 @@ public class PersonRepository {
             rs.getObject("parent_1_id") != null ? rs.getLong("parent_1_id") : null,
             rs.getObject("parent_2_id") != null ? rs.getLong("parent_2_id") : null,
             rs.getString("notes"),
-            (Integer) rs.getObject("ahnentafel")
+            (Integer) rs.getObject("tree_id")
         );
     };
 
@@ -58,19 +58,19 @@ public class PersonRepository {
             WITH RECURSIVE ancestors AS (
                 SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
-                       parent_1_id, parent_2_id, notes, ahnentafel, 1 as generation
+                       parent_1_id, parent_2_id, notes, tree_id, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
-                       p.parent_1_id, p.parent_2_id, p.notes, p.ahnentafel, a.generation + 1
+                       p.parent_1_id, p.parent_2_id, p.notes, p.tree_id, a.generation + 1
                 FROM person p
                 JOIN ancestors a ON p.id = a.parent_1_id OR p.id = a.parent_2_id
                 WHERE a.generation < ?
             )
             SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
-                   parent_1_id, parent_2_id, notes, ahnentafel
+                   parent_1_id, parent_2_id, notes, tree_id
             FROM ancestors
             WHERE generation > 1
             ORDER BY generation, surname, first_name
@@ -83,19 +83,19 @@ public class PersonRepository {
             WITH RECURSIVE descendants AS (
                 SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
-                       parent_1_id, parent_2_id, notes, ahnentafel, 1 as generation
+                       parent_1_id, parent_2_id, notes, tree_id, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
-                       p.parent_1_id, p.parent_2_id, p.notes, p.ahnentafel, d.generation + 1
+                       p.parent_1_id, p.parent_2_id, p.notes, p.tree_id, d.generation + 1
                 FROM person p
                 JOIN descendants d ON p.parent_1_id = d.id OR p.parent_2_id = d.id
                 WHERE d.generation < ?
             )
             SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
-                   parent_1_id, parent_2_id, notes, ahnentafel
+                   parent_1_id, parent_2_id, notes, tree_id
             FROM descendants
             WHERE generation > 1
             ORDER BY generation, surname, first_name
@@ -222,11 +222,11 @@ public class PersonRepository {
      */
     public Double findDnaMatchCm(Long personId) {
         String sql = """
-            SELECT shared_cm FROM dna_match
-            WHERE person_1_id = ? OR person_2_id = ?
-            ORDER BY shared_cm DESC LIMIT 1
+            SELECT shared_cm FROM my_dna_matches
+            WHERE person_id = ?
+            LIMIT 1
             """;
-        List<Double> results = jdbc.query(sql, (rs, rowNum) -> rs.getDouble("shared_cm"), personId, personId);
+        List<Double> results = jdbc.query(sql, (rs, rowNum) -> rs.getDouble("shared_cm"), personId);
         return results.isEmpty() ? null : results.get(0);
     }
 }

@@ -17,7 +17,7 @@ public record Person(
     Long parent1Id,
     Long parent2Id,
     String notes,
-    Integer ahnentafel
+    Integer treeId
 ) {
     public String fullName() {
         StringBuilder sb = new StringBuilder();
