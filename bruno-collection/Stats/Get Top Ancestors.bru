@@ -1,0 +1,30 @@
+meta {
+  name: Get Top Ancestors
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/stats/top-ancestors
+  body: none
+  auth: none
+}
+
+docs {
+  Get the top 10 ancestors by descendant count.
+
+  Uses a recursive CTE to count all descendants (children, grandchildren, etc.)
+  for each person in the tree. Only includes people with at least one descendant.
+
+  Returns an array ordered by descendant count (descending):
+  - id: Person ID
+  - name: Full name (first_name + surname)
+  - birthYear: Birth year (from birth_date or birth_year_approx)
+  - descendantCount: Total number of descendants
+
+  Example response:
+  [
+    { "id": 123, "name": "Henry Wrathall", "birthYear": 1845, "descendantCount": 342 },
+    { "id": 456, "name": "Mary Lonsdale", "birthYear": 1848, "descendantCount": 338 }
+  ]
+}

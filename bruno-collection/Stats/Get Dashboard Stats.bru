@@ -1,0 +1,31 @@
+meta {
+  name: Get Dashboard Stats
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/stats
+  body: none
+  auth: none
+}
+
+docs {
+  Get dashboard statistics for the family tree application.
+
+  Returns:
+  - treeSize: Total count of people in the person table
+  - dnaMatchCount: Total count of DNA matches in ancestry_person table
+  - linkedMatches: Count of matches linked to a person in the tree
+  - unlinkedMatches: Count of matches not yet linked
+  - linkedPeopleCount: Count of distinct people with DNA match links
+
+  Example response:
+  {
+    "treeSize": 68000,
+    "dnaMatchCount": 9975,
+    "linkedMatches": 150,
+    "unlinkedMatches": 9825,
+    "linkedPeopleCount": 145
+  }
+}

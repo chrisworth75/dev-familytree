@@ -1,0 +1,292 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1350 1000">
+  <defs>
+    <style>
+      .table-box { fill: #f5f5ef; stroke: #1a5e5e; stroke-width: 2; rx: 8; }
+      .table-box-ancestry { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; rx: 8; }
+      .table-box-new { fill: #e8f5e8; stroke: #2e7d32; stroke-width: 3; rx: 8; }
+      .table-box-neutral { fill: #fafafa; stroke: #888; stroke-width: 2; rx: 8; }
+      .table-header { fill: #1a5e5e; }
+      .table-header-ancestry { fill: #1565c0; }
+      .table-header-new { fill: #2e7d32; }
+      .table-header-neutral { fill: #666; }
+      .table-header-text { fill: white; font-family: system-ui, sans-serif; font-size: 14px; font-weight: bold; }
+      .column-text { fill: #333; font-family: system-ui, sans-serif; font-size: 11px; }
+      .pk { fill: #1a5e5e; font-weight: bold; }
+      .fk { fill: #666; font-style: italic; }
+      .relationship { stroke: #1a5e5e; stroke-width: 1.5; fill: none; }
+      .relationship-ancestry { stroke: #1565c0; stroke-width: 1.5; fill: none; }
+      .label { font-family: system-ui, sans-serif; font-size: 10px; font-weight: bold; }
+      .section-label { font-family: system-ui, sans-serif; font-size: 14px; font-weight: bold; fill: #666; }
+    </style>
+  </defs>
+
+  <!-- Title -->
+  <text x="675" y="30" text-anchor="middle" font-family="system-ui, sans-serif" font-size="20" font-weight="bold" fill="#1a5e5e">Family Tree Database - V4 Schema</text>
+
+  <!-- Section: Ancestry DNA Data -->
+  <rect x="30" y="70" width="350" height="420" fill="#f0f7ff" stroke="#1565c0" stroke-width="2" rx="10" />
+  <text x="50" y="95" class="section-label" fill="#1565c0">Ancestry.com DNA Data</text>
+  <text x="50" y="112" font-family="system-ui" font-size="10" fill="#1565c0">DNA test results only</text>
+
+  <!-- ANCESTRY_TESTER TABLE -->
+  <g transform="translate(50, 130)">
+    <rect class="table-box-ancestry" width="180" height="180" />
+    <rect class="table-header-ancestry" width="180" height="28" rx="8" />
+    <rect class="table-header-ancestry" width="180" height="20" y="8" />
+    <text class="table-header-text" x="90" y="20" text-anchor="middle">ancestry_tester</text>
+    <text class="column-text pk" x="10" y="48">dna_test_id (PK, UUID)</text>
+    <text class="column-text" x="10" y="66">name</text>
+    <text class="column-text" x="10" y="84">admin_level</text>
+    <text class="column-text" x="10" y="102">has_tree</text>
+    <text class="column-text" x="10" y="120">tree_size</text>
+    <text class="column-text fk" x="10" y="138">person_id (FK)</text>
+    <text class="column-text" x="10" y="156">notes</text>
+    <text class="column-text" x="10" y="174">created_at</text>
+  </g>
+
+  <!-- ANCESTRY_DNA_MATCH TABLE -->
+  <g transform="translate(50, 340)">
+    <rect class="table-box-ancestry" width="200" height="140" />
+    <rect class="table-header-ancestry" width="200" height="28" rx="8" />
+    <rect class="table-header-ancestry" width="200" height="20" y="8" />
+    <text class="table-header-text" x="100" y="20" text-anchor="middle">ancestry_dna_match</text>
+    <text class="column-text pk" x="10" y="48">tester_1_id (PK, FK)</text>
+    <text class="column-text pk" x="10" y="66">tester_2_id (PK, FK)</text>
+    <text class="column-text" x="10" y="84">shared_cm</text>
+    <text class="column-text" x="10" y="102">shared_segments</text>
+    <text class="column-text" x="10" y="120">predicted_relationship</text>
+    <text class="column-text" x="10" y="138">match_side</text>
+  </g>
+
+  <!-- Central area label for tree/person -->
+  <text x="580" y="75" font-family="system-ui" font-size="13" fill="#666" font-weight="bold">All Trees &amp; People</text>
+  <text x="580" y="92" font-family="system-ui" font-size="10" fill="#888">Your research + scraped Ancestry trees + Lowthers + anyone</text>
+
+  <!-- TREE TABLE (neutral) -->
+  <g transform="translate(450, 110)">
+    <rect class="table-box-neutral" width="200" height="180" />
+    <rect class="table-header-neutral" width="200" height="28" rx="8" />
+    <rect class="table-header-neutral" width="200" height="20" y="8" />
+    <text class="table-header-text" x="100" y="20" text-anchor="middle">tree</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text" x="10" y="66">name</text>
+    <text class="column-text" x="10" y="84">ancestry_tree_id (BIGINT)</text>
+    <text class="column-text" x="10" y="102">size</text>
+    <text class="column-text fk" x="10" y="120">dna_test_id (FK, UUID)</text>
+    <text class="column-text" x="10" y="138">source</text>
+    <text class="column-text" x="10" y="160" fill="#666" font-style="italic">ancestry_tree_id = NULL</text>
+    <text class="column-text" x="10" y="174" fill="#666" font-style="italic">means your own research</text>
+  </g>
+
+  <!-- PERSON TABLE (neutral) -->
+  <g transform="translate(450, 320)">
+    <rect class="table-box-neutral" width="220" height="220" />
+    <rect class="table-header-neutral" width="220" height="28" rx="8" />
+    <rect class="table-header-neutral" width="220" height="20" y="8" />
+    <text class="table-header-text" x="110" y="20" text-anchor="middle">person</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text" x="10" y="66">first_name, surname</text>
+    <text class="column-text" x="10" y="84">birth_date, death_date</text>
+    <text class="column-text" x="10" y="102">gender</text>
+    <text class="column-text fk" x="10" y="120">parent_1_id (FK self)</text>
+    <text class="column-text fk" x="10" y="138">parent_2_id (FK self)</text>
+    <text class="column-text fk" x="10" y="156">tree_id (FK)</text>
+    <text class="column-text" x="10" y="174">dna_test_id (UUID)</text>
+    <text class="column-text" x="10" y="192">tree_person_id (BIGINT)</text>
+    <text class="column-text" x="10" y="210">notes</text>
+  </g>
+
+  <!-- PARTNERSHIP TABLE (neutral) -->
+  <g transform="translate(700, 380)">
+    <rect class="table-box-neutral" width="170" height="130" />
+    <rect class="table-header-neutral" width="170" height="28" rx="8" />
+    <rect class="table-header-neutral" width="170" height="20" y="8" />
+    <text class="table-header-text" x="85" y="20" text-anchor="middle">partnership</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text fk" x="10" y="66">person_1_id (FK)</text>
+    <text class="column-text fk" x="10" y="84">person_2_id (FK)</text>
+    <text class="column-text" x="10" y="102">marriage_date</text>
+    <text class="column-text" x="10" y="120">marriage_place</text>
+  </g>
+
+  <!-- Section: YOUR Direct Line -->
+  <rect x="900" y="70" width="230" height="220" fill="#f0fff0" stroke="#2e7d32" stroke-width="2" rx="10" />
+  <text x="920" y="95" class="section-label" fill="#2e7d32">YOUR Direct Line</text>
+  <text x="920" y="112" font-family="system-ui" font-size="10" fill="#2e7d32">Chris's ancestors only</text>
+
+  <!-- ANCESTOR TABLE -->
+  <g transform="translate(920, 130)">
+    <rect class="table-box-new" width="180" height="130" />
+    <rect class="table-header-new" width="180" height="28" rx="8" />
+    <rect class="table-header-new" width="180" height="20" y="8" />
+    <text class="table-header-text" x="90" y="20" text-anchor="middle">ancestor</text>
+    <text class="column-text pk" x="10" y="48">ahnentafel (PK)</text>
+    <text class="column-text fk" x="10" y="66">person_id (FK, UNIQUE)</text>
+    <text class="column-text" x="10" y="84">created_at</text>
+    <text class="column-text" x="10" y="105" fill="#2e7d32">1=you, 2=father</text>
+    <text class="column-text" x="10" y="120" fill="#2e7d32">3=mother, 4-7=gparents</text>
+  </g>
+
+  <!-- Section: DNA Clustering -->
+  <rect x="30" y="510" width="350" height="200" fill="#f5f5f5" stroke="#666" stroke-width="1" rx="10" />
+  <text x="50" y="535" class="section-label" fill="#666">DNA Clustering</text>
+
+  <!-- CLUSTER TABLE -->
+  <g transform="translate(50, 555)">
+    <rect class="table-box" width="150" height="130" />
+    <rect class="table-header" width="150" height="28" rx="8" />
+    <rect class="table-header" width="150" height="20" y="8" />
+    <text class="table-header-text" x="75" y="20" text-anchor="middle">cluster</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text" x="10" y="66">name</text>
+    <text class="column-text fk" x="10" y="84">ahnentafel_1 (FK)</text>
+    <text class="column-text fk" x="10" y="102">ahnentafel_2 (FK)</text>
+    <text class="column-text" x="10" y="120">notes</text>
+  </g>
+
+  <!-- MATCH_CLUSTER TABLE -->
+  <g transform="translate(220, 555)">
+    <rect class="table-box" width="140" height="90" />
+    <rect class="table-header" width="140" height="28" rx="8" />
+    <rect class="table-header" width="140" height="20" y="8" />
+    <text class="table-header-text" x="70" y="20" text-anchor="middle">match_cluster</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text fk" x="10" y="66">dna_test_id (FK)</text>
+    <text class="column-text fk" x="10" y="84">cluster_id (FK)</text>
+  </g>
+
+  <!-- Section: Historical Sources -->
+  <rect x="900" y="310" width="400" height="380" fill="#fff8f0" stroke="#8b4513" stroke-width="2" rx="10" />
+  <text x="920" y="335" class="section-label" fill="#8b4513">Historical Sources</text>
+  <text x="920" y="352" font-family="system-ui" font-size="10" fill="#8b4513">Census, BMD certs from Ancestry, FreeCen, FreeBMD</text>
+
+  <!-- SOURCE_RECORD TABLE -->
+  <g transform="translate(920, 370)">
+    <rect class="table-box" width="180" height="160" />
+    <rect class="table-header" width="180" height="28" rx="8" />
+    <rect class="table-header" width="180" height="20" y="8" />
+    <text class="table-header-text" x="90" y="20" text-anchor="middle">source_record</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text" x="10" y="66">record_type</text>
+    <text class="column-text" x="10" y="84">title</text>
+    <text class="column-text" x="10" y="102">record_date</text>
+    <text class="column-text" x="10" y="120">location, url</text>
+    <text class="column-text" x="10" y="138">data (JSONB)</text>
+  </g>
+
+  <!-- record_type examples -->
+  <g transform="translate(1110, 370)">
+    <text font-family="system-ui" font-size="10" fill="#8b4513" font-weight="bold">record_type:</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="15">census</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="28">birth_cert</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="41">marriage_cert</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="54">death_cert</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="67">probate</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="80">burial</text>
+    <text font-family="monospace" font-size="9" fill="#666" y="93">newspaper</text>
+  </g>
+
+  <!-- PERSON_SOURCE TABLE -->
+  <g transform="translate(920, 560)">
+    <rect class="table-box" width="180" height="110" />
+    <rect class="table-header" width="180" height="28" rx="8" />
+    <rect class="table-header" width="180" height="20" y="8" />
+    <text class="table-header-text" x="90" y="20" text-anchor="middle">person_source</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text fk" x="10" y="66">person_id (FK)</text>
+    <text class="column-text fk" x="10" y="84">source_record_id (FK)</text>
+    <text class="column-text" x="10" y="102">role, confidence</text>
+  </g>
+
+  <!-- PERSON_URL TABLE -->
+  <g transform="translate(1120, 560)">
+    <rect class="table-box" width="140" height="90" />
+    <rect class="table-header" width="140" height="28" rx="8" />
+    <rect class="table-header" width="140" height="20" y="8" />
+    <text class="table-header-text" x="70" y="20" text-anchor="middle">person_url</text>
+    <text class="column-text pk" x="10" y="48">id (PK)</text>
+    <text class="column-text fk" x="10" y="66">person_id (FK)</text>
+    <text class="column-text" x="10" y="84">url</text>
+  </g>
+
+  <!-- RELATIONSHIPS -->
+
+  <!-- ancestry_tester.person_id -> person.id -->
+  <path class="relationship-ancestry" d="M 230 220 L 380 220 L 380 400 L 450 400" />
+  <circle cx="450" cy="400" r="4" fill="#1565c0" />
+  <text x="300" y="210" font-family="system-ui" font-size="9" fill="#1565c0">when identified</text>
+
+  <!-- ancestry_dna_match -> ancestry_tester -->
+  <path class="relationship-ancestry" d="M 130 340 L 130 310" />
+  <circle cx="130" cy="310" r="4" fill="#1565c0" />
+  <path class="relationship-ancestry" d="M 180 340 L 180 310" />
+  <circle cx="180" cy="310" r="4" fill="#1565c0" />
+
+  <!-- tree.dna_test_id -> ancestry_tester -->
+  <path class="relationship-ancestry" d="M 450 190 L 400 190 L 400 220 L 230 220" />
+  <circle cx="230" cy="220" r="4" fill="#1565c0" />
+
+  <!-- person.tree_id -> tree.id -->
+  <path class="relationship" d="M 540 320 L 540 290" />
+  <circle cx="540" cy="290" r="4" fill="#666" />
+
+  <!-- ancestor.person_id -> person.id -->
+  <path class="relationship" d="M 920 180 L 880 180 L 880 400 L 670 400" />
+  <circle cx="670" cy="400" r="4" fill="#2e7d32" />
+
+  <!-- cluster -> ancestor -->
+  <path class="relationship" d="M 160 555 L 160 520 L 880 520 L 880 260 L 920 260" />
+  <circle cx="920" cy="260" r="4" fill="#2e7d32" />
+
+  <!-- match_cluster.dna_test_id -> ancestry_tester -->
+  <path class="relationship-ancestry" d="M 260 555 L 260 510 L 30 510 L 30 220 L 50 220" />
+  <circle cx="50" cy="220" r="4" fill="#1565c0" />
+
+  <!-- match_cluster.cluster_id -> cluster -->
+  <path class="relationship" d="M 220 600 L 200 600" />
+  <circle cx="200" cy="600" r="4" fill="#1a5e5e" />
+
+  <!-- partnership -> person -->
+  <path class="relationship" d="M 700 440 L 670 440" />
+  <circle cx="670" cy="440" r="4" fill="#666" />
+
+  <!-- person_source -> person -->
+  <path class="relationship" d="M 920 610 L 670 480" />
+  <circle cx="670" cy="480" r="4" fill="#666" />
+
+  <!-- person_source -> source_record -->
+  <path class="relationship" d="M 1010 560 L 1010 530" />
+  <circle cx="1010" cy="530" r="4" fill="#1a5e5e" />
+
+  <!-- person_url -> person -->
+  <path class="relationship" d="M 1120 600 L 880 600 L 880 510 L 670 510" />
+  <circle cx="670" cy="510" r="4" fill="#666" />
+
+  <!-- Legend -->
+  <g transform="translate(400, 770)">
+    <rect x="-10" y="-20" width="550" height="180" fill="white" stroke="#ccc" rx="8" />
+    <text class="column-text" x="0" y="5" font-weight="bold" font-size="14">Legend</text>
+    
+    <rect x="0" y="25" width="20" height="16" fill="#f0f7ff" stroke="#1565c0" stroke-width="2" />
+    <text class="column-text" x="30" y="37" fill="#1565c0" font-weight="bold">Blue</text>
+    <text class="column-text" x="70" y="37">Ancestry.com DNA test data</text>
+    
+    <rect x="0" y="50" width="20" height="16" fill="#fafafa" stroke="#888" stroke-width="2" />
+    <text class="column-text" x="30" y="62" fill="#666" font-weight="bold">Grey</text>
+    <text class="column-text" x="70" y="62">All trees &amp; people (any source)</text>
+    
+    <rect x="0" y="75" width="20" height="16" fill="#f0fff0" stroke="#2e7d32" stroke-width="2" />
+    <text class="column-text" x="30" y="87" fill="#2e7d32" font-weight="bold">Green</text>
+    <text class="column-text" x="70" y="87">YOUR direct ancestors only</text>
+
+    <rect x="0" y="100" width="20" height="16" fill="#fff8f0" stroke="#8b4513" stroke-width="2" />
+    <text class="column-text" x="30" y="112" fill="#8b4513" font-weight="bold">Brown</text>
+    <text class="column-text" x="70" y="112">Historical sources (census, BMD, etc.)</text>
+
+    <text class="column-text" x="280" y="37" font-weight="bold">ID Types:</text>
+    <text class="column-text" x="280" y="55">dna_test_id = UUID</text>
+    <text class="column-text" x="280" y="70">tree_person_id = BIGINT</text>
+    <text class="column-text" x="280" y="85">ancestry_tree_id = BIGINT (NULL = your research)</text>
+  </g>
+
+</svg>
