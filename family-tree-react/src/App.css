@@ -5,16 +5,16 @@
 }
 
 .nav {
-    background: #1a1a2e;
-    color: white;
-    padding: 1rem 2rem;
+    background: var(--color-nav);
+    color: var(--color-nav-text);
+    padding: 0.75rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .nav-brand {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: bold;
 }
 
@@ -24,46 +24,51 @@
 }
 
 .nav-links a {
-    color: #ccc;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
     color: white;
+    text-decoration: none;
 }
 
 .page {
     padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 200px);
     gap: 1.5rem;
     margin-top: 2rem;
 }
 
 .stat-card {
-    background: #f8f9fa;
+    background: var(--color-card-bg);
     border-radius: 8px;
     padding: 1.5rem;
     text-align: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .stat-value {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #1a1a2e;
+    color: var(--color-nav);
 }
 
 .stat-label {
-    color: #666;
+    color: var(--color-text-muted);
     margin-top: 0.5rem;
 }
 
 .ancestors-list {
     margin-top: 1rem;
+    max-width: 500px;
 }
 
 .ancestor-card {
@@ -71,28 +76,30 @@
     align-items: center;
     gap: 1rem;
     padding: 0.75rem 1rem;
-    background: #f8f9fa;
+    background: var(--color-card-bg);
     border-radius: 4px;
     margin-bottom: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .ancestor-rank {
     font-weight: bold;
-    color: #666;
+    color: var(--color-text-muted);
     width: 2rem;
 }
 
 .ancestor-name {
     flex: 1;
     font-weight: 500;
+    color: var(--color-text);
 }
 
 .ancestor-year {
-    color: #888;
+    color: var(--color-text-muted);
 }
 
 .ancestor-count {
-    color: #1a1a2e;
+    color: var(--color-nav);
     font-weight: bold;
 }
 
@@ -109,5 +116,6 @@ a.ancestor-card {
 }
 
 a.ancestor-card:hover {
-    background: #eee;
+    background: #eae9e3;
+    text-decoration: none;
 }
