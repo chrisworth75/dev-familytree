@@ -92,6 +92,18 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- Flyway Maven plugin for standalone migrations
+                 Usage: mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/familytree_test -->
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <url>jdbc:postgresql://localhost:5432/familytree</url>
+                    <user>familytree</user>
+                    <password>familytree</password>
+                    <cleanDisabled>true</cleanDisabled>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

@@ -1,8 +1,10 @@
 spring:
   application:
     name: family-tree-app
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
 
-  # PostgreSQL Database
+  # PostgreSQL Database (defaults, overridden by profile)
   datasource:
     url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:familytree}
     username: ${DB_USER:familytree}

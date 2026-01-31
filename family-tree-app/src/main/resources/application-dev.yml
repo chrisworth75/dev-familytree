@@ -1,0 +1,12 @@
+# Development profile - connects to real data
+# Usage: mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/familytree
+    username: familytree
+    password: familytree
+
+  flyway:
+    # SAFETY: Prevent accidental database wipes
+    clean-disabled: true

@@ -1,0 +1,12 @@
+# Scratch/playground profile - connects to empty test database
+# Usage: mvn spring-boot:run -Dspring-boot.run.profiles=scratch
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/familytree_test
+    username: familytree
+    password: familytree
+
+  flyway:
+    # Allow clean for test database reset
+    clean-disabled: false
