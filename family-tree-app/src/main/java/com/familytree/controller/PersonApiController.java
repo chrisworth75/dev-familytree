@@ -6,13 +6,14 @@ import com.familytree.model.PersonUrl;
 import com.familytree.repository.CensusRepository;
 import com.familytree.repository.PersonRepository;
 import com.familytree.repository.PersonUrlRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/persons")
+@RequestMapping({"/api/persons", "/api/people"})
 public class PersonApiController {
 
     private final PersonRepository personRepository;
@@ -55,7 +56,7 @@ public class PersonApiController {
         Long id = personRepository.save(firstName, surname, birthYear, deathYear, birthPlace, parent1Id, parent2Id);
 
         return personRepository.findById(id)
-            .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
+            .map(person -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id, "person", person)))
             .orElse(ResponseEntity.internalServerError().build());
     }
 

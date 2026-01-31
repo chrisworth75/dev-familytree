@@ -3,10 +3,14 @@ package com.familytree.controller;
 import com.familytree.config.TreesConfig;
 import com.familytree.model.FamilyTreeConfig;
 import com.familytree.model.Person;
+import com.familytree.model.Tree;
 import com.familytree.repository.PersonRepository;
+import com.familytree.repository.TreeRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.*;
 
 @RestController
@@ -15,6 +19,7 @@ public class TreeApiController {
 
     private final TreesConfig treesConfig;
     private final PersonRepository personRepository;
+    private final TreeRepository treeRepository;
 
     // Common female forenames for gender detection
     private static final Set<String> FEMALE_NAMES = Set.of(
@@ -28,9 +33,53 @@ public class TreeApiController {
         "eliza", "nancy", "miriam", "lucy", "harriett"
     );
 
-    public TreeApiController(TreesConfig treesConfig, PersonRepository personRepository) {
+    public TreeApiController(TreesConfig treesConfig, PersonRepository personRepository,
+                            TreeRepository treeRepository) {
         this.treesConfig = treesConfig;
         this.personRepository = personRepository;
+        this.treeRepository = treeRepository;
+    }
+
+    // ========== DATABASE TREE CRUD ==========
+
+    @GetMapping
+    public ResponseEntity<List<Tree>> getAllTrees() {
+        return ResponseEntity.ok(treeRepository.findAll());
+    }
+
+    @GetMapping("/db/{id}")
+    public ResponseEntity<Tree> getTreeById(@PathVariable Long id) {
+        return treeRepository.findById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Tree> createTree(@RequestBody Map<String, Object> body) {
+        String name = (String) body.get("name");
+        String source = (String) body.get("source");
+        String ownerName = (String) body.get("ownerName");
+        String notes = (String) body.get("notes");
+        String dnaTestId = (String) body.get("dnaTestId");
+        Long ancestryTreeId = body.get("ancestryTreeId") != null
+            ? ((Number) body.get("ancestryTreeId")).longValue() : null;
+        Integer size = body.get("size") != null
+            ? ((Number) body.get("size")).intValue() : null;
+
+        Long id = treeRepository.save(name, source, ownerName, notes, dnaTestId, ancestryTreeId, size);
+
+        return treeRepository.findById(id)
+            .map(tree -> ResponseEntity.status(HttpStatus.CREATED).body(tree))
+            .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    @DeleteMapping("/db/{id}")
+    public ResponseEntity<Void> deleteTree(@PathVariable Long id) {
+        if (treeRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        treeRepository.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     /**

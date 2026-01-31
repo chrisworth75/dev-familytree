@@ -6,7 +6,10 @@ public record Tree(
     String source,
     String ownerName,
     Long matchPersonId,
-    String notes
+    String notes,
+    String dnaTestId,
+    Long ancestryTreeId,
+    Integer size
 ) {
     public String displayName() {
         if (name != null && !name.startsWith("Tree ")) {
