@@ -1,0 +1,39 @@
+meta {
+  name: Create Person in Tree
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/tree/1/person
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "firstName": "George",
+    "surname": "Worthington",
+    "birthYear": 1850,
+    "deathYear": 1920,
+    "birthPlace": "Bolton, Lancashire"
+  }
+}
+
+docs {
+  Create a new person within a tree.
+
+  People always belong to a tree - use POST /tree/{treeId}/person instead of POST /person.
+
+  URL parameters:
+  - treeId: The tree ID to create the person under
+
+  Request body:
+  - firstName: First name (string)
+  - surname: Last name (string)
+  - birthYear: Birth year estimate (integer, optional)
+  - deathYear: Death year estimate (integer, optional)
+  - birthPlace: Birth place (string, optional)
+
+  Returns 201 Created with the new person, or 404 if tree doesn't exist.
+}

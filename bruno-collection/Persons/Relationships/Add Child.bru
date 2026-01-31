@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/persons/{{personId}}/child
+  url: {{baseUrl}}/api/person/{{personId}}/child
   body: json
   auth: none
 }
@@ -13,10 +13,10 @@ post {
 body:json {
   {
     "parentGender": "M",
-    "forename": "James",
-    "surname": "Smith",
+    "firstName": "James",
+    "surname": "Worthington",
     "birthYear": 1880,
-    "treeId": 1
+    "birthPlace": "Bolton, Lancashire"
   }
 }
 
@@ -28,8 +28,11 @@ docs {
   - childId: ID of existing person to link as child (optional)
 
   If childId is not provided, creates a new person:
-  - forename: First name (string)
+  - firstName: First name (string)
   - surname: Last name (string)
   - birthYear: Birth year estimate (integer, optional)
-  - treeId: Tree ID (integer, default: 1)
+  - birthPlace: Birth place (string, optional)
+
+  Sets the appropriate parent_1_id or parent_2_id based on parentGender.
+  Returns 201 Created.
 }

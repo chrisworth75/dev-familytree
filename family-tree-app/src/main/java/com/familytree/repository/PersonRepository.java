@@ -158,17 +158,17 @@ public class PersonRepository {
     }
 
     public Long save(String firstName, String surname, Integer birthYear, Integer deathYear,
-                     String birthPlace, Long parent1Id, Long parent2Id) {
+                     String birthPlace, Long parent1Id, Long parent2Id, Integer treeId) {
         String sql = """
             INSERT INTO person (first_name, surname, birth_date, death_date,
-                               birth_place, parent_1_id, parent_2_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+                               birth_place, parent_1_id, parent_2_id, tree_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             RETURNING id
             """;
         java.sql.Date birthDate = birthYear != null ? java.sql.Date.valueOf(birthYear + "-01-01") : null;
         java.sql.Date deathDate = deathYear != null ? java.sql.Date.valueOf(deathYear + "-01-01") : null;
         return jdbc.queryForObject(sql, Long.class, firstName, surname, birthDate, deathDate,
-                                   birthPlace, parent1Id, parent2Id);
+                                   birthPlace, parent1Id, parent2Id, treeId);
     }
 
     public void update(Long id, String firstName, String surname, Integer birthYear,

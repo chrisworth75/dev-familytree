@@ -1,0 +1,20 @@
+meta {
+  name: Get Tree by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/tree/db/{{treeId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  treeId: 1
+}
+
+docs {
+  Get a specific tree by its database ID.
+  Returns 404 if not found.
+}

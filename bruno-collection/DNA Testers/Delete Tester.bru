@@ -1,0 +1,22 @@
+meta {
+  name: Delete Tester
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{baseUrl}}/api/dna-tester/{{dnaTestId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  dnaTestId: test-id-123
+}
+
+docs {
+  Delete a DNA tester by their test ID.
+  Also deletes all DNA match relationships involving this tester.
+  Returns 204 No Content on success.
+  Returns 404 if not found.
+}

@@ -1,0 +1,21 @@
+meta {
+  name: Get Match by ID
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/match/{{dnaTestId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  dnaTestId: test-id-123
+}
+
+docs {
+  Get a specific DNA match by tester ID.
+  Returns match data from the my_dna_matches view.
+  Returns 404 if not found.
+}

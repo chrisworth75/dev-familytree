@@ -1,0 +1,22 @@
+meta {
+  name: Delete DNA Match
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/dna-match?tester1Id={{tester1Id}}&tester2Id={{tester2Id}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  tester1Id: tester-id-001
+  tester2Id: tester-id-002
+}
+
+docs {
+  Delete a DNA match relationship between two testers.
+  Returns 204 No Content on success.
+  Returns 404 if match not found.
+}

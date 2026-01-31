@@ -1,0 +1,38 @@
+meta {
+  name: Create Tree
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/tree
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Worthington Family Tree",
+    "source": "manual",
+    "ownerName": "Chris Worthington",
+    "notes": "Main research tree"
+  }
+}
+
+docs {
+  Create a new tree.
+
+  Trees represent family trees - either your own research or scraped
+  from DNA matches on Ancestry.
+
+  Request body:
+  - name: Tree name (string, required)
+  - source: Source of tree data (string, optional)
+  - ownerName: Owner's name (string, optional)
+  - notes: Notes about the tree (string, optional)
+  - dnaTestId: DNA test ID if linked to tester (string, optional)
+  - ancestryTreeId: Ancestry.com tree ID (integer, optional)
+  - size: Number of people in tree (integer, optional)
+
+  Returns 201 Created with the new tree object.
+}

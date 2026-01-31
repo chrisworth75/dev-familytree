@@ -1,0 +1,812 @@
+#%RAML 1.0
+title: Family Tree API
+version: v1
+baseUri: http://localhost:3200/api
+mediaType: application/json
+
+documentation:
+  - title: Overview
+    content: |
+      REST API for the Family Tree application. Manages persons, family relationships,
+      trees, DNA matches, and census records.
+
+#===============================================================================
+# PERSONS
+#===============================================================================
+/person:
+  displayName: Persons
+  description: |
+    Manage person records and their relationships.
+    Note: Person creation is done via POST /tree/{treeId}/person - people always belong to a tree.
+
+  /search:
+    get:
+      displayName: Search Persons
+      description: Search for persons by name or birth place
+      queryParameters:
+        name:
+          type: string
+          required: false
+          description: Name to search for (partial match)
+        birthPlace:
+          type: string
+          required: false
+          description: Birth place to search for (partial match)
+        limit:
+          type: integer
+          default: 50
+          maximum: 500
+          description: Maximum results to return
+      responses:
+        200:
+          body:
+            example: |
+              [
+                {
+                  "id": 1000,
+                  "firstName": "John",
+                  "surname": "Smith",
+                  "birthYear": 1850,
+                  "birthPlace": "London, England"
+                }
+              ]
+        400:
+          description: Neither name nor birthPlace provided
+
+  /{id}:
+    uriParameters:
+      id:
+        type: integer
+        description: Person ID
+
+    get:
+      displayName: Get Person
+      description: Get person with their immediate family relationships
+      responses:
+        200:
+          body:
+            example: |
+              {
+                "person": {
+                  "id": 1000,
+                  "firstName": "John",
+                  "surname": "Smith",
+                  "birthYear": 1850,
+                  "deathYear": 1920
+                },
+                "mother": { "id": 1001, "firstName": "Mary", "surname": "Jones" },
+                "father": { "id": 1002, "firstName": "William", "surname": "Smith" },
+                "spouses": [{ "id": 1003, "firstName": "Elizabeth", "surname": "Brown" }],
+                "children": [{ "id": 1004, "firstName": "James", "surname": "Smith" }],
+                "siblings": [{ "id": 1005, "firstName": "Sarah", "surname": "Smith" }]
+              }
+        404:
+          description: Person not found
+
+    put:
+      displayName: Update Person
+      description: Update an existing person's details
+      body:
+        example: |
+          {
+            "firstName": "John",
+            "surname": "Smith",
+            "birthYear": 1851,
+            "deathYear": 1920,
+            "birthPlace": "Manchester, England"
+          }
+      responses:
+        200:
+          body:
+            example: |
+              {
+                "id": 1000,
+                "person": { "id": 1000, "firstName": "John", "surname": "Smith" }
+              }
+        404:
+          description: Person not found
+
+    delete:
+      displayName: Delete Person
+      description: Delete a person record
+      responses:
+        204:
+          description: Successfully deleted
+        404:
+          description: Person not found
+
+    /parent:
+      post:
+        displayName: Add Parent
+        description: Add a parent to this person (creates new person or links existing)
+        body:
+          example: |
+            {
+              "gender": "M",
+              "parentId": null,
+              "firstName": "William",
+              "surname": "Smith",
+              "birthYear": 1820
+            }
+        responses:
+          201:
+            body:
+              example: |
+                {
+                  "id": 1002,
+                  "person": { "id": 1002, "firstName": "William", "surname": "Smith" }
+                }
+
+    /child:
+      post:
+        displayName: Add Child
+        description: Add a child to this person (creates new person or links existing)
+        body:
+          example: |
+            {
+              "parentGender": "M",
+              "childId": null,
+              "firstName": "James",
+              "surname": "Smith",
+              "birthYear": 1875
+            }
+        responses:
+          201:
+            body:
+              example: |
+                {
+                  "id": 1004,
+                  "person": { "id": 1004, "firstName": "James", "surname": "Smith" }
+                }
+
+    /spouse:
+      post:
+        displayName: Add Spouse
+        description: Add a spouse to this person (creates new person or links existing)
+        body:
+          example: |
+            {
+              "spouseId": null,
+              "firstName": "Elizabeth",
+              "surname": "Brown",
+              "birthYear": 1855
+            }
+        responses:
+          201:
+            body:
+              example: |
+                {
+                  "id": 1003,
+                  "person": { "id": 1003, "firstName": "Elizabeth", "surname": "Brown" }
+                }
+
+    /spouse/{spouseId}:
+      uriParameters:
+        spouseId:
+          type: integer
+          description: Spouse's person ID
+      delete:
+        displayName: Remove Spouse
+        description: Remove marriage relationship between two people
+        responses:
+          204:
+            description: Marriage removed
+
+    /ancestors:
+      get:
+        displayName: Get Ancestors
+        description: Get all ancestors up to specified generations
+        queryParameters:
+          generations:
+            type: integer
+            default: 10
+            maximum: 20
+            description: Number of generations to traverse
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  { "id": 1001, "firstName": "Mary", "surname": "Jones", "birthYear": 1825 },
+                  { "id": 1002, "firstName": "William", "surname": "Smith", "birthYear": 1820 }
+                ]
+
+    /descendants:
+      get:
+        displayName: Get Descendants
+        description: Get all descendants up to specified generations (flat list)
+        queryParameters:
+          generations:
+            type: integer
+            default: 10
+            maximum: 20
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  { "id": 1004, "firstName": "James", "surname": "Smith", "birthYear": 1875 }
+                ]
+
+      /hierarchy:
+        get:
+          displayName: Get Descendants Hierarchy
+          description: Get descendants as nested tree structure for visualization
+          queryParameters:
+            maxDepth:
+              type: integer
+              default: 15
+              maximum: 20
+          responses:
+            200:
+              body:
+                example: |
+                  {
+                    "id": 1000,
+                    "name": "John Smith",
+                    "dates": "1850-1920",
+                    "gender": "M",
+                    "spouse": "Elizabeth Brown",
+                    "spouseId": 1003,
+                    "children": [
+                      {
+                        "id": 1004,
+                        "name": "James Smith",
+                        "dates": "1875-1940",
+                        "gender": "M"
+                      }
+                    ]
+                  }
+
+    /siblings:
+      get:
+        displayName: Get Siblings
+        description: Get all siblings (including half-siblings)
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  { "id": 1005, "firstName": "Sarah", "surname": "Smith", "birthYear": 1852 }
+                ]
+
+    /children:
+      get:
+        displayName: Get Children
+        description: Get all children of this person
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  { "id": 1004, "firstName": "James", "surname": "Smith", "birthYear": 1875 }
+                ]
+
+    /spouses:
+      get:
+        displayName: Get Spouses
+        description: Get all spouses of this person
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  { "id": 1003, "firstName": "Elizabeth", "surname": "Brown", "birthYear": 1855 }
+                ]
+
+    /census:
+      get:
+        displayName: Get Census Records
+        description: Get all census records linked to this person
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  {
+                    "id": 500,
+                    "year": 1881,
+                    "address": "12 High Street, London",
+                    "nameAsRecorded": "John Smith",
+                    "ageAsRecorded": 31
+                  }
+                ]
+
+    /urls:
+      get:
+        displayName: Get URLs
+        description: Get all URLs associated with this person
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  {
+                    "id": 100,
+                    "url": "https://www.ancestry.com/...",
+                    "description": "Birth certificate"
+                  }
+                ]
+
+      post:
+        displayName: Add URL
+        description: Add a URL reference to this person
+        body:
+          example: |
+            {
+              "url": "https://www.ancestry.com/...",
+              "description": "Marriage record"
+            }
+        responses:
+          201:
+            body:
+              example: |
+                { "id": 101 }
+
+      /{urlId}:
+        uriParameters:
+          urlId:
+            type: integer
+        delete:
+          displayName: Delete URL
+          description: Delete a URL reference
+          responses:
+            204:
+              description: URL deleted
+
+#===============================================================================
+# TREES
+#===============================================================================
+/tree:
+  displayName: Trees
+  description: Manage family trees and tree visualizations
+
+  get:
+    displayName: List All Trees
+    description: Get all trees from the database
+    responses:
+      200:
+        body:
+          example: |
+            [
+              {
+                "id": 1,
+                "name": "My Tree",
+                "source": "ancestry",
+                "ownerName": "Chris Worthington",
+                "size": 150
+              }
+            ]
+
+  post:
+    displayName: Create Tree
+    description: Create a new tree record
+    body:
+      example: |
+        {
+          "name": "Smith Family Tree",
+          "source": "manual",
+          "ownerName": "John Smith",
+          "notes": "Research tree",
+          "dnaTestId": null,
+          "ancestryTreeId": null,
+          "size": 0
+        }
+    responses:
+      201:
+        body:
+          example: |
+            {
+              "id": 5,
+              "name": "Smith Family Tree",
+              "source": "manual",
+              "ownerName": "John Smith"
+            }
+
+  /{treeId}:
+    uriParameters:
+      treeId:
+        type: integer
+        description: Tree database ID
+
+    /person:
+      post:
+        displayName: Create Person in Tree
+        description: Create a new person within this tree. People always belong to a tree.
+        body:
+          example: |
+            {
+              "firstName": "George",
+              "surname": "Worthington",
+              "birthYear": 1850,
+              "deathYear": 1920,
+              "birthPlace": "Bolton, Lancashire"
+            }
+        responses:
+          201:
+            body:
+              example: |
+                {
+                  "id": 1,
+                  "person": {
+                    "id": 1,
+                    "treeId": 1,
+                    "firstName": "George",
+                    "surname": "Worthington",
+                    "birthYear": 1850,
+                    "deathYear": 1920,
+                    "birthPlace": "Bolton, Lancashire"
+                  }
+                }
+          404:
+            description: Tree not found
+
+  /db/{id}:
+    uriParameters:
+      id:
+        type: integer
+        description: Tree database ID
+
+    get:
+      displayName: Get Tree by ID
+      description: Get a specific tree by its database ID
+      responses:
+        200:
+          body:
+            example: |
+              {
+                "id": 1,
+                "name": "My Tree",
+                "source": "ancestry",
+                "ownerName": "Chris Worthington",
+                "dnaTestId": "abc-123",
+                "ancestryTreeId": 12345678,
+                "size": 150
+              }
+        404:
+          description: Tree not found
+
+    delete:
+      displayName: Delete Tree
+      description: Delete a tree record
+      responses:
+        204:
+          description: Tree deleted
+        404:
+          description: Tree not found
+
+  /{slug}:
+    uriParameters:
+      slug:
+        type: string
+        description: Tree URL slug (from application config)
+
+    /hierarchy:
+      get:
+        displayName: Get Tree Hierarchy
+        description: Get tree as nested JSON for D3.js visualization
+        responses:
+          200:
+            body:
+              example: |
+                {
+                  "id": 8000,
+                  "name": "George Worthington",
+                  "dates": "1850-1920",
+                  "gender": "M",
+                  "spouse": "Mary Smith",
+                  "children": [
+                    {
+                      "id": 8001,
+                      "name": "James Worthington",
+                      "dates": "1875-1940"
+                    }
+                  ]
+                }
+          404:
+            description: Tree slug not found in config
+
+    /family-chart:
+      get:
+        displayName: Get Family Chart Data
+        description: Get tree in family-chart library format (flat array with bidirectional rels)
+        queryParameters:
+          maxDepth:
+            type: integer
+            default: 15
+            maximum: 20
+        responses:
+          200:
+            body:
+              example: |
+                [
+                  {
+                    "id": "8000",
+                    "data": {
+                      "gender": "M",
+                      "first name": "George",
+                      "last name": "Worthington",
+                      "birthday": "1850",
+                      "deathday": "1920"
+                    },
+                    "rels": {
+                      "spouses": ["8010"],
+                      "children": ["8001", "8002"]
+                    }
+                  }
+                ]
+
+#===============================================================================
+# DNA MATCHES
+#===============================================================================
+/match:
+  displayName: DNA Matches
+  description: Query DNA match data (read-only view)
+
+  get:
+    displayName: Get Matches
+    description: Get DNA matches with optional filters
+    queryParameters:
+      minCm:
+        type: number
+        required: false
+        description: Minimum shared cM
+      side:
+        type: string
+        required: false
+        enum: [paternal, maternal, both, unknown]
+        description: Filter by match side
+      linked:
+        type: boolean
+        required: false
+        description: Only return matches linked to a person
+      limit:
+        type: integer
+        default: 100
+        maximum: 500
+    responses:
+      200:
+        body:
+          example: |
+            [
+              {
+                "dnaTestId": "abc-123-def",
+                "name": "John Smith",
+                "sharedCm": 125.5,
+                "sharedSegments": 8,
+                "predictedRelationship": "2nd Cousin",
+                "matchSide": "paternal",
+                "hasTree": true,
+                "treeSize": 50,
+                "personId": null
+              }
+            ]
+
+  /{dnaTestId}:
+    uriParameters:
+      dnaTestId:
+        type: string
+        description: DNA test ID (UUID)
+
+    get:
+      displayName: Get Match
+      description: Get a specific DNA match by test ID
+      responses:
+        200:
+          body:
+            example: |
+              {
+                "dnaTestId": "abc-123-def",
+                "name": "John Smith",
+                "sharedCm": 125.5,
+                "sharedSegments": 8,
+                "predictedRelationship": "2nd Cousin",
+                "matchSide": "paternal"
+              }
+        404:
+          description: Match not found
+
+#===============================================================================
+# DNA TESTERS
+#===============================================================================
+/dna-tester:
+  displayName: DNA Testers
+  description: Manage DNA tester records
+
+  post:
+    displayName: Create Tester
+    description: Create or update a DNA tester (upsert by dnaTestId)
+    body:
+      example: |
+        {
+          "dnaTestId": "abc-123-def",
+          "name": "John Smith",
+          "hasTree": true,
+          "treeSize": 50,
+          "adminLevel": 0,
+          "notes": "Possible 2nd cousin",
+          "personId": null
+        }
+    responses:
+      201:
+        body:
+          example: |
+            {
+              "dna_test_id": "abc-123-def",
+              "name": "John Smith",
+              "has_tree": true,
+              "tree_size": 50,
+              "admin_level": 0,
+              "notes": "Possible 2nd cousin",
+              "person_id": null,
+              "created_at": "2026-01-31T12:00:00.000Z"
+            }
+      400:
+        description: Missing required fields (dnaTestId, name)
+
+  /{dnaTestId}:
+    uriParameters:
+      dnaTestId:
+        type: string
+        description: DNA test ID (UUID)
+
+    get:
+      displayName: Get Tester
+      description: Get a DNA tester by their test ID
+      responses:
+        200:
+          body:
+            example: |
+              {
+                "dna_test_id": "abc-123-def",
+                "name": "John Smith",
+                "has_tree": true,
+                "tree_size": 50,
+                "person_id": null
+              }
+        404:
+          description: Tester not found
+
+    delete:
+      displayName: Delete Tester
+      description: Delete a DNA tester and all their match relationships
+      responses:
+        204:
+          description: Tester deleted
+        404:
+          description: Tester not found
+
+#===============================================================================
+# DNA MATCH RELATIONSHIPS
+#===============================================================================
+/dna-match:
+  displayName: DNA Match Relationships
+  description: Manage DNA match relationships between testers
+
+  post:
+    displayName: Create DNA Match
+    description: Create a DNA match relationship between two testers (upsert)
+    body:
+      example: |
+        {
+          "tester1Id": "abc-123",
+          "tester2Id": "def-456",
+          "sharedCm": 125.5,
+          "sharedSegments": 8,
+          "predictedRelationship": "2nd Cousin",
+          "matchSide": "paternal"
+        }
+    responses:
+      201:
+        body:
+          example: |
+            {
+              "tester_1_id": "abc-123",
+              "tester_2_id": "def-456",
+              "shared_cm": 125.5,
+              "shared_segments": 8,
+              "predicted_relationship": "2nd Cousin",
+              "match_side": "paternal"
+            }
+      400:
+        description: Missing required fields (tester1Id, tester2Id)
+
+  delete:
+    displayName: Delete DNA Match
+    description: Delete a DNA match relationship
+    queryParameters:
+      tester1Id:
+        type: string
+        required: true
+        description: First tester's DNA test ID
+      tester2Id:
+        type: string
+        required: true
+        description: Second tester's DNA test ID
+    responses:
+      204:
+        description: Match deleted
+      404:
+        description: Match not found
+
+#===============================================================================
+# CENSUS
+#===============================================================================
+/census:
+  displayName: Census Records
+  description: Search historical census records
+
+  /search:
+    get:
+      displayName: Search Census
+      description: Search census records by surname and optional year
+      queryParameters:
+        surname:
+          type: string
+          required: true
+          description: Surname to search for
+        year:
+          type: integer
+          required: false
+          description: Census year (1841, 1851, 1861, 1871, 1881, 1891, 1901, 1911)
+        limit:
+          type: integer
+          default: 50
+          description: Maximum results
+      responses:
+        200:
+          body:
+            example: |
+              [
+                {
+                  "id": 500,
+                  "year": 1881,
+                  "address": "12 High Street, London",
+                  "registrationDistrict": "Lambeth",
+                  "nameAsRecorded": "John Smith",
+                  "relationToHead": "Head",
+                  "ageAsRecorded": 31,
+                  "birthPlace": "London, Middlesex"
+                }
+              ]
+        400:
+          description: Surname not provided
+
+#===============================================================================
+# STATS
+#===============================================================================
+/stats:
+  displayName: Statistics
+  description: Dashboard statistics and analytics
+
+  get:
+    displayName: Get Dashboard Stats
+    description: Get summary statistics for the dashboard
+    responses:
+      200:
+        body:
+          example: |
+            {
+              "treeSize": 5000,
+              "dnaMatchCount": 1500,
+              "linkedMatches": 200,
+              "unlinkedMatches": 1300,
+              "linkedPeopleCount": 150
+            }
+
+  /top-ancestors:
+    get:
+      displayName: Get Top Ancestors
+      description: Get the 10 ancestors with most descendants
+      responses:
+        200:
+          body:
+            example: |
+              [
+                {
+                  "id": 8000,
+                  "name": "George Worthington",
+                  "birthYear": 1850,
+                  "descendantCount": 150
+                }
+              ]

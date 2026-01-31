@@ -1,0 +1,42 @@
+meta {
+  name: Create Tester
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/dna-tester
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "dnaTestId": "e756de6c-0c8d-443b-8793-addb6f35fd6a",
+    "name": "Chris Worthington",
+    "hasTree": true,
+    "treeSize": 500,
+    "adminLevel": 0,
+    "notes": "My own test",
+    "personId": null
+  }
+}
+
+docs {
+  Create or update a DNA tester.
+
+  A DNA tester is someone who has taken a DNA test. They may or may not
+  be linked to a person in the tree.
+
+  Request body:
+  - dnaTestId: Ancestry DNA test GUID (string, required)
+  - name: Display name (string, required)
+  - hasTree: Whether they have a tree (boolean, optional)
+  - treeSize: Number of people in their tree (integer, optional)
+  - adminLevel: Ancestry admin level 0-4 (integer, optional)
+  - notes: Notes (string, optional)
+  - personId: Link to person in our tree (integer, optional)
+
+  Returns 201 Created with the tester object.
+  Uses upsert - updates if dnaTestId already exists.
+}

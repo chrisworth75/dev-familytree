@@ -1,0 +1,21 @@
+meta {
+  name: Delete Tree
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/tree/db/{{treeId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  treeId: 999
+}
+
+docs {
+  Delete a tree by ID.
+  Returns 204 No Content on success.
+  Returns 404 if not found.
+}

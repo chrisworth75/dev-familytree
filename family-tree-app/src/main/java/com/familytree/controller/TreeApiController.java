@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/trees")
+@RequestMapping("/api/tree")
 public class TreeApiController {
 
     private final TreesConfig treesConfig;
@@ -81,6 +81,33 @@ public class TreeApiController {
         treeRepository.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    // ========== PERSON UNDER TREE ==========
+
+    @PostMapping("/{treeId}/person")
+    public ResponseEntity<Map<String, Object>> createPersonInTree(
+            @PathVariable Long treeId,
+            @RequestBody Map<String, Object> body) {
+
+        if (treeRepository.findById(treeId).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String firstName = (String) body.get("firstName");
+        if (firstName == null) firstName = (String) body.get("forename");
+        String surname = (String) body.get("surname");
+        Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
+        Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
+        String birthPlace = (String) body.get("birthPlace");
+
+        Long id = personRepository.save(firstName, surname, birthYear, deathYear, birthPlace, null, null, treeId.intValue());
+
+        return personRepository.findById(id)
+            .map(person -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id, "person", person)))
+            .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    // ========== TREE VISUALIZATION ==========
 
     /**
      * Get tree hierarchy as nested JSON for D3.js visualization.

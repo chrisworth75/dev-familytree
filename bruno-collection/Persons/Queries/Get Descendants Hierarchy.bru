@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/api/persons/{{personId}}/descendants/hierarchy
+  url: {{baseUrl}}/api/person/{{personId}}/descendants/hierarchy
   body: none
   auth: none
 }
@@ -20,7 +20,7 @@ docs {
   Query parameters:
   - maxDepth: Maximum depth of descendants (default: 15, max: 20)
 
-  Returns nested structure with children arrays (same format as /api/trees/{slug}/hierarchy):
+  Returns nested structure with children arrays (same format as /api/tree/{slug}/hierarchy):
   {
     "id": 8000,
     "name": "Henry Worthington",

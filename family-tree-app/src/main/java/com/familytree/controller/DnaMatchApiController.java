@@ -22,7 +22,7 @@ public class DnaMatchApiController {
 
     // ========== DNA MATCHES (via view) ==========
 
-    @GetMapping("/matches")
+    @GetMapping({"/match", "/matches"})
     public ResponseEntity<List<DnaMatch>> getMatches(
             @RequestParam(required = false) Double minCm,
             @RequestParam(required = false) String side,
@@ -45,7 +45,7 @@ public class DnaMatchApiController {
         return ResponseEntity.ok(matches);
     }
 
-    @GetMapping("/matches/{dnaTestId}")
+    @GetMapping({"/match/{dnaTestId}", "/matches/{dnaTestId}"})
     public ResponseEntity<DnaMatch> getMatch(@PathVariable String dnaTestId) {
         DnaMatch match = dnaMatchRepository.findByDnaTestId(dnaTestId);
         if (match == null) {
@@ -56,7 +56,7 @@ public class DnaMatchApiController {
 
     // ========== DNA TESTERS ==========
 
-    @GetMapping("/dna-testers/{dnaTestId}")
+    @GetMapping({"/dna-tester/{dnaTestId}", "/dna-testers/{dnaTestId}"})
     public ResponseEntity<Map<String, Object>> getTester(@PathVariable String dnaTestId) {
         Map<String, Object> tester = dnaMatchRepository.findTesterById(dnaTestId);
         if (tester == null) {
@@ -65,7 +65,7 @@ public class DnaMatchApiController {
         return ResponseEntity.ok(tester);
     }
 
-    @PostMapping("/dna-testers")
+    @PostMapping({"/dna-tester", "/dna-testers"})
     public ResponseEntity<Map<String, Object>> createTester(@RequestBody Map<String, Object> body) {
         String dnaTestId = (String) body.get("dnaTestId");
         String name = (String) body.get("name");
@@ -86,7 +86,7 @@ public class DnaMatchApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/dna-testers/{dnaTestId}")
+    @DeleteMapping({"/dna-tester/{dnaTestId}", "/dna-testers/{dnaTestId}"})
     public ResponseEntity<Void> deleteTester(@PathVariable String dnaTestId) {
         if (dnaMatchRepository.findTesterById(dnaTestId) == null) {
             return ResponseEntity.notFound().build();
@@ -97,7 +97,7 @@ public class DnaMatchApiController {
 
     // ========== DNA MATCH RELATIONSHIPS ==========
 
-    @PostMapping("/dna-matches")
+    @PostMapping({"/dna-match", "/dna-matches"})
     public ResponseEntity<Map<String, Object>> createDnaMatch(@RequestBody Map<String, Object> body) {
         String tester1Id = (String) body.get("tester1Id");
         String tester2Id = (String) body.get("tester2Id");
@@ -120,7 +120,7 @@ public class DnaMatchApiController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/dna-matches")
+    @DeleteMapping({"/dna-match", "/dna-matches"})
     public ResponseEntity<Void> deleteDnaMatch(
             @RequestParam String tester1Id,
             @RequestParam String tester2Id) {

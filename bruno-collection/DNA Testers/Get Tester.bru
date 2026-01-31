@@ -1,0 +1,20 @@
+meta {
+  name: Get Tester
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/dna-tester/{{dnaTestId}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  dnaTestId: test-id-123
+}
+
+docs {
+  Get a DNA tester by their test ID.
+  Returns 404 if not found.
+}

@@ -1,0 +1,16 @@
+meta {
+  name: List All Trees
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/tree
+  body: none
+  auth: none
+}
+
+docs {
+  Get all trees from the database.
+  Returns array of tree objects.
+}

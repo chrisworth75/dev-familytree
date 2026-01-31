@@ -1,0 +1,40 @@
+meta {
+  name: Create DNA Match
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/dna-match
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "tester1Id": "tester-id-001",
+    "tester2Id": "tester-id-002",
+    "sharedCm": 125.5,
+    "sharedSegments": 8,
+    "predictedRelationship": "2nd Cousin",
+    "matchSide": "paternal"
+  }
+}
+
+docs {
+  Create a DNA match relationship between two testers.
+
+  Request body:
+  - tester1Id: First tester's DNA test ID (string, required)
+  - tester2Id: Second tester's DNA test ID (string, required)
+  - sharedCm: Shared centimorgans (decimal, optional)
+  - sharedSegments: Number of shared segments (integer, optional)
+  - predictedRelationship: Predicted relationship (string, optional)
+  - matchSide: paternal, maternal, both, or unknown (string, optional)
+
+  Note: Both testers must exist in ancestry_tester table first.
+  The tester IDs are stored in alphabetical order (constraint).
+
+  Returns 201 Created with the match object.
+  Uses upsert - updates if match already exists.
+}

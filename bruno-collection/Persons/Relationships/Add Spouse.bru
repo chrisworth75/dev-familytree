@@ -5,17 +5,18 @@ meta {
 }
 
 post {
-  url: {{baseUrl}}/api/persons/{{personId}}/spouse
+  url: {{baseUrl}}/api/person/{{personId}}/spouse
   body: json
   auth: none
 }
 
 body:json {
   {
-    "forename": "Mary",
-    "surname": "Jones",
+    "firstName": "Mary",
+    "surname": "Smith",
     "birthYear": 1855,
-    "treeId": 1
+    "deathYear": 1925,
+    "birthPlace": "Wigan, Lancashire"
   }
 }
 
@@ -26,10 +27,12 @@ docs {
   - spouseId: ID of existing person to link as spouse (optional)
 
   If spouseId is not provided, creates a new person:
-  - forename: First name (string)
+  - firstName: First name (string)
   - surname: Last name (string)
   - birthYear: Birth year estimate (integer, optional)
-  - treeId: Tree ID (integer, default: 1)
+  - deathYear: Death year estimate (integer, optional)
+  - birthPlace: Birth place (string, optional)
 
-  Creates a marriage record linking both persons.
+  Creates a partnership record linking both persons.
+  Returns 201 Created.
 }

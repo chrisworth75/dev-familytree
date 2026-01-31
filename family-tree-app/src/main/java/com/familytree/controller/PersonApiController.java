@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping({"/api/persons", "/api/people"})
+@RequestMapping({"/api/person", "/api/people"})
 public class PersonApiController {
 
     private final PersonRepository personRepository;
@@ -38,27 +38,8 @@ public class PersonApiController {
         this.personUrlRepository = personUrlRepository;
     }
 
-    // ========== CREATE/UPDATE/DELETE ==========
-
-    @PostMapping
-    public ResponseEntity<Map<String, Object>> createPerson(@RequestBody Map<String, Object> body) {
-        String firstName = (String) body.get("firstName");
-        if (firstName == null) firstName = (String) body.get("forename"); // backwards compat
-        String surname = (String) body.get("surname");
-        Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-        Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
-        String birthPlace = (String) body.get("birthPlace");
-        Long parent1Id = body.get("parent1Id") != null ? ((Number) body.get("parent1Id")).longValue() : null;
-        if (parent1Id == null) parent1Id = body.get("fatherId") != null ? ((Number) body.get("fatherId")).longValue() : null;
-        Long parent2Id = body.get("parent2Id") != null ? ((Number) body.get("parent2Id")).longValue() : null;
-        if (parent2Id == null) parent2Id = body.get("motherId") != null ? ((Number) body.get("motherId")).longValue() : null;
-
-        Long id = personRepository.save(firstName, surname, birthYear, deathYear, birthPlace, parent1Id, parent2Id);
-
-        return personRepository.findById(id)
-            .map(person -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id, "person", person)))
-            .orElse(ResponseEntity.internalServerError().build());
-    }
+    // ========== UPDATE/DELETE ==========
+    // Note: Person creation moved to POST /tree/{treeId}/person (see TreeApiController)
 
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> updatePerson(@PathVariable Long id, @RequestBody Map<String, Object> body) {
@@ -93,7 +74,8 @@ public class PersonApiController {
 
     @PostMapping("/{id}/parent")
     public ResponseEntity<Map<String, Object>> addParent(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        if (personRepository.findById(id).isEmpty()) {
+        Person child = personRepository.findById(id).orElse(null);
+        if (child == null) {
             return ResponseEntity.notFound().build();
         }
 
@@ -108,11 +90,11 @@ public class PersonApiController {
             if (firstName == null) firstName = (String) body.get("forename");
             String surname = (String) body.get("surname");
             Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            parentId = personRepository.save(firstName, surname, birthYear, null, null, null, null);
+            // Inherit tree_id from child
+            parentId = personRepository.save(firstName, surname, birthYear, null, null, null, null, child.treeId());
         }
 
         // Update child's parent reference
-        Person child = personRepository.findById(id).get();
         if ("F".equalsIgnoreCase(gender)) {
             // Female parent = parent_2_id (mother)
             personRepository.updateParents(id, child.fatherId(), parentId);
@@ -122,7 +104,7 @@ public class PersonApiController {
         }
 
         return personRepository.findById(parentId)
-            .map(parent -> ResponseEntity.ok(Map.of("id", parentId, "person", parent)))
+            .map(parent -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", parentId, "person", parent)))
             .orElse(ResponseEntity.internalServerError().build());
     }
 
@@ -148,7 +130,8 @@ public class PersonApiController {
             Long parent1Id = "M".equalsIgnoreCase(parentGender) ? id : null;
             Long parent2Id = "F".equalsIgnoreCase(parentGender) ? id : null;
 
-            childId = personRepository.save(firstName, surname, birthYear, null, null, parent1Id, parent2Id);
+            // Inherit tree_id from parent
+            childId = personRepository.save(firstName, surname, birthYear, null, null, parent1Id, parent2Id, parent.treeId());
         }
 
         // If linking existing child, update their parent reference
@@ -162,13 +145,14 @@ public class PersonApiController {
         }
 
         return personRepository.findById(childId)
-            .map(child -> ResponseEntity.ok(Map.of("id", childId, "person", child)))
+            .map(child -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", childId, "person", child)))
             .orElse(ResponseEntity.internalServerError().build());
     }
 
     @PostMapping("/{id}/spouse")
     public ResponseEntity<Map<String, Object>> addSpouse(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        if (personRepository.findById(id).isEmpty()) {
+        Person person = personRepository.findById(id).orElse(null);
+        if (person == null) {
             return ResponseEntity.notFound().build();
         }
 
@@ -182,13 +166,14 @@ public class PersonApiController {
             if (firstName == null) firstName = (String) body.get("forename");
             String surname = (String) body.get("surname");
             Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            spouseId = personRepository.save(firstName, surname, birthYear, null, null, null, null);
+            // Inherit tree_id from person
+            spouseId = personRepository.save(firstName, surname, birthYear, null, null, null, null, person.treeId());
         }
 
         personRepository.addMarriage(id, spouseId);
 
         return personRepository.findById(spouseId)
-            .map(spouse -> ResponseEntity.ok(Map.of("id", spouseId, "person", spouse)))
+            .map(spouse -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", spouseId, "person", spouse)))
             .orElse(ResponseEntity.internalServerError().build());
     }
 
@@ -330,7 +315,7 @@ public class PersonApiController {
         String description = (String) body.get("description");
 
         Long urlId = personUrlRepository.save(id, url, description);
-        return ResponseEntity.ok(Map.of("id", urlId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", urlId));
     }
 
     @DeleteMapping("/{id}/urls/{urlId}")
