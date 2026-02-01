@@ -29,8 +29,8 @@ public class PersonRepository {
             (Integer) rs.getObject("death_year_approx"),
             rs.getString("death_place"),
             rs.getString("gender"),
-            rs.getObject("parent_1_id") != null ? rs.getLong("parent_1_id") : null,
-            rs.getObject("parent_2_id") != null ? rs.getLong("parent_2_id") : null,
+            rs.getObject("father_id") != null ? rs.getLong("father_id") : null,
+            rs.getObject("mother_id") != null ? rs.getLong("mother_id") : null,
             rs.getString("notes"),
             (Integer) rs.getObject("tree_id")
         );
@@ -58,19 +58,19 @@ public class PersonRepository {
             WITH RECURSIVE ancestors AS (
                 SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
-                       parent_1_id, parent_2_id, notes, tree_id, 1 as generation
+                       father_id, mother_id, notes, tree_id, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
-                       p.parent_1_id, p.parent_2_id, p.notes, p.tree_id, a.generation + 1
+                       p.father_id, p.mother_id, p.notes, p.tree_id, a.generation + 1
                 FROM person p
-                JOIN ancestors a ON p.id = a.parent_1_id OR p.id = a.parent_2_id
+                JOIN ancestors a ON p.id = a.father_id OR p.id = a.mother_id
                 WHERE a.generation < ?
             )
             SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
-                   parent_1_id, parent_2_id, notes, tree_id
+                   father_id, mother_id, notes, tree_id
             FROM ancestors
             WHERE generation > 1
             ORDER BY generation, surname, first_name
@@ -83,19 +83,19 @@ public class PersonRepository {
             WITH RECURSIVE descendants AS (
                 SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
-                       parent_1_id, parent_2_id, notes, tree_id, 1 as generation
+                       father_id, mother_id, notes, tree_id, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
-                       p.parent_1_id, p.parent_2_id, p.notes, p.tree_id, d.generation + 1
+                       p.father_id, p.mother_id, p.notes, p.tree_id, d.generation + 1
                 FROM person p
-                JOIN descendants d ON p.parent_1_id = d.id OR p.parent_2_id = d.id
+                JOIN descendants d ON p.father_id = d.id OR p.mother_id = d.id
                 WHERE d.generation < ?
             )
             SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
-                   parent_1_id, parent_2_id, notes, tree_id
+                   father_id, mother_id, notes, tree_id
             FROM descendants
             WHERE generation > 1
             ORDER BY generation, surname, first_name
@@ -128,7 +128,7 @@ public class PersonRepository {
 
     public List<Person> findChildren(Long personId) {
         return jdbc.query(
-            "SELECT * FROM person WHERE parent_1_id = ? OR parent_2_id = ? ORDER BY birth_date",
+            "SELECT * FROM person WHERE father_id = ? OR mother_id = ? ORDER BY birth_date",
             PERSON_MAPPER,
             personId, personId
         );
@@ -149,8 +149,8 @@ public class PersonRepository {
             JOIN person target ON target.id = ?
             WHERE p.id != ?
             AND (
-                (p.parent_1_id IS NOT NULL AND p.parent_1_id = target.parent_1_id)
-                OR (p.parent_2_id IS NOT NULL AND p.parent_2_id = target.parent_2_id)
+                (p.father_id IS NOT NULL AND p.father_id = target.father_id)
+                OR (p.mother_id IS NOT NULL AND p.mother_id = target.mother_id)
             )
             ORDER BY birth_date, first_name
             """;
@@ -158,33 +158,55 @@ public class PersonRepository {
     }
 
     public Long save(String firstName, String surname, Integer birthYear, Integer deathYear,
-                     String birthPlace, Long parent1Id, Long parent2Id, Integer treeId) {
-        String sql = """
-            INSERT INTO person (first_name, surname, birth_date, death_date,
-                               birth_place, parent_1_id, parent_2_id, tree_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            RETURNING id
-            """;
-        java.sql.Date birthDate = birthYear != null ? java.sql.Date.valueOf(birthYear + "-01-01") : null;
-        java.sql.Date deathDate = deathYear != null ? java.sql.Date.valueOf(deathYear + "-01-01") : null;
-        return jdbc.queryForObject(sql, Long.class, firstName, surname, birthDate, deathDate,
-                                   birthPlace, parent1Id, parent2Id, treeId);
+                     String birthPlace, Long fatherId, Long motherId, Integer treeId) {
+        return save(firstName, null, surname, null, null, birthYear, birthPlace,
+                    null, deathYear, null, null, null, fatherId, motherId, treeId);
     }
 
-    public void update(Long id, String firstName, String surname, Integer birthYear,
-                       Integer deathYear, String birthPlace) {
+    public Long save(String firstName, String surname, java.time.LocalDate birthDate, Integer birthYearApprox,
+                     java.time.LocalDate deathDate, Integer deathYearApprox, String birthPlace,
+                     Long fatherId, Long motherId, Integer treeId) {
+        return save(firstName, null, surname, null, birthDate, birthYearApprox, birthPlace,
+                    deathDate, deathYearApprox, null, null, null, fatherId, motherId, treeId);
+    }
+
+    public Long save(String firstName, String middleNames, String surname, String birthSurname,
+                     java.time.LocalDate birthDate, Integer birthYearApprox, String birthPlace,
+                     java.time.LocalDate deathDate, Integer deathYearApprox, String deathPlace,
+                     String gender, String notes, Long fatherId, Long motherId, Integer treeId) {
         String sql = """
-            UPDATE person SET first_name = ?, surname = ?, birth_date = ?,
-                             death_date = ?, birth_place = ?, updated_at = CURRENT_TIMESTAMP
+            INSERT INTO person (first_name, middle_names, surname, birth_surname,
+                               birth_date, birth_year_approx, birth_place,
+                               death_date, death_year_approx, death_place,
+                               gender, notes, father_id, mother_id, tree_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            RETURNING id
+            """;
+        return jdbc.queryForObject(sql, Long.class, firstName, middleNames, surname, birthSurname,
+                                   birthDate != null ? java.sql.Date.valueOf(birthDate) : null, birthYearApprox, birthPlace,
+                                   deathDate != null ? java.sql.Date.valueOf(deathDate) : null, deathYearApprox, deathPlace,
+                                   gender, notes, fatherId, motherId, treeId);
+    }
+
+    public void update(Long id, String firstName, String middleNames, String surname, String birthSurname,
+                       java.time.LocalDate birthDate, Integer birthYearApprox, String birthPlace,
+                       java.time.LocalDate deathDate, Integer deathYearApprox, String deathPlace,
+                       String gender, String notes) {
+        String sql = """
+            UPDATE person SET first_name = ?, middle_names = ?, surname = ?, birth_surname = ?,
+                             birth_date = ?, birth_year_approx = ?, birth_place = ?,
+                             death_date = ?, death_year_approx = ?, death_place = ?,
+                             gender = ?, notes = ?, updated_at = CURRENT_TIMESTAMP
             WHERE id = ?
             """;
-        java.sql.Date birthDate = birthYear != null ? java.sql.Date.valueOf(birthYear + "-01-01") : null;
-        java.sql.Date deathDate = deathYear != null ? java.sql.Date.valueOf(deathYear + "-01-01") : null;
-        jdbc.update(sql, firstName, surname, birthDate, deathDate, birthPlace, id);
+        jdbc.update(sql, firstName, middleNames, surname, birthSurname,
+                    birthDate != null ? java.sql.Date.valueOf(birthDate) : null, birthYearApprox, birthPlace,
+                    deathDate != null ? java.sql.Date.valueOf(deathDate) : null, deathYearApprox, deathPlace,
+                    gender, notes, id);
     }
 
     public void updateParents(Long id, Long parent1Id, Long parent2Id) {
-        jdbc.update("UPDATE person SET parent_1_id = ?, parent_2_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+        jdbc.update("UPDATE person SET father_id = ?, mother_id = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
                     parent1Id, parent2Id, id);
     }
 

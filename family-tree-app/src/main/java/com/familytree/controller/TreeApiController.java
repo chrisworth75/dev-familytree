@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -20,18 +22,6 @@ public class TreeApiController {
     private final TreesConfig treesConfig;
     private final PersonRepository personRepository;
     private final TreeRepository treeRepository;
-
-    // Common female forenames for gender detection
-    private static final Set<String> FEMALE_NAMES = Set.of(
-        "mary", "alice", "constance", "blanche", "evelyn", "ethel", "jane",
-        "margaret", "angela", "janet", "betty", "susan", "ann", "elizabeth",
-        "doris", "marjorie", "patricia", "nina", "rachel", "verity", "kathleen",
-        "muriel", "agnes", "sarah", "emma", "lily", "rose", "irene", "annie",
-        "loreen", "betsy", "theodora", "maria", "ellen", "elsie", "grace",
-        "rebecca", "jennifer", "helen", "florence", "mildred", "harriet",
-        "martha", "matilda", "hannah", "sophia", "charlotte", "emily", "clara",
-        "eliza", "nancy", "miriam", "lucy", "harriett"
-    );
 
     public TreeApiController(TreesConfig treesConfig, PersonRepository personRepository,
                             TreeRepository treeRepository) {
@@ -84,6 +74,8 @@ public class TreeApiController {
 
     // ========== PERSON UNDER TREE ==========
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MM yyyy");
+
     @PostMapping("/{treeId}/person")
     public ResponseEntity<Map<String, Object>> createPersonInTree(
             @PathVariable Long treeId,
@@ -93,18 +85,44 @@ public class TreeApiController {
             return ResponseEntity.notFound().build();
         }
 
-        String firstName = (String) body.get("firstName");
-        if (firstName == null) firstName = (String) body.get("forename");
-        String surname = (String) body.get("surname");
-        Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-        Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
-        String birthPlace = (String) body.get("birthPlace");
-
-        Long id = personRepository.save(firstName, surname, birthYear, deathYear, birthPlace, null, null, treeId.intValue());
+        Long id = savePerson(body, null, null, treeId.intValue());
 
         return personRepository.findById(id)
             .map(person -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", id, "person", person)))
             .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    private Long savePerson(Map<String, Object> body, Long fatherId, Long motherId, Integer treeId) {
+        String firstName = (String) body.get("firstName");
+        if (firstName == null) firstName = (String) body.get("forename");
+        String middleNames = (String) body.get("middleNames");
+        String surname = (String) body.get("surname");
+        String birthSurname = (String) body.get("birthSurname");
+        String birthPlace = (String) body.get("birthPlace");
+        String deathPlace = (String) body.get("deathPlace");
+        String gender = (String) body.get("gender");
+        String notes = (String) body.get("notes");
+
+        LocalDate birthDate = parseDate((String) body.get("birthDate"));
+        Integer birthYear = birthDate == null && body.get("birthYear") != null
+            ? ((Number) body.get("birthYear")).intValue() : null;
+        LocalDate deathDate = parseDate((String) body.get("deathDate"));
+        Integer deathYear = deathDate == null && body.get("deathYear") != null
+            ? ((Number) body.get("deathYear")).intValue() : null;
+
+        return personRepository.save(firstName, middleNames, surname, birthSurname,
+                                     birthDate, birthYear, birthPlace,
+                                     deathDate, deathYear, deathPlace,
+                                     gender, notes, fatherId, motherId, treeId);
+    }
+
+    private LocalDate parseDate(String dateStr) {
+        if (dateStr == null || dateStr.isBlank()) return null;
+        try {
+            return LocalDate.parse(dateStr, DATE_FORMAT);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     // ========== TREE VISUALIZATION ==========
@@ -200,14 +218,10 @@ public class TreeApiController {
     }
 
     private String detectGender(Person person) {
-        // Use database gender if set
         if (person.gender() != null && !person.gender().isBlank()) {
             return person.gender();
         }
-        // Fall back to name detection
-        if (person.firstName() == null) return "U";
-        String firstName = person.firstName().toLowerCase().split(" ")[0];
-        return FEMALE_NAMES.contains(firstName) ? "F" : "M";
+        return "U";
     }
 
     /**

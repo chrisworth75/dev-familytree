@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @RestController
@@ -20,17 +22,7 @@ public class PersonApiController {
     private final CensusRepository censusRepository;
     private final PersonUrlRepository personUrlRepository;
 
-    // Common female forenames for gender detection
-    private static final Set<String> FEMALE_NAMES = Set.of(
-        "mary", "alice", "constance", "blanche", "evelyn", "ethel", "jane",
-        "margaret", "angela", "janet", "betty", "susan", "ann", "elizabeth",
-        "doris", "marjorie", "patricia", "nina", "rachel", "verity", "kathleen",
-        "muriel", "agnes", "sarah", "emma", "lily", "rose", "irene", "annie",
-        "loreen", "betsy", "theodora", "maria", "ellen", "elsie", "grace",
-        "rebecca", "jennifer", "helen", "florence", "mildred", "harriet",
-        "martha", "matilda", "hannah", "sophia", "charlotte", "emily", "clara",
-        "eliza", "nancy", "miriam", "lucy", "harriett"
-    );
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MM yyyy");
 
     public PersonApiController(PersonRepository personRepository, CensusRepository censusRepository, PersonUrlRepository personUrlRepository) {
         this.personRepository = personRepository;
@@ -49,12 +41,25 @@ public class PersonApiController {
 
         String firstName = (String) body.get("firstName");
         if (firstName == null) firstName = (String) body.get("forename");
+        String middleNames = (String) body.get("middleNames");
         String surname = (String) body.get("surname");
-        Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-        Integer deathYear = body.get("deathYear") != null ? ((Number) body.get("deathYear")).intValue() : null;
+        String birthSurname = (String) body.get("birthSurname");
         String birthPlace = (String) body.get("birthPlace");
+        String deathPlace = (String) body.get("deathPlace");
+        String gender = (String) body.get("gender");
+        String notes = (String) body.get("notes");
 
-        personRepository.update(id, firstName, surname, birthYear, deathYear, birthPlace);
+        LocalDate birthDate = parseDate((String) body.get("birthDate"));
+        Integer birthYear = birthDate == null && body.get("birthYear") != null
+            ? ((Number) body.get("birthYear")).intValue() : null;
+        LocalDate deathDate = parseDate((String) body.get("deathDate"));
+        Integer deathYear = deathDate == null && body.get("deathYear") != null
+            ? ((Number) body.get("deathYear")).intValue() : null;
+
+        personRepository.update(id, firstName, middleNames, surname, birthSurname,
+                               birthDate, birthYear, birthPlace,
+                               deathDate, deathYear, deathPlace,
+                               gender, notes);
 
         return personRepository.findById(id)
             .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
@@ -86,20 +91,15 @@ public class PersonApiController {
         if (existingParentId != null) {
             parentId = existingParentId;
         } else {
-            String firstName = (String) body.get("firstName");
-            if (firstName == null) firstName = (String) body.get("forename");
-            String surname = (String) body.get("surname");
-            Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            // Inherit tree_id from child
-            parentId = personRepository.save(firstName, surname, birthYear, null, null, null, null, child.treeId());
+            parentId = savePerson(body, null, null, child.treeId());
         }
 
         // Update child's parent reference
         if ("F".equalsIgnoreCase(gender)) {
-            // Female parent = parent_2_id (mother)
+            // Female = mother
             personRepository.updateParents(id, child.fatherId(), parentId);
         } else {
-            // Male parent = parent_1_id (father)
+            // Male = father
             personRepository.updateParents(id, parentId, child.motherId());
         }
 
@@ -122,16 +122,9 @@ public class PersonApiController {
         if (existingChildId != null) {
             childId = existingChildId;
         } else {
-            String firstName = (String) body.get("firstName");
-            if (firstName == null) firstName = (String) body.get("forename");
-            String surname = (String) body.get("surname");
-            Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-
-            Long parent1Id = "M".equalsIgnoreCase(parentGender) ? id : null;
-            Long parent2Id = "F".equalsIgnoreCase(parentGender) ? id : null;
-
-            // Inherit tree_id from parent
-            childId = personRepository.save(firstName, surname, birthYear, null, null, parent1Id, parent2Id, parent.treeId());
+            Long fatherId = "M".equalsIgnoreCase(parentGender) ? id : null;
+            Long motherId = "F".equalsIgnoreCase(parentGender) ? id : null;
+            childId = savePerson(body, fatherId, motherId, parent.treeId());
         }
 
         // If linking existing child, update their parent reference
@@ -162,12 +155,7 @@ public class PersonApiController {
         if (existingSpouseId != null) {
             spouseId = existingSpouseId;
         } else {
-            String firstName = (String) body.get("firstName");
-            if (firstName == null) firstName = (String) body.get("forename");
-            String surname = (String) body.get("surname");
-            Integer birthYear = body.get("birthYear") != null ? ((Number) body.get("birthYear")).intValue() : null;
-            // Inherit tree_id from person
-            spouseId = personRepository.save(firstName, surname, birthYear, null, null, null, null, person.treeId());
+            spouseId = savePerson(body, null, null, person.treeId());
         }
 
         personRepository.addMarriage(id, spouseId);
@@ -175,6 +163,41 @@ public class PersonApiController {
         return personRepository.findById(spouseId)
             .map(spouse -> ResponseEntity.status(HttpStatus.CREATED).body(Map.of("id", spouseId, "person", spouse)))
             .orElse(ResponseEntity.internalServerError().build());
+    }
+
+    // ========== HELPER METHODS ==========
+
+    private Long savePerson(Map<String, Object> body, Long fatherId, Long motherId, Integer treeId) {
+        String firstName = (String) body.get("firstName");
+        if (firstName == null) firstName = (String) body.get("forename");
+        String middleNames = (String) body.get("middleNames");
+        String surname = (String) body.get("surname");
+        String birthSurname = (String) body.get("birthSurname");
+        String birthPlace = (String) body.get("birthPlace");
+        String deathPlace = (String) body.get("deathPlace");
+        String gender = (String) body.get("gender");
+        String notes = (String) body.get("notes");
+
+        LocalDate birthDate = parseDate((String) body.get("birthDate"));
+        Integer birthYear = birthDate == null && body.get("birthYear") != null
+            ? ((Number) body.get("birthYear")).intValue() : null;
+        LocalDate deathDate = parseDate((String) body.get("deathDate"));
+        Integer deathYear = deathDate == null && body.get("deathYear") != null
+            ? ((Number) body.get("deathYear")).intValue() : null;
+
+        return personRepository.save(firstName, middleNames, surname, birthSurname,
+                                     birthDate, birthYear, birthPlace,
+                                     deathDate, deathYear, deathPlace,
+                                     gender, notes, fatherId, motherId, treeId);
+    }
+
+    private LocalDate parseDate(String dateStr) {
+        if (dateStr == null || dateStr.isBlank()) return null;
+        try {
+            return LocalDate.parse(dateStr, DATE_FORMAT);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @DeleteMapping("/{id}/spouse/{spouseId}")
@@ -407,8 +430,6 @@ public class PersonApiController {
         if (person.gender() != null && !person.gender().isBlank()) {
             return person.gender();
         }
-        if (person.firstName() == null) return "U";
-        String firstName = person.firstName().toLowerCase().split(" ")[0];
-        return FEMALE_NAMES.contains(firstName) ? "F" : "M";
+        return "U";
     }
 }
