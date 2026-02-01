@@ -14,20 +14,21 @@ Personal genealogy database with REST API. Manages people, family relationships,
 # Start Postgres (if not already running)
 docker start familytree-postgres
 
-# Run the app
-./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
+# Run with real data
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+# Run with empty test database (wiped on startup)
+mvn spring-boot:run -Dspring-boot.run.profiles=scratch
 ```
 
-API available at `http://localhost:3200/api`
+API available at http://localhost:3200/api
 
-## Database
+## Database Profiles
 
 | Profile | Database | Use |
 |---------|----------|-----|
 | dev | familytree | Real data |
 | scratch | familytree_test | Empty playground (wiped on startup) |
-
-Switch with `-Dspring-boot.run.profiles=scratch`
 
 ### Create the test database
 
