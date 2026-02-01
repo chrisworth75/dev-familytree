@@ -5,9 +5,13 @@ meta {
 }
 
 delete {
-  url: {{baseUrl}}/api/person/{{personId}}/spouse/2
+  url: {{baseUrl}}/api/person/{{personId}}/spouse/{{spouseId}}
   body: none
   auth: none
+}
+
+vars:pre-request {
+  spouseId: 6
 }
 
 docs {
