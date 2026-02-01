@@ -17,7 +17,7 @@ docker start familytree-postgres
 # Run with real data
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 
-# Run with empty test database (wiped on startup)
+# Run with empty test database
 mvn spring-boot:run -Dspring-boot.run.profiles=scratch
 ```
 
@@ -28,12 +28,13 @@ API available at http://localhost:3200/api
 | Profile | Database | Use |
 |---------|----------|-----|
 | dev | familytree | Real data |
-| scratch | familytree_test | Empty playground (wiped on startup) |
+| scratch | familytree_test | Empty test database for API testing |
 
-### Create the test database
+### Reset the test database
 
 ```bash
-docker exec -it familytree-postgres psql -U postgres -c "CREATE DATABASE familytree_test"
+# Drop and recreate for a clean slate
+docker exec familytree-postgres psql -U familytree -d postgres -c "DROP DATABASE IF EXISTS familytree_test; CREATE DATABASE familytree_test OWNER familytree;"
 ```
 
 ---

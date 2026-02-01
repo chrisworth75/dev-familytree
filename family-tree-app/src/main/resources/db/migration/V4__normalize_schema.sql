@@ -17,7 +17,7 @@ ALTER TABLE ancestry_tester RENAME COLUMN ancestry_id TO dna_test_id;
 
 -- Rename constraints
 ALTER TABLE ancestry_tester RENAME CONSTRAINT dna_match_pkey TO ancestry_tester_pkey;
-ALTER TABLE ancestry_tester RENAME CONSTRAINT dna_match_person_fkey TO ancestry_tester_person_fkey;
+ALTER TABLE ancestry_tester RENAME CONSTRAINT dna_match_person_id_fkey TO ancestry_tester_person_fkey;
 
 -- Rename indexes
 ALTER INDEX IF EXISTS idx_dna_match_name RENAME TO idx_ancestry_tester_name;
@@ -179,8 +179,10 @@ DROP TABLE IF EXISTS tree_relationship;
 -- Your DNA test ID: e756de6c-0c8d-443b-8793-addb6f35fd6a
 -- Note: person_id left NULL since person 1 doesn't exist in this DB
 
-INSERT INTO ancestry_tester (dna_test_id, name, person_id, created_at)
-VALUES ('e756de6c-0c8d-443b-8793-addb6f35fd6a', 'Chris Worthington', NULL, CURRENT_TIMESTAMP)
+-- Only insert if person 1 exists (dev database has data, scratch is empty)
+INSERT INTO ancestry_tester (dna_test_id, name, matched_to_person_id, person_id, created_at)
+SELECT 'e756de6c-0c8d-443b-8793-addb6f35fd6a', 'Chris Worthington', 1, NULL, CURRENT_TIMESTAMP
+WHERE EXISTS (SELECT 1 FROM person WHERE id = 1)
 ON CONFLICT (dna_test_id) DO NOTHING;
 
 -- ============================================
@@ -188,23 +190,53 @@ ON CONFLICT (dna_test_id) DO NOTHING;
 -- ============================================
 
 -- Migrate from old dna_match table if shared_cm data exists
-INSERT INTO ancestry_dna_match (tester_1_id, tester_2_id, shared_cm, shared_segments, predicted_relationship, match_side, created_at)
-SELECT 
-    CASE WHEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' < at.dna_test_id 
-         THEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' 
-         ELSE at.dna_test_id END,
-    CASE WHEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' < at.dna_test_id 
-         THEN at.dna_test_id 
-         ELSE 'e756de6c-0c8d-443b-8793-addb6f35fd6a' END,
-    at.shared_cm,
-    at.shared_segments,
-    at.predicted_relationship,
-    at.match_side,
-    at.created_at
-FROM ancestry_tester at
-WHERE at.dna_test_id != 'e756de6c-0c8d-443b-8793-addb6f35fd6a'
-  AND at.shared_cm IS NOT NULL
-ON CONFLICT (tester_1_id, tester_2_id) DO NOTHING;
+-- Note: match_side column may not exist in V2's schema, use NULL
+DO $$
+DECLARE
+    has_match_side BOOLEAN;
+BEGIN
+    SELECT EXISTS (
+        SELECT FROM information_schema.columns
+        WHERE table_name = 'ancestry_tester' AND column_name = 'match_side'
+    ) INTO has_match_side;
+
+    IF has_match_side THEN
+        INSERT INTO ancestry_dna_match (tester_1_id, tester_2_id, shared_cm, shared_segments, predicted_relationship, match_side, created_at)
+        SELECT
+            CASE WHEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' < at.dna_test_id
+                 THEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a'
+                 ELSE at.dna_test_id END,
+            CASE WHEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' < at.dna_test_id
+                 THEN at.dna_test_id
+                 ELSE 'e756de6c-0c8d-443b-8793-addb6f35fd6a' END,
+            at.shared_cm,
+            at.shared_segments,
+            at.predicted_relationship,
+            at.match_side,
+            at.created_at
+        FROM ancestry_tester at
+        WHERE at.dna_test_id != 'e756de6c-0c8d-443b-8793-addb6f35fd6a'
+          AND at.shared_cm IS NOT NULL
+        ON CONFLICT (tester_1_id, tester_2_id) DO NOTHING;
+    ELSE
+        INSERT INTO ancestry_dna_match (tester_1_id, tester_2_id, shared_cm, shared_segments, predicted_relationship, created_at)
+        SELECT
+            CASE WHEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' < at.dna_test_id
+                 THEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a'
+                 ELSE at.dna_test_id END,
+            CASE WHEN 'e756de6c-0c8d-443b-8793-addb6f35fd6a' < at.dna_test_id
+                 THEN at.dna_test_id
+                 ELSE 'e756de6c-0c8d-443b-8793-addb6f35fd6a' END,
+            at.shared_cm,
+            at.shared_segments,
+            at.predicted_relationship,
+            at.created_at
+        FROM ancestry_tester at
+        WHERE at.dna_test_id != 'e756de6c-0c8d-443b-8793-addb6f35fd6a'
+          AND at.shared_cm IS NOT NULL
+        ON CONFLICT (tester_1_id, tester_2_id) DO NOTHING;
+    END IF;
+END $$;
 
 -- ============================================
 -- STEP 13: Remove relationship columns from ancestry_tester
