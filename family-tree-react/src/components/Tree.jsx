@@ -36,8 +36,8 @@ function Tree() {
         const rootIdNum = parseInt(id)
 
         Promise.all([
-            fetch('http://localhost:3200/api/persons/' + id + '/descendants').then(res => res.json()),
-            fetch('http://localhost:3200/api/persons/' + id).then(res => res.json())
+            fetch('http://localhost:3200/api/person/' + id + '/descendants').then(res => res.json()),
+            fetch('http://localhost:3200/api/person/' + id).then(res => res.json())
         ])
             .then(function(results) {
                 const descendants = results[0]
