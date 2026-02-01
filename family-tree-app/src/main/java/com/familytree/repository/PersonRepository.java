@@ -174,18 +174,41 @@ public class PersonRepository {
                      java.time.LocalDate birthDate, Integer birthYearApprox, String birthPlace,
                      java.time.LocalDate deathDate, Integer deathYearApprox, String deathPlace,
                      String gender, String notes, Long fatherId, Long motherId, Integer treeId) {
-        String sql = """
-            INSERT INTO person (first_name, middle_names, surname, birth_surname,
-                               birth_date, birth_year_approx, birth_place,
-                               death_date, death_year_approx, death_place,
-                               gender, notes, father_id, mother_id, tree_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            RETURNING id
-            """;
-        return jdbc.queryForObject(sql, Long.class, firstName, middleNames, surname, birthSurname,
-                                   birthDate != null ? java.sql.Date.valueOf(birthDate) : null, birthYearApprox, birthPlace,
-                                   deathDate != null ? java.sql.Date.valueOf(deathDate) : null, deathYearApprox, deathPlace,
-                                   gender, notes, fatherId, motherId, treeId);
+        return save(null, firstName, middleNames, surname, birthSurname, birthDate, birthYearApprox,
+                    birthPlace, deathDate, deathYearApprox, deathPlace, gender, notes, fatherId, motherId, treeId);
+    }
+
+    public Long save(Long id, String firstName, String middleNames, String surname, String birthSurname,
+                     java.time.LocalDate birthDate, Integer birthYearApprox, String birthPlace,
+                     java.time.LocalDate deathDate, Integer deathYearApprox, String deathPlace,
+                     String gender, String notes, Long fatherId, Long motherId, Integer treeId) {
+        if (id != null) {
+            String sql = """
+                INSERT INTO person (id, first_name, middle_names, surname, birth_surname,
+                                   birth_date, birth_year_approx, birth_place,
+                                   death_date, death_year_approx, death_place,
+                                   gender, notes, father_id, mother_id, tree_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                RETURNING id
+                """;
+            return jdbc.queryForObject(sql, Long.class, id, firstName, middleNames, surname, birthSurname,
+                                       birthDate != null ? java.sql.Date.valueOf(birthDate) : null, birthYearApprox, birthPlace,
+                                       deathDate != null ? java.sql.Date.valueOf(deathDate) : null, deathYearApprox, deathPlace,
+                                       gender, notes, fatherId, motherId, treeId);
+        } else {
+            String sql = """
+                INSERT INTO person (first_name, middle_names, surname, birth_surname,
+                                   birth_date, birth_year_approx, birth_place,
+                                   death_date, death_year_approx, death_place,
+                                   gender, notes, father_id, mother_id, tree_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                RETURNING id
+                """;
+            return jdbc.queryForObject(sql, Long.class, firstName, middleNames, surname, birthSurname,
+                                       birthDate != null ? java.sql.Date.valueOf(birthDate) : null, birthYearApprox, birthPlace,
+                                       deathDate != null ? java.sql.Date.valueOf(deathDate) : null, deathYearApprox, deathPlace,
+                                       gender, notes, fatherId, motherId, treeId);
+        }
     }
 
     public void update(Long id, String firstName, String middleNames, String surname, String birthSurname,

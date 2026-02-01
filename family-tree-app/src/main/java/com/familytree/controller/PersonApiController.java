@@ -168,6 +168,7 @@ public class PersonApiController {
     // ========== HELPER METHODS ==========
 
     private Long savePerson(Map<String, Object> body, Long fatherId, Long motherId, Integer treeId) {
+        Long id = body.get("id") != null ? ((Number) body.get("id")).longValue() : null;
         String firstName = (String) body.get("firstName");
         if (firstName == null) firstName = (String) body.get("forename");
         String middleNames = (String) body.get("middleNames");
@@ -185,7 +186,7 @@ public class PersonApiController {
         Integer deathYear = deathDate == null && body.get("deathYear") != null
             ? ((Number) body.get("deathYear")).intValue() : null;
 
-        return personRepository.save(firstName, middleNames, surname, birthSurname,
+        return personRepository.save(id, firstName, middleNames, surname, birthSurname,
                                      birthDate, birthYear, birthPlace,
                                      deathDate, deathYear, deathPlace,
                                      gender, notes, fatherId, motherId, treeId);
