@@ -45,18 +45,18 @@ public class StatsApiController {
             WITH RECURSIVE descendants AS (
                 -- Base case: direct children of each person
                 SELECT
-                    COALESCE(parent_1_id, parent_2_id) AS ancestor_id,
+                    COALESCE(father_id, mother_id) AS ancestor_id,
                     id AS descendant_id
                 FROM person
-                WHERE parent_1_id IS NOT NULL OR parent_2_id IS NOT NULL
+                WHERE father_id IS NOT NULL OR mother_id IS NOT NULL
 
                 UNION
 
                 SELECT
-                    parent_2_id AS ancestor_id,
+                    mother_id AS ancestor_id,
                     id AS descendant_id
                 FROM person
-                WHERE parent_1_id IS NOT NULL AND parent_2_id IS NOT NULL
+                WHERE father_id IS NOT NULL AND mother_id IS NOT NULL
 
                 UNION
 
@@ -65,7 +65,7 @@ public class StatsApiController {
                     d.ancestor_id,
                     p.id AS descendant_id
                 FROM descendants d
-                JOIN person p ON p.parent_1_id = d.descendant_id OR p.parent_2_id = d.descendant_id
+                JOIN person p ON p.father_id = d.descendant_id OR p.mother_id = d.descendant_id
             ),
             ancestor_counts AS (
                 SELECT

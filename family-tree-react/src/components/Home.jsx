@@ -13,7 +13,7 @@ function Home() {
         ])
             .then(([statsData, ancestorsData]) => {
                 setStats(statsData)
-                setTopAncestors(ancestorsData)
+                setTopAncestors(Array.isArray(ancestorsData) ? ancestorsData : [])
                 setLoading(false)
             })
             .catch(err => {
