@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import MatchCard from './MatchCard';
 
 const API_BASE = 'http://localhost:3200';
 const MY_PERSON_ID = '1000';
@@ -41,7 +42,6 @@ function DNA() {
         loadMatches(0);
     }, [loadMatches]);
 
-    // Intersection Observer for infinite scroll
     const lastRowRef = useCallback(node => {
         if (loadingMore) return;
         if (observerRef.current) observerRef.current.disconnect();
@@ -62,29 +62,16 @@ function DNA() {
             <h1>DNA Matches</h1>
             <p>{matches.length} matches loaded</p>
 
-            <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Shared cM</th>
-                    <th>Relationship</th>
-                    <th>Side</th>
-                </tr>
-                </thead>
-                <tbody>
+            <div className="match-list">
                 {matches.map((match, index) => (
-                    <tr
+                    <div
                         key={match.dnaTestId}
                         ref={index === matches.length - 1 ? lastRowRef : null}
                     >
-                        <td>{match.name}</td>
-                        <td>{match.sharedCm}</td>
-                        <td>{match.predictedRelationship || '-'}</td>
-                        <td>{match.matchSide || '-'}</td>
-                    </tr>
+                        <MatchCard match={match} />
+                    </div>
                 ))}
-                </tbody>
-            </table>
+            </div>
 
             {loadingMore && <p>Loading more...</p>}
             {!hasMore && <p>That's all of them!</p>}

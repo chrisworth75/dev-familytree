@@ -50,10 +50,11 @@ public class TreeService {
                     (Integer) rs.getObject("death_year_approx"),
                     rs.getString("death_place"),
                     rs.getString("gender"),
-                    rs.getObject("parent_1_id") != null ? rs.getLong("parent_1_id") : null,
-                    rs.getObject("parent_2_id") != null ? rs.getLong("parent_2_id") : null,
+                    rs.getObject("father_id") != null ? rs.getLong("father_id") : null,
+                    rs.getObject("mother_id") != null ? rs.getLong("mother_id") : null,
                     rs.getString("notes"),
-                    (Integer) rs.getObject("tree_id")
+                    (Integer) rs.getObject("tree_id"),
+                    rs.getString("avatar_path")
                 );
             },
             treeId

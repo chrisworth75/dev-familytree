@@ -17,7 +17,8 @@ public record Person(
     Long parent1Id,
     Long parent2Id,
     String notes,
-    Integer treeId
+    Integer treeId,
+    String avatarPath
 ) {
     public String fullName() {
         StringBuilder sb = new StringBuilder();

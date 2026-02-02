@@ -32,7 +32,8 @@ public class PersonRepository {
             rs.getObject("father_id") != null ? rs.getLong("father_id") : null,
             rs.getObject("mother_id") != null ? rs.getLong("mother_id") : null,
             rs.getString("notes"),
-            (Integer) rs.getObject("tree_id")
+            (Integer) rs.getObject("tree_id"),
+            rs.getString("avatar_path")
         );
     };
 
@@ -58,19 +59,19 @@ public class PersonRepository {
             WITH RECURSIVE ancestors AS (
                 SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
-                       father_id, mother_id, notes, tree_id, 1 as generation
+                       father_id, mother_id, notes, tree_id, avatar_path, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
-                       p.father_id, p.mother_id, p.notes, p.tree_id, a.generation + 1
+                       p.father_id, p.mother_id, p.notes, p.tree_id, p.avatar_path, a.generation + 1
                 FROM person p
                 JOIN ancestors a ON p.id = a.father_id OR p.id = a.mother_id
                 WHERE a.generation < ?
             )
             SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
-                   father_id, mother_id, notes, tree_id
+                   father_id, mother_id, notes, tree_id, avatar_path
             FROM ancestors
             WHERE generation > 1
             ORDER BY generation, surname, first_name
@@ -83,19 +84,19 @@ public class PersonRepository {
             WITH RECURSIVE descendants AS (
                 SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
-                       father_id, mother_id, notes, tree_id, 1 as generation
+                       father_id, mother_id, notes, tree_id, avatar_path, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
                 SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
-                       p.father_id, p.mother_id, p.notes, p.tree_id, d.generation + 1
+                       p.father_id, p.mother_id, p.notes, p.tree_id, p.avatar_path, d.generation + 1
                 FROM person p
                 JOIN descendants d ON p.father_id = d.id OR p.mother_id = d.id
                 WHERE d.generation < ?
             )
             SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
-                   father_id, mother_id, notes, tree_id
+                   father_id, mother_id, notes, tree_id, avatar_path
             FROM descendants
             WHERE generation > 1
             ORDER BY generation, surname, first_name

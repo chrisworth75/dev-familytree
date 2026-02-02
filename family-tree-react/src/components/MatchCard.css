@@ -1,0 +1,65 @@
+.match-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color 0.15s;
+}
+
+.match-card:hover {
+    background-color: #f9fafb;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #d1d5db;
+    color: #374151;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.match-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.match-name {
+    font-weight: 500;
+    color: #111827;
+}
+
+.match-side {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.match-indicators {
+    display: flex;
+    gap: 24px;
+}
+
+.indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.indicator-label {
+    font-size: 11px;
+    color: #6b7280;
+}

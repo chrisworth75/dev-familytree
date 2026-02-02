@@ -27,19 +27,20 @@ public class DnaMatchApiController {
             @RequestParam(required = false) Double minCm,
             @RequestParam(required = false) String side,
             @RequestParam(required = false) Boolean linked,
-            @RequestParam(defaultValue = "100") int limit) {
+            @RequestParam(defaultValue = "100") int limit,
+            @RequestParam(defaultValue = "0") int offset) {
 
         List<DnaMatch> matches;
         int maxLimit = Math.min(limit, 500);
 
         if (minCm != null) {
-            matches = dnaMatchRepository.findByMinCm(minCm, maxLimit);
+            matches = dnaMatchRepository.findByMinCm(minCm, maxLimit, offset);
         } else if (side != null) {
-            matches = dnaMatchRepository.findByMatchSide(side, maxLimit);
+            matches = dnaMatchRepository.findByMatchSide(side, maxLimit, offset);
         } else if (Boolean.TRUE.equals(linked)) {
-            matches = dnaMatchRepository.findLinked(maxLimit);
+            matches = dnaMatchRepository.findLinked(maxLimit, offset);
         } else {
-            matches = dnaMatchRepository.findAll(maxLimit);
+            matches = dnaMatchRepository.findAll(maxLimit, offset);
         }
 
         return ResponseEntity.ok(matches);
@@ -79,8 +80,9 @@ public class DnaMatchApiController {
         Integer adminLevel = body.get("adminLevel") != null ? ((Number) body.get("adminLevel")).intValue() : null;
         String notes = (String) body.get("notes");
         Long personId = body.get("personId") != null ? ((Number) body.get("personId")).longValue() : null;
+        Integer generationDepth = body.get("generationDepth") != null ? ((Number) body.get("generationDepth")).intValue() : null;
 
-        dnaMatchRepository.saveTester(dnaTestId, name, hasTree, treeSize, adminLevel, notes, personId);
+        dnaMatchRepository.saveTester(dnaTestId, name, hasTree, treeSize, adminLevel, notes, personId, generationDepth);
 
         Map<String, Object> created = dnaMatchRepository.findTesterById(dnaTestId);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
