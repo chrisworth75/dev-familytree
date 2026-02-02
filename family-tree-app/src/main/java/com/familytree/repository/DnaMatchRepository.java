@@ -24,7 +24,8 @@ public class DnaMatchRepository {
             rs.getObject("has_tree") != null ? rs.getBoolean("has_tree") : null,
             rs.getObject("tree_size") != null ? rs.getInt("tree_size") : null,
             rs.getObject("person_id") != null ? rs.getLong("person_id") : null,
-            rs.getObject("generation_depth") != null ? rs.getInt("generation_depth") : null
+            rs.getObject("generation_depth") != null ? rs.getInt("generation_depth") : null,
+            rs.getString("avatar_path")
     );
 
     public DnaMatchRepository(JdbcTemplate jdbc) {
@@ -113,6 +114,11 @@ public class DnaMatchRepository {
         jdbc.update("DELETE FROM ancestry_dna_match WHERE tester_1_id = ? OR tester_2_id = ?",
                 dnaTestId, dnaTestId);
         jdbc.update("DELETE FROM ancestry_tester WHERE dna_test_id = ?", dnaTestId);
+    }
+
+    public void updateAvatarPath(String dnaTestId, String avatarPath) {
+        jdbc.update("UPDATE ancestry_tester SET avatar_path = ?, updated_at = CURRENT_TIMESTAMP WHERE dna_test_id = ?",
+                avatarPath, dnaTestId);
     }
 
     // ========== DNA MATCH OPERATIONS ==========

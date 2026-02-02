@@ -11,5 +11,7 @@ public record DnaMatch(
     String matchSide,
     Boolean hasTree,
     Integer treeSize,
-    Long personId
+    Long personId,
+    Integer generationDepth,
+    String avatarPath
 ) {}

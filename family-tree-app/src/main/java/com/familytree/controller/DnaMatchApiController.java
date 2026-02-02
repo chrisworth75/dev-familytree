@@ -5,6 +5,13 @@ import com.familytree.repository.DnaMatchRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -53,6 +60,47 @@ public class DnaMatchApiController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(match);
+    }
+
+    @PostMapping("/match/{dnaTestId}/avatar")
+    public ResponseEntity<DnaMatch> uploadAvatar(
+            @PathVariable String dnaTestId,
+            @RequestParam("avatar") MultipartFile file) {
+
+        if (dnaMatchRepository.findTesterById(dnaTestId) == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            // Create uploads directory if needed
+            Path uploadDir = Paths.get("uploads/avatars");
+            Files.createDirectories(uploadDir);
+
+            // Generate unique filename
+            String extension = getFileExtension(file.getOriginalFilename());
+            String filename = UUID.randomUUID().toString() + extension;
+            Path filePath = uploadDir.resolve(filename);
+
+            // Save file
+            Files.copy(file.getInputStream(), filePath);
+
+            // Update database with relative path
+            String avatarPath = "avatars/" + filename;
+            dnaMatchRepository.updateAvatarPath(dnaTestId, avatarPath);
+
+            // Return updated match
+            DnaMatch updated = dnaMatchRepository.findByDnaTestId(dnaTestId);
+            return ResponseEntity.ok(updated);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private String getFileExtension(String filename) {
+        if (filename == null) return ".jpg";
+        int lastDot = filename.lastIndexOf('.');
+        return lastDot > 0 ? filename.substring(lastDot) : ".jpg";
     }
 
     // ========== DNA TESTERS ==========
