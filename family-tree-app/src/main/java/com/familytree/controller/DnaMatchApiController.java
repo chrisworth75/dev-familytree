@@ -34,13 +34,16 @@ public class DnaMatchApiController {
             @RequestParam(required = false) Double minCm,
             @RequestParam(required = false) String side,
             @RequestParam(required = false) Boolean linked,
+            @RequestParam(required = false) Boolean hasAvatar,
             @RequestParam(defaultValue = "100") int limit,
             @RequestParam(defaultValue = "0") int offset) {
 
         List<DnaMatch> matches;
         int maxLimit = Math.min(limit, 500);
 
-        if (minCm != null) {
+        if (Boolean.TRUE.equals(hasAvatar)) {
+            matches = dnaMatchRepository.findWithAvatar(maxLimit, offset);
+        } else if (minCm != null) {
             matches = dnaMatchRepository.findByMinCm(minCm, maxLimit, offset);
         } else if (side != null) {
             matches = dnaMatchRepository.findByMatchSide(side, maxLimit, offset);

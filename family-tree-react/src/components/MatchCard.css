@@ -30,6 +30,22 @@
     font-size: 14px;
 }
 
+.avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.avatar-linked-icon {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    padding: 2px;
+}
+
 .match-info {
     flex: 1;
     display: flex;

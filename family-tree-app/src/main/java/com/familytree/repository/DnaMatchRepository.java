@@ -66,6 +66,14 @@ public class DnaMatchRepository {
         );
     }
 
+    public List<DnaMatch> findWithAvatar(int limit, int offset) {
+        return jdbc.query(
+                "SELECT * FROM my_dna_matches WHERE avatar_path IS NOT NULL ORDER BY shared_cm DESC LIMIT ? OFFSET ?",
+                MATCH_MAPPER,
+                limit, offset
+        );
+    }
+
     public DnaMatch findByDnaTestId(String dnaTestId) {
         List<DnaMatch> results = jdbc.query(
                 "SELECT * FROM my_dna_matches WHERE dna_test_id = ?",

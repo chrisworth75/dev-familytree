@@ -13,9 +13,16 @@ function MatchDetail() {
 
     useEffect(() => {
         fetch(`${API_BASE}/api/match/${dnaTestId}`)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) return null;
+                return res.json();
+            })
             .then(data => {
                 setMatch(data);
+                setLoading(false);
+            })
+            .catch(() => {
+                setMatch(null);
                 setLoading(false);
             });
     }, [dnaTestId]);
@@ -54,7 +61,7 @@ function MatchDetail() {
                     style={{ cursor: 'pointer' }}
                 >
                     {match.avatarPath ? (
-                        <img src={`/uploads/${match.avatarPath}`} alt={match.name} />
+                        <img src={`${API_BASE}/uploads/${match.avatarPath}`} alt={match.name} />
                     ) : (
                         <div className="avatar-placeholder">
                             <span>Click to upload</span>

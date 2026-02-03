@@ -10,17 +10,20 @@ function DNA() {
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [avatarOnly, setAvatarOnly] = useState(false);
     const observerRef = useRef();
 
-    const loadMatches = useCallback(async (offset = 0) => {
+    const loadMatches = useCallback(async (offset = 0, filterAvatarOnly = false) => {
         const isInitial = offset === 0;
         if (isInitial) setLoading(true);
         else setLoadingMore(true);
 
         try {
-            const res = await fetch(
-                `${API_BASE}/api/match?person_id=${MY_PERSON_ID}&limit=${PAGE_SIZE}&offset=${offset}`
-            );
+            let url = `${API_BASE}/api/match?person_id=${MY_PERSON_ID}&limit=${PAGE_SIZE}&offset=${offset}`;
+            if (filterAvatarOnly) {
+                url += '&hasAvatar=true';
+            }
+            const res = await fetch(url);
             const data = await res.json();
 
             if (isInitial) {
@@ -39,8 +42,15 @@ function DNA() {
     }, []);
 
     useEffect(() => {
-        loadMatches(0);
-    }, [loadMatches]);
+        loadMatches(0, avatarOnly);
+    }, [loadMatches, avatarOnly]);
+
+    const handleAvatarFilterChange = (e) => {
+        const checked = e.target.checked;
+        setAvatarOnly(checked);
+        setMatches([]);
+        setHasMore(true);
+    };
 
     const lastRowRef = useCallback(node => {
         if (loadingMore) return;
@@ -48,12 +58,12 @@ function DNA() {
 
         observerRef.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
-                loadMatches(matches.length);
+                loadMatches(matches.length, avatarOnly);
             }
         });
 
         if (node) observerRef.current.observe(node);
-    }, [loadingMore, hasMore, matches.length, loadMatches]);
+    }, [loadingMore, hasMore, matches.length, loadMatches, avatarOnly]);
 
     if (loading) return <div className="page">Loading...</div>;
 
@@ -61,6 +71,15 @@ function DNA() {
         <div className="page">
             <h1>DNA Matches</h1>
             <p>{matches.length} matches loaded</p>
+
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
+                <input
+                    type="checkbox"
+                    checked={avatarOnly}
+                    onChange={handleAvatarFilterChange}
+                />
+                Show only matches with photos
+            </label>
 
             <div className="match-list">
                 {matches.map((match, index) => (

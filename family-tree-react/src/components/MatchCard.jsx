@@ -9,8 +9,10 @@ import gen5 from '../assets/gen-5.svg';
 import gen6 from '../assets/gen-6.svg';
 import gen7 from '../assets/gen-7.svg';
 import gen8 from '../assets/gen-8.svg';
+import treeIcon from '../assets/tree-icon.svg';
 
 const genIcons = [null, gen1, gen2, gen3, gen4, gen5, gen6, gen7, gen8];
+const API_BASE = 'http://localhost:3200';
 
 function SharedCmIndicator({ cm }) {
     const thresholds = [20, 50, 100, 200, 400, 850, 1700];
@@ -54,20 +56,21 @@ function GenerationDepth({ generations }) {
     );
 }
 
-function Avatar({ name, avatarPath }) {
-    if (avatarPath) {
-        return <img src={`/uploads/${avatarPath}`} alt={name} className="avatar" />;
-    }
+function Avatar({ name, avatarPath, isLinked }) {
+    const avatarElement = avatarPath ? (
+        <img src={`${API_BASE}/uploads/${avatarPath}`} alt={name} className="avatar" />
+    ) : (
+        <div className="avatar avatar-initials">
+            {name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+        </div>
+    );
 
-    // Initials fallback
-    const initials = name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
-        .slice(0, 2)
-        .toUpperCase();
-
-    return <div className="avatar avatar-initials">{initials}</div>;
+    return (
+        <div className="avatar-wrapper">
+            {avatarElement}
+            {isLinked && <img src={treeIcon} alt="Linked" className="avatar-linked-icon" />}
+        </div>
+    );
 }
 
 function formatSide(side) {
@@ -82,7 +85,7 @@ function MatchCard({ match }) {
 
     return (
         <Link to={`/dna/match/${match.dnaTestId}`} className="match-card">
-            <Avatar name={match.name} avatarPath={match.avatarPath} />
+            <Avatar name={match.name} avatarPath={match.avatarPath} isLinked={match.personId != null} />
 
             <div className="match-info">
                 <span className="match-name">{match.name}</span>
