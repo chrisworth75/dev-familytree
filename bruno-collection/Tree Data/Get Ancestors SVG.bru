@@ -1,0 +1,33 @@
+meta {
+  name: Get Ancestors SVG
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/ancestors/{{personId}}
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 10
+}
+
+docs {
+  Get ancestors of a person rendered as an SVG tree image.
+  Internally calls TreeDataService and pipes to D3 tree rendering service.
+
+  Query parameters:
+  - maxDepth: Maximum depth of ancestors (default: 10, max: 20)
+
+  Returns: image/svg+xml
+
+  Error responses:
+  - 404: Person not found
+  - 502: D3 rendering service unavailable
+
+  Useful test IDs:
+  - 1000 - Chris (4+ generations of ancestors)
+  - 100 - Hugo (5+ generations of ancestors)
+}

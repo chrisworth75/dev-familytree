@@ -1,0 +1,36 @@
+meta {
+  name: Get MRCA SVG
+  type: http
+  seq: 12
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/mrca?personA={{personA}}&personB={{personB}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  personA: 1000
+  personB: 1001
+}
+
+docs {
+  Get the MRCA path between two people rendered as an SVG tree image.
+  Internally calls TreeDataService and pipes to D3 tree rendering service.
+
+  Query parameters:
+  - personA: ID of first person
+  - personB: ID of second person
+
+  Returns: image/svg+xml
+
+  Error responses:
+  - 404: Person not found or no common ancestor
+  - 502: D3 rendering service unavailable
+
+  Example queries:
+  - Siblings: personA=1000 (Chris), personB=1001 (Tim) -> MRCA is Jonathan
+  - Cousins: personA=1000 (Chris), personB=900200 (Bruce) -> MRCA is Arthur Gordon
+  - Uncle/nephew: personA=1000 (Chris), personB=31 (Bryan) -> MRCA is Constance
+}
