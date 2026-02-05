@@ -1,0 +1,40 @@
+meta {
+  name: Get Descendants Tree
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/tree-data/person/{{personId}}/descendants
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 10
+}
+
+docs {
+  Get all descendants of a person as a nested tree structure.
+  Uses fullName() to include middle names in the display.
+
+  Query parameters:
+  - maxDepth: Maximum depth of descendants (default: 10, max: 20)
+
+  Returns TreeNode structure:
+  {
+    "id": 3002,
+    "name": "Arthur Gordon Lonsdale Worthington",
+    "dates": "1897-1972",
+    "gender": "M",
+    "avatarPath": null,
+    "spouse": "Marjorie Worthington",
+    "spouseId": 3003,
+    "children": [...]
+  }
+
+  Useful test IDs:
+  - 3002 - Arthur Gordon (has multiple generations)
+  - 4005 - Constance Mary (great-grandmother)
+  - 1000 - Chris (has 2 children)
+}

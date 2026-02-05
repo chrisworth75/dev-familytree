@@ -1,0 +1,46 @@
+meta {
+  name: Get MRCA Path
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/tree-data/mrca?personA={{personA}}&personB={{personB}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  personA: 1000
+  personB: 1001
+}
+
+docs {
+  Find the Most Recent Common Ancestor (MRCA) of two people.
+  Returns a tree with the MRCA as root and paths to both people.
+
+  Query parameters:
+  - personA: ID of first person
+  - personB: ID of second person
+
+  Returns TreeNode with MRCA as root:
+  {
+    "id": 2001,
+    "name": "Jonathan P Worthington",
+    "dates": "1943-",
+    "gender": "M",
+    "children": [
+      { "id": 1000, "name": "Chris Worthington", ... },
+      { "id": 1001, "name": "Timothy Jonathon Patrick Worthington", ... }
+    ]
+  }
+
+  Example queries:
+  - Siblings: personA=1000 (Chris), personB=1001 (Tim) -> MRCA is Jonathan
+  - Cousins: personA=1000 (Chris), personB=900200 (Bruce) -> MRCA is Arthur Gordon
+  - Uncle/nephew: personA=1000 (Chris), personB=31 (Bryan) -> MRCA is Constance
+
+  Returns 404 if:
+  - Either person doesn't exist
+  - No common ancestor found (unrelated people)
+}
