@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: family-tree-app
+
+  # H2 In-Memory Database for Tests
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  # Disable Flyway for tests (use schema.sql or JPA auto-ddl)
+  flyway:
+    enabled: false
+
+  # JPA/Hibernate
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Thymeleaf
+  thymeleaf:
+    cache: false
+
+  # Security
+  security:
+    user:
+      name: testuser
+      password: testpass
+
+server:
+  port: 0
+
+logging:
+  level:
+    com.familytree: DEBUG
+    org.springframework.security: WARN
+    org.hibernate.SQL: DEBUG
+
+# Minimal tree config for tests
+familytree:
+  trees:
+    - slug: test-tree
+      displayName: Test Family
+      subtitle: Test Location
+      initials: TF
+      avatarColor: blue
+      personCount: 1
+      rootPersonId: 1
+      allowedUsers:
+        - testuser
