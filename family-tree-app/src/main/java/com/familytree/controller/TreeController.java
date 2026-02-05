@@ -45,22 +45,6 @@ public class TreeController {
         return "redirect:/family-chart.html?tree=" + slug;
     }
 
-    private String getSvgContent(FamilyTreeConfig tree) {
-        // Try to load static SVG file
-        Resource svgResource = new ClassPathResource("static/trees/" + tree.slug() + ".svg");
-
-        if (svgResource.exists()) {
-            try {
-                return svgResource.getContentAsString(StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                // Fall through to placeholder
-            }
-        }
-
-        // Return placeholder SVG if file doesn't exist
-        return generatePlaceholderSvg(tree);
-    }
-
     @GetMapping(value = "/{slug}/svg", produces = "image/svg+xml")
     public ResponseEntity<String> getTreeSvg(@PathVariable String slug,
                                               @AuthenticationPrincipal UserDetails user) {

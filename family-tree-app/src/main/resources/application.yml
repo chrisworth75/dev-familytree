@@ -1,6 +1,10 @@
 spring:
   application:
     name: family-tree-app
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
@@ -32,6 +36,12 @@ spring:
 
 server:
   port: ${PORT:3200}
+
+# D3 Tree Rendering Service
+d3:
+  tree:
+    service:
+      url: ${D3_TREE_SERVICE_URL:http://localhost:3300}
 
 logging:
   level:
