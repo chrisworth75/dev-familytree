@@ -1,64 +1,21 @@
-import {useParams} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { getDescendantsHierarchy, getPersonImageUrl } from "../services/api";
 
 function Tree() {
     const { id } = useParams()
     const svgRef = useRef()
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [rootName, setRootName] = useState('')
-
-    const buildHierarchy = (flatData, rootId) => {
-        const lookup = {}
-        flatData.forEach(function(p) {
-            lookup[p.id] = {
-                id: p.id,
-                firstName: p.firstName,
-                surname: p.surname,
-                gender: p.gender,
-                name: [p.firstName, p.surname].filter(Boolean).join(' '),
-                children: []
-            }
-        })
-
-        flatData.forEach(function(p) {
-            const parentId = p.parent1Id || p.parent2Id
-            if (parentId && lookup[parentId]) {
-                lookup[parentId].children.push(lookup[p.id])
-            }
-        })
-
-        return lookup[rootId]
-    }
 
     useEffect(() => {
-        const rootIdNum = parseInt(id)
-
-        Promise.all([
-            fetch('http://localhost:3200/api/person/' + id + '/descendants').then(res => res.json()),
-            fetch('http://localhost:3200/api/person/' + id).then(res => res.json())
-        ])
-            .then(function(results) {
-                const descendants = results[0]
-                const rootPerson = results[1].person
-
-                const rootNode = {
-                    id: rootPerson.id,
-                    firstName: rootPerson.firstName,
-                    surname: rootPerson.surname,
-                    gender: rootPerson.gender,
-                    parent1Id: null,
-                    parent2Id: null
-                }
-
-                const allPeople = [rootNode].concat(descendants)
-                const hierarchy = buildHierarchy(allPeople, rootIdNum)
+        getDescendantsHierarchy(id, 10)
+            .then(hierarchy => {
                 setData(hierarchy)
-                setRootName([rootPerson.firstName, rootPerson.surname].filter(Boolean).join(' '))
                 setLoading(false)
             })
-            .catch(function(err) {
+            .catch(err => {
                 console.error(err)
                 setLoading(false)
             })
@@ -133,7 +90,7 @@ function Tree() {
             .attr('fill', function(d) { return d.data.gender === 'F' ? '#e91e63' : '#2196f3' })
 
         nodes.append('image')
-            .attr('href', function(d) { return 'http://localhost:3200/images/' + d.data.id + '.png' })
+            .attr('href', function(d) { return getPersonImageUrl(d.data.id) })
             .attr('x', -12)
             .attr('y', -12)
             .attr('width', 24)
@@ -155,7 +112,7 @@ function Tree() {
 
     return (
         <div className="page">
-            <h1>Descendants of {rootName}</h1>
+            <h1>Descendants of {data.name}</h1>
             <svg ref={svgRef}></svg>
         </div>
     )

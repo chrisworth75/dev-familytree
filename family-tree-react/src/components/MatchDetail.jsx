@@ -2,13 +2,13 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import './MatchDetail.css';
-
-const API_BASE = 'http://localhost:3200';
+import { API_BASE, MY_PERSON_ID } from '../config';
 
 function MatchDetail() {
     const { dnaTestId } = useParams();
     const [match, setMatch] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [mrcaError, setMrcaError] = useState(false);
     const fileInputRef = useRef();
 
     useEffect(() => {
@@ -26,6 +26,10 @@ function MatchDetail() {
                 setLoading(false);
             });
     }, [dnaTestId]);
+
+    useEffect(() => {
+        setMrcaError(false);
+    }, [match?.personId]);
 
     const handleAvatarClick = () => {
         fileInputRef.current.click();
@@ -51,6 +55,10 @@ function MatchDetail() {
 
     if (loading) return <div className="page">Loading...</div>;
     if (!match) return <div className="page">Match not found</div>;
+
+    const mrcaUrl = match.personId
+        ? `${API_BASE}/api/tree-svg/mrca?personA=${MY_PERSON_ID}&personB=${match.personId}`
+        : null;
 
     return (
         <div className="page match-detail">
@@ -78,6 +86,26 @@ function MatchDetail() {
                 />
 
                 <h1>{match.name}</h1>
+            </div>
+
+            <div style={{ marginTop: '2rem' }}>
+                <h2>Common Ancestor Path</h2>
+                {mrcaUrl ? (
+                    mrcaError ? (
+                        <p style={{ color: '#666' }}>No common ancestor found yet</p>
+                    ) : (
+                        <img
+                            src={mrcaUrl}
+                            alt="MRCA tree"
+                            onError={() => setMrcaError(true)}
+                            style={{ maxWidth: '100%', marginTop: '1rem' }}
+                        />
+                    )
+                ) : (
+                    <p style={{ color: '#888', fontStyle: 'italic' }}>
+                        Link this match to a person in the tree to see the ancestor path
+                    </p>
+                )}
             </div>
         </div>
     );

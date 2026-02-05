@@ -1,5 +1,6 @@
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getStats, getTopAncestors, getPersonImageUrl } from "../services/api";
 
 function Home() {
     const [stats, setStats] = useState(null)
@@ -7,10 +8,7 @@ function Home() {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        Promise.all([
-            fetch('http://localhost:3200/api/stats').then(res => res.json()),
-            fetch('http://localhost:3200/api/stats/top-ancestors').then(res => res.json())
-        ])
+        Promise.all([getStats(), getTopAncestors()])
             .then(([statsData, ancestorsData]) => {
                 setStats(statsData)
                 setTopAncestors(Array.isArray(ancestorsData) ? ancestorsData : [])
@@ -53,7 +51,7 @@ function Home() {
                     <Link to={'/tree/' + ancestor.id} key={ancestor.id} className="ancestor-card">
                         <span className="ancestor-rank">#{index + 1}</span>
                         <img
-                            src={'http://localhost:3200/images/' + ancestor.id + '.png'}
+                            src={getPersonImageUrl(ancestor.id)}
                             alt=""
                             className="ancestor-photo"
                             onError={(e) => { e.target.style.display = 'none' }}

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import MatchCard from './MatchCard';
+import { MY_PERSON_ID } from '../config';
+import { getMatches } from '../services/api';
 
-const API_BASE = 'http://localhost:3200';
-const MY_PERSON_ID = '1000';
 const PAGE_SIZE = 50;
 
 function DNA() {
@@ -19,12 +19,7 @@ function DNA() {
         else setLoadingMore(true);
 
         try {
-            let url = `${API_BASE}/api/match?person_id=${MY_PERSON_ID}&limit=${PAGE_SIZE}&offset=${offset}`;
-            if (filterAvatarOnly) {
-                url += '&hasAvatar=true';
-            }
-            const res = await fetch(url);
-            const data = await res.json();
+            const data = await getMatches(MY_PERSON_ID, PAGE_SIZE, offset, filterAvatarOnly);
 
             if (isInitial) {
                 setMatches(data);
