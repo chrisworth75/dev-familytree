@@ -1,0 +1,36 @@
+meta {
+  name: Render MRCA Any Two People
+  type: http
+  seq: 23
+}
+
+post {
+  url: {{d3TreeUrl}}/render
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+script:pre-request {
+  const axios = require('axios');
+  const baseUrl = bru.getEnvVar('baseUrl');
+  const personA = bru.getEnvVar('personA') || '1000';
+  const personB = bru.getEnvVar('personB') || '1001';
+  const response = await axios.get(`${baseUrl}/api/tree-data/mrca?personA=${personA}&personB=${personB}`);
+  req.setBody(response.data);
+}
+
+docs {
+  Render MRCA tree for any two people.
+  Set personA and personB environment variables to the desired person IDs.
+
+  Example pairs:
+  - 1000 & 1001: Chris & Tim (siblings) -> MRCA: Jonathan
+  - 1000 & 31: Chris & Bryan (great-uncle) -> MRCA: Constance/Arthur Goodall
+  - 1000 & 900200: Chris & Bruce (cousins) -> MRCA: Arthur Gordon
+
+  Returns SVG image (Content-Type: image/svg+xml)
+}

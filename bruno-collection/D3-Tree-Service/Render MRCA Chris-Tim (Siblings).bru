@@ -1,0 +1,29 @@
+meta {
+  name: Render MRCA Chris-Tim (Siblings)
+  type: http
+  seq: 20
+}
+
+post {
+  url: {{d3TreeUrl}}/render
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+script:pre-request {
+  const axios = require('axios');
+  const baseUrl = bru.getEnvVar('baseUrl');
+  const response = await axios.get(`${baseUrl}/api/tree-data/mrca?personA=1000&personB=1001`);
+  req.setBody(response.data);
+}
+
+docs {
+  Render MRCA tree for Chris (1000) and Tim (1001) - siblings.
+  MRCA: Jonathan P Worthington
+
+  Returns SVG image showing the path from Jonathan to both siblings.
+}

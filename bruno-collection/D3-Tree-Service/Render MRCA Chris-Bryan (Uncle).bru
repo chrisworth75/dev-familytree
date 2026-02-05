@@ -1,0 +1,32 @@
+meta {
+  name: Render MRCA Chris-Bryan (Uncle)
+  type: http
+  seq: 21
+}
+
+post {
+  url: {{d3TreeUrl}}/render
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+script:pre-request {
+  const axios = require('axios');
+  const baseUrl = bru.getEnvVar('baseUrl');
+  const response = await axios.get(`${baseUrl}/api/tree-data/mrca?personA=1000&personB=31`);
+  req.setBody(response.data);
+}
+
+docs {
+  Render MRCA tree for Chris (1000) and Bryan (31) - great-uncle relationship.
+  MRCA: Constance Mary Worthington (or Arthur Goodall)
+
+  Chris -> Jonathan -> Arthur Gordon -> Constance
+  Bryan -> Constance
+
+  Returns SVG image showing the path through the generations.
+}
