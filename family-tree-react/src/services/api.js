@@ -43,3 +43,7 @@ export async function getMatches(personId, limit, offset, hasAvatar = false) {
 export function getPersonImageUrl(personId) {
     return `${API_BASE}/images/${personId}.png`;
 }
+
+export function getAvatarUrl(avatarPath) {
+    return `/uploads/${avatarPath}`;
+}

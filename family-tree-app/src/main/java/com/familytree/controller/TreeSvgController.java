@@ -56,6 +56,7 @@ public class TreeSvgController {
                 .map(tree -> {
                     try {
                         byte[] svg = treeRenderService.renderToSvg(tree);
+                        svg = overlayAvatarsOnSvg(svg, tree);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
@@ -79,6 +80,7 @@ public class TreeSvgController {
                 .map(tree -> {
                     try {
                         byte[] svg = treeRenderService.renderToSvg(tree);
+                        svg = overlayAvatarsOnSvg(svg, tree);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
@@ -102,15 +104,7 @@ public class TreeSvgController {
                 .map(tree -> {
                     try {
                         byte[] svg = treeRenderService.renderMrcaToSvg(tree);
-
-                        // Build avatar map and overlay images
-                        Map<Long, String> avatarMap = buildAvatarMap(tree);
-                        if (!avatarMap.isEmpty()) {
-                            String svgContent = new String(svg);
-                            svgContent = avatarOverlayService.overlayAvatars(svgContent, avatarMap);
-                            svg = svgContent.getBytes();
-                        }
-
+                        svg = overlayAvatarsOnSvg(svg, tree);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
@@ -118,6 +112,19 @@ public class TreeSvgController {
                     }
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Overlay avatar images onto SVG tree nodes.
+     */
+    private byte[] overlayAvatarsOnSvg(byte[] svg, TreeNode tree) {
+        Map<Long, String> avatarMap = buildAvatarMap(tree);
+        if (!avatarMap.isEmpty()) {
+            String svgContent = new String(svg);
+            svgContent = avatarOverlayService.overlayAvatars(svgContent, avatarMap);
+            return svgContent.getBytes();
+        }
+        return svg;
     }
 
     /**

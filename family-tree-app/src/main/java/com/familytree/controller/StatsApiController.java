@@ -79,6 +79,7 @@ public class StatsApiController {
                 p.id,
                 TRIM(COALESCE(p.first_name, '') || ' ' || COALESCE(p.surname, '')) AS name,
                 COALESCE(EXTRACT(YEAR FROM p.birth_date)::INTEGER, p.birth_year_approx) AS birth_year,
+                p.avatar_path,
                 ac.descendant_count
             FROM ancestor_counts ac
             JOIN person p ON p.id = ac.ancestor_id
@@ -91,6 +92,7 @@ public class StatsApiController {
             row.put("id", rs.getLong("id"));
             row.put("name", rs.getString("name"));
             row.put("birthYear", rs.getObject("birth_year"));
+            row.put("avatarPath", rs.getString("avatar_path"));
             row.put("descendantCount", rs.getLong("descendant_count"));
             return row;
         });

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getStats, getTopAncestors, getPersonImageUrl } from "../services/api";
+import { getStats, getTopAncestors, getAvatarUrl } from "../services/api";
 
 function Home() {
     const [stats, setStats] = useState(null)
@@ -50,12 +50,15 @@ function Home() {
                 {topAncestors.map((ancestor, index) => (
                     <Link to={'/tree/' + ancestor.id} key={ancestor.id} className="ancestor-card">
                         <span className="ancestor-rank">#{index + 1}</span>
-                        <img
-                            src={getPersonImageUrl(ancestor.id)}
-                            alt=""
-                            className="ancestor-photo"
-                            onError={(e) => { e.target.style.display = 'none' }}
-                        />
+                        {ancestor.avatarPath ? (
+                            <img
+                                src={getAvatarUrl(ancestor.avatarPath)}
+                                alt=""
+                                className="ancestor-photo"
+                            />
+                        ) : (
+                            <div className="ancestor-photo ancestor-photo-placeholder" />
+                        )}
                         <span className="ancestor-name">{ancestor.name}</span>
                         {ancestor.birthYear && <span className="ancestor-year">b. {ancestor.birthYear}</span>}
                         <span className="ancestor-count">{ancestor.descendantCount} descendants</span>

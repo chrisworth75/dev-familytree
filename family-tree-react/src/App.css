@@ -108,6 +108,12 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
+}
+
+.ancestor-photo-placeholder {
+    background: var(--color-text-muted);
+    opacity: 0.3;
 }
 
 a.ancestor-card {
