@@ -7,6 +7,7 @@ public record Person(
     String firstName,
     String middleNames,
     String surname,
+    String birthSurname,
     LocalDate birthDate,
     Integer birthYearApprox,
     String birthPlace,
@@ -41,6 +42,31 @@ public record Person(
         String last = surname != null ? surname : "";
         String full = (first + " " + last).trim();
         return full.isEmpty() ? "Unknown" : full;
+    }
+
+    public String displayBirthName() {
+        String first = firstName != null ? firstName : "";
+        String last = (birthSurname != null && !birthSurname.isBlank()) ? birthSurname : surname;
+        last = last != null ? last : "";
+        String full = (first + " " + last).trim();
+        return full.isEmpty() ? "Unknown" : full;
+    }
+
+    public String fullBirthName() {
+        StringBuilder sb = new StringBuilder();
+        if (firstName != null && !firstName.isBlank()) {
+            sb.append(firstName);
+        }
+        if (middleNames != null && !middleNames.isBlank()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(middleNames);
+        }
+        String last = (birthSurname != null && !birthSurname.isBlank()) ? birthSurname : surname;
+        if (last != null && !last.isBlank()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(last);
+        }
+        return sb.length() == 0 ? "Unknown" : sb.toString();
     }
 
     public String lifespan() {

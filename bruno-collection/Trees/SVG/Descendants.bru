@@ -1,0 +1,24 @@
+meta {
+  name: Descendants
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/descendants/{{personId}}
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 10
+}
+
+docs {
+  Descendants tree rendered as SVG image.
+
+  Query params:
+  - maxDepth: Maximum depth (default: 10, max: 20)
+
+  Returns: image/svg+xml
+}

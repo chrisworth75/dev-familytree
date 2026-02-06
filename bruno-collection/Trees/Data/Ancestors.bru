@@ -1,0 +1,27 @@
+meta {
+  name: Ancestors
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/tree-data/person/{{personId}}/ancestors
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 10
+}
+
+docs {
+  Ancestors of a person as nested JSON tree.
+  Parents stored in "children" array for D3 compatibility.
+
+  Query params:
+  - maxDepth: Maximum depth (default: 10, max: 20)
+
+  Test IDs:
+  - 1000 - Chris (4+ generations)
+  - 100 - Hugo (5+ generations)
+}

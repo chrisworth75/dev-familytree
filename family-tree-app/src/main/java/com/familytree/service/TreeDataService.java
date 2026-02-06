@@ -30,7 +30,7 @@ public class TreeDataService {
 
         TreeNode node = new TreeNode(
                 person.id(),
-                person.fullName(),
+                person.fullBirthName(),
                 formatDates(person),
                 detectGender(person),
                 person.avatarPath()
@@ -40,7 +40,7 @@ public class TreeDataService {
         List<Person> spouses = personRepository.findSpouses(person.id());
         if (!spouses.isEmpty()) {
             Person spouse = spouses.get(0);
-            node.setSpouse(spouse.fullName());
+            node.setSpouse(spouse.fullBirthName());
             node.setSpouseId(spouse.id());
         }
 
@@ -79,7 +79,7 @@ public class TreeDataService {
 
         TreeNode node = new TreeNode(
                 person.id(),
-                person.fullName(),
+                person.fullBirthName(),
                 formatDates(person),
                 detectGender(person),
                 person.avatarPath()
@@ -89,7 +89,7 @@ public class TreeDataService {
         List<Person> spouses = personRepository.findSpouses(person.id());
         if (!spouses.isEmpty()) {
             Person spouse = spouses.get(0);
-            node.setSpouse(spouse.fullName());
+            node.setSpouse(spouse.fullBirthName());
             node.setSpouseId(spouse.id());
         }
 
@@ -215,17 +215,21 @@ public class TreeDataService {
 
         List<TreeNode> branches = new ArrayList<>();
 
-        // Path A (skip MRCA which is at the end)
+        // Path A: reverse to go from MRCA's child down to target person (skip MRCA at the end)
         if (pathA.size() > 1) {
-            TreeNode branchA = buildPathBranch(pathA.subList(0, pathA.size() - 1));
+            List<Long> reversedA = new ArrayList<>(pathA.subList(0, pathA.size() - 1));
+            Collections.reverse(reversedA);
+            TreeNode branchA = buildPathBranch(reversedA);
             if (branchA != null) {
                 branches.add(branchA);
             }
         }
 
-        // Path B (skip MRCA which is at the end)
+        // Path B: reverse to go from MRCA's child down to target person (skip MRCA at the end)
         if (pathB.size() > 1) {
-            TreeNode branchB = buildPathBranch(pathB.subList(0, pathB.size() - 1));
+            List<Long> reversedB = new ArrayList<>(pathB.subList(0, pathB.size() - 1));
+            Collections.reverse(reversedB);
+            TreeNode branchB = buildPathBranch(reversedB);
             if (branchB != null) {
                 branches.add(branchB);
             }
@@ -252,7 +256,7 @@ public class TreeDataService {
 
             TreeNode node = new TreeNode(
                     person.id(),
-                    person.fullName(),
+                    person.fullBirthName(),
                     formatDates(person),
                     detectGender(person),
                     person.avatarPath()

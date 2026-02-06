@@ -1,0 +1,26 @@
+meta {
+  name: Descendants
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/tree-data/person/{{personId}}/descendants
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 10
+}
+
+docs {
+  Descendants of a person as nested JSON tree.
+
+  Query params:
+  - maxDepth: Maximum depth (default: 10, max: 20)
+
+  Test IDs:
+  - 3002 - Arthur Gordon (multiple generations)
+  - 1000 - Chris (has 2 children)
+}

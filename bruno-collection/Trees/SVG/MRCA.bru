@@ -1,0 +1,27 @@
+meta {
+  name: MRCA
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/mrca?personA={{personA}}&personB={{personB}}
+  body: none
+  auth: none
+}
+
+vars:pre-request {
+  personA: 1000
+  personB: 1001
+}
+
+docs {
+  MRCA path rendered as SVG image.
+  Shows path from common ancestor down to both people.
+
+  Query params:
+  - personA: First person ID
+  - personB: Second person ID
+
+  Returns: image/svg+xml
+}

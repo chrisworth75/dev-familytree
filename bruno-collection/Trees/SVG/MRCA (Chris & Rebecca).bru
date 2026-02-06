@@ -1,0 +1,18 @@
+meta {
+  name: MRCA (Chris & Rebecca)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/mrca?personA=1000&personB=1002
+  body: none
+  auth: none
+}
+
+docs {
+  MRCA path for Chris (1000) and Rebecca (1002) - siblings.
+  Expected MRCA: Jonathan P Worthington (their father)
+
+  Returns: image/svg+xml
+}

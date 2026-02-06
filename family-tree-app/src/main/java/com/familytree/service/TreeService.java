@@ -43,6 +43,7 @@ public class TreeService {
                     rs.getString("first_name"),
                     rs.getString("middle_names"),
                     rs.getString("surname"),
+                    rs.getString("birth_surname"),
                     birthDate != null ? birthDate.toLocalDate() : null,
                     (Integer) rs.getObject("birth_year_approx"),
                     rs.getString("birth_place"),

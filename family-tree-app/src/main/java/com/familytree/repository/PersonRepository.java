@@ -22,6 +22,7 @@ public class PersonRepository {
             rs.getString("first_name"),
             rs.getString("middle_names"),
             rs.getString("surname"),
+            rs.getString("birth_surname"),
             birthDate != null ? birthDate.toLocalDate() : null,
             (Integer) rs.getObject("birth_year_approx"),
             rs.getString("birth_place"),
@@ -57,19 +58,19 @@ public class PersonRepository {
     public List<Person> findAncestors(Long personId, int maxGenerations) {
         String sql = """
             WITH RECURSIVE ancestors AS (
-                SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+                SELECT id, first_name, middle_names, surname, birth_surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
                        father_id, mother_id, notes, tree_id, avatar_path, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
-                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
+                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
                        p.father_id, p.mother_id, p.notes, p.tree_id, p.avatar_path, a.generation + 1
                 FROM person p
                 JOIN ancestors a ON p.id = a.father_id OR p.id = a.mother_id
                 WHERE a.generation < ?
             )
-            SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+            SELECT id, first_name, middle_names, surname, birth_surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
                    father_id, mother_id, notes, tree_id, avatar_path
             FROM ancestors
@@ -82,19 +83,19 @@ public class PersonRepository {
     public List<Person> findDescendants(Long personId, int maxGenerations) {
         String sql = """
             WITH RECURSIVE descendants AS (
-                SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+                SELECT id, first_name, middle_names, surname, birth_surname, birth_date, birth_year_approx,
                        birth_place, death_date, death_year_approx, death_place, gender,
                        father_id, mother_id, notes, tree_id, avatar_path, 1 as generation
                 FROM person WHERE id = ?
                 UNION ALL
-                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_date, p.birth_year_approx,
+                SELECT p.id, p.first_name, p.middle_names, p.surname, p.birth_surname, p.birth_date, p.birth_year_approx,
                        p.birth_place, p.death_date, p.death_year_approx, p.death_place, p.gender,
                        p.father_id, p.mother_id, p.notes, p.tree_id, p.avatar_path, d.generation + 1
                 FROM person p
                 JOIN descendants d ON p.father_id = d.id OR p.mother_id = d.id
                 WHERE d.generation < ?
             )
-            SELECT id, first_name, middle_names, surname, birth_date, birth_year_approx,
+            SELECT id, first_name, middle_names, surname, birth_surname, birth_date, birth_year_approx,
                    birth_place, death_date, death_year_approx, death_place, gender,
                    father_id, mother_id, notes, tree_id, avatar_path
             FROM descendants

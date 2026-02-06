@@ -1,0 +1,24 @@
+meta {
+  name: Ancestors
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/ancestors/{{personId}}
+  body: none
+  auth: none
+}
+
+params:query {
+  ~maxDepth: 10
+}
+
+docs {
+  Ancestors tree rendered as SVG image.
+
+  Query params:
+  - maxDepth: Maximum depth (default: 10, max: 20)
+
+  Returns: image/svg+xml
+}

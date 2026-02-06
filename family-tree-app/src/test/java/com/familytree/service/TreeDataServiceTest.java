@@ -295,8 +295,9 @@ class TreeDataServiceTest {
                     .filter(n -> n.getName().contains("Arthur Gordon"))
                     .findFirst().orElseThrow();
 
+            // Constance shows with her birth surname (Wrathall), not married name
             assertThat(arthurGordon.getChildren()).extracting(TreeNode::getName)
-                    .contains("Constance Mary Worthington");
+                    .contains("Constance Mary Wrathall");
         }
 
         @Test

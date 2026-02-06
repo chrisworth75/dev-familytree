@@ -69,6 +69,7 @@ public class TreeSvgController {
 
     /**
      * Render the path between two people via their Most Recent Common Ancestor as an SVG tree.
+     * Uses vertical layout with large photo nodes optimised for small MRCA diagrams.
      */
     @GetMapping(value = "/mrca", produces = "image/svg+xml")
     public ResponseEntity<byte[]> getMrcaSvg(
@@ -78,7 +79,7 @@ public class TreeSvgController {
         return treeDataService.buildMrcaPath(personA, personB)
                 .map(tree -> {
                     try {
-                        byte[] svg = treeRenderService.renderToSvg(tree);
+                        byte[] svg = treeRenderService.renderMrcaToSvg(tree);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
