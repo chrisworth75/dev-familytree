@@ -59,6 +59,7 @@ function renderTree(data) {
     .enter()
     .append('g')
     .attr('class', 'node')
+    .attr('data-person-id', d => d.data.id)
     .attr('transform', d => `translate(${d.y},${d.x})`);
 
   nodes.append('circle')
@@ -151,6 +152,7 @@ function renderMrcaTree(data) {
     .enter()
     .append('g')
     .attr('class', 'node')
+    .attr('data-person-id', d => d.data.id)
     .attr('transform', d => `translate(${d.x},${d.y})`);
 
   nodes.each(function(d, i) {

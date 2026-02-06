@@ -6,5 +6,11 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 4202,
+    proxy: {
+      '/uploads': {
+        target: 'http://localhost:3200',
+        changeOrigin: true,
+      },
+    },
   },
 })
