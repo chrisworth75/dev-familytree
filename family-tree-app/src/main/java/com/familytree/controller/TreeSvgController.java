@@ -56,7 +56,7 @@ public class TreeSvgController {
                 .map(tree -> {
                     try {
                         byte[] svg = treeRenderService.renderToSvg(tree);
-                        svg = overlayAvatarsOnSvg(svg, tree);
+                        svg = overlayAvatarsOnSvg(svg, tree, 8);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
@@ -80,7 +80,7 @@ public class TreeSvgController {
                 .map(tree -> {
                     try {
                         byte[] svg = treeRenderService.renderToSvg(tree);
-                        svg = overlayAvatarsOnSvg(svg, tree);
+                        svg = overlayAvatarsOnSvg(svg, tree, 8);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
@@ -104,7 +104,7 @@ public class TreeSvgController {
                 .map(tree -> {
                     try {
                         byte[] svg = treeRenderService.renderMrcaToSvg(tree);
-                        svg = overlayAvatarsOnSvg(svg, tree);
+                        svg = overlayAvatarsOnSvg(svg, tree, 48);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)
@@ -115,16 +115,22 @@ public class TreeSvgController {
     }
 
     /**
-     * Overlay avatar images onto SVG tree nodes.
+     * Post-process SVG: overlay avatars and make nodes clickable.
      */
-    private byte[] overlayAvatarsOnSvg(byte[] svg, TreeNode tree) {
+    private byte[] overlayAvatarsOnSvg(byte[] svg, TreeNode tree, int nodeRadius) {
+        String svgContent = new String(svg);
+
+        // Overlay avatars for persons who have them
         Map<Long, String> avatarMap = buildAvatarMap(tree);
+        log.info("Avatar map size: {} for tree rooted at person {}", avatarMap.size(), tree.getId());
         if (!avatarMap.isEmpty()) {
-            String svgContent = new String(svg);
-            svgContent = avatarOverlayService.overlayAvatars(svgContent, avatarMap);
-            return svgContent.getBytes();
+            svgContent = avatarOverlayService.overlayAvatars(svgContent, avatarMap, nodeRadius);
         }
-        return svg;
+
+        // Make all nodes clickable with hover effects
+        svgContent = avatarOverlayService.makeNodesClickable(svgContent);
+
+        return svgContent.getBytes();
     }
 
     /**

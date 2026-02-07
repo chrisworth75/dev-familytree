@@ -1,9 +1,11 @@
 package com.familytree.controller;
 
 import com.familytree.model.CensusRecord;
+import com.familytree.model.DnaMatch;
 import com.familytree.model.Person;
 import com.familytree.model.PersonUrl;
 import com.familytree.repository.CensusRepository;
+import com.familytree.repository.DnaMatchRepository;
 import com.familytree.repository.PersonRepository;
 import com.familytree.repository.PersonUrlRepository;
 import com.familytree.service.PersonService;
@@ -21,15 +23,18 @@ public class PersonApiController {
     private final CensusRepository censusRepository;
     private final PersonUrlRepository personUrlRepository;
     private final PersonService personService;
+    private final DnaMatchRepository dnaMatchRepository;
 
     public PersonApiController(PersonRepository personRepository,
                                CensusRepository censusRepository,
                                PersonUrlRepository personUrlRepository,
-                               PersonService personService) {
+                               PersonService personService,
+                               DnaMatchRepository dnaMatchRepository) {
         this.personRepository = personRepository;
         this.censusRepository = censusRepository;
         this.personUrlRepository = personUrlRepository;
         this.personService = personService;
+        this.dnaMatchRepository = dnaMatchRepository;
     }
 
     // ========== UPDATE/DELETE ==========
@@ -101,6 +106,30 @@ public class PersonApiController {
                 response.put("spouses", personRepository.findSpouses(id));
                 response.put("children", personRepository.findChildren(id));
                 response.put("siblings", personRepository.findSiblings(id));
+                return ResponseEntity.ok(response);
+            })
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/summary")
+    public ResponseEntity<Map<String, Object>> getPersonSummary(@PathVariable Long id) {
+        return personRepository.findById(id)
+            .map(person -> {
+                Person mother = person.motherId() != null
+                    ? personRepository.findById(person.motherId()).orElse(null) : null;
+                Person father = person.fatherId() != null
+                    ? personRepository.findById(person.fatherId()).orElse(null) : null;
+
+                DnaMatch match = dnaMatchRepository.findMatchByPersonId(id);
+
+                Map<String, Object> response = new LinkedHashMap<>();
+                response.put("person", person);
+                response.put("mother", mother);
+                response.put("father", father);
+                response.put("spouses", personRepository.findSpouses(id));
+                response.put("children", personRepository.findChildren(id));
+                response.put("siblings", personRepository.findSiblings(id));
+                response.put("match", match);
                 return ResponseEntity.ok(response);
             })
             .orElse(ResponseEntity.notFound().build());

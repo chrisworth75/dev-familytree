@@ -108,6 +108,14 @@ public class DnaMatchApiController {
 
     // ========== DNA TESTERS ==========
 
+    @GetMapping("/dna-tester/{dnaTestId}/link-status")
+    public ResponseEntity<Map<String, Object>> getLinkStatus(@PathVariable String dnaTestId) {
+        Long personId = dnaMatchRepository.findTesterPersonId(dnaTestId);
+        Map<String, Object> result = new java.util.LinkedHashMap<>();
+        result.put("personId", personId);
+        return ResponseEntity.ok(result);
+    }
+
     @GetMapping({"/dna-tester/{dnaTestId}", "/dna-testers/{dnaTestId}"})
     public ResponseEntity<Map<String, Object>> getTester(@PathVariable String dnaTestId) {
         Map<String, Object> tester = dnaMatchRepository.findTesterById(dnaTestId);

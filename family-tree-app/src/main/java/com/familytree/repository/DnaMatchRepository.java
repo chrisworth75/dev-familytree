@@ -83,6 +83,21 @@ public class DnaMatchRepository {
         return results.isEmpty() ? null : results.get(0);
     }
 
+    public DnaMatch findMatchByPersonId(Long personId) {
+        List<DnaMatch> results = jdbc.query(
+                "SELECT * FROM my_dna_matches WHERE person_id = ?",
+                MATCH_MAPPER, personId);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public Long findTesterPersonId(String dnaTestId) {
+        List<Long> results = jdbc.query(
+                "SELECT person_id FROM ancestry_tester WHERE dna_test_id = ?",
+                (rs, rowNum) -> rs.getObject("person_id") != null ? rs.getLong("person_id") : null,
+                dnaTestId);
+        return results.isEmpty() ? null : results.get(0);
+    }
+
     // ========== TESTER OPERATIONS ==========
 
     public void saveTester(String dnaTestId, String name, Boolean hasTree, Integer treeSize,

@@ -1,18 +1,23 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
-import { getDescendantsHierarchy, getPersonImageUrl } from "../services/api";
+import { getDescendantsSvg, getDescendantsHierarchy } from "../services/api";
 
 function Tree() {
     const { id } = useParams()
-    const svgRef = useRef()
-    const [data, setData] = useState(null)
+    const containerRef = useRef()
+    const [svgContent, setSvgContent] = useState(null)
+    const [treeName, setTreeName] = useState(null)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        getDescendantsHierarchy(id, 10)
-            .then(hierarchy => {
-                setData(hierarchy)
+        Promise.all([
+            getDescendantsSvg(id, 10),
+            getDescendantsHierarchy(id, 1).then(h => h.name).catch(() => null)
+        ])
+            .then(([svg, name]) => {
+                setSvgContent(svg)
+                setTreeName(name)
                 setLoading(false)
             })
             .catch(err => {
@@ -22,26 +27,19 @@ function Tree() {
     }, [id])
 
     useEffect(() => {
-        if (!data) return
+        if (!svgContent || !containerRef.current) return
 
-        const root = d3.hierarchy(data)
+        const container = containerRef.current
+        container.innerHTML = svgContent
 
-        const nodeCount = root.descendants().length
-        const depth = root.height
-        const width = Math.max(1200, depth * 250)
-        const height = Math.max(800, nodeCount * 25)
+        // Add zoom/pan to the server-rendered SVG
+        const svg = d3.select(container).select('svg')
+        if (svg.empty()) return
 
-        d3.select(svgRef.current).selectAll('*').remove()
+        svg.attr('width', '100%').style('cursor', 'grab')
 
-        const svg = d3.select(svgRef.current)
-            .attr('width', '100%')
-            .attr('height', height)
-            .attr('viewBox', '0 0 ' + width + ' ' + height)
-            .style('cursor', 'grab')
-
-        const g = svg.append('g')
-
-        const defs = g.append('defs')
+        const g = svg.select('g')
+        if (g.empty()) return
 
         const zoom = d3.zoom()
             .scaleExtent([0.1, 3])
@@ -50,70 +48,15 @@ function Tree() {
             })
 
         svg.call(zoom)
-
-        const treeLayout = d3.tree().size([height - 100, width - 300])
-        treeLayout(root)
-
-        g.attr('transform', 'translate(150, 50)')
-
-        g.selectAll('.link')
-            .data(root.links())
-            .enter()
-            .append('path')
-            .attr('class', 'link')
-            .attr('d', function(d) {
-                return 'M' + d.source.y + ',' + d.source.x +
-                    'C' + (d.source.y + d.target.y) / 2 + ',' + d.source.x +
-                    ' ' + (d.source.y + d.target.y) / 2 + ',' + d.target.x +
-                    ' ' + d.target.y + ',' + d.target.x
-            })
-            .attr('fill', 'none')
-            .attr('stroke', '#ccc')
-            .attr('stroke-width', 1.5)
-
-        const nodes = g.selectAll('.node')
-            .data(root.descendants())
-            .enter()
-            .append('g')
-            .attr('class', 'node')
-            .attr('transform', function(d) { return 'translate(' + d.y + ',' + d.x + ')' })
-
-        nodes.each(function(d) {
-            defs.append('clipPath')
-                .attr('id', 'clip-' + d.data.id)
-                .append('circle')
-                .attr('r', 12)
-        })
-
-        nodes.append('circle')
-            .attr('r', 12)
-            .attr('fill', function(d) { return d.data.gender === 'F' ? '#e91e63' : '#2196f3' })
-
-        nodes.append('image')
-            .attr('href', function(d) { return getPersonImageUrl(d.data.id) })
-            .attr('x', -12)
-            .attr('y', -12)
-            .attr('width', 24)
-            .attr('height', 24)
-            .attr('clip-path', function(d) { return 'url(#clip-' + d.data.id + ')' })
-            .on('error', function() { d3.select(this).style('display', 'none') })
-
-        nodes.append('text')
-            .attr('dy', 4)
-            .attr('x', function(d) { return d.children ? -18 : 18 })
-            .attr('text-anchor', function(d) { return d.children ? 'end' : 'start' })
-            .attr('font-size', '10px')
-            .text(function(d) { return d.data.name })
-
-    }, [data])
+    }, [svgContent])
 
     if (loading) return <div className="page">Loading...</div>
-    if (!data) return <div className="page">No data found</div>
+    if (!svgContent) return <div className="page">No data found</div>
 
     return (
         <div className="page">
-            <h1>Descendants of {data.name}</h1>
-            <svg ref={svgRef}></svg>
+            {treeName && <h1>Descendants of {treeName}</h1>}
+            <div ref={containerRef}></div>
         </div>
     )
 }

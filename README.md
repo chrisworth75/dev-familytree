@@ -114,7 +114,32 @@ The `family-tree-app/` contains a working Spring Boot application with:
 - Animated transitions
 - Click person to open detail sidebar with census records
 
-Run with: `cd family-tree-app && mvn spring-boot:run` → http://localhost:3500
+#### Starting the Website
+
+Four services need to be running:
+
+| Service | Port | Directory | Purpose |
+|---------|------|-----------|---------|
+| PostgreSQL | 5432 | Docker container | Database |
+| D3 Tree Service | 3300 | `d3-tree-service/` | Server-side SVG rendering of family trees |
+| Spring Boot App | 3200 | `family-tree-app/` | Backend API + Thymeleaf templates |
+| React Frontend | 4202 | `family-tree-react/` | Interactive frontend (Vite dev server) |
+
+```bash
+# 1. Start PostgreSQL
+docker start familytree-postgres
+
+# 2. Start D3 tree service (renders family tree SVGs server-side)
+cd d3-tree-service && node index.js &
+
+# 3. Start Spring Boot backend
+cd family-tree-app && mvn spring-boot:run -Dspring-boot.run.profiles=dev &
+
+# 4. Start React frontend
+cd family-tree-react && npm run dev &
+```
+
+Then open http://localhost:4202 (React) or http://localhost:3200 (Thymeleaf/API).
 
 ### Mission 8: Automate Free Census Website Searches
 Create scripts to systematically search free UK genealogy websites for ancestor and descendant records, reducing dependence on paid Ancestry subscriptions.

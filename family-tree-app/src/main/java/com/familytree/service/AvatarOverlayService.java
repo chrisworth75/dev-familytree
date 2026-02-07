@@ -32,7 +32,6 @@ import java.util.Map;
 public class AvatarOverlayService {
 
     private static final Logger log = LoggerFactory.getLogger(AvatarOverlayService.class);
-    private static final int NODE_RADIUS = 48;
     private static final String SVG_NS = "http://www.w3.org/2000/svg";
 
     /**
@@ -41,9 +40,10 @@ public class AvatarOverlayService {
      *
      * @param svgContent    The raw SVG content from D3 service
      * @param personAvatars Map of personId to base64 data URL (e.g., "data:image/jpeg;base64,...")
+     * @param nodeRadius    The radius of node circles in the SVG (e.g., 48 for MRCA, 8 for ancestors/descendants)
      * @return Modified SVG with avatar images embedded
      */
-    public String overlayAvatars(String svgContent, Map<Long, String> personAvatars) {
+    public String overlayAvatars(String svgContent, Map<Long, String> personAvatars, int nodeRadius) {
         if (personAvatars == null || personAvatars.isEmpty()) {
             return svgContent;
         }
@@ -52,7 +52,7 @@ public class AvatarOverlayService {
             Document doc = parseXml(svgContent);
 
             // Ensure clipPath definitions exist for each avatar
-            ensureClipPaths(doc, personAvatars);
+            ensureClipPaths(doc, personAvatars, nodeRadius);
 
             // Find all node groups and process them
             NodeList nodes = doc.getElementsByTagName("g");
@@ -74,7 +74,7 @@ public class AvatarOverlayService {
                     String avatarDataUrl = personAvatars.get(personId);
 
                     if (avatarDataUrl != null) {
-                        addAvatarToNode(doc, node, personId, avatarDataUrl);
+                        addAvatarToNode(doc, node, personId, avatarDataUrl, nodeRadius);
                     }
                 } catch (NumberFormatException e) {
                     log.warn("Invalid person ID: {}", personIdStr);
@@ -116,7 +116,7 @@ public class AvatarOverlayService {
     /**
      * Ensure clipPath definitions exist for avatar clipping.
      */
-    private void ensureClipPaths(Document doc, Map<Long, String> personAvatars) {
+    private void ensureClipPaths(Document doc, Map<Long, String> personAvatars, int nodeRadius) {
         // Find or create defs element
         NodeList defsList = doc.getElementsByTagName("defs");
         Element defs;
@@ -144,7 +144,7 @@ public class AvatarOverlayService {
             clipPath.setAttribute("id", clipId);
 
             Element circle = doc.createElementNS(SVG_NS, "circle");
-            circle.setAttribute("r", String.valueOf(NODE_RADIUS));
+            circle.setAttribute("r", String.valueOf(nodeRadius));
             circle.setAttribute("cx", "0");
             circle.setAttribute("cy", "0");
 
@@ -154,9 +154,94 @@ public class AvatarOverlayService {
     }
 
     /**
+     * Make SVG nodes clickable by wrapping them in anchor tags.
+     * Also adds hover styles for visual feedback.
+     *
+     * @param svgContent The SVG content to modify
+     * @return Modified SVG with clickable nodes
+     */
+    public String makeNodesClickable(String svgContent) {
+        try {
+            Document doc = parseXml(svgContent);
+
+            // Add hover styles
+            addHoverStyles(doc);
+
+            // Find all node groups and wrap them in links
+            NodeList nodes = doc.getElementsByTagName("g");
+            // Collect nodes first to avoid modifying while iterating
+            java.util.List<Element> nodeElements = new java.util.ArrayList<>();
+            for (int i = 0; i < nodes.getLength(); i++) {
+                Element node = (Element) nodes.item(i);
+                if ("node".equals(node.getAttribute("class"))) {
+                    nodeElements.add(node);
+                }
+            }
+
+            for (Element node : nodeElements) {
+                String personIdStr = node.getAttribute("data-person-id");
+                if (personIdStr == null || personIdStr.isEmpty()) {
+                    continue;
+                }
+
+                // Add cursor style to node
+                String existingStyle = node.getAttribute("style");
+                String cursorStyle = "cursor: pointer;";
+                if (existingStyle != null && !existingStyle.isEmpty()) {
+                    node.setAttribute("style", existingStyle + " " + cursorStyle);
+                } else {
+                    node.setAttribute("style", cursorStyle);
+                }
+
+                // Create anchor element
+                Element anchor = doc.createElementNS(SVG_NS, "a");
+                anchor.setAttribute("href", "/person/" + personIdStr);
+                anchor.setAttribute("target", "_top");
+
+                // Replace node with anchor containing node
+                Node parent = node.getParentNode();
+                parent.insertBefore(anchor, node);
+                parent.removeChild(node);
+                anchor.appendChild(node);
+            }
+
+            return serializeXml(doc);
+
+        } catch (Exception e) {
+            log.error("Failed to make nodes clickable, returning original", e);
+            return svgContent;
+        }
+    }
+
+    /**
+     * Add CSS hover styles to the SVG defs section.
+     */
+    private void addHoverStyles(Document doc) {
+        // Find or create defs element
+        NodeList defsList = doc.getElementsByTagName("defs");
+        Element defs;
+
+        if (defsList.getLength() > 0) {
+            defs = (Element) defsList.item(0);
+        } else {
+            defs = doc.createElementNS(SVG_NS, "defs");
+            Element svg = doc.getDocumentElement();
+            svg.insertBefore(defs, svg.getFirstChild());
+        }
+
+        // Create style element with hover effects
+        Element style = doc.createElementNS(SVG_NS, "style");
+        style.setTextContent(
+            "a:hover g.node { opacity: 0.85; }" +
+            "a:hover g.node circle { stroke-width: 5; stroke: #fff; }"
+        );
+        defs.insertBefore(style, defs.getFirstChild());
+    }
+
+    /**
      * Add avatar image to a node, keeping the circle as a border.
      */
-    private void addAvatarToNode(Document doc, Element node, Long personId, String avatarDataUrl) {
+    private void addAvatarToNode(Document doc, Element node, Long personId, String avatarDataUrl, int nodeRadius) {
         String clipId = "avatar-clip-" + personId;
 
         // Remove any existing image elements
@@ -165,11 +250,12 @@ public class AvatarOverlayService {
             images.item(0).getParentNode().removeChild(images.item(0));
         }
 
-        // Remove initials text (text with dy="0.35em" which is the centered initials)
+        // Remove initials text (white bold text centered in MRCA circles) but preserve
+        // name labels used in ancestors/descendants trees (which have fill="#333")
         NodeList texts = node.getElementsByTagName("text");
         for (int i = texts.getLength() - 1; i >= 0; i--) {
             Element text = (Element) texts.item(i);
-            if ("0.35em".equals(text.getAttribute("dy"))) {
+            if ("0.35em".equals(text.getAttribute("dy")) && "#fff".equals(text.getAttribute("fill"))) {
                 text.getParentNode().removeChild(text);
             }
         }
@@ -185,10 +271,10 @@ public class AvatarOverlayService {
         // Create image element
         Element image = doc.createElementNS(SVG_NS, "image");
         image.setAttribute("href", avatarDataUrl);
-        image.setAttribute("x", String.valueOf(-NODE_RADIUS));
-        image.setAttribute("y", String.valueOf(-NODE_RADIUS));
-        image.setAttribute("width", String.valueOf(NODE_RADIUS * 2));
-        image.setAttribute("height", String.valueOf(NODE_RADIUS * 2));
+        image.setAttribute("x", String.valueOf(-nodeRadius));
+        image.setAttribute("y", String.valueOf(-nodeRadius));
+        image.setAttribute("width", String.valueOf(nodeRadius * 2));
+        image.setAttribute("height", String.valueOf(nodeRadius * 2));
         image.setAttribute("clip-path", "url(#" + clipId + ")");
         image.setAttribute("preserveAspectRatio", "xMidYMid slice");
 

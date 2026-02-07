@@ -1,15 +1,25 @@
 // MatchDetail.jsx
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './MatchDetail.css';
 import { API_BASE, MY_PERSON_ID } from '../config';
+import { getMatchLinkStatus } from '../services/api';
 
 function MatchDetail() {
     const { dnaTestId } = useParams();
+    const navigate = useNavigate();
     const [match, setMatch] = useState(null);
     const [loading, setLoading] = useState(true);
     const [mrcaError, setMrcaError] = useState(false);
     const fileInputRef = useRef();
+
+    useEffect(() => {
+        getMatchLinkStatus(dnaTestId).then(data => {
+            if (data?.personId) {
+                navigate(`/person/${data.personId}`, { replace: true });
+            }
+        });
+    }, [dnaTestId, navigate]);
 
     useEffect(() => {
         fetch(`${API_BASE}/api/match/${dnaTestId}`)

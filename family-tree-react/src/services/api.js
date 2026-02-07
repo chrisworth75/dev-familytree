@@ -18,6 +18,12 @@ export async function getDescendantsHierarchy(personId, maxDepth = 10) {
     return res.json();
 }
 
+export async function getDescendantsSvg(personId, maxDepth = 10) {
+    const res = await fetch(`${API_BASE}/api/tree-svg/descendants/${personId}?maxDepth=${maxDepth}`);
+    if (!res.ok) throw new Error('Failed to fetch descendants SVG');
+    return res.text();
+}
+
 export async function getAncestorsHierarchy(personId, maxDepth = 10) {
     const res = await fetch(`${API_BASE}/api/tree-data/person/${personId}/ancestors?maxDepth=${maxDepth}`);
     if (!res.ok) throw new Error('Failed to fetch ancestors hierarchy');
@@ -46,4 +52,22 @@ export function getPersonImageUrl(personId) {
 
 export function getAvatarUrl(avatarPath) {
     return `/uploads/${avatarPath}`;
+}
+
+export async function getPersonSummary(personId) {
+    const res = await fetch(`${API_BASE}/api/person/${personId}/summary`);
+    if (!res.ok) return null;
+    return res.json();
+}
+
+export async function getMatchLinkStatus(dnaTestId) {
+    const res = await fetch(`${API_BASE}/api/dna-tester/${dnaTestId}/link-status`);
+    if (!res.ok) return null;
+    return res.json();
+}
+
+export async function fetchSvgText(url) {
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    return res.text();
 }
