@@ -84,7 +84,7 @@ function MatchCard({ match }) {
     const side = formatSide(match.matchSide);
 
     return (
-        <Link to={`/dna/match/${match.dnaTestId}`} className="match-card">
+        <Link to={match.personId != null ? `/person/${match.personId}` : `/dna/match/${match.dnaTestId}`} className="match-card">
             <Avatar name={match.name} avatarPath={match.avatarPath} isLinked={match.personId != null} />
 
             <div className="match-info">

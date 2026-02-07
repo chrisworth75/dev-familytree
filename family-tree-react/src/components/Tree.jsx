@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { getDescendantsSvg, getDescendantsHierarchy } from "../services/api";
+import { useSvgNavigation } from "../hooks/useSvgNavigation";
 
 function Tree() {
     const { id } = useParams()
@@ -9,6 +10,7 @@ function Tree() {
     const [svgContent, setSvgContent] = useState(null)
     const [treeName, setTreeName] = useState(null)
     const [loading, setLoading] = useState(true)
+    const handleSvgClick = useSvgNavigation()
 
     useEffect(() => {
         Promise.all([
@@ -56,7 +58,7 @@ function Tree() {
     return (
         <div className="page">
             {treeName && <h1>Descendants of {treeName}</h1>}
-            <div ref={containerRef}></div>
+            <div ref={containerRef} onClick={handleSvgClick}></div>
         </div>
     )
 }

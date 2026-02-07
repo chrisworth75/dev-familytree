@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getPersonSummary, getAvatarUrl, fetchSvgText } from '../services/api';
 import { API_BASE, MY_PERSON_ID } from '../config';
+import { useSvgNavigation } from '../hooks/useSvgNavigation';
 import './PersonDetail.css';
 
 function PersonDetail() {
@@ -13,11 +14,14 @@ function PersonDetail() {
     const [ancestorSvg, setAncestorSvg] = useState(null);
     const [descendantSvg, setDescendantSvg] = useState(null);
     const [mrcaSvg, setMrcaSvg] = useState(null);
+    const [chromoBarSvg, setChromoBarSvg] = useState(null);
+    const [strandSvg, setStrandSvg] = useState(null);
     const [svgLoading, setSvgLoading] = useState({ ancestors: true, descendants: true, mrca: true });
 
     const [ancestorsOpen, setAncestorsOpen] = useState(true);
     const [descendantsOpen, setDescendantsOpen] = useState(true);
     const [mrcaOpen, setMrcaOpen] = useState(true);
+    const handleSvgClick = useSvgNavigation();
 
     useEffect(() => {
         setLoading(true);
@@ -25,6 +29,8 @@ function PersonDetail() {
         setAncestorSvg(null);
         setDescendantSvg(null);
         setMrcaSvg(null);
+        setChromoBarSvg(null);
+        setStrandSvg(null);
         setSvgLoading({ ancestors: true, descendants: true, mrca: true });
 
         getPersonSummary(personId).then(d => {
@@ -47,6 +53,13 @@ function PersonDetail() {
                     .catch(() => setSvgLoading(prev => ({ ...prev, mrca: false })));
             } else {
                 setSvgLoading(prev => ({ ...prev, mrca: false }));
+            }
+
+            if (d.match) {
+                fetchSvgText(`${API_BASE}/api/person/${personId}/dna-viz/chromo-bar?width=320`)
+                    .then(setChromoBarSvg).catch(() => {});
+                fetchSvgText(`${API_BASE}/api/person/${personId}/dna-viz/strand`)
+                    .then(setStrandSvg).catch(() => {});
             }
         });
     }, [personId]);
@@ -101,6 +114,12 @@ function PersonDetail() {
                         {match.predictedRelationship}{match.sharedCm ? ` \u00b7 ${match.sharedCm} cM` : ''}
                     </div>
                 )}
+                {chromoBarSvg && (
+                    <div className="dna-viz" dangerouslySetInnerHTML={{ __html: chromoBarSvg }} />
+                )}
+                {strandSvg && (
+                    <div className="dna-viz" dangerouslySetInnerHTML={{ __html: strandSvg }} />
+                )}
             </div>
 
             <div className="person-family">
@@ -152,7 +171,7 @@ function PersonDetail() {
                     {ancestorsOpen && (
                         svgLoading.ancestors
                             ? <div className="svg-loading">Loading ancestor tree...</div>
-                            : ancestorSvg && <div className="svg-container" dangerouslySetInnerHTML={{ __html: ancestorSvg }} />
+                            : ancestorSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: ancestorSvg }} />
                     )}
                 </div>
             )}
@@ -165,7 +184,7 @@ function PersonDetail() {
                     {descendantsOpen && (
                         svgLoading.descendants
                             ? <div className="svg-loading">Loading descendant tree...</div>
-                            : descendantSvg && <div className="svg-container" dangerouslySetInnerHTML={{ __html: descendantSvg }} />
+                            : descendantSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: descendantSvg }} />
                     )}
                 </div>
             )}
@@ -178,7 +197,7 @@ function PersonDetail() {
                     {mrcaOpen && (
                         svgLoading.mrca
                             ? <div className="svg-loading">Loading MRCA tree...</div>
-                            : mrcaSvg && <div className="svg-container" dangerouslySetInnerHTML={{ __html: mrcaSvg }} />
+                            : mrcaSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: mrcaSvg }} />
                     )}
                 </div>
             )}

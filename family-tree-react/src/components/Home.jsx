@@ -48,7 +48,7 @@ function Home() {
             <h2 style={{marginTop: '2rem'}}>Top Ancestors by Descendants</h2>
             <div className="ancestors-list">
                 {topAncestors.map((ancestor, index) => (
-                    <Link to={'/tree/' + ancestor.id} key={ancestor.id} className="ancestor-card">
+                    <Link to={'/person/' + ancestor.id} key={ancestor.id} className="ancestor-card">
                         <span className="ancestor-rank">#{index + 1}</span>
                         {ancestor.avatarPath ? (
                             <img
