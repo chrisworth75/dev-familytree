@@ -66,6 +66,12 @@ export async function getMatchLinkStatus(dnaTestId) {
     return res.json();
 }
 
+export async function getCensusRecords(personId) {
+    const res = await fetch(`${API_BASE}/api/person/${personId}/census`);
+    if (!res.ok) return [];
+    return res.json();
+}
+
 export async function fetchSvgText(url) {
     const res = await fetch(url);
     if (!res.ok) return null;

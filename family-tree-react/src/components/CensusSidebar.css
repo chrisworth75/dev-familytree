@@ -1,0 +1,215 @@
+/* Vertical tab when sidebar is closed */
+.census-tab {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    background: #faf6eb;
+    color: #8b6914;
+    border: 1px solid #d4b85c;
+    border-right: none;
+    border-radius: 6px 0 0 6px;
+    padding: 12px 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    z-index: 10;
+    transition: background 0.2s;
+}
+
+.census-tab:hover {
+    background: #f5eed8;
+}
+
+/* Sidebar container */
+.census-sidebar {
+    background: #faf6eb;
+    border-left: 1px solid #d4b85c;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    max-height: calc(100vh - 120px);
+    position: sticky;
+    top: 80px;
+    overflow-y: auto;
+}
+
+.census-sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-bottom: 1px solid #d4b85c;
+    position: sticky;
+    top: 0;
+    background: #faf6eb;
+    z-index: 1;
+}
+
+.census-sidebar-header h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #8b6914;
+    font-weight: 600;
+}
+
+.census-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #8b6914;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.census-close-btn:hover {
+    color: #6a4f0e;
+}
+
+.census-sidebar-body {
+    padding: 8px;
+}
+
+/* Census card */
+.census-card {
+    background: #fff;
+    border: 1px solid #e8dfc0;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.census-card:last-child {
+    margin-bottom: 0;
+}
+
+.census-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.census-card-header:hover {
+    background: #f5eed8;
+}
+
+.census-card-year {
+    font-weight: 600;
+    font-size: 14px;
+    color: #8b6914;
+}
+
+.census-card-toggle {
+    font-size: 10px;
+    color: #8b6914;
+}
+
+.census-card-body {
+    padding: 6px 10px 10px;
+    border-top: 1px solid #e8dfc0;
+}
+
+/* Detail rows */
+.census-detail {
+    display: flex;
+    gap: 6px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.census-label {
+    color: #8b6914;
+    font-weight: 500;
+    min-width: 70px;
+    flex-shrink: 0;
+}
+
+.census-detail a {
+    color: #8b6914;
+    text-decoration: underline;
+}
+
+.census-detail a:hover {
+    color: #6a4f0e;
+}
+
+/* Household table */
+.census-household {
+    margin-top: 8px;
+}
+
+.census-household-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8b6914;
+    margin-bottom: 4px;
+}
+
+.census-household-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.census-household-table th {
+    text-align: left;
+    padding: 3px 4px;
+    border-bottom: 1px solid #d4b85c;
+    color: #8b6914;
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.census-household-table td {
+    padding: 2px 4px;
+    border-bottom: 1px solid #f0e8d0;
+    vertical-align: top;
+}
+
+.census-household-table tr:last-child td {
+    border-bottom: none;
+}
+
+.census-member-highlight {
+    background: #faf2d8;
+}
+
+.census-member-self {
+    font-weight: 600;
+}
+
+.census-household-table a {
+    color: #8b6914;
+    text-decoration: none;
+}
+
+.census-household-table a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile: sidebar below content */
+@media (max-width: 768px) {
+    .census-tab {
+        position: static;
+        writing-mode: horizontal-tb;
+        transform: none;
+        border-radius: 4px;
+        border: 1px solid #d4b85c;
+        text-align: center;
+        margin: 1rem 0;
+    }
+
+    .census-sidebar {
+        border-left: none;
+        border-top: 1px solid #d4b85c;
+        position: static;
+        max-height: none;
+    }
+}

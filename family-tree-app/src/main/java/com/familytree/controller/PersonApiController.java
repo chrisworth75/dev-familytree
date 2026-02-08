@@ -1,13 +1,13 @@
 package com.familytree.controller;
 
-import com.familytree.model.CensusRecord;
+import com.familytree.model.CensusHousehold;
 import com.familytree.model.DnaMatch;
 import com.familytree.model.Person;
 import com.familytree.model.PersonUrl;
-import com.familytree.repository.CensusRepository;
 import com.familytree.repository.DnaMatchRepository;
 import com.familytree.repository.PersonRepository;
 import com.familytree.repository.PersonUrlRepository;
+import com.familytree.service.CensusService;
 import com.familytree.service.PersonService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +20,18 @@ import java.util.*;
 public class PersonApiController {
 
     private final PersonRepository personRepository;
-    private final CensusRepository censusRepository;
+    private final CensusService censusService;
     private final PersonUrlRepository personUrlRepository;
     private final PersonService personService;
     private final DnaMatchRepository dnaMatchRepository;
 
     public PersonApiController(PersonRepository personRepository,
-                               CensusRepository censusRepository,
+                               CensusService censusService,
                                PersonUrlRepository personUrlRepository,
                                PersonService personService,
                                DnaMatchRepository dnaMatchRepository) {
         this.personRepository = personRepository;
-        this.censusRepository = censusRepository;
+        this.censusService = censusService;
         this.personUrlRepository = personUrlRepository;
         this.personService = personService;
         this.dnaMatchRepository = dnaMatchRepository;
@@ -169,11 +169,11 @@ public class PersonApiController {
     }
 
     @GetMapping("/{id}/census")
-    public ResponseEntity<List<CensusRecord>> getCensusRecords(@PathVariable Long id) {
+    public ResponseEntity<List<CensusHousehold>> getCensusRecords(@PathVariable Long id) {
         if (personRepository.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(censusRepository.findByPersonId(id));
+        return ResponseEntity.ok(censusService.getCensusHouseholds(id));
     }
 
     @GetMapping("/{id}/siblings")

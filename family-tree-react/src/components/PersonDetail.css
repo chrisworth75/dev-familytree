@@ -119,6 +119,44 @@
     font-size: 0.85rem;
 }
 
+/* Layout: trees + census sidebar */
+.person-content-layout {
+    display: flex;
+    gap: 0;
+    margin-top: 2rem;
+}
+
+.person-content-layout .person-trees {
+    flex: 1;
+    min-width: 0;
+    transition: flex-basis 0.3s ease;
+}
+
+.person-content-layout.sidebar-open .person-trees {
+    flex-basis: 70%;
+}
+
+.person-content-layout.sidebar-open .census-sidebar {
+    flex-basis: 30%;
+    min-width: 250px;
+    max-width: 350px;
+}
+
+.person-content-layout.sidebar-closed .person-trees {
+    flex-basis: 100%;
+}
+
+@media (max-width: 768px) {
+    .person-content-layout {
+        flex-direction: column;
+    }
+    .person-content-layout.sidebar-open .person-trees,
+    .person-content-layout.sidebar-open .census-sidebar {
+        flex-basis: auto;
+        max-width: none;
+    }
+}
+
 .svg-section {
     margin-top: 2rem;
 }

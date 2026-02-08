@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getPersonSummary, getAvatarUrl, fetchSvgText } from '../services/api';
+import { getPersonSummary, getAvatarUrl, fetchSvgText, getCensusRecords } from '../services/api';
 import { API_BASE, MY_PERSON_ID } from '../config';
 import { useSvgNavigation } from '../hooks/useSvgNavigation';
+import CensusSidebar from './CensusSidebar';
 import './PersonDetail.css';
 
 function PersonDetail() {
@@ -18,6 +19,9 @@ function PersonDetail() {
     const [strandSvg, setStrandSvg] = useState(null);
     const [svgLoading, setSvgLoading] = useState({ ancestors: true, descendants: true, mrca: true });
 
+    const [censusRecords, setCensusRecords] = useState([]);
+    const [censusSidebarOpen, setCensusSidebarOpen] = useState(true);
+
     const [ancestorsOpen, setAncestorsOpen] = useState(null);
     const [descendantsOpen, setDescendantsOpen] = useState(null);
     const [mrcaOpen, setMrcaOpen] = useState(true);
@@ -31,6 +35,7 @@ function PersonDetail() {
         setMrcaSvg(null);
         setChromoBarSvg(null);
         setStrandSvg(null);
+        setCensusRecords([]);
         setSvgLoading({ ancestors: true, descendants: true, mrca: true });
 
         getPersonSummary(personId).then(d => {
@@ -41,6 +46,8 @@ function PersonDetail() {
 
             setAncestorsOpen((d.ancestorCount || 0) > 0);
             setDescendantsOpen((d.descendantCount || 0) > 0);
+
+            getCensusRecords(personId).then(setCensusRecords);
 
             fetchSvgText(`${API_BASE}/api/tree-svg/ancestors/${personId}?maxDepth=3`)
                 .then(svg => { setAncestorSvg(svg); setSvgLoading(prev => ({ ...prev, ancestors: false })); })
@@ -168,48 +175,61 @@ function PersonDetail() {
                 )}
             </div>
 
-            {(() => {
-                const ancestorSection = (
-                    <div className="svg-section" key="ancestors">
-                        <h2 onClick={() => setAncestorsOpen(!ancestorsOpen)}>
-                            {ancestorsOpen ? '\u25BC' : '\u25B6'} Ancestors ({ancestorCount})
-                        </h2>
-                        {ancestorsOpen && (
-                            svgLoading.ancestors
-                                ? <div className="svg-loading">Loading ancestor tree...</div>
-                                : ancestorSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: ancestorSvg }} />
-                        )}
-                    </div>
-                );
-                const descendantSection = (
-                    <div className="svg-section" key="descendants">
-                        <h2 onClick={() => setDescendantsOpen(!descendantsOpen)}>
-                            {descendantsOpen ? '\u25BC' : '\u25B6'} Descendants ({descendantCount})
-                        </h2>
-                        {descendantsOpen && (
-                            svgLoading.descendants
-                                ? <div className="svg-loading">Loading descendant tree...</div>
-                                : descendantSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: descendantSvg }} />
-                        )}
-                    </div>
-                );
-                return ancestorsFirst
-                    ? <>{ancestorSection}{descendantSection}</>
-                    : <>{descendantSection}{ancestorSection}</>;
-            })()}
+            <div className={`person-content-layout${censusRecords.length > 0 ? (censusSidebarOpen ? ' sidebar-open' : ' sidebar-closed') : ''}`}>
+                <div className="person-trees">
+                    {(() => {
+                        const ancestorSection = (
+                            <div className="svg-section" key="ancestors">
+                                <h2 onClick={() => setAncestorsOpen(!ancestorsOpen)}>
+                                    {ancestorsOpen ? '\u25BC' : '\u25B6'} Ancestors ({ancestorCount})
+                                </h2>
+                                {ancestorsOpen && (
+                                    svgLoading.ancestors
+                                        ? <div className="svg-loading">Loading ancestor tree...</div>
+                                        : ancestorSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: ancestorSvg }} />
+                                )}
+                            </div>
+                        );
+                        const descendantSection = (
+                            <div className="svg-section" key="descendants">
+                                <h2 onClick={() => setDescendantsOpen(!descendantsOpen)}>
+                                    {descendantsOpen ? '\u25BC' : '\u25B6'} Descendants ({descendantCount})
+                                </h2>
+                                {descendantsOpen && (
+                                    svgLoading.descendants
+                                        ? <div className="svg-loading">Loading descendant tree...</div>
+                                        : descendantSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: descendantSvg }} />
+                                )}
+                            </div>
+                        );
+                        return ancestorsFirst
+                            ? <>{ancestorSection}{descendantSection}</>
+                            : <>{descendantSection}{ancestorSection}</>;
+                    })()}
 
-            {(mrcaSvg || (match && personId !== MY_PERSON_ID && svgLoading.mrca)) && (
-                <div className="svg-section">
-                    <h2 onClick={() => setMrcaOpen(!mrcaOpen)}>
-                        {mrcaOpen ? '\u25BC' : '\u25B6'} Common Ancestor Path
-                    </h2>
-                    {mrcaOpen && (
-                        svgLoading.mrca
-                            ? <div className="svg-loading">Loading MRCA tree...</div>
-                            : mrcaSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: mrcaSvg }} />
+                    {(mrcaSvg || (match && personId !== MY_PERSON_ID && svgLoading.mrca)) && (
+                        <div className="svg-section">
+                            <h2 onClick={() => setMrcaOpen(!mrcaOpen)}>
+                                {mrcaOpen ? '\u25BC' : '\u25B6'} Common Ancestor Path
+                            </h2>
+                            {mrcaOpen && (
+                                svgLoading.mrca
+                                    ? <div className="svg-loading">Loading MRCA tree...</div>
+                                    : mrcaSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: mrcaSvg }} />
+                            )}
+                        </div>
                     )}
                 </div>
-            )}
+
+                {censusRecords.length > 0 && (
+                    <CensusSidebar
+                        censusRecords={censusRecords}
+                        personId={personId}
+                        isOpen={censusSidebarOpen}
+                        onToggle={() => setCensusSidebarOpen(!censusSidebarOpen)}
+                    />
+                )}
+            </div>
         </div>
     );
 }
