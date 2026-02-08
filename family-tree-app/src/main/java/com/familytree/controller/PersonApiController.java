@@ -130,6 +130,8 @@ public class PersonApiController {
                 response.put("children", personRepository.findChildren(id));
                 response.put("siblings", personRepository.findSiblings(id));
                 response.put("match", match);
+                response.put("ancestorCount", personRepository.countAncestors(id));
+                response.put("descendantCount", personRepository.countDescendants(id));
                 return ResponseEntity.ok(response);
             })
             .orElse(ResponseEntity.notFound().build());

@@ -18,8 +18,8 @@ function PersonDetail() {
     const [strandSvg, setStrandSvg] = useState(null);
     const [svgLoading, setSvgLoading] = useState({ ancestors: true, descendants: true, mrca: true });
 
-    const [ancestorsOpen, setAncestorsOpen] = useState(true);
-    const [descendantsOpen, setDescendantsOpen] = useState(true);
+    const [ancestorsOpen, setAncestorsOpen] = useState(null);
+    const [descendantsOpen, setDescendantsOpen] = useState(null);
     const [mrcaOpen, setMrcaOpen] = useState(true);
     const handleSvgClick = useSvgNavigation();
 
@@ -38,6 +38,9 @@ function PersonDetail() {
             setLoading(false);
 
             if (!d) return;
+
+            setAncestorsOpen((d.ancestorCount || 0) > 0);
+            setDescendantsOpen((d.descendantCount || 0) > 0);
 
             fetchSvgText(`${API_BASE}/api/tree-svg/ancestors/${personId}?maxDepth=3`)
                 .then(svg => { setAncestorSvg(svg); setSvgLoading(prev => ({ ...prev, ancestors: false })); })
@@ -67,7 +70,9 @@ function PersonDetail() {
     if (loading) return <div className="page">Loading...</div>;
     if (!data) return <div className="page">Person not found</div>;
 
-    const { person, father, mother, spouses, children, siblings, match } = data;
+    const { person, father, mother, spouses, children, siblings, match,
+            ancestorCount = 0, descendantCount = 0 } = data;
+    const ancestorsFirst = ancestorCount >= descendantCount;
 
     const avatarPath = person.avatarPath || (match && match.avatarPath);
     const genderClass = person.gender === 'M' ? 'male' : person.gender === 'F' ? 'female' : 'unknown';
@@ -163,31 +168,35 @@ function PersonDetail() {
                 )}
             </div>
 
-            {(ancestorSvg || svgLoading.ancestors) && (
-                <div className="svg-section">
-                    <h2 onClick={() => setAncestorsOpen(!ancestorsOpen)}>
-                        {ancestorsOpen ? '\u25BC' : '\u25B6'} Ancestors
-                    </h2>
-                    {ancestorsOpen && (
-                        svgLoading.ancestors
-                            ? <div className="svg-loading">Loading ancestor tree...</div>
-                            : ancestorSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: ancestorSvg }} />
-                    )}
-                </div>
-            )}
-
-            {(descendantSvg || svgLoading.descendants) && (
-                <div className="svg-section">
-                    <h2 onClick={() => setDescendantsOpen(!descendantsOpen)}>
-                        {descendantsOpen ? '\u25BC' : '\u25B6'} Descendants
-                    </h2>
-                    {descendantsOpen && (
-                        svgLoading.descendants
-                            ? <div className="svg-loading">Loading descendant tree...</div>
-                            : descendantSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: descendantSvg }} />
-                    )}
-                </div>
-            )}
+            {(() => {
+                const ancestorSection = (
+                    <div className="svg-section" key="ancestors">
+                        <h2 onClick={() => setAncestorsOpen(!ancestorsOpen)}>
+                            {ancestorsOpen ? '\u25BC' : '\u25B6'} Ancestors ({ancestorCount})
+                        </h2>
+                        {ancestorsOpen && (
+                            svgLoading.ancestors
+                                ? <div className="svg-loading">Loading ancestor tree...</div>
+                                : ancestorSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: ancestorSvg }} />
+                        )}
+                    </div>
+                );
+                const descendantSection = (
+                    <div className="svg-section" key="descendants">
+                        <h2 onClick={() => setDescendantsOpen(!descendantsOpen)}>
+                            {descendantsOpen ? '\u25BC' : '\u25B6'} Descendants ({descendantCount})
+                        </h2>
+                        {descendantsOpen && (
+                            svgLoading.descendants
+                                ? <div className="svg-loading">Loading descendant tree...</div>
+                                : descendantSvg && <div className="svg-container" onClick={handleSvgClick} dangerouslySetInnerHTML={{ __html: descendantSvg }} />
+                        )}
+                    </div>
+                );
+                return ancestorsFirst
+                    ? <>{ancestorSection}{descendantSection}</>
+                    : <>{descendantSection}{ancestorSection}</>;
+            })()}
 
             {(mrcaSvg || (match && personId !== MY_PERSON_ID && svgLoading.mrca)) && (
                 <div className="svg-section">

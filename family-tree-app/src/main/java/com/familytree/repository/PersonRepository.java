@@ -263,6 +263,38 @@ public class PersonRepository {
         jdbc.update(sql, person1Id, person2Id, person2Id, person1Id);
     }
 
+    public int countAncestors(Long personId) {
+        String sql = """
+            WITH RECURSIVE ancestors AS (
+                SELECT id, father_id, mother_id, 1 as generation
+                FROM person WHERE id = ?
+                UNION ALL
+                SELECT p.id, p.father_id, p.mother_id, a.generation + 1
+                FROM person p
+                JOIN ancestors a ON p.id = a.father_id OR p.id = a.mother_id
+                WHERE a.generation < 20
+            )
+            SELECT COUNT(*) FROM ancestors WHERE generation > 1
+            """;
+        return jdbc.queryForObject(sql, Integer.class, personId);
+    }
+
+    public int countDescendants(Long personId) {
+        String sql = """
+            WITH RECURSIVE descendants AS (
+                SELECT id, 1 as generation
+                FROM person WHERE id = ?
+                UNION ALL
+                SELECT p.id, d.generation + 1
+                FROM person p
+                JOIN descendants d ON p.father_id = d.id OR p.mother_id = d.id
+                WHERE d.generation < 20
+            )
+            SELECT COUNT(*) FROM descendants WHERE generation > 1
+            """;
+        return jdbc.queryForObject(sql, Integer.class, personId);
+    }
+
     /**
      * Find DNA match info by person ID.
      * Returns shared_cm if found, null otherwise.
