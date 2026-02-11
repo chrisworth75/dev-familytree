@@ -77,3 +77,56 @@ export async function fetchSvgText(url) {
     if (!res.ok) return null;
     return res.text();
 }
+
+export async function getPhotos() {
+    const res = await fetch(`${API_BASE}/api/photos`);
+    if (!res.ok) throw new Error('Failed to fetch photos');
+    return res.json();
+}
+
+export async function getPhotoDetail(id) {
+    const res = await fetch(`${API_BASE}/api/photos/${id}`);
+    if (!res.ok) throw new Error('Failed to fetch photo detail');
+    return res.json();
+}
+
+export async function uploadPhoto(formData) {
+    const res = await fetch(`${API_BASE}/api/photos`, {
+        method: 'POST',
+        body: formData
+    });
+    if (!res.ok) throw new Error('Failed to upload photo');
+    return res.json();
+}
+
+export async function deletePhoto(id) {
+    const res = await fetch(`${API_BASE}/api/photos/${id}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Failed to delete photo');
+}
+
+export async function addPhotoTag(photoId, personId) {
+    const res = await fetch(`${API_BASE}/api/photos/${photoId}/tags`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ personId })
+    });
+    if (!res.ok) throw new Error('Failed to add tag');
+    return res.json();
+}
+
+export async function removePhotoTag(photoId, personId) {
+    const res = await fetch(`${API_BASE}/api/photos/${photoId}/tags/${personId}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error('Failed to remove tag');
+}
+
+export async function getPersonPhotos(personId) {
+    const res = await fetch(`${API_BASE}/api/person/${personId}/photos`);
+    if (!res.ok) return [];
+    return res.json();
+}
+
+export async function searchPersons(name) {
+    const res = await fetch(`${API_BASE}/api/person/search?name=${encodeURIComponent(name)}&limit=10`);
+    if (!res.ok) return [];
+    return res.json();
+}

@@ -9,6 +9,7 @@ function Nav() {
                 <NavLink to="/trees">Trees</NavLink>
                 <NavLink to="/dna">DNA Matches</NavLink>
                 <NavLink to="/search">Search</NavLink>
+                <NavLink to="/photos">Photos</NavLink>
             </div>
         </nav>
     )

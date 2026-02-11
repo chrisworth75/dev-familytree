@@ -7,6 +7,7 @@ import Search from './components/Search'
 import Home from './components/Home'
 import MatchDetail from './components/MatchDetail'
 import PersonDetail from './components/PersonDetail'
+import Photos from './components/Photos'
 import './App.css'
 
 
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/tree/:id" element={<Tree />} />
                     <Route path="/dna/match/:dnaTestId" element={<MatchDetail />} />
                     <Route path="/person/:id" element={<PersonDetail />} />
+                    <Route path="/photos" element={<Photos />} />
                 </Routes>
             </main>
         </BrowserRouter>

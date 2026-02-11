@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getPersonSummary, getAvatarUrl, fetchSvgText, getCensusRecords } from '../services/api';
+import { getPersonSummary, getAvatarUrl, fetchSvgText, getCensusRecords, getPersonPhotos } from '../services/api';
 import { API_BASE, MY_PERSON_ID } from '../config';
 import { useSvgNavigation } from '../hooks/useSvgNavigation';
 import CensusSidebar from './CensusSidebar';
 import './PersonDetail.css';
+import './Photos.css';
 
 function PersonDetail() {
     const { id } = useParams();
@@ -21,6 +22,7 @@ function PersonDetail() {
 
     const [censusRecords, setCensusRecords] = useState([]);
     const [censusSidebarOpen, setCensusSidebarOpen] = useState(true);
+    const [photos, setPhotos] = useState([]);
 
     const [ancestorsOpen, setAncestorsOpen] = useState(null);
     const [descendantsOpen, setDescendantsOpen] = useState(null);
@@ -36,6 +38,7 @@ function PersonDetail() {
         setChromoBarSvg(null);
         setStrandSvg(null);
         setCensusRecords([]);
+        setPhotos([]);
         setSvgLoading({ ancestors: true, descendants: true, mrca: true });
 
         getPersonSummary(personId).then(d => {
@@ -48,6 +51,7 @@ function PersonDetail() {
             setDescendantsOpen((d.descendantCount || 0) > 0);
 
             getCensusRecords(personId).then(setCensusRecords);
+            getPersonPhotos(personId).then(setPhotos);
 
             fetchSvgText(`${API_BASE}/api/tree-svg/ancestors/${personId}?maxDepth=3`)
                 .then(svg => { setAncestorSvg(svg); setSvgLoading(prev => ({ ...prev, ancestors: false })); })
@@ -174,6 +178,22 @@ function PersonDetail() {
                     </div>
                 )}
             </div>
+
+            {photos.length > 0 && (
+                <div className="person-photos">
+                    <h2>Photos</h2>
+                    <div className="person-photos-row">
+                        {photos.map(photo => (
+                            <Link key={photo.id} to="/photos">
+                                <img
+                                    src={`${API_BASE}/api/photos/images/${photo.id}/thumb`}
+                                    alt={photo.description || 'Photo'}
+                                />
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <div className={`person-content-layout${censusRecords.length > 0 ? (censusSidebarOpen ? ' sidebar-open' : ' sidebar-closed') : ''}`}>
                 <div className="person-trees">
