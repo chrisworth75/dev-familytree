@@ -64,6 +64,8 @@ logging:
 # =============================================================================
 
 familytree:
+  photos:
+    storage-path: uploads/photos
   trees:
     - slug: my-family
       displayName: My Direct Line

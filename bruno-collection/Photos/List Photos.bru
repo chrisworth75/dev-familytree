@@ -1,0 +1,15 @@
+meta {
+  name: List Photos
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/photos
+  body: none
+  auth: none
+}
+
+docs {
+  List all photos with tag counts, ordered by upload date descending.
+}

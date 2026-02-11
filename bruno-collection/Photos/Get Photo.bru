@@ -1,0 +1,19 @@
+meta {
+  name: Get Photo
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/photos/{{photoId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Get photo detail by ID.
+
+  Returns:
+  - photo: The photo object with tag count
+  - tags: List of tags with personId, personName, xPosition, yPosition
+}

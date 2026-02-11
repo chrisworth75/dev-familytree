@@ -1,0 +1,16 @@
+meta {
+  name: Get Image Original
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/photos/images/{{photoId}}/original
+  body: none
+  auth: none
+}
+
+docs {
+  Get the original image file for a photo.
+  Returns the image as image/jpeg.
+}

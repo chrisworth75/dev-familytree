@@ -1,0 +1,30 @@
+meta {
+  name: Upload Photo
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/photos
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  file: @file()
+  description: Family gathering 1920s
+  yearTaken: 1925
+}
+
+docs {
+  Upload a photo. Accepts JPEG or PNG.
+
+  Creates an original copy and a 200x200 thumbnail.
+
+  Form fields:
+  - file: The image file (required, JPEG or PNG)
+  - description: Optional description text
+  - yearTaken: Optional year the photo was taken
+
+  Returns 201 Created with the photo object.
+}

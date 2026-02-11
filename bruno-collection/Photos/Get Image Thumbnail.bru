@@ -1,0 +1,16 @@
+meta {
+  name: Get Image Thumbnail
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/photos/images/{{photoId}}/thumb
+  body: none
+  auth: none
+}
+
+docs {
+  Get the 200x200 thumbnail for a photo.
+  Returns the image as image/jpeg.
+}

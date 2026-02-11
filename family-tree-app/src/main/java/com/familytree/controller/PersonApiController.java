@@ -3,12 +3,14 @@ package com.familytree.controller;
 import com.familytree.model.CensusHousehold;
 import com.familytree.model.DnaMatch;
 import com.familytree.model.Person;
+import com.familytree.model.Photo;
 import com.familytree.model.PersonUrl;
 import com.familytree.repository.DnaMatchRepository;
 import com.familytree.repository.PersonRepository;
 import com.familytree.repository.PersonUrlRepository;
 import com.familytree.service.CensusService;
 import com.familytree.service.PersonService;
+import com.familytree.service.PhotoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +26,20 @@ public class PersonApiController {
     private final PersonUrlRepository personUrlRepository;
     private final PersonService personService;
     private final DnaMatchRepository dnaMatchRepository;
+    private final PhotoService photoService;
 
     public PersonApiController(PersonRepository personRepository,
                                CensusService censusService,
                                PersonUrlRepository personUrlRepository,
                                PersonService personService,
-                               DnaMatchRepository dnaMatchRepository) {
+                               DnaMatchRepository dnaMatchRepository,
+                               PhotoService photoService) {
         this.personRepository = personRepository;
         this.censusService = censusService;
         this.personUrlRepository = personUrlRepository;
         this.personService = personService;
         this.dnaMatchRepository = dnaMatchRepository;
+        this.photoService = photoService;
     }
 
     // ========== UPDATE/DELETE ==========
@@ -221,5 +226,13 @@ public class PersonApiController {
     public ResponseEntity<Void> deleteUrl(@PathVariable Long id, @PathVariable Long urlId) {
         personUrlRepository.delete(urlId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/photos")
+    public ResponseEntity<List<Photo>> getPhotos(@PathVariable Long id) {
+        if (personRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(photoService.getPhotosForPerson(id));
     }
 }

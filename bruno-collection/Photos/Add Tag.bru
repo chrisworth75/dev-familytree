@@ -1,0 +1,30 @@
+meta {
+  name: Add Tag
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/photos/{{photoId}}/tags
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "personId": 1000,
+    "xPosition": 0.45,
+    "yPosition": 0.32
+  }
+}
+
+docs {
+  Tag a person in a photo with optional x/y coordinates (0.0 to 1.0).
+
+  Request body:
+  - personId: ID of the person to tag (required)
+  - xPosition: Horizontal position as fraction of image width (optional)
+  - yPosition: Vertical position as fraction of image height (optional)
+
+  Returns 201 Created, or 409 Conflict if already tagged.
+}

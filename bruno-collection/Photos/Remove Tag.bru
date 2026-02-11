@@ -1,0 +1,16 @@
+meta {
+  name: Remove Tag
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/photos/{{photoId}}/tags/{{personId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Remove a person tag from a photo.
+  Returns 204 No Content on success, 404 if tag doesn't exist.
+}

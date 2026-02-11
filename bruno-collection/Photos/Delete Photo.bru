@@ -1,0 +1,16 @@
+meta {
+  name: Delete Photo
+  type: http
+  seq: 4
+}
+
+delete {
+  url: {{baseUrl}}/api/photos/{{photoId}}
+  body: none
+  auth: none
+}
+
+docs {
+  Delete a photo and its files. Tags are cascade-deleted.
+  Returns 204 No Content on success.
+}

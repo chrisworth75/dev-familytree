@@ -1,0 +1,17 @@
+meta {
+  name: Get Person Photos
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/person/{{personId}}/photos
+  body: none
+  auth: none
+}
+
+docs {
+  Get all photos a person is tagged in.
+  Uses the person API path, not the photos path.
+  Returns a list of photo objects with tag counts.
+}
