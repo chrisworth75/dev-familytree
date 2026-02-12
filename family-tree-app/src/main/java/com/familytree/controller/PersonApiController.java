@@ -166,11 +166,12 @@ public class PersonApiController {
     public ResponseEntity<List<Person>> search(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String birthPlace,
+            @RequestParam(defaultValue = "false") boolean familyOnly,
             @RequestParam(defaultValue = "50") int limit) {
         if ((name == null || name.isBlank()) && (birthPlace == null || birthPlace.isBlank())) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(personRepository.search(name, birthPlace, Math.min(limit, 500)));
+        return ResponseEntity.ok(personRepository.search(name, birthPlace, familyOnly, Math.min(limit, 500)));
     }
 
     @GetMapping("/{id}/census")

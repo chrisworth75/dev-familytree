@@ -125,8 +125,8 @@ export async function getPersonPhotos(personId) {
     return res.json();
 }
 
-export async function searchPersons(name) {
-    const res = await fetch(`${API_BASE}/api/person/search?name=${encodeURIComponent(name)}&limit=10`);
+export async function searchPersons(name, { familyOnly = true } = {}) {
+    const res = await fetch(`${API_BASE}/api/person/search?name=${encodeURIComponent(name)}&familyOnly=${familyOnly}&limit=10`);
     if (!res.ok) return [];
     return res.json();
 }

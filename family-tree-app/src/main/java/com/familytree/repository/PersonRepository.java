@@ -105,12 +105,18 @@ public class PersonRepository {
         return jdbc.query(sql, PERSON_MAPPER, personId, maxGenerations);
     }
 
-    public List<Person> search(String name, String birthPlace, int limit) {
-        StringBuilder sql = new StringBuilder("SELECT * FROM person WHERE 1=1");
+    public List<Person> search(String name, String birthPlace, boolean familyOnly, int limit) {
+        StringBuilder sql = new StringBuilder("SELECT p.* FROM person p WHERE 1=1");
         java.util.ArrayList<Object> params = new java.util.ArrayList<>();
 
+        if (familyOnly) {
+            sql.append(" AND (p.father_id IS NOT NULL OR p.mother_id IS NOT NULL")
+               .append(" OR EXISTS (SELECT 1 FROM person c WHERE c.father_id = p.id OR c.mother_id = p.id)")
+               .append(" OR EXISTS (SELECT 1 FROM partnership m WHERE m.person_1_id = p.id OR m.person_2_id = p.id))");
+        }
+
         if (name != null && !name.isBlank()) {
-            sql.append(" AND (first_name ILIKE ? OR surname ILIKE ? OR (first_name || ' ' || surname) ILIKE ?)");
+            sql.append(" AND (p.first_name ILIKE ? OR p.surname ILIKE ? OR (p.first_name || ' ' || p.surname) ILIKE ?)");
             String pattern = "%" + name.trim() + "%";
             params.add(pattern);
             params.add(pattern);
@@ -118,11 +124,11 @@ public class PersonRepository {
         }
 
         if (birthPlace != null && !birthPlace.isBlank()) {
-            sql.append(" AND birth_place ILIKE ?");
+            sql.append(" AND p.birth_place ILIKE ?");
             params.add("%" + birthPlace.trim() + "%");
         }
 
-        sql.append(" ORDER BY surname, first_name LIMIT ?");
+        sql.append(" ORDER BY p.surname, p.first_name LIMIT ?");
         params.add(limit);
 
         return jdbc.query(sql.toString(), PERSON_MAPPER, params.toArray());
