@@ -103,7 +103,7 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
         try:
             # Navigate to DNA section first (to get redirected to correct URL with GUID)
             print("Navigating to DNA section...", flush=True)
-            page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="networkidle", timeout=60000)
+            page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="domcontentloaded", timeout=60000)
             time.sleep(2)
 
             print(f"Redirected to: {page.url}", flush=True)
@@ -119,7 +119,7 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
             # Try clicking on DNA Matches link or navigate directly
             matches_url = f"{ANCESTRY_BASE_URL}/discoveryui-matches/match-list/{test_guid}" if test_guid else f"{ANCESTRY_BASE_URL}/dna"
             print(f"Navigating to matches: {matches_url}...", flush=True)
-            page.goto(matches_url, wait_until="networkidle", timeout=60000)
+            page.goto(matches_url, wait_until="domcontentloaded", timeout=60000)
             time.sleep(3)
 
             print(f"Current URL: {page.url}", flush=True)
@@ -221,12 +221,12 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
                         const entries = document.querySelectorAll('.matchEntry');
                         entries.forEach((entry) => {
                             try {
-                                // Find name link - look for userCard link with aria-label
-                                const nameLink = entry.querySelector('a.userCard[aria-label]');
+                                // Find name link - 2026 UI: matchInfoName link carries aria-label and visible text
+                                const nameLink = entry.querySelector('a.matchInfoName[aria-label]');
                                 let matchGuid = null;
                                 let name = null;
                                 if (nameLink) {
-                                    name = nameLink.getAttribute('aria-label');
+                                    name = nameLink.textContent.trim();
                                     const guidMatch = nameLink.href.match(/with\\/([A-F0-9-]+)/i);
                                     if (guidMatch) {
                                         matchGuid = guidMatch[1].toUpperCase();
@@ -303,7 +303,7 @@ def fetch_matches_with_browser(test_guid=None, headless=False, limit=10000):
                     page_loaded = False
                     for attempt in range(3):
                         try:
-                            page.goto(page_url, wait_until="networkidle", timeout=45000)
+                            page.goto(page_url, wait_until="domcontentloaded", timeout=45000)
                             time.sleep(3)  # Longer delay to avoid rate limiting
                             page_loaded = True
                             break
@@ -1321,7 +1321,7 @@ def scan_trees(test_guid=None, headless=True, limit=None, min_cm=None):
         try:
             # Get our test GUID if not provided
             if not test_guid:
-                page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="networkidle", timeout=60000)
+                page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="domcontentloaded", timeout=60000)
                 time.sleep(2)
                 guid_match = re.search(r'/([A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})',
                                        page.url, re.IGNORECASE)
@@ -1338,7 +1338,7 @@ def scan_trees(test_guid=None, headless=True, limit=None, min_cm=None):
                 try:
                     # Navigate to the trees tab for this match
                     trees_url = f"{ANCESTRY_BASE_URL}/discoveryui-matches/compare/{test_guid}/with/{match_guid}/trees"
-                    page.goto(trees_url, wait_until="networkidle", timeout=30000)
+                    page.goto(trees_url, wait_until="domcontentloaded", timeout=30000)
                     time.sleep(2)
 
                     # Extract tree info from the page
@@ -1539,7 +1539,7 @@ def scan_shared_matches(test_guid=None, headless=True, limit=None, min_cm=None):
         try:
             # Get test GUID
             if not test_guid:
-                page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="networkidle", timeout=60000)
+                page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="domcontentloaded", timeout=60000)
                 time.sleep(2)
                 guid_match = re.search(r'/([A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})',
                                        page.url, re.IGNORECASE)
@@ -1556,7 +1556,7 @@ def scan_shared_matches(test_guid=None, headless=True, limit=None, min_cm=None):
                 try:
                     # Navigate to shared matches page
                     shared_url = f"{ANCESTRY_BASE_URL}/discoveryui-matches/compare/{test_guid}/with/{match_guid}/sharedmatches"
-                    page.goto(shared_url, wait_until="networkidle", timeout=30000)
+                    page.goto(shared_url, wait_until="domcontentloaded", timeout=30000)
                     time.sleep(2)
 
                     # Scroll to load all shared matches
@@ -1738,7 +1738,7 @@ def fetch_shared_matches(match_name, test_guid=None, headless=False):
         try:
             # Get our test GUID if not provided
             if not test_guid:
-                page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="networkidle", timeout=60000)
+                page.goto(f"{ANCESTRY_BASE_URL}/dna", wait_until="domcontentloaded", timeout=60000)
                 time.sleep(2)
                 guid_match = re.search(r'/([A-F0-9]{8}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{4}-[A-F0-9]{12})',
                                        page.url, re.IGNORECASE)
@@ -1748,7 +1748,7 @@ def fetch_shared_matches(match_name, test_guid=None, headless=False):
             # Navigate to compare page first
             compare_url = f"{ANCESTRY_BASE_URL}/discoveryui-matches/compare/{test_guid}/with/{match_guid}"
             print(f"Navigating to compare page...", flush=True)
-            page.goto(compare_url, wait_until="networkidle", timeout=60000)
+            page.goto(compare_url, wait_until="domcontentloaded", timeout=60000)
             time.sleep(3)
 
             print(f"URL: {page.url}", flush=True)
