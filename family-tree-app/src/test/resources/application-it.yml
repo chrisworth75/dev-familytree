@@ -1,0 +1,15 @@
+# Integration-test profile: real Postgres via Testcontainers (@ServiceConnection
+# supplies the datasource), Flyway builds the schema from scratch on the throwaway
+# container — the same "fresh DB -> Flyway -> seed via API" path the CI pipeline proves.
+spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    clean-disabled: true
+  thymeleaf:
+    cache: false
+
+logging:
+  level:
+    com.familytree: INFO
+    org.flywaydb: INFO

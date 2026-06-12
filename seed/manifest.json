@@ -1,0 +1,11 @@
+{
+  "tree": {
+    "name": "My Direct Line",
+    "ownerName": "Chris Worthington"
+  },
+  "steps": [
+    { "ref": "me",  "create": "root",   "body": "people/me.json",  "verifyByBirthDate": true },
+    { "ref": "dad", "create": "parent", "of": "me", "body": "people/dad.json" },
+    { "ref": "mum", "create": "parent", "of": "me", "body": "people/mum.json" }
+  ]
+}
