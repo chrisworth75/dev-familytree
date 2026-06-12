@@ -11,6 +11,12 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '20'))
     }
 
+    environment {
+        // Docker 29+ on the agent dropped API versions < 1.44; the docker-java client
+        // bundled with Testcontainers otherwise falls back to 1.32 and gets rejected.
+        DOCKER_API_VERSION = '1.44'
+    }
+
     stages {
         stage('Build & Test (Testcontainers)') {
             steps {
