@@ -16,6 +16,7 @@ module.exports = defineConfig({
     baseURL: 'http://localhost:4202',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
   },
   projects: [
     { name: 'chromium', use: { browserName: 'chromium' } },

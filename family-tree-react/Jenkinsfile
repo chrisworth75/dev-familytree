@@ -74,6 +74,15 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'api.log,web.log,playwright-report/**', allowEmptyArchive: true
+            // Browsable report on the build page (screenshots + video on failed tests).
+            publishHTML(target: [
+                reportName: 'Playwright E2E Report',
+                reportDir: 'playwright-report',
+                reportFiles: 'index.html',
+                keepAll: true,
+                alwaysLinkToLastBuild: true,
+                allowMissing: true
+            ])
         }
     }
 }
