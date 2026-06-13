@@ -15,8 +15,5 @@ test.describe('React app shell', () => {
 
     // React mounted *something* into #root, even though API data 401s
     await expect(page.locator('#root')).not.toBeEmpty();
-
-    // TEMP (to be reverted): force a failure to verify video/screenshot capture in Jenkins
-    await expect(page.locator('#definitely-not-a-real-element')).toBeVisible({ timeout: 2000 });
   });
 });
