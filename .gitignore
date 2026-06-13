@@ -31,3 +31,6 @@ files.zip
 node_modules/
 test-results/
 playwright-report/
+
+# Runtime-uploaded media (not source)
+family-tree-app/uploads/

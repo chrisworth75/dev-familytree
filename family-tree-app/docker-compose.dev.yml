@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: familytree-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: familytree
+      POSTGRES_USER: familytree
+      POSTGRES_PASSWORD: familytree
+    volumes:
+      - familytree-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U familytree -d familytree"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: familytree-keycloak
+    command: ["start-dev", "--import-realm"]
+    ports:
+      - "8081:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    volumes:
+      - ../infra/keycloak:/opt/keycloak/data/import:ro
+
+volumes:
+  familytree-postgres-data:
