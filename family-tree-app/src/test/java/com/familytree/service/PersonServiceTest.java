@@ -1,5 +1,6 @@
 package com.familytree.service;
 
+import com.familytree.dto.PersonRequest;
 import com.familytree.model.Person;
 import com.familytree.repository.PersonRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -100,14 +101,10 @@ class PersonServiceTest {
                 any(), any(), any(), any(), any(), any(), any(), any()
             );
 
-            Map<String, Object> body = new HashMap<>();
-            body.put("firstName", "William");
-            body.put("middleNames", "James");
-            body.put("surname", "Worthington");
-            body.put("gender", "M");
-            body.put("birthDate", "15 03 1990");
-            body.put("birthPlace", "London");
-            body.put("notes", "Test person");
+            PersonRequest body = PersonRequest.builder()
+                .firstName("William").middleNames("James").surname("Worthington")
+                .gender("M").birthDate("15 03 1990").birthPlace("London").notes("Test person")
+                .build();
 
             Long id = personService.createPerson(body, JONATHAN, PATRICIA, 1);
 
@@ -124,25 +121,8 @@ class PersonServiceTest {
             );
         }
 
-        @Test
-        void acceptsForenameAsAlternativeToFirstName() {
-            doReturn(9999L).when(personRepository).save(
-                any(), any(), any(), any(), any(), any(), any(), any(),
-                any(), any(), any(), any(), any(), any(), any(), any()
-            );
-
-            Map<String, Object> body = new HashMap<>();
-            body.put("forename", "Alternative");
-            body.put("surname", "Name");
-
-            personService.createPerson(body, null, null, 1);
-
-            verify(personRepository).save(
-                eq(null), eq("Alternative"), any(), eq("Name"), any(),
-                any(), any(), any(), any(), any(), any(), any(), any(),
-                eq(null), eq(null), eq(1)
-            );
-        }
+        // NB: the legacy "forename" -> firstName alias is now a binding concern,
+        // handled by @JsonAlias("forename") on PersonRequest.firstName (not the service).
 
         @Test
         void usesBirthYearWhenBirthDateNotProvided() {
@@ -151,10 +131,9 @@ class PersonServiceTest {
                 any(), any(), any(), any(), any(), any(), any(), any()
             );
 
-            Map<String, Object> body = new HashMap<>();
-            body.put("firstName", "Approximate");
-            body.put("surname", "Year");
-            body.put("birthYear", 1850);
+            PersonRequest body = PersonRequest.builder()
+                .firstName("Approximate").surname("Year").birthYear(1850)
+                .build();
 
             personService.createPerson(body, null, null, 1);
 
@@ -183,10 +162,8 @@ class PersonServiceTest {
             // Mock updateParents to avoid FK constraint
             org.mockito.Mockito.doNothing().when(personRepository).updateParents(any(), any(), any());
 
-            Map<String, Object> parentBody = new HashMap<>();
-            parentBody.put("firstName", "New");
-            parentBody.put("surname", "Father");
-            parentBody.put("gender", "M");
+            PersonRequest parentBody = PersonRequest.builder()
+                .firstName("New").surname("Father").gender("M").build();
 
             Optional<Person> result = personService.addParent(CHRIS, parentBody);
 
@@ -206,10 +183,8 @@ class PersonServiceTest {
                 .when(personRepository).findById(9999L);
             org.mockito.Mockito.doNothing().when(personRepository).updateParents(any(), any(), any());
 
-            Map<String, Object> parentBody = new HashMap<>();
-            parentBody.put("firstName", "New");
-            parentBody.put("surname", "Mother");
-            parentBody.put("gender", "F");
+            PersonRequest parentBody = PersonRequest.builder()
+                .firstName("New").surname("Mother").gender("F").build();
 
             Optional<Person> result = personService.addParent(CHRIS, parentBody);
 
@@ -221,9 +196,8 @@ class PersonServiceTest {
 
         @Test
         void linksExistingParentById() {
-            Map<String, Object> parentBody = new HashMap<>();
-            parentBody.put("parentId", ARTHUR_GORDON);
-            parentBody.put("gender", "M");
+            PersonRequest parentBody = PersonRequest.builder()
+                .parentId(ARTHUR_GORDON).gender("M").build();
 
             Optional<Person> result = personService.addParent(CHRIS, parentBody);
 
@@ -236,9 +210,8 @@ class PersonServiceTest {
 
         @Test
         void returnsEmptyForNonExistentChild() {
-            Map<String, Object> parentBody = new HashMap<>();
-            parentBody.put("firstName", "Test");
-            parentBody.put("gender", "M");
+            PersonRequest parentBody = PersonRequest.builder()
+                .firstName("Test").gender("M").build();
 
             Optional<Person> result = personService.addParent(999999L, parentBody);
 
@@ -259,10 +232,8 @@ class PersonServiceTest {
             doReturn(Optional.of(createMockPerson(9999L, "NewChild", "Worthington", "F")))
                 .when(personRepository).findById(9999L);
 
-            Map<String, Object> childBody = new HashMap<>();
-            childBody.put("firstName", "NewChild");
-            childBody.put("surname", "Worthington");
-            childBody.put("gender", "F");
+            PersonRequest childBody = PersonRequest.builder()
+                .firstName("NewChild").surname("Worthington").gender("F").build();
 
             Optional<Person> result = personService.addChild(JONATHAN, childBody, "M");
 
@@ -284,10 +255,8 @@ class PersonServiceTest {
             doReturn(Optional.of(createMockPerson(9999L, "NewChild", "Worthington", "M")))
                 .when(personRepository).findById(9999L);
 
-            Map<String, Object> childBody = new HashMap<>();
-            childBody.put("firstName", "NewChild");
-            childBody.put("surname", "Worthington");
-            childBody.put("gender", "M");
+            PersonRequest childBody = PersonRequest.builder()
+                .firstName("NewChild").surname("Worthington").gender("M").build();
 
             Optional<Person> result = personService.addChild(PATRICIA, childBody, "F");
 
@@ -302,8 +271,7 @@ class PersonServiceTest {
 
         @Test
         void linksExistingChildById() {
-            Map<String, Object> linkBody = new HashMap<>();
-            linkBody.put("childId", REBECCA);
+            PersonRequest linkBody = PersonRequest.builder().childId(REBECCA).build();
 
             Optional<Person> result = personService.addChild(ARTHUR_GORDON, linkBody, "M");
 
@@ -315,8 +283,7 @@ class PersonServiceTest {
 
         @Test
         void returnsEmptyForNonExistentParent() {
-            Map<String, Object> childBody = new HashMap<>();
-            childBody.put("firstName", "Test");
+            PersonRequest childBody = PersonRequest.builder().firstName("Test").build();
 
             Optional<Person> result = personService.addChild(999999L, childBody, "M");
 
@@ -338,10 +305,8 @@ class PersonServiceTest {
                 .when(personRepository).findById(9999L);
             org.mockito.Mockito.doNothing().when(personRepository).addMarriage(any(), any());
 
-            Map<String, Object> spouseBody = new HashMap<>();
-            spouseBody.put("firstName", "NewSpouse");
-            spouseBody.put("surname", "Person");
-            spouseBody.put("gender", "F");
+            PersonRequest spouseBody = PersonRequest.builder()
+                .firstName("NewSpouse").surname("Person").gender("F").build();
 
             Optional<Person> result = personService.addSpouse(TIMOTHY, spouseBody);
 
@@ -355,8 +320,7 @@ class PersonServiceTest {
         void linksExistingSpouseById() {
             org.mockito.Mockito.doNothing().when(personRepository).addMarriage(any(), any());
 
-            Map<String, Object> linkBody = new HashMap<>();
-            linkBody.put("spouseId", SARAH);
+            PersonRequest linkBody = PersonRequest.builder().spouseId(SARAH).build();
 
             Optional<Person> result = personService.addSpouse(REBECCA, linkBody);
 
@@ -368,8 +332,7 @@ class PersonServiceTest {
 
         @Test
         void returnsEmptyForNonExistentPerson() {
-            Map<String, Object> spouseBody = new HashMap<>();
-            spouseBody.put("firstName", "Test");
+            PersonRequest spouseBody = PersonRequest.builder().firstName("Test").build();
 
             Optional<Person> result = personService.addSpouse(999999L, spouseBody);
 
@@ -383,11 +346,9 @@ class PersonServiceTest {
 
         @Test
         void updatesExistingPerson() {
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("firstName", "Christopher");
-            updates.put("middleNames", "James");
-            updates.put("birthPlace", "Manchester");
-            updates.put("notes", "Updated notes");
+            PersonRequest updates = PersonRequest.builder()
+                .firstName("Christopher").middleNames("James").birthPlace("Manchester").notes("Updated notes")
+                .build();
 
             Optional<Person> result = personService.updatePerson(CHRIS, updates);
 
@@ -405,8 +366,7 @@ class PersonServiceTest {
 
         @Test
         void returnsEmptyForNonExistentPerson() {
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("firstName", "Test");
+            PersonRequest updates = PersonRequest.builder().firstName("Test").build();
 
             Optional<Person> result = personService.updatePerson(999999L, updates);
 
@@ -415,10 +375,9 @@ class PersonServiceTest {
 
         @Test
         void updatesBirthSurname() {
-            Map<String, Object> updates = new HashMap<>();
-            updates.put("firstName", "Patricia");
-            updates.put("surname", "Worthington");
-            updates.put("birthSurname", "Wood");
+            PersonRequest updates = PersonRequest.builder()
+                .firstName("Patricia").surname("Worthington").birthSurname("Wood")
+                .build();
 
             Optional<Person> result = personService.updatePerson(PATRICIA, updates);
 

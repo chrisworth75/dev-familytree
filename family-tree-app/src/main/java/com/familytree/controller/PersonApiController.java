@@ -1,16 +1,18 @@
 package com.familytree.controller;
 
+import com.familytree.dto.PersonDetailDto;
+import com.familytree.dto.PersonDto;
+import com.familytree.dto.PersonRequest;
 import com.familytree.model.CensusHousehold;
-import com.familytree.model.DnaMatch;
 import com.familytree.model.Person;
 import com.familytree.model.Photo;
 import com.familytree.model.PersonUrl;
-import com.familytree.repository.DnaMatchRepository;
 import com.familytree.repository.PersonRepository;
 import com.familytree.repository.PersonUrlRepository;
 import com.familytree.service.CensusService;
 import com.familytree.service.PersonService;
 import com.familytree.service.PhotoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,29 +27,30 @@ public class PersonApiController {
     private final CensusService censusService;
     private final PersonUrlRepository personUrlRepository;
     private final PersonService personService;
-    private final DnaMatchRepository dnaMatchRepository;
     private final PhotoService photoService;
 
     public PersonApiController(PersonRepository personRepository,
                                CensusService censusService,
                                PersonUrlRepository personUrlRepository,
                                PersonService personService,
-                               DnaMatchRepository dnaMatchRepository,
                                PhotoService photoService) {
         this.personRepository = personRepository;
         this.censusService = censusService;
         this.personUrlRepository = personUrlRepository;
         this.personService = personService;
-        this.dnaMatchRepository = dnaMatchRepository;
         this.photoService = photoService;
+    }
+
+    private static List<PersonDto> toDtos(List<Person> people) {
+        return people.stream().map(PersonDto::from).toList();
     }
 
     // ========== UPDATE/DELETE ==========
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> updatePerson(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        return personService.updatePerson(id, body)
-            .map(person -> ResponseEntity.ok(Map.of("id", id, "person", person)))
+    public ResponseEntity<Map<String, Object>> updatePerson(@PathVariable Long id, @Valid @RequestBody PersonRequest req) {
+        return personService.updatePerson(id, req)
+            .map(person -> ResponseEntity.ok(Map.of("id", id, "person", PersonDto.from(person))))
             .orElse(ResponseEntity.notFound().build());
     }
 
@@ -63,27 +66,26 @@ public class PersonApiController {
     // ========== RELATIONSHIP MANAGEMENT ==========
 
     @PostMapping("/{id}/parent")
-    public ResponseEntity<Map<String, Object>> addParent(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        return personService.addParent(id, body)
+    public ResponseEntity<Map<String, Object>> addParent(@PathVariable Long id, @Valid @RequestBody PersonRequest req) {
+        return personService.addParent(id, req)
             .map(parent -> ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("id", parent.id(), "person", parent)))
+                .body(Map.of("id", parent.id(), "person", PersonDto.from(parent))))
             .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/{id}/child")
-    public ResponseEntity<Map<String, Object>> addChild(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        String parentGender = (String) body.get("parentGender");
-        return personService.addChild(id, body, parentGender)
+    public ResponseEntity<Map<String, Object>> addChild(@PathVariable Long id, @Valid @RequestBody PersonRequest req) {
+        return personService.addChild(id, req, req.parentGender())
             .map(child -> ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("id", child.id(), "person", child)))
+                .body(Map.of("id", child.id(), "person", PersonDto.from(child))))
             .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping("/{id}/spouse")
-    public ResponseEntity<Map<String, Object>> addSpouse(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        return personService.addSpouse(id, body)
+    public ResponseEntity<Map<String, Object>> addSpouse(@PathVariable Long id, @Valid @RequestBody PersonRequest req) {
+        return personService.addSpouse(id, req)
             .map(spouse -> ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("id", spouse.id(), "person", spouse)))
+                .body(Map.of("id", spouse.id(), "person", PersonDto.from(spouse))))
             .orElse(ResponseEntity.notFound().build());
     }
 
@@ -96,74 +98,41 @@ public class PersonApiController {
     // ========== READ OPERATIONS ==========
 
     @GetMapping("/{id}")
-    public ResponseEntity<Map<String, Object>> getPerson(@PathVariable Long id) {
-        return personRepository.findById(id)
-            .map(person -> {
-                Person mother = person.motherId() != null
-                    ? personRepository.findById(person.motherId()).orElse(null) : null;
-                Person father = person.fatherId() != null
-                    ? personRepository.findById(person.fatherId()).orElse(null) : null;
-
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("person", person);
-                response.put("mother", mother);
-                response.put("father", father);
-                response.put("spouses", personRepository.findSpouses(id));
-                response.put("children", personRepository.findChildren(id));
-                response.put("siblings", personRepository.findSiblings(id));
-                return ResponseEntity.ok(response);
-            })
+    public ResponseEntity<PersonDetailDto> getPerson(@PathVariable Long id) {
+        return personService.getPersonDetail(id)
+            .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/summary")
-    public ResponseEntity<Map<String, Object>> getPersonSummary(@PathVariable Long id) {
-        return personRepository.findById(id)
-            .map(person -> {
-                Person mother = person.motherId() != null
-                    ? personRepository.findById(person.motherId()).orElse(null) : null;
-                Person father = person.fatherId() != null
-                    ? personRepository.findById(person.fatherId()).orElse(null) : null;
-
-                DnaMatch match = dnaMatchRepository.findMatchByPersonId(id);
-
-                Map<String, Object> response = new LinkedHashMap<>();
-                response.put("person", person);
-                response.put("mother", mother);
-                response.put("father", father);
-                response.put("spouses", personRepository.findSpouses(id));
-                response.put("children", personRepository.findChildren(id));
-                response.put("siblings", personRepository.findSiblings(id));
-                response.put("match", match);
-                response.put("ancestorCount", personRepository.countAncestors(id));
-                response.put("descendantCount", personRepository.countDescendants(id));
-                return ResponseEntity.ok(response);
-            })
+    public ResponseEntity<PersonDetailDto> getPersonSummary(@PathVariable Long id) {
+        return personService.getPersonSummary(id)
+            .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}/ancestors")
-    public ResponseEntity<List<Person>> getAncestors(
+    public ResponseEntity<List<PersonDto>> getAncestors(
             @PathVariable Long id,
             @RequestParam(defaultValue = "10") int generations) {
         if (personRepository.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(personRepository.findAncestors(id, Math.min(generations, 20)));
+        return ResponseEntity.ok(toDtos(personRepository.findAncestors(id, Math.min(generations, 20))));
     }
 
     @GetMapping("/{id}/descendants")
-    public ResponseEntity<List<Person>> getDescendants(
+    public ResponseEntity<List<PersonDto>> getDescendants(
             @PathVariable Long id,
             @RequestParam(defaultValue = "10") int generations) {
         if (personRepository.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(personRepository.findDescendants(id, Math.min(generations, 20)));
+        return ResponseEntity.ok(toDtos(personRepository.findDescendants(id, Math.min(generations, 20))));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Person>> search(
+    public ResponseEntity<List<PersonDto>> search(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String birthPlace,
             @RequestParam(defaultValue = "false") boolean familyOnly,
@@ -171,7 +140,7 @@ public class PersonApiController {
         if ((name == null || name.isBlank()) && (birthPlace == null || birthPlace.isBlank())) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(personRepository.search(name, birthPlace, familyOnly, Math.min(limit, 500)));
+        return ResponseEntity.ok(toDtos(personRepository.search(name, birthPlace, familyOnly, Math.min(limit, 500))));
     }
 
     @GetMapping("/{id}/census")
@@ -183,27 +152,27 @@ public class PersonApiController {
     }
 
     @GetMapping("/{id}/siblings")
-    public ResponseEntity<List<Person>> getSiblings(@PathVariable Long id) {
+    public ResponseEntity<List<PersonDto>> getSiblings(@PathVariable Long id) {
         if (personRepository.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(personRepository.findSiblings(id));
+        return ResponseEntity.ok(toDtos(personRepository.findSiblings(id)));
     }
 
     @GetMapping("/{id}/children")
-    public ResponseEntity<List<Person>> getChildren(@PathVariable Long id) {
+    public ResponseEntity<List<PersonDto>> getChildren(@PathVariable Long id) {
         if (personRepository.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(personRepository.findChildren(id));
+        return ResponseEntity.ok(toDtos(personRepository.findChildren(id)));
     }
 
     @GetMapping("/{id}/spouses")
-    public ResponseEntity<List<Person>> getSpouses(@PathVariable Long id) {
+    public ResponseEntity<List<PersonDto>> getSpouses(@PathVariable Long id) {
         if (personRepository.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(personRepository.findSpouses(id));
+        return ResponseEntity.ok(toDtos(personRepository.findSpouses(id)));
     }
 
     @GetMapping("/{id}/urls")

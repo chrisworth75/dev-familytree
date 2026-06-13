@@ -1,14 +1,17 @@
 package com.familytree.controller;
 
-import com.familytree.model.Tree;
+import com.familytree.dto.CreateTreeRequest;
+import com.familytree.dto.PersonDto;
+import com.familytree.dto.PersonRequest;
+import com.familytree.dto.TreeDto;
 import com.familytree.repository.PersonRepository;
 import com.familytree.repository.TreeRepository;
+import com.familytree.service.PersonService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -18,44 +21,36 @@ public class TreeApiController {
 
     private final PersonRepository personRepository;
     private final TreeRepository treeRepository;
+    private final PersonService personService;
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd MM yyyy");
-
-    public TreeApiController(PersonRepository personRepository, TreeRepository treeRepository) {
+    public TreeApiController(PersonRepository personRepository, TreeRepository treeRepository,
+                             PersonService personService) {
         this.personRepository = personRepository;
         this.treeRepository = treeRepository;
+        this.personService = personService;
     }
 
     // ========== TREE CRUD ==========
 
     @GetMapping
-    public ResponseEntity<List<Tree>> getAllTrees() {
-        return ResponseEntity.ok(treeRepository.findAll());
+    public ResponseEntity<List<TreeDto>> getAllTrees() {
+        return ResponseEntity.ok(treeRepository.findAll().stream().map(TreeDto::from).toList());
     }
 
     @GetMapping("/db/{id}")
-    public ResponseEntity<Tree> getTreeById(@PathVariable Long id) {
+    public ResponseEntity<TreeDto> getTreeById(@PathVariable Long id) {
         return treeRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(tree -> ResponseEntity.ok(TreeDto.from(tree)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Tree> createTree(@RequestBody Map<String, Object> body) {
-        String name = (String) body.get("name");
-        String source = (String) body.get("source");
-        String ownerName = (String) body.get("ownerName");
-        String notes = (String) body.get("notes");
-        String dnaTestId = (String) body.get("dnaTestId");
-        Long ancestryTreeId = body.get("ancestryTreeId") != null
-                ? ((Number) body.get("ancestryTreeId")).longValue() : null;
-        Integer size = body.get("size") != null
-                ? ((Number) body.get("size")).intValue() : null;
-
-        Long id = treeRepository.save(name, source, ownerName, notes, dnaTestId, ancestryTreeId, size);
+    public ResponseEntity<TreeDto> createTree(@Valid @RequestBody CreateTreeRequest req) {
+        Long id = treeRepository.save(req.name(), req.source(), req.ownerName(), req.notes(),
+                req.dnaTestId(), req.ancestryTreeId(), req.size());
 
         return treeRepository.findById(id)
-                .map(tree -> ResponseEntity.status(HttpStatus.CREATED).body(tree))
+                .map(tree -> ResponseEntity.status(HttpStatus.CREATED).body(TreeDto.from(tree)))
                 .orElse(ResponseEntity.internalServerError().build());
     }
 
@@ -73,54 +68,17 @@ public class TreeApiController {
     @PostMapping("/{treeId}/person")
     public ResponseEntity<Map<String, Object>> createPersonInTree(
             @PathVariable Long treeId,
-            @RequestBody Map<String, Object> body) {
+            @Valid @RequestBody PersonRequest req) {
 
         if (treeRepository.findById(treeId).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        Long id = savePerson(body, treeId.intValue());
+        Long id = personService.createPerson(req, req.fatherId(), req.motherId(), treeId.intValue());
 
         return personRepository.findById(id)
                 .map(person -> ResponseEntity.status(HttpStatus.CREATED)
-                        .body(Map.of("id", id, "person", person)))
+                        .body(Map.of("id", id, "person", PersonDto.from(person))))
                 .orElse(ResponseEntity.internalServerError().build());
-    }
-
-    private Long savePerson(Map<String, Object> body, Integer treeId) {
-        Long id = body.get("id") != null ? ((Number) body.get("id")).longValue() : null;
-        String firstName = (String) body.get("firstName");
-        if (firstName == null) firstName = (String) body.get("forename");
-        String middleNames = (String) body.get("middleNames");
-        String surname = (String) body.get("surname");
-        String birthSurname = (String) body.get("birthSurname");
-        String birthPlace = (String) body.get("birthPlace");
-        String deathPlace = (String) body.get("deathPlace");
-        String gender = (String) body.get("gender");
-        String notes = (String) body.get("notes");
-
-        LocalDate birthDate = parseDate((String) body.get("birthDate"));
-        Integer birthYear = birthDate == null && body.get("birthYear") != null
-                ? ((Number) body.get("birthYear")).intValue() : null;
-        LocalDate deathDate = parseDate((String) body.get("deathDate"));
-        Integer deathYear = deathDate == null && body.get("deathYear") != null
-                ? ((Number) body.get("deathYear")).intValue() : null;
-
-        Long fatherId = body.get("fatherId") != null ? ((Number) body.get("fatherId")).longValue() : null;
-        Long motherId = body.get("motherId") != null ? ((Number) body.get("motherId")).longValue() : null;
-
-        return personRepository.save(id, firstName, middleNames, surname, birthSurname,
-                birthDate, birthYear, birthPlace,
-                deathDate, deathYear, deathPlace,
-                gender, notes, fatherId, motherId, treeId);
-    }
-
-    private LocalDate parseDate(String dateStr) {
-        if (dateStr == null || dateStr.isBlank()) return null;
-        try {
-            return LocalDate.parse(dateStr, DATE_FORMAT);
-        } catch (Exception e) {
-            return null;
-        }
     }
 }
