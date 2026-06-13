@@ -1,0 +1,30 @@
+// CI for the React frontend. Runs on Calculon, triggered AFTER the API job
+// (family-tree-ci) builds successfully — keeps the API Jenkinsfile untouched.
+//
+// Phase 1 (here): install deps + production build.
+// Phase 2 (next): deploy the stack (db + api + react via compose) and run Playwright
+// e2e against the React app on :4202. Auth-light render smoke tests first, then
+// data-driven tests once React does Keycloak.
+pipeline {
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '20'))
+    }
+
+    triggers {
+        upstream(upstreamProjects: 'family-tree-ci', threshold: hudson.model.Result.SUCCESS)
+    }
+
+    stages {
+        stage('Build React') {
+            steps {
+                dir('family-tree-react') {
+                    sh 'npm ci'
+                    sh 'npm run build'
+                }
+            }
+        }
+    }
+}
