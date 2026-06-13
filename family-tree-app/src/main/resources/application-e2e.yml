@@ -1,0 +1,13 @@
+# E2E profile: the real app run against a throwaway Postgres for Playwright e2e.
+# Datasource + port come from the base config's env vars (DB_HOST/DB_NAME/PORT).
+# A lazy jwk-set-uri lets the OAuth2 resource server start WITHOUT Keycloak — React
+# isn't wired for auth yet, so /api/** calls 401 and the render smoke tests tolerate it.
+spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/family-tree/protocol/openid-connect/certs

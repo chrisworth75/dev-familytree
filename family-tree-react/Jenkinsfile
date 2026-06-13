@@ -1,10 +1,11 @@
 // CI for the React frontend. Runs on Calculon, triggered AFTER the API job
-// (family-tree-ci) builds successfully — keeps the API Jenkinsfile untouched.
+// (family-tree-ci) builds successfully.
 //
-// Phase 1 (here): install deps + production build.
-// Phase 2 (next): deploy the stack (db + api + react via compose) and run Playwright
-// e2e against the React app on :4202. Auth-light render smoke tests first, then
-// data-driven tests once React does Keycloak.
+//   Build React  -> Deploy & E2E (Postgres + API + React + Playwright @ :4202)
+//
+// Auth-light: the API runs on the 'e2e' profile (lazy jwk-set-uri, no Keycloak), so
+// /api/** calls 401 and the render smoke test tolerates it. Data-driven e2e comes
+// once React does Keycloak.
 pipeline {
     agent any
 
@@ -25,6 +26,54 @@ pipeline {
                     sh 'npm run build'
                 }
             }
+        }
+
+        stage('Deploy & E2E') {
+            steps {
+                sh '''
+                    set -e
+                    API_PID=""; WEB_PID=""
+                    cleanup() {
+                      kill $API_PID $WEB_PID 2>/dev/null || true
+                      pkill -f "family-tree-app-.*\\.jar" 2>/dev/null || true
+                      pkill -f "vite preview" 2>/dev/null || true
+                      docker rm -f ft-e2e-db >/dev/null 2>&1 || true
+                    }
+                    trap cleanup EXIT
+
+                    echo "--- Postgres ---"
+                    docker rm -f ft-e2e-db >/dev/null 2>&1 || true
+                    docker run -d --name ft-e2e-db \
+                      -e POSTGRES_DB=familytree -e POSTGRES_USER=familytree -e POSTGRES_PASSWORD=familytree \
+                      -p 5432:5432 postgres:16
+                    for i in $(seq 1 30); do docker exec ft-e2e-db pg_isready -U familytree >/dev/null 2>&1 && break; sleep 2; done
+
+                    echo "--- Build + start API (profile e2e) ---"
+                    ( cd family-tree-app && mvn -q -B -ntp -DskipTests package )
+                    JAR=$(ls family-tree-app/target/family-tree-app-*.jar | grep -v original | head -1)
+                    SPRING_PROFILES_ACTIVE=e2e DB_HOST=localhost DB_PORT=5432 DB_NAME=familytree \
+                      DB_USER=familytree DB_PASSWORD=familytree PORT=3200 \
+                      java -jar "$JAR" > api.log 2>&1 &
+                    API_PID=$!
+                    for i in $(seq 1 60); do curl -sf http://localhost:3200/login >/dev/null 2>&1 && { echo "API up"; break; }; sleep 2; done
+
+                    echo "--- Serve built React on :4202 ---"
+                    ( cd family-tree-react && npx vite preview --port 4202 > ../web.log 2>&1 ) &
+                    WEB_PID=$!
+                    for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:4202/ && { echo "Web up"; break; }; sleep 2; done
+
+                    echo "--- Playwright e2e ---"
+                    npm ci || npm install
+                    npx playwright install chromium
+                    npx playwright test --config playwright.react.config.js
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'api.log,web.log,playwright-report/**', allowEmptyArchive: true
         }
     }
 }
