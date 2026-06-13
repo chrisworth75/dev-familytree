@@ -42,6 +42,9 @@ public class TreeDataService {
             Person spouse = spouses.get(0);
             node.setSpouse(spouse.fullBirthName());
             node.setSpouseId(spouse.id());
+            node.setSpouseDates(formatDates(spouse));
+            node.setSpouseGender(detectGender(spouse));
+            node.setSpouseAvatarPath(spouse.avatarPath());
         }
 
         // Children
@@ -91,6 +94,9 @@ public class TreeDataService {
             Person spouse = spouses.get(0);
             node.setSpouse(spouse.fullBirthName());
             node.setSpouseId(spouse.id());
+            node.setSpouseDates(formatDates(spouse));
+            node.setSpouseGender(detectGender(spouse));
+            node.setSpouseAvatarPath(spouse.avatarPath());
         }
 
         // Parents (stored as "children" for D3 tree layout - it just means "next level")
@@ -302,6 +308,9 @@ public class TreeDataService {
         private final String avatarPath;
         private String spouse;
         private Long spouseId;
+        private String spouseDates;
+        private String spouseGender;
+        private String spouseAvatarPath;
         private List<TreeNode> children;
 
         public TreeNode(Long id, String name, String dates, String gender, String avatarPath) {
@@ -320,11 +329,17 @@ public class TreeDataService {
         public String getAvatarPath() { return avatarPath; }
         public String getSpouse() { return spouse; }
         public Long getSpouseId() { return spouseId; }
+        public String getSpouseDates() { return spouseDates; }
+        public String getSpouseGender() { return spouseGender; }
+        public String getSpouseAvatarPath() { return spouseAvatarPath; }
         public List<TreeNode> getChildren() { return children; }
 
         // Setters
         public void setSpouse(String spouse) { this.spouse = spouse; }
         public void setSpouseId(Long spouseId) { this.spouseId = spouseId; }
+        public void setSpouseDates(String spouseDates) { this.spouseDates = spouseDates; }
+        public void setSpouseGender(String spouseGender) { this.spouseGender = spouseGender; }
+        public void setSpouseAvatarPath(String spouseAvatarPath) { this.spouseAvatarPath = spouseAvatarPath; }
         public void setChildren(List<TreeNode> children) { this.children = children; }
     }
 }

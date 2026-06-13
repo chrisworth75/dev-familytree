@@ -111,6 +111,95 @@ class SessionStoreTest(unittest.TestCase):
     def test_find_in_progress_handles_missing_root(self):
         self.assertEqual(SessionStore.find_in_progress(sessions_root=self.root / "nope"), [])
 
+    def test_record_failed_page_persists_and_is_idempotent(self):
+        store = self._new_store()
+        store.record_failed_page(42)
+        store.record_failed_page(7)
+        store.record_failed_page(42)  # duplicate - should be ignored
+        reloaded = SessionStore.load(store.session_dir)
+        self.assertEqual(reloaded.failed_pages, [42, 7])
+
+    def test_resolve_failed_page_removes_and_merges_guids(self):
+        store = self._new_store()
+        store.record_failed_page(5)
+        store.record_failed_page(8)
+        store.resolve_failed_page(5, ["XXX", "YYY"])
+        reloaded = SessionStore.load(store.session_dir)
+        self.assertEqual(reloaded.failed_pages, [8])
+        self.assertTrue(reloaded.has_seen("XXX"))
+        self.assertTrue(reloaded.has_seen("YYY"))
+
+    def test_resolve_failed_page_is_noop_for_unknown_page(self):
+        store = self._new_store()
+        store.resolve_failed_page(999, [])  # not in failed_pages - shouldn't raise
+        self.assertEqual(store.failed_pages, [])
+
+    def test_complete_or_keep_open_marks_complete_when_no_failures(self):
+        store = self._new_store()
+        result = store.complete_or_keep_open()
+        self.assertTrue(result)
+        self.assertEqual(SessionStore.load(store.session_dir).status, "complete")
+
+    def test_complete_or_keep_open_leaves_open_when_failures_pending(self):
+        store = self._new_store()
+        store.record_failed_page(5)
+        result = store.complete_or_keep_open()
+        self.assertFalse(result)
+        reloaded = SessionStore.load(store.session_dir)
+        self.assertEqual(reloaded.status, "in_progress")
+        self.assertEqual(reloaded.failed_pages, [5])
+
+    def test_load_checkpoint_without_failed_pages_field(self):
+        """Backwards-compat: older checkpoints have no failed_pages key."""
+        store = self._new_store()
+        # Simulate a legacy checkpoint without the new field.
+        legacy = dict(store.state)
+        legacy.pop("failed_pages")
+        store.checkpoint_path.write_text(json.dumps(legacy))
+        reloaded = SessionStore.load(store.session_dir)
+        self.assertEqual(reloaded.failed_pages, [])
+        # Should still be able to record one.
+        reloaded.record_failed_page(1)
+        self.assertEqual(reloaded.failed_pages, [1])
+
+    def test_event_count_cached_across_append_and_load(self):
+        store = self._new_store()
+        self.assertEqual(store.event_count(), 0)
+        for guid in ["AAA", "BBB", "CCC"]:
+            store.append_event(build_event({"guid": guid, "name": guid}, store.session_id))
+        self.assertEqual(store.event_count(), 3)
+        store.close()
+
+        reloaded = SessionStore.load(store.session_dir)
+        self.assertEqual(reloaded.event_count(), 3)
+        reloaded.append_event(build_event({"guid": "DDD", "name": "D"}, reloaded.session_id))
+        self.assertEqual(reloaded.event_count(), 4)
+        reloaded.close()
+
+    def test_load_seeds_seen_guids_from_events_jsonl(self):
+        """Mid-page crash recovery: events flushed to disk before complete_page
+        runs must still be deduped on resume, even though they never made it
+        into the checkpoint's seen_guids list."""
+        store = self._new_store()
+        for guid in ["AAA", "BBB", "CCC"]:
+            store.append_event(build_event({"guid": guid, "name": guid}, store.session_id))
+        # No complete_page() call — simulates the process dying mid-page.
+        store.close()
+        # Sanity: state on disk still has empty seen_guids.
+        on_disk = json.loads(store.checkpoint_path.read_text())
+        self.assertEqual(on_disk["seen_guids"], [])
+
+        reloaded = SessionStore.load(store.session_dir)
+        self.assertTrue(reloaded.has_seen("AAA"))
+        self.assertTrue(reloaded.has_seen("BBB"))
+        self.assertTrue(reloaded.has_seen("CCC"))
+        self.assertFalse(reloaded.has_seen("ZZZ"))
+
+        # Next complete_page should sync the recovered GUIDs into the on-disk list.
+        reloaded.complete_page(1, [])
+        re_re = SessionStore.load(store.session_dir)
+        self.assertEqual(sorted(re_re.state["seen_guids"]), ["AAA", "BBB", "CCC"])
+
     def test_round_trip_full_state(self):
         """End-to-end: create -> append events -> complete pages -> reload."""
         store = self._new_store()
@@ -153,9 +242,10 @@ class HelpersTest(unittest.TestCase):
             "hasTree": True,
             "treeSize": 1234,
             "linkedTreeId": "999",
+            "hasCommonAncestor": True,
         }
         event = build_event(raw, "session-id-1")
-        self.assertEqual(event["event_type"], "MatchDiscovered")
+        self.assertEqual(event["event_type"], "MatchObserved")
         self.assertEqual(event["schema_version"], 1)
         self.assertEqual(event["source"], "ancestry.co.uk")
         self.assertEqual(event["session_id"], "session-id-1")
@@ -172,6 +262,7 @@ class HelpersTest(unittest.TestCase):
                 "has_tree": True,
                 "tree_size": 1234,
                 "linked_tree_id": "999",
+                "has_common_ancestor": True,
             },
         )
 
@@ -182,6 +273,7 @@ class HelpersTest(unittest.TestCase):
         self.assertIsNone(event["match"]["predicted_relationship"])
         self.assertEqual(event["match"]["match_side"], "unknown")
         self.assertFalse(event["match"]["has_tree"])
+        self.assertFalse(event["match"]["has_common_ancestor"])
 
 
 if __name__ == "__main__":

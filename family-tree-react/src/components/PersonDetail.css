@@ -173,17 +173,33 @@
 }
 
 .svg-container {
-    overflow-x: auto;
+    overflow: hidden;
     margin-top: 0.5rem;
-}
-
-.svg-container svg {
-    max-width: 100%;
-    height: auto;
+    height: 400px;
+    border: 1px solid var(--color-card-bg);
+    border-radius: 4px;
 }
 
 .svg-loading {
     color: var(--color-text-muted);
     font-style: italic;
     padding: 1rem 0;
+}
+
+.view-tree-link {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-accent);
+    border-radius: 6px;
+    color: var(--color-accent);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.view-tree-link:hover {
+    background: var(--color-accent);
+    color: white;
+    text-decoration: none;
 }

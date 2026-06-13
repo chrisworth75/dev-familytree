@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom'
 import Nav from './components/Nav'
 import Trees from './components/Trees'
 import Tree from "./components/Tree.jsx";
@@ -10,23 +10,30 @@ import PersonDetail from './components/PersonDetail'
 import Photos from './components/Photos'
 import './App.css'
 
+function NavLayout() {
+    return (
+        <>
+            <Nav />
+            <main><Outlet /></main>
+        </>
+    )
+}
 
 function App() {
     return (
         <BrowserRouter>
-            <Nav />
-            <main>
-                <Routes>
+            <Routes>
+                <Route path="/tree/:id" element={<Tree />} />
+                <Route element={<NavLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/trees" element={<Trees />} />
                     <Route path="/dna" element={<DNA />} />
                     <Route path="/search" element={<Search />} />
-                    <Route path="/tree/:id" element={<Tree />} />
                     <Route path="/dna/match/:dnaTestId" element={<MatchDetail />} />
                     <Route path="/person/:id" element={<PersonDetail />} />
                     <Route path="/photos" element={<Photos />} />
-                </Routes>
-            </main>
+                </Route>
+            </Routes>
         </BrowserRouter>
     )
 }

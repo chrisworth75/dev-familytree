@@ -18,8 +18,8 @@ export async function getDescendantsHierarchy(personId, maxDepth = 10) {
     return res.json();
 }
 
-export async function getDescendantsSvg(personId, maxDepth = 10) {
-    const res = await fetch(`${API_BASE}/api/tree-svg/descendants/${personId}?maxDepth=${maxDepth}`);
+export async function getDescendantsSvg(personId, maxDepth = 10, theme = 'vertical') {
+    const res = await fetch(`${API_BASE}/api/tree-svg/descendants/${personId}?maxDepth=${maxDepth}&theme=${theme}`);
     if (!res.ok) throw new Error('Failed to fetch descendants SVG');
     return res.text();
 }

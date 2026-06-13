@@ -2,8 +2,11 @@
 """
 Ancestry DNA Match Scraper - Event Emission Mode
 
-Scrapes DNA matches from ancestry.co.uk and emits one JSON event per newly
-discovered match to a session-scoped JSONL file. Does NOT write to SQLite.
+Scrapes DNA matches from ancestry.co.uk and emits one JSON event per match
+observed during the session. Does not compare against any external state —
+every full run emits events for every match currently visible in Ancestry's
+match list. Downstream consumers are responsible for deduplication,
+upserting, change detection, etc.
 
 Sessions are resumable. State lives under ~/.ancestry-scraper/sessions/.
 
@@ -30,7 +33,7 @@ SESSIONS_ROOT = Path.home() / ".ancestry-scraper" / "sessions"
 ANCESTRY_BASE_URL = "https://www.ancestry.co.uk"
 SOURCE = "ancestry.co.uk"
 SCHEMA_VERSION = 1
-EVENT_TYPE = "MatchDiscovered"
+EVENT_TYPE = "MatchObserved"
 
 # After this many consecutive pages with zero new matches, treat the scrape as done.
 MAX_CONSECUTIVE_EMPTY_PAGES = 10
@@ -56,6 +59,7 @@ class SessionStore:
         self.state = None
         self._seen_guids_set = None
         self._events_fh = None
+        self._event_count = 0
 
     # --- factories --------------------------------------------------------- #
 
@@ -74,6 +78,7 @@ class SessionStore:
             "total_pages": None,
             "last_page_completed": 0,
             "seen_guids": [],
+            "failed_pages": [],
             "status": "in_progress",
         }
         store._seen_guids_set = set()
@@ -82,12 +87,28 @@ class SessionStore:
 
     @classmethod
     def load(cls, session_dir):
-        """Load an existing session from disk."""
+        """Load an existing session from disk.
+
+        Seeds the in-memory dedup set from both checkpoint.json AND events.jsonl
+        — the latter catches GUIDs whose events were flushed to disk before the
+        per-page checkpoint write ran (i.e. process died mid-page). The next
+        complete_page call's defensive sync will propagate these into the
+        on-disk seen_guids list."""
         store = cls(session_dir)
         if not store.checkpoint_path.exists():
             raise SessionError(f"No checkpoint at {store.checkpoint_path}")
         store.state = json.loads(store.checkpoint_path.read_text())
         store._seen_guids_set = set(store.state.get("seen_guids", []))
+        if store.events_path.exists():
+            with store.events_path.open(encoding="utf-8") as fh:
+                for line in fh:
+                    store._event_count += 1
+                    try:
+                        guid = json.loads(line)["match"]["ancestry_id"]
+                    except (json.JSONDecodeError, KeyError, TypeError):
+                        continue
+                    if guid:
+                        store._seen_guids_set.add(guid)
         return store
 
     @classmethod
@@ -127,14 +148,15 @@ class SessionStore:
     def test_guid(self):
         return self.state.get("test_guid")
 
+    @property
+    def failed_pages(self):
+        return list(self.state.get("failed_pages", []))
+
     def has_seen(self, guid):
         return guid in self._seen_guids_set
 
     def event_count(self):
-        if not self.events_path.exists():
-            return 0
-        with self.events_path.open("rb") as f:
-            return sum(1 for _ in f)
+        return self._event_count
 
     # --- mutators ---------------------------------------------------------- #
 
@@ -150,6 +172,7 @@ class SessionStore:
         self._events_fh.write(json.dumps(event, separators=(",", ":")) + "\n")
         self._events_fh.flush()
         os.fsync(self._events_fh.fileno())
+        self._event_count += 1
         guid = event.get("match", {}).get("ancestry_id")
         if guid:
             self._seen_guids_set.add(guid)
@@ -169,10 +192,37 @@ class SessionStore:
                 self.state["seen_guids"].append(g)
         self._write_checkpoint()
 
+    def record_failed_page(self, page_num):
+        """Note that a page failed all retry attempts. Idempotent."""
+        failed = self.state.setdefault("failed_pages", [])
+        if page_num not in failed:
+            failed.append(page_num)
+            self._write_checkpoint()
+
+    def resolve_failed_page(self, page_num, new_guids):
+        """A previously-failed page succeeded on retry. Remove from list,
+        merge any newly-seen GUIDs into seen_guids."""
+        failed = self.state.setdefault("failed_pages", [])
+        if page_num in failed:
+            failed.remove(page_num)
+        for g in new_guids:
+            if g and g not in self._seen_guids_set:
+                self.state["seen_guids"].append(g)
+                self._seen_guids_set.add(g)
+        self._write_checkpoint()
+
     def mark_complete(self):
         self.state["status"] = "complete"
         self.state["completed_at"] = datetime.now().astimezone().isoformat(timespec="seconds")
         self._write_checkpoint()
+
+    def complete_or_keep_open(self):
+        """Mark the session complete only if no pages are still failing.
+        Returns True if marked complete, False if the session was left open."""
+        if self.state.get("failed_pages"):
+            return False
+        self.mark_complete()
+        return True
 
     def mark_abandoned(self):
         self.state["status"] = "abandoned"
@@ -224,7 +274,12 @@ def normalize_side(text):
 
 
 def build_event(raw_match, session_id, now=None):
-    """Construct a MatchDiscovered event from one extracted match dict."""
+    """Construct a MatchObserved event from one extracted match dict.
+
+    "Observed" = we saw this match in Ancestry's list right now. The scraper
+    has no notion of whether it is new to any downstream database; consumers
+    derive "discovery" from a stream of observations.
+    """
     now = now or datetime.now().astimezone()
     return {
         "event_id": str(uuid.uuid4()),
@@ -242,6 +297,7 @@ def build_event(raw_match, session_id, now=None):
             "has_tree": bool(raw_match.get("hasTree", False)),
             "tree_size": raw_match.get("treeSize"),
             "linked_tree_id": raw_match.get("linkedTreeId"),
+            "has_common_ancestor": bool(raw_match.get("hasCommonAncestor", False)),
         },
     }
 
@@ -307,6 +363,10 @@ EXTRACT_MATCHES_JS = r"""
                 }
             }
 
+            // ThruLines "Common ancestor" badge - boolean only on the list page;
+            // the ancestor's name lives on the per-match compare page.
+            const hasCommonAncestor = !!entry.querySelector('.icon3-common-ancestor');
+
             matches.push({
                 guid: matchGuid,
                 name: name,
@@ -316,6 +376,7 @@ EXTRACT_MATCHES_JS = r"""
                 hasTree: hasTree,
                 treeSize: treeSize,
                 linkedTreeId: linkedTreeId,
+                hasCommonAncestor: hasCommonAncestor,
             });
         } catch (e) {}
     });
@@ -343,6 +404,22 @@ def _get_chrome_cookies():
         except Exception as exc:
             print(f"  (skipping {domain}: {exc})", flush=True)
     return cookies
+
+
+def _navigate_and_extract(page, base_url, page_num):
+    """Navigate to a single Ancestry match-list page and pull match dicts.
+    Retries 3 times. Returns the extracted list (possibly empty) on success,
+    or None if all 3 attempts failed."""
+    page_url = f"{base_url}&currentPage={page_num}"
+    for attempt in range(3):
+        try:
+            page.goto(page_url, wait_until="domcontentloaded", timeout=45000)
+            time.sleep(3)
+            return page.evaluate(EXTRACT_MATCHES_JS)
+        except Exception as exc:
+            print(f"  Page {page_num}: retry {attempt + 1}/3 after error: {exc}", flush=True)
+            time.sleep(5)
+    return None
 
 
 def _resolve_test_guid(page):
@@ -439,40 +516,32 @@ def scrape(store, headless=False, max_pages=MAX_PAGES):
                     flush=True,
                 )
 
-            consecutive_empty = 0
-            page_num = start_page
-
-            while consecutive_empty < MAX_CONSECUTIVE_EMPTY_PAGES and page_num <= max_pages:
-                page_url = f"{base_url}&currentPage={page_num}"
-
-                loaded = False
-                for attempt in range(3):
-                    try:
-                        page.goto(page_url, wait_until="domcontentloaded", timeout=45000)
-                        time.sleep(3)
-                        loaded = True
-                        break
-                    except Exception as exc:
-                        print(f"  Page {page_num}: retry {attempt + 1}/3 after error: {exc}", flush=True)
-                        time.sleep(5)
-                if not loaded:
-                    print(f"  Page {page_num}: failed after 3 attempts, skipping", flush=True)
-                    # Don't mark this page complete - resume will retry it.
-                    page_num += 1
-                    continue
-
-                raw_matches = page.evaluate(EXTRACT_MATCHES_JS)
+            def _emit_matches(raw_matches):
+                """Append events for unseen GUIDs. Returns list of new GUIDs."""
                 new_guids = []
-                events_this_page = 0
                 for m in raw_matches:
                     guid = m.get("guid")
                     if not guid or store.has_seen(guid):
                         continue
-                    event = build_event(m, store.session_id)
-                    store.append_event(event)
+                    store.append_event(build_event(m, store.session_id))
                     new_guids.append(guid)
-                    events_this_page += 1
+                return new_guids
 
+            consecutive_empty = 0
+            page_num = start_page
+
+            while consecutive_empty < MAX_CONSECUTIVE_EMPTY_PAGES and page_num <= max_pages:
+                raw_matches = _navigate_and_extract(page, base_url, page_num)
+                if raw_matches is None:
+                    print(f"  Page {page_num}: failed after 3 attempts, recording for retry", flush=True)
+                    store.record_failed_page(page_num)
+                    page_num += 1
+                    if stop_flag["set"]:
+                        raise KeyboardInterrupt
+                    continue
+
+                new_guids = _emit_matches(raw_matches)
+                events_this_page = len(new_guids)
                 store.complete_page(page_num, new_guids)
 
                 if events_this_page == 0:
@@ -481,10 +550,9 @@ def scrape(store, headless=False, max_pages=MAX_PAGES):
                     consecutive_empty = 0
 
                 if page_num % 10 == 0 or page_num <= 5:
-                    total = store.event_count()
                     print(
                         f"  Page {page_num}: +{events_this_page} new, "
-                        f"{total} events total this session",
+                        f"{store.event_count()} events total this session",
                         flush=True,
                     )
 
@@ -496,13 +564,37 @@ def scrape(store, headless=False, max_pages=MAX_PAGES):
             if consecutive_empty >= MAX_CONSECUTIVE_EMPTY_PAGES:
                 print(
                     f"\nReached {MAX_CONSECUTIVE_EMPTY_PAGES} consecutive empty pages — "
-                    f"treating scrape as complete.",
+                    f"forward pagination done.",
                     flush=True,
                 )
             else:
                 print(f"\nReached safety max of {max_pages} pages.", flush=True)
 
-            store.mark_complete()
+            # Retry-at-end: one pass through any pages that failed during forward pagination.
+            if store.failed_pages:
+                pending = store.failed_pages  # snapshot
+                print(f"\nRetrying {len(pending)} previously-failed pages...", flush=True)
+                for fp in pending:
+                    if stop_flag["set"]:
+                        raise KeyboardInterrupt
+                    raw_matches = _navigate_and_extract(page, base_url, fp)
+                    if raw_matches is None:
+                        print(f"  Page {fp}: retry failed - leaving on failed_pages", flush=True)
+                        continue
+                    new_guids = _emit_matches(raw_matches)
+                    store.resolve_failed_page(fp, new_guids)
+                    print(f"  Page {fp}: retry OK (+{len(new_guids)} new)", flush=True)
+
+            if store.complete_or_keep_open():
+                print("Session marked complete.", flush=True)
+            else:
+                remaining = store.failed_pages
+                print(
+                    f"\n{len(remaining)} page(s) still failing: {remaining[:10]}"
+                    f"{' ...' if len(remaining) > 10 else ''}",
+                    flush=True,
+                )
+                print("Session left open — run again to retry.", flush=True)
 
         finally:
             try:

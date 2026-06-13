@@ -8,6 +8,15 @@ spring:
     clean-disabled: true
   thymeleaf:
     cache: false
+  # The app's SecurityConfig enables an OAuth2 resource server, which needs a JwtDecoder
+  # or the context won't start. There's no Keycloak in CI and the test authenticates with
+  # HTTP Basic, so this jwk-set-uri just satisfies the bean — it is fetched lazily and
+  # never actually called.
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8081/realms/family-tree/protocol/openid-connect/certs
 
 logging:
   level:

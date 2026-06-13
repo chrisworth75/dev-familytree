@@ -7,6 +7,12 @@ spring:
     username: familytree
     password: familytree
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/family-tree
+
   flyway:
     # SAFETY: Prevent accidental database wipes
     clean-disabled: true

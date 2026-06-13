@@ -48,15 +48,17 @@ public class TreeSvgController {
     @GetMapping(value = "/descendants/{id}", produces = "image/svg+xml")
     public ResponseEntity<byte[]> getDescendantsSvg(
             @PathVariable Long id,
-            @RequestParam(defaultValue = "10") int maxDepth) {
+            @RequestParam(defaultValue = "10") int maxDepth,
+            @RequestParam(defaultValue = "vertical") String theme) {
 
         int depth = Math.min(maxDepth, 20);
 
         return treeDataService.buildDescendantsHierarchy(id, depth)
                 .map(tree -> {
                     try {
-                        byte[] svg = treeRenderService.renderToSvg(tree);
-                        svg = overlayAvatarsOnSvg(svg, tree, 8);
+                        byte[] svg = treeRenderService.renderToSvg(tree, theme);
+                        int nodeRadius = "card".equals(theme) ? 0 : 8;
+                        svg = overlayAvatarsOnSvg(svg, tree, nodeRadius);
                         return ResponseEntity.ok().contentType(SVG_MEDIA_TYPE).body(svg);
                     } catch (D3ServiceException e) {
                         return ResponseEntity.status(502).contentType(SVG_MEDIA_TYPE)

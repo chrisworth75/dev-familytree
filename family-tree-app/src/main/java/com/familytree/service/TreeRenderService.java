@@ -22,17 +22,24 @@ public class TreeRenderService {
     }
 
     /**
-     * Render a tree node hierarchy as SVG using the D3 tree service.
-     * Uses horizontal layout suitable for large ancestor/descendant trees.
+     * Render a tree node hierarchy as SVG using the D3 tree service with the default theme.
+     */
+    public byte[] renderToSvg(TreeNode tree) {
+        return renderToSvg(tree, "vertical");
+    }
+
+    /**
+     * Render a tree node hierarchy as SVG using the D3 tree service with a specified theme.
      *
      * @param tree the tree node hierarchy to render
+     * @param theme the theme name (horizontal, vertical, card)
      * @return SVG content as bytes
      * @throws D3ServiceException if the D3 service is unavailable or returns an error
      */
-    public byte[] renderToSvg(TreeNode tree) {
+    public byte[] renderToSvg(TreeNode tree, String theme) {
         try {
             return restClient.post()
-                    .uri(renderUrl)
+                    .uri(renderUrl + "?theme=" + theme)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(tree)
                     .retrieve()

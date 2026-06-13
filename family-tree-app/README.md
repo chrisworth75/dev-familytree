@@ -11,8 +11,8 @@ Personal genealogy database with REST API. Manages people, family relationships,
 ## Running Locally
 
 ```bash
-# Start Postgres (if not already running)
-docker start familytree-postgres
+# Start local Postgres and Keycloak
+docker compose -f docker-compose.dev.yml up -d
 
 # Run with real data
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
@@ -22,6 +22,37 @@ mvn spring-boot:run -Dspring-boot.run.profiles=scratch
 ```
 
 API available at http://localhost:3200/api
+
+### Local Keycloak
+
+Local development uses Keycloak as an OAuth2 issuer for API JWT validation.
+
+- Admin URL: http://localhost:8081
+- Admin username/password: `admin` / `admin` (local dev only)
+- Realm: `family-tree`
+- Client: `family-tree-backend`
+- Realm import: `../infra/keycloak/realm-export.json`
+- Dev test user: `dev-owner` / `dev-owner` (local dev only)
+
+Get a local access token:
+
+```bash
+TOKEN=$(curl -s -X POST \
+  http://localhost:8081/realms/family-tree/protocol/openid-connect/token \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=password' \
+  -d 'client_id=family-tree-backend' \
+  -d 'username=dev-owner' \
+  -d 'password=dev-owner' | jq -r .access_token)
+```
+
+Use it against the API:
+
+```bash
+curl -H "Authorization: Bearer $TOKEN" http://localhost:3200/api/me
+```
+
+The realm JSON is mounted into Keycloak at `/opt/keycloak/data/import` and imported with `--import-realm` when the container starts. All default passwords and the public password-grant client are for local development only; replace them and review client flow, role, and secret handling before any production deployment.
 
 ## Database Profiles
 
