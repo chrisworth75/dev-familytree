@@ -1,0 +1,6 @@
+apiVersion: v2
+name: d3-tree-service
+description: Server-side D3 family-tree SVG renderer (internal; the API proxies to it)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

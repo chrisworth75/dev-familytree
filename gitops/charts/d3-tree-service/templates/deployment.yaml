@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: d3-tree-service
+  labels:
+    app: d3-tree-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: d3-tree-service
+  template:
+    metadata:
+      labels:
+        app: d3-tree-service
+    spec:
+      containers:
+        - name: d3-tree-service
+          image: {{ .Values.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3300
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3300
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3300
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

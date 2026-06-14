@@ -1,0 +1,11 @@
+registry: 192.168.0.186:5001
+image:
+  repository: family-tree-d3
+  tag: latest
+  pullPolicy: Always
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    memory: 256Mi

@@ -45,11 +45,18 @@ services:
       DB_PASSWORD: familytree
       PORT: "3200"
       KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
+      D3_TREE_SERVICE_URL: http://d3:3300
     ports:
       - "23200:3200"
     depends_on:
       postgres:
         condition: service_healthy
+
+  # Server-side tree/SVG renderer (internal; the API proxies to it).
+  d3:
+    build: ../../d3-tree-service
+    expose:
+      - "3300"
 
   react:
     build: ../../family-tree-react

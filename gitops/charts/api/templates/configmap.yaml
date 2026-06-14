@@ -12,3 +12,4 @@ data:
   DB_NAME: {{ .Values.db.name | quote }}
   DB_USER: {{ .Values.db.user | quote }}
   KEYCLOAK_JWK_SET_URI: {{ .Values.keycloak.jwkSetUri | quote }}
+  D3_TREE_SERVICE_URL: {{ .Values.d3TreeServiceUrl | quote }}

@@ -13,6 +13,7 @@ db:
   passwordKey: POSTGRES_PASSWORD
 keycloak:
   jwkSetUri: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
+d3TreeServiceUrl: http://d3-tree-service:3300
 seed:
   enabled: true
   image:

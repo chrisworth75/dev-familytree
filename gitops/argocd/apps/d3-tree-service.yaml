@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: d3-tree-service
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"   # alongside the API
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/chrisworth75/dev-familytree.git
+    targetRevision: main
+    path: gitops/charts/d3-tree-service
+    helm: {}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: family-tree
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
