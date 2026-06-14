@@ -18,6 +18,12 @@ pipeline {
         upstream(upstreamProjects: 'family-tree-ci', threshold: hudson.model.Result.SUCCESS)
     }
 
+    environment {
+        REGISTRY     = '192.168.0.186:5001'
+        IMAGE        = 'family-tree-react'
+        CHART_VALUES = 'gitops/charts/react/values.yaml'
+    }
+
     stages {
         stage('Build React') {
             steps {
@@ -67,6 +73,38 @@ pipeline {
                     npx playwright install chromium
                     npx playwright test --config playwright.react.config.js
                 '''
+            }
+        }
+
+        // ---- CD: build the image and let ArgoCD redeploy via a GitOps tag bump ----
+        // (prereqs: see gitops/ci/README.md — insecure registry on Calculon Docker,
+        //  'github-token' credential, ignore-committer loop guard)
+        stage('Build & Push image') {
+            when { branch 'main' }
+            steps {
+                script { env.GIT_SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() }
+                dir('family-tree-react') {
+                    sh 'docker build -t $REGISTRY/$IMAGE:$GIT_SHA -t $REGISTRY/$IMAGE:latest .'
+                    sh 'docker push $REGISTRY/$IMAGE:$GIT_SHA'
+                    sh 'docker push $REGISTRY/$IMAGE:latest'
+                }
+            }
+        }
+
+        stage('Deploy (GitOps tag bump)') {
+            when { branch 'main' }
+            steps {
+                sh '''
+                    sed -i -E "s|^(  tag: ).*|\\1$GIT_SHA|" $CHART_VALUES
+                    git config user.email "jenkins@calculon"
+                    git config user.name "Calculon Jenkins"
+                    git add $CHART_VALUES
+                    git commit -m "ci(react): deploy $GIT_SHA [skip ci]" || { echo "image.tag unchanged"; exit 0; }
+                '''
+                withCredentials([usernamePassword(credentialsId: 'github-token',
+                        usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                    sh 'git push https://$GH_USER:$GH_TOKEN@github.com/chrisworth75/dev-familytree.git HEAD:main'
+                }
             }
         }
     }

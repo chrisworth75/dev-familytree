@@ -17,6 +17,7 @@ Config via env:
   SEED_BASE_URL  default http://localhost:3201
   SEED_PG_DSN    default postgresql://familytree:familytree@localhost:5432/familytree_seed
 """
+import base64
 import json
 import os
 import subprocess
@@ -34,14 +35,24 @@ BASE_URL = os.environ.get("SEED_BASE_URL", "http://localhost:3201").rstrip("/")
 PG_DSN = os.environ.get(
     "SEED_PG_DSN", "postgresql://familytree:familytree@localhost:5432/familytree_seed"
 )
+# The API secures /api/** — authenticate via HTTP Basic (the in-memory chris/chris
+# user, same as the integration test's withBasicAuth). Set SEED_USER="" to disable.
+SEED_USER = os.environ.get("SEED_USER", "chris")
+SEED_PASSWORD = os.environ.get("SEED_PASSWORD", "chris")
+_AUTH_HEADER = (
+    "Basic " + base64.b64encode(f"{SEED_USER}:{SEED_PASSWORD}".encode()).decode()
+    if SEED_USER else None
+)
 HERE = Path(__file__).resolve().parent
 
 
 def post(path, body):
     data = json.dumps(body).encode()
+    headers = {"Content-Type": "application/json"}
+    if _AUTH_HEADER:
+        headers["Authorization"] = _AUTH_HEADER
     req = urllib.request.Request(
-        BASE_URL + path, data=data,
-        headers={"Content-Type": "application/json"}, method="POST",
+        BASE_URL + path, data=data, headers=headers, method="POST",
     )
     try:
         with urllib.request.urlopen(req) as r:
