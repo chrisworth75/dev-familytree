@@ -12,5 +12,6 @@ output "ingress_urls" {
     react    = "http://familytree.192.168.0.100.nip.io"
     api      = "http://api.familytree.192.168.0.100.nip.io"
     keycloak = "http://keycloak.192.168.0.100.nip.io"
+    argocd   = "http://argocd.192.168.0.100.nip.io"
   }
 }

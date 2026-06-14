@@ -34,3 +34,13 @@ resource "terraform_data" "root_app" {
     EOT
   }
 }
+
+# Expose the ArgoCD UI via Traefik (http://argocd.192.168.0.100.nip.io).
+resource "terraform_data" "argocd_ingress" {
+  depends_on       = [helm_release.argocd]
+  triggers_replace = filemd5("${path.module}/argocd-ingress.yaml")
+
+  provisioner "local-exec" {
+    command = "KUBECONFIG=${var.kubeconfig_path} kubectl apply -f ${path.module}/argocd-ingress.yaml"
+  }
+}

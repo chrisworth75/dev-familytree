@@ -49,6 +49,9 @@ t3-sync: ## Tier 3: force ArgoCD to refresh from git
 t3-seed: ## Tier 3: re-run the seed job
 	$(KC) delete job seed --ignore-not-found && \
 	helm template api gitops/charts/api --show-only templates/seed-job.yaml | $(KC) apply -f -
+t3-argocd: ## Tier 3: ArgoCD UI URL + admin password
+	@echo "http://argocd.192.168.0.100.nip.io  (user: admin)"
+	@echo -n "password: "; KUBECONFIG=$(KUBECONFIG) kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath='{.data.password}' | base64 -d; echo
 
 ## ----- Cross-tier ------------------------------------------------------------
 .PHONY: urls help
@@ -56,6 +59,7 @@ urls: ## Print every tier's URLs
 	@echo "Tier 1 (Mac):       http://localhost:14202  api http://localhost:13200  kc http://localhost:18081"
 	@echo "Tier 2 (Calculon):  http://calculon:24202    api http://calculon:23200   kc http://calculon:28081"
 	@echo "Tier 3 (gitops):    http://familytree.192.168.0.100.nip.io  api http://api.familytree.192.168.0.100.nip.io"
+	@echo "ArgoCD UI:          http://argocd.192.168.0.100.nip.io  (admin; 'make t3-argocd' for password)"
 
 help: ## This help
 	@grep -hE '^[a-z0-9_-]+:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN{FS=":.*##"}{printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
