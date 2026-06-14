@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: api
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: {{ .Values.db.passwordKey }}
+          ports:
+            - name: http
+              containerPort: 3200
+          # Spring Boot can be slow to boot; startupProbe guards liveness during boot.
+          startupProbe:
+            httpGet:
+              path: /actuator/health
+              port: 3200
+            periodSeconds: 5
+            failureThreshold: 40   # up to ~200s to come up
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 3200
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 3200
+            periodSeconds: 15
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}

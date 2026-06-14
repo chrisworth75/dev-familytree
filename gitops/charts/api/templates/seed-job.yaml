@@ -1,0 +1,53 @@
+{{- if .Values.seed.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed
+  labels:
+    app: seed
+  annotations:
+    # Runs after the API (and its DB) sync. Idempotent: skips if already seeded.
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  backoffLimit: 3
+  template:
+    metadata:
+      labels:
+        app: seed
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: {{ .Values.registry }}/{{ .Values.seed.image.repository }}:{{ .Values.seed.image.tag }}
+          imagePullPolicy: Always
+          env:
+            - name: SEED_BASE_URL
+              value: http://api:3200
+            - name: SEED_PG_DSN
+              value: postgresql://{{ .Values.db.user }}@{{ .Values.db.host }}:{{ .Values.db.port }}/{{ .Values.db.name }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: {{ .Values.db.passwordKey }}
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              echo "waiting for API readiness at $SEED_BASE_URL ..."
+              i=0
+              until python -c "import urllib.request,sys; urllib.request.urlopen('$SEED_BASE_URL/actuator/health/readiness')" 2>/dev/null; do
+                i=$((i+1)); [ $i -ge 60 ] && echo "API not ready after 5m, aborting" && exit 1
+                sleep 5
+              done
+              echo "API ready. Checking whether the DB is already seeded..."
+              COUNT=$(psql "$SEED_PG_DSN" -tAc "select count(*) from person" 2>/dev/null | tr -d '[:space:]' || echo "")
+              if [ -n "$COUNT" ] && [ "$COUNT" != "0" ]; then
+                echo "person table already has $COUNT rows; skipping seed"
+                exit 0
+              fi
+              echo "seeding the curated tree via the API..."
+              exec python seed.py
+{{- end }}

@@ -1,0 +1,27 @@
+# k8s profile: deployed in-cluster (Postgres + Keycloak as Services).
+# Datasource host/port/name/user/password come from the Deployment env (DB_* vars
+# in the base application.yml). A lazy jwk-set-uri (like the e2e profile) lets the
+# OAuth2 resource server boot WITHOUT waiting on Keycloak; access tokens validate
+# once Keycloak is reachable in-cluster. Auth wiring on the React side is a later
+# phase — until then /api/** still 401s without a Bearer token, by design.
+spring:
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs}
+
+# Health probes for Kubernetes (paths already permitAll in SecurityConfig).
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never

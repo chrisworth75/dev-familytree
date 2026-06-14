@@ -47,6 +47,12 @@
             <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
         </dependency>
 
+        <!-- Actuator: exposes /actuator/health/{liveness,readiness} for k8s probes -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Bean Validation (enables @Valid / @Pattern etc. on request DTOs) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

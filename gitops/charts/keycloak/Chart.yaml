@@ -1,0 +1,6 @@
+apiVersion: v2
+name: keycloak
+description: Keycloak (dev mode, H2) with the family-tree realm imported on start
+type: application
+version: 0.1.0
+appVersion: "26.0"

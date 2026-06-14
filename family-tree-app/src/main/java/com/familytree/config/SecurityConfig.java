@@ -45,7 +45,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/photos/**", "/trees/**").permitAll()
                 .requestMatchers("/login", "/error").permitAll()
-                .requestMatchers("/health", "/actuator/health").permitAll()
+                .requestMatchers("/health", "/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/prototype/**").permitAll()
                 .requestMatchers("/tree-gen/**").permitAll()

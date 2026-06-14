@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api
+  labels:
+    app: api
+data:
+  SPRING_PROFILES_ACTIVE: k8s
+  PORT: "3200"
+  DB_HOST: {{ .Values.db.host | quote }}
+  DB_PORT: {{ .Values.db.port | quote }}
+  DB_NAME: {{ .Values.db.name | quote }}
+  DB_USER: {{ .Values.db.user | quote }}
+  KEYCLOAK_JWK_SET_URI: {{ .Values.keycloak.jwkSetUri | quote }}

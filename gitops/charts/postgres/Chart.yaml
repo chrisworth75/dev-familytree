@@ -1,0 +1,6 @@
+apiVersion: v2
+name: postgres
+description: PostgreSQL for the family-tree stack (fresh DB; schema built by API Flyway)
+type: application
+version: 0.1.0
+appVersion: "16"

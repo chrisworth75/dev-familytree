@@ -1,0 +1,14 @@
+image: quay.io/keycloak/keycloak:26.0
+# Browser-facing host (Traefik ingress on Calculon, nip.io wildcard DNS).
+host: keycloak.192.168.0.100.nip.io
+admin:
+  user: admin
+  password: admin
+resources:
+  requests:
+    cpu: 200m
+    memory: 512Mi
+  limits:
+    memory: 1Gi
+# NOTE: dev mode with the in-memory H2 DB — realm + users are EPHEMERAL (re-imported
+# from the ConfigMap on every restart). A persistent Keycloak DB is a later phase.

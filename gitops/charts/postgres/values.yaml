@@ -1,0 +1,15 @@
+image: postgres:16
+db:
+  name: familytree
+  user: familytree
+  # Skeleton-only password; Terraform also creates this Secret so the value is
+  # managed in one place. Override per-env for anything real.
+  password: familytree
+storage:
+  size: 2Gi
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    memory: 512Mi

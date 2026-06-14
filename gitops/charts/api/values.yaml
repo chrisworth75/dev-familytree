@@ -1,0 +1,26 @@
+registry: 192.168.0.186:5001
+image:
+  repository: family-tree-app
+  tag: latest
+  pullPolicy: Always   # skeleton uses the moving 'latest' tag; Phase 5 switches to SHA tags
+host: api.familytree.192.168.0.100.nip.io
+db:
+  host: postgres
+  port: "5432"
+  name: familytree
+  user: familytree
+  secretName: postgres          # created by the postgres chart
+  passwordKey: POSTGRES_PASSWORD
+keycloak:
+  jwkSetUri: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
+seed:
+  enabled: true
+  image:
+    repository: family-tree-seed
+    tag: latest
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    memory: 1Gi

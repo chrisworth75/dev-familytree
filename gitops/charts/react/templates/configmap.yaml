@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: react
+  labels:
+    app: react
+data:
+  API_BASE: {{ .Values.api.base | quote }}
+  KEYCLOAK_URL: {{ .Values.keycloak.url | quote }}
+  KEYCLOAK_REALM: {{ .Values.keycloak.realm | quote }}
+  KEYCLOAK_CLIENT_ID: {{ .Values.keycloak.clientId | quote }}

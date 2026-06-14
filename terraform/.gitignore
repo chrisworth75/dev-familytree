@@ -1,0 +1,7 @@
+# Local state (skeleton uses a local backend on the Mac)
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+# Cluster credential — never commit
+kubeconfig

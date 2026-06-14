@@ -1,0 +1,22 @@
+# App-of-apps root. Applied once by Terraform; it then manages the child
+# Applications under gitops/argocd/apps/ from git (self-managing thereafter).
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: family-tree-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/chrisworth75/dev-familytree.git
+    targetRevision: main
+    path: gitops/argocd/apps
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

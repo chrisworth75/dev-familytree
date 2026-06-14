@@ -1,0 +1,19 @@
+registry: 192.168.0.186:5001
+image:
+  repository: family-tree-react
+  tag: latest
+  pullPolicy: Always
+host: familytree.192.168.0.100.nip.io
+# Browser-facing API + Keycloak URLs (injected into window.__ENV__ at container start)
+api:
+  base: http://api.familytree.192.168.0.100.nip.io
+keycloak:
+  url: http://keycloak.192.168.0.100.nip.io
+  realm: family-tree
+  clientId: family-tree-frontend
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    memory: 128Mi
