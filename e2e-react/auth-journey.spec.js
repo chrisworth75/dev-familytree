@@ -29,10 +29,10 @@ test('logs in via Keycloak and sees seeded data + a family', async ({ page }) =>
   await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible({ timeout: 30000 });
   await expect(page.getByText('Failed to load stats')).toHaveCount(0);
 
-  // The seeded tree is the British Royal Family: 6 people (Charles + Philip +
-  // Elizabeth + Diana + William + Harry).
+  // The seeded tree is the British Royal Family traced back to the Stuarts:
+  // 20 people (the direct line Charles III -> James VI & I, plus Charles I/II).
   const peopleCard = page.locator('.stat-card', { hasText: 'People in Tree' });
-  await expect(peopleCard.locator('.stat-value')).toHaveText('6');
+  await expect(peopleCard.locator('.stat-value')).toHaveText('20');
 
   // 3) Open person 1 (the root, Charles) and see the family resolved from the DB.
   await page.goto('/person/1');
@@ -48,7 +48,12 @@ test('logs in via Keycloak and sees seeded data + a family', async ({ page }) =>
   await expect(page.getByRole('heading', { name: 'Children' })).toBeVisible();
   await expect(page.getByText('William Windsor')).toBeVisible();
 
-  // 4) The ancestor tree section renders (proves the d3-tree-service path: the API
-  //    proxies to it for /api/tree-svg, and Charles has 2 ancestors).
-  await expect(page.getByRole('heading', { name: /Ancestors \(2\)/ })).toBeVisible({ timeout: 20000 });
+  // 4) The ancestor tree section renders (proves the d3-tree-service path) — the
+  //    line now goes deep: Charles III has 14 ancestors back to James VI & I.
+  await expect(page.getByRole('heading', { name: /Ancestors \(14\)/ })).toBeVisible({ timeout: 20000 });
+
+  // 5) Charles II is reachable in the tree (the Stuart branch off James VI & I).
+  await page.goto('/person/20');
+  await fillLoginIfPresent(page);
+  await expect(page.getByRole('heading', { name: /Charles II Stuart/ })).toBeVisible({ timeout: 30000 });
 });

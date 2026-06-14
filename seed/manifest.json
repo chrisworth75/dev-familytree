@@ -9,6 +9,22 @@
     { "ref": "elizabeth", "create": "parent", "of": "charles", "body": "people/elizabeth.json" },
     { "ref": "diana",     "create": "spouse", "of": "charles", "body": "people/diana.json" },
     { "ref": "william",   "create": "child",  "of": "charles", "parentGender": "M", "body": "people/william.json" },
-    { "ref": "harry",     "create": "child",  "of": "charles", "parentGender": "M", "body": "people/harry.json" }
+    { "ref": "harry",     "create": "child",  "of": "charles", "parentGender": "M", "body": "people/harry.json" },
+
+    { "ref": "georgevi",        "create": "parent", "of": "elizabeth",       "body": "people/georgevi.json" },
+    { "ref": "georgev",         "create": "parent", "of": "georgevi",        "body": "people/georgev.json" },
+    { "ref": "edwardvii",       "create": "parent", "of": "georgev",         "body": "people/edwardvii.json" },
+    { "ref": "victoria",        "create": "parent", "of": "edwardvii",       "body": "people/victoria.json" },
+    { "ref": "edwardkent",      "create": "parent", "of": "victoria",        "body": "people/edwardkent.json" },
+    { "ref": "georgeiii",       "create": "parent", "of": "edwardkent",      "body": "people/georgeiii.json" },
+    { "ref": "frederick",       "create": "parent", "of": "georgeiii",       "body": "people/frederick.json" },
+    { "ref": "georgeii",        "create": "parent", "of": "frederick",       "body": "people/georgeii.json" },
+    { "ref": "georgei",         "create": "parent", "of": "georgeii",        "body": "people/georgei.json" },
+    { "ref": "sophia",          "create": "parent", "of": "georgei",         "body": "people/sophia.json" },
+    { "ref": "elizabethstuart", "create": "parent", "of": "sophia",          "body": "people/elizabethstuart.json" },
+    { "ref": "jamesi",          "create": "parent", "of": "elizabethstuart", "body": "people/jamesi.json" },
+
+    { "ref": "charlesi",        "create": "child",  "of": "jamesi",   "parentGender": "M", "body": "people/charlesi.json" },
+    { "ref": "charlesii",       "create": "child",  "of": "charlesi", "parentGender": "M", "body": "people/charlesii.json" }
   ]
 }
