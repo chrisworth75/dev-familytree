@@ -12,26 +12,29 @@ for the SPA) each end with two `main`-only stages:
 So: **push to `main` → Jenkins builds/tests → image pushed → tag bumped in git →
 ArgoCD redeploys.**
 
-## Prerequisites to activate (one-time Jenkins/Calculon setup)
+## Status
 
+- **Build & Push image — ACTIVE.** Every build pushes `:$GIT_SHA` + `:latest` to the
+  registry. (The old `when { branch 'main' }` guard was removed — it never matched in
+  single-branch SCM jobs, silently skipping CD.)
+- **Deploy (commit-back) — wired, gated on a credential.** Skips gracefully if
+  `github-token` is absent (logs how to enable it); the build stays green.
+
+## Already configured
 1. **Build on Calculon, not the Mac.** Calculon is **x86_64**; the Mac is arm64.
-   Images must be amd64. Jenkins runs on Calculon, so its `docker build` is
-   already native amd64 — good. (Never push Mac-built images here: they're arm64
-   and crash with `exec format error` on the cluster.)
+   Jenkins runs on Calculon, so its `docker build` is native amd64. (Never push
+   Mac-built images here — they crash with `exec format error` on the cluster.)
+2. **Insecure registry on the Calculon Docker daemon**: `/etc/docker/daemon.json` →
+   `{"insecure-registries": ["192.168.0.186:5001"]}`.
+3. **Loop guard** — both jobs' Git SCM has a `UserExclusion` for committer
+   `Calculon Jenkins`, so the deploy commit-back won't re-trigger builds.
 
-2. **Insecure registry on the Calculon Docker daemon** (for `docker push`):
-   `/etc/docker/daemon.json` →
-   `{"insecure-registries": ["192.168.0.186:5001"]}` then `systemctl restart docker`.
-   (Already configured.)
-
-3. **`github-token` credential** in Jenkins — a username/password (PAT) credential
-   with push rights to `chrisworth75/dev-familytree`, used by the deploy stage's
-   `git push`.
-
-4. **Loop guard** so the deploy commit doesn't re-trigger the job. On each job's
-   Git SCM config add behaviour **"Polling ignores commits from certain users"**
-   = `Calculon Jenkins` (the deploy-commit author). The `[skip ci]` marker is
-   belt-and-braces.
+## The one remaining step to close the loop
+- **Add a `github-token` credential** in Jenkins (Manage Jenkins → Credentials):
+  username/password kind, ID `github-token`, a GitHub PAT with push rights to
+  `chrisworth75/dev-familytree`. Once present, the Deploy stage bumps the chart's
+  `image.tag` to the build SHA, commits `[skip ci]`, and pushes — ArgoCD then
+  redeploys tier 3 from git. (The loop guard above stops it re-triggering.)
 
 ## Notes
 - The skeleton charts default to `image.tag: latest` (+ `pullPolicy: Always`).
