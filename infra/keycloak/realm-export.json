@@ -1,0 +1,87 @@
+{
+  "realm": "family-tree",
+  "enabled": true,
+  "displayName": "Family Tree",
+  "roles": {
+    "realm": [
+      {
+        "name": "OWNER",
+        "description": "Local development owner role"
+      },
+      {
+        "name": "RESEARCHER",
+        "description": "Local development researcher role"
+      },
+      {
+        "name": "CONTRIBUTOR",
+        "description": "Local development contributor role"
+      },
+      {
+        "name": "VIEWER",
+        "description": "Local development viewer role"
+      }
+    ],
+    "client": {
+      "family-tree-backend": [
+        {
+          "name": "OWNER",
+          "description": "Local development owner client role"
+        },
+        {
+          "name": "RESEARCHER",
+          "description": "Local development researcher client role"
+        },
+        {
+          "name": "CONTRIBUTOR",
+          "description": "Local development contributor client role"
+        },
+        {
+          "name": "VIEWER",
+          "description": "Local development viewer client role"
+        }
+      ]
+    }
+  },
+  "clients": [
+    {
+      "clientId": "family-tree-backend",
+      "name": "Family Tree Backend",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:3200/*"
+      ],
+      "webOrigins": [
+        "http://localhost:3200"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "dev-owner",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Dev",
+      "lastName": "Owner",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "dev-owner",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "OWNER"
+      ],
+      "clientRoles": {
+        "family-tree-backend": [
+          "OWNER"
+        ]
+      }
+    }
+  ]
+}
