@@ -1,0 +1,95 @@
+# Tier 2 — Compose on Calculon, deployed by Jenkins (poll main -> up -d --build).
+# Build natively on Calculon (no registry), 2xxxx ports. Coexists with the k3s
+# tier-3 stack on the same box (different runtime + port band + ft-t2 naming).
+# Browser: http://192.168.0.100:24202 (react) · :23200 (api) · :28081 (keycloak)
+name: ft-t2
+
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: familytree
+      POSTGRES_USER: familytree
+      POSTGRES_PASSWORD: familytree
+    ports:
+      - "25432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U familytree -d familytree"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "false"
+    ports:
+      - "28081:8080"
+    volumes:
+      - ../../infra/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+
+  api:
+    build: ../../family-tree-app
+    environment:
+      SPRING_PROFILES_ACTIVE: k8s
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: familytree
+      DB_USER: familytree
+      DB_PASSWORD: familytree
+      PORT: "3200"
+      KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
+    ports:
+      - "23200:3200"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  react:
+    build: ../../family-tree-react
+    environment:
+      API_BASE: http://192.168.0.100:23200      # browser-facing (Calculon)
+      KEYCLOAK_URL: http://192.168.0.100:28081
+      KEYCLOAK_REALM: family-tree
+      KEYCLOAK_CLIENT_ID: family-tree-frontend
+      TIER: "2 · cd"
+    ports:
+      - "24202:80"
+    depends_on:
+      - api
+
+  seed:
+    build: ../../seed
+    environment:
+      SEED_BASE_URL: http://api:3200
+      SEED_PG_DSN: postgresql://familytree@postgres:5432/familytree
+      PGPASSWORD: familytree
+    depends_on:
+      api:
+        condition: service_started
+    restart: "no"
+    # entrypoint (not command) so this REPLACES the image's `python seed.py`
+    entrypoint:
+      - sh
+      - -c
+      - |
+        set -e
+        echo "waiting for API readiness at $$SEED_BASE_URL ..."
+        i=0
+        until python -c "import urllib.request,sys; urllib.request.urlopen('$$SEED_BASE_URL/actuator/health/readiness')" 2>/dev/null; do
+          i=$$((i+1)); [ $$i -ge 60 ] && echo "API not ready, aborting" && exit 1
+          sleep 5
+        done
+        COUNT=$$(psql "$$SEED_PG_DSN" -tAc "select count(*) from person" 2>/dev/null | tr -d '[:space:]' || echo "")
+        if [ -n "$$COUNT" ] && [ "$$COUNT" != "0" ]; then echo "already seeded ($$COUNT rows); skipping"; exit 0; fi
+        echo "seeding the curated tree..."
+        exec python seed.py
+
+volumes:
+  pgdata:

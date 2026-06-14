@@ -8,6 +8,7 @@ import Home from './components/Home'
 import MatchDetail from './components/MatchDetail'
 import PersonDetail from './components/PersonDetail'
 import Photos from './components/Photos'
+import TierBanner from './components/TierBanner'
 import './App.css'
 
 function NavLayout() {
@@ -22,6 +23,7 @@ function NavLayout() {
 function App() {
     return (
         <BrowserRouter>
+            <TierBanner />
             <Routes>
                 <Route path="/tree/:id" element={<Tree />} />
                 <Route element={<NavLayout />}>

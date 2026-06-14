@@ -4,6 +4,7 @@ image:
   tag: latest
   pullPolicy: Always
 host: familytree.192.168.0.100.nip.io
+tier: "3 · gitops"   # shown by the React TierBanner
 # Browser-facing API + Keycloak URLs (injected into window.__ENV__ at container start)
 api:
   base: http://api.familytree.192.168.0.100.nip.io

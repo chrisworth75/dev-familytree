@@ -9,3 +9,4 @@ data:
   KEYCLOAK_URL: {{ .Values.keycloak.url | quote }}
   KEYCLOAK_REALM: {{ .Values.keycloak.realm | quote }}
   KEYCLOAK_CLIENT_ID: {{ .Values.keycloak.clientId | quote }}
+  TIER: {{ .Values.tier | quote }}

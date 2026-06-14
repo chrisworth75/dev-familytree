@@ -9,7 +9,8 @@ window.__ENV__ = {
   API_BASE: "${API_BASE:-}",
   KEYCLOAK_URL: "${KEYCLOAK_URL:-}",
   KEYCLOAK_REALM: "${KEYCLOAK_REALM:-family-tree}",
-  KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID:-family-tree-frontend}"
+  KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID:-family-tree-frontend}",
+  TIER: "${TIER:-}"
 };
 EOF
 

@@ -1,0 +1,36 @@
+// Tier 2 CD — the "Jenkins-polls-git GitOps-lite" strategy.
+// Polls main; on a change, rebuilds + redeploys the Compose stack on Calculon.
+// Push-based: rollback = git revert; no drift self-heal (that's tier 3 / ArgoCD).
+// Runs on the Calculon agent; the Jenkins workspace IS the checkout, so the
+// compose build contexts (../../family-tree-app, etc.) resolve against the repo.
+pipeline {
+    agent any
+
+    options {
+        disableConcurrentBuilds()
+        buildDiscarder(logRotator(numToKeepStr: '15'))
+    }
+
+    triggers {
+        pollSCM('* * * * *')   // every minute
+    }
+
+    stages {
+        stage('Deploy (Compose tier 2)') {
+            steps {
+                sh 'docker compose -p ft-t2 -f deploy/tier2-cd/compose.yml up -d --build --remove-orphans'
+            }
+        }
+        stage('Smoke') {
+            steps {
+                sh '''
+                    for i in $(seq 1 30); do
+                      curl -sf http://localhost:23200/actuator/health >/dev/null && { echo "tier2 api UP"; break; }
+                      sleep 3
+                    done
+                    curl -s -o /dev/null -w "react HTTP %{http_code}\\n" http://localhost:24202/
+                '''
+            }
+        }
+    }
+}
