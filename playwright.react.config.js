@@ -13,7 +13,9 @@ module.exports = defineConfig({
   workers: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:4202',
+    // Target stack is configurable; defaults to the running tier-1 Compose stack
+    // (seeded + Keycloak). CI points this at its ephemeral stack.
+    baseURL: process.env.BASE_URL || 'http://localhost:14202',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',

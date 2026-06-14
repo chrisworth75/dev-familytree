@@ -1,11 +1,12 @@
-// CI for the React frontend. Runs on Calculon, triggered AFTER the API job
-// (family-tree-ci) builds successfully.
+// CI for the React frontend. Runs on Calculon, triggered after family-tree-ci.
 //
-//   Build React  -> Deploy & E2E (Postgres + API + React + Playwright @ :4202)
+//   E2E (full stack via Compose: Postgres + Keycloak + API + React + seed)
+//     -> data-driven Playwright: real Keycloak login -> seeded data -> a family
+//   Build & Push image  ->  Deploy (GitOps tag bump, main only)
 //
-// Auth-light: the API runs on the 'e2e' profile (lazy jwk-set-uri, no Keycloak), so
-// /api/** calls 401 and the render smoke test tolerates it. Data-driven e2e comes
-// once React does Keycloak.
+// Brings up an ephemeral stack (project ft-e2e, reusing the tier-1 compose) so the
+// test exercises the REAL auth path — not the old render smoke test, which is now
+// broken by React's login-required redirect.
 pipeline {
     agent any
 
@@ -22,63 +23,33 @@ pipeline {
         REGISTRY     = '192.168.0.186:5001'
         IMAGE        = 'family-tree-react'
         CHART_VALUES = 'gitops/charts/react/values.yaml'
+        COMPOSE      = 'docker compose -p ft-e2e -f deploy/tier1-local/compose.yml'
     }
 
     stages {
-        stage('Build React') {
-            steps {
-                dir('family-tree-react') {
-                    sh 'npm ci'
-                    sh 'npm run build'
-                }
-            }
-        }
-
-        stage('Deploy & E2E') {
+        stage('E2E (full stack + real login)') {
             steps {
                 sh '''
                     set -e
-                    API_PID=""; WEB_PID=""
-                    cleanup() {
-                      kill $API_PID $WEB_PID 2>/dev/null || true
-                      pkill -f "family-tree-app-.*\\.jar" 2>/dev/null || true
-                      pkill -f "vite preview" 2>/dev/null || true
-                      docker rm -f ft-e2e-db >/dev/null 2>&1 || true
-                    }
+                    cleanup() { $COMPOSE down -v >/dev/null 2>&1 || true; }
                     trap cleanup EXIT
 
-                    echo "--- Postgres ---"
-                    docker rm -f ft-e2e-db >/dev/null 2>&1 || true
-                    docker run -d --name ft-e2e-db \
-                      -e POSTGRES_DB=familytree -e POSTGRES_USER=familytree -e POSTGRES_PASSWORD=familytree \
-                      -p 5432:5432 postgres:16
-                    for i in $(seq 1 30); do docker exec ft-e2e-db pg_isready -U familytree >/dev/null 2>&1 && break; sleep 2; done
+                    echo "--- bring up ephemeral stack (ft-e2e) ---"
+                    $COMPOSE up -d --build
 
-                    echo "--- Build + start API (profile e2e) ---"
-                    ( cd family-tree-app && mvn -q -B -ntp -DskipTests package )
-                    JAR=$(ls family-tree-app/target/family-tree-app-*.jar | grep -v original | head -1)
-                    SPRING_PROFILES_ACTIVE=e2e DB_HOST=localhost DB_PORT=5432 DB_NAME=familytree \
-                      DB_USER=familytree DB_PASSWORD=familytree PORT=3200 \
-                      java -jar "$JAR" > api.log 2>&1 &
-                    API_PID=$!
-                    for i in $(seq 1 60); do curl -sf http://localhost:3200/login >/dev/null 2>&1 && { echo "API up"; break; }; sleep 2; done
+                    echo "--- wait for API, Keycloak, and the one-shot seed ---"
+                    for i in $(seq 1 80); do curl -sf http://localhost:13200/actuator/health >/dev/null 2>&1 && break; sleep 3; done
+                    for i in $(seq 1 40); do curl -sf http://localhost:18081/realms/family-tree >/dev/null 2>&1 && break; sleep 2; done
+                    $COMPOSE wait seed || true
 
-                    echo "--- Serve built React on :4202 ---"
-                    ( cd family-tree-react && npx vite preview --port 4202 > ../web.log 2>&1 ) &
-                    WEB_PID=$!
-                    for i in $(seq 1 30); do curl -s -o /dev/null http://localhost:4202/ && { echo "Web up"; break; }; sleep 2; done
-
-                    echo "--- Playwright e2e ---"
-                    npm ci || npm install
+                    echo "--- data-driven Playwright ---"
+                    npm ci
                     npx playwright install chromium
-                    npx playwright test --config playwright.react.config.js
+                    BASE_URL=http://localhost:14202 npx playwright test --config playwright.react.config.js
                 '''
             }
         }
 
-        // ---- CD: build the image and let ArgoCD redeploy via a GitOps tag bump ----
-        // (prereqs: see gitops/ci/README.md — insecure registry on Calculon Docker,
-        //  'github-token' credential, ignore-committer loop guard)
         stage('Build & Push image') {
             when { branch 'main' }
             steps {
@@ -111,8 +82,8 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'api.log,web.log,playwright-report/**', allowEmptyArchive: true
-            // Browsable report on the build page (screenshots + video on failed tests).
+            archiveArtifacts artifacts: 'playwright-report/**,test-results/**', allowEmptyArchive: true
+            // Browsable report (screenshots + video on failure) on the build page.
             publishHTML(target: [
                 reportName: 'Playwright E2E Report',
                 reportDir: 'playwright-report',
