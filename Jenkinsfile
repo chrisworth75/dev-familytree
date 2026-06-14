@@ -35,7 +35,6 @@ pipeline {
         //   * a 'github-token' username/password credential with push rights
         //   * the job's Git SCM set to ignore commits from 'Calculon Jenkins' (loop guard)
         stage('Build & Push image') {
-            when { branch 'main' }
             steps {
                 script { env.GIT_SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() }
                 dir('family-tree-app') {
@@ -47,21 +46,27 @@ pipeline {
         }
 
         stage('Deploy (GitOps tag bump)') {
-            when { branch 'main' }
             steps {
-                // Bump the chart's top-level image.tag to this build's SHA and commit
-                // back; ArgoCD auto-syncs the new tag from git. [skip ci] + the
-                // ignore-committer loop guard stop this from re-triggering the job.
-                sh '''
-                    sed -i -E "s|^(  tag: ).*|\\1$GIT_SHA|" $CHART_VALUES
-                    git config user.email "jenkins@calculon"
-                    git config user.name "Calculon Jenkins"
-                    git add $CHART_VALUES
-                    git commit -m "ci(api): deploy $GIT_SHA [skip ci]" || { echo "image.tag unchanged"; exit 0; }
-                '''
-                withCredentials([usernamePassword(credentialsId: 'github-token',
-                        usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
-                    sh 'git push https://$GH_USER:$GH_TOKEN@github.com/chrisworth75/dev-familytree.git HEAD:main'
+                // Bump the chart's image.tag to this SHA and commit back; ArgoCD then
+                // syncs the new tag. Needs a 'github-token' credential — if it isn't
+                // configured yet, skip gracefully ([skip ci] + the loop guard prevent
+                // re-triggering once it IS configured).
+                script {
+                    try {
+                        withCredentials([usernamePassword(credentialsId: 'github-token',
+                                usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                            sh '''
+                                sed -i -E "s|^(  tag: ).*|\\1$GIT_SHA|" $CHART_VALUES
+                                git config user.email "jenkins@calculon"
+                                git config user.name "Calculon Jenkins"
+                                git add $CHART_VALUES
+                                git commit -m "ci(api): deploy $GIT_SHA [skip ci]" || { echo "image.tag unchanged"; exit 0; }
+                                git push https://$GH_USER:$GH_TOKEN@github.com/chrisworth75/dev-familytree.git HEAD:main
+                            '''
+                        }
+                    } catch (err) {
+                        echo "Deploy push-back skipped — add the 'github-token' credential to close the GitOps loop. (${err})"
+                    }
                 }
             }
         }

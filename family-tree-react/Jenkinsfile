@@ -60,7 +60,6 @@ pipeline {
         }
 
         stage('Build & Push image') {
-            when { branch 'main' }
             steps {
                 script { env.GIT_SHA = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim() }
                 dir('family-tree-react') {
@@ -72,18 +71,24 @@ pipeline {
         }
 
         stage('Deploy (GitOps tag bump)') {
-            when { branch 'main' }
             steps {
-                sh '''
-                    sed -i -E "s|^(  tag: ).*|\\1$GIT_SHA|" $CHART_VALUES
-                    git config user.email "jenkins@calculon"
-                    git config user.name "Calculon Jenkins"
-                    git add $CHART_VALUES
-                    git commit -m "ci(react): deploy $GIT_SHA [skip ci]" || { echo "image.tag unchanged"; exit 0; }
-                '''
-                withCredentials([usernamePassword(credentialsId: 'github-token',
-                        usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
-                    sh 'git push https://$GH_USER:$GH_TOKEN@github.com/chrisworth75/dev-familytree.git HEAD:main'
+                // Needs a 'github-token' credential; skips gracefully if not configured.
+                script {
+                    try {
+                        withCredentials([usernamePassword(credentialsId: 'github-token',
+                                usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                            sh '''
+                                sed -i -E "s|^(  tag: ).*|\\1$GIT_SHA|" $CHART_VALUES
+                                git config user.email "jenkins@calculon"
+                                git config user.name "Calculon Jenkins"
+                                git add $CHART_VALUES
+                                git commit -m "ci(react): deploy $GIT_SHA [skip ci]" || { echo "image.tag unchanged"; exit 0; }
+                                git push https://$GH_USER:$GH_TOKEN@github.com/chrisworth75/dev-familytree.git HEAD:main
+                            '''
+                        }
+                    } catch (err) {
+                        echo "Deploy push-back skipped — add the 'github-token' credential to close the GitOps loop. (${err})"
+                    }
                 }
             }
         }
