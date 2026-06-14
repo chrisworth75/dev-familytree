@@ -42,4 +42,8 @@ test('logs in via Keycloak and sees seeded data + a family', async ({ page }) =>
   // The "Father:"/"Mother:" role labels are unique (the names lack the colon).
   await expect(page.getByText('Father:')).toBeVisible();
   await expect(page.getByText('Mother:')).toBeVisible();
+
+  // 4) The ancestor tree section renders (proves the d3-tree-service path: the API
+  //    proxies to it for /api/tree-svg, and Chris has 2 ancestors).
+  await expect(page.getByRole('heading', { name: /Ancestors \(2\)/ })).toBeVisible({ timeout: 20000 });
 });
