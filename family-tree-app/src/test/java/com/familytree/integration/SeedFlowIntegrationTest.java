@@ -112,27 +112,44 @@ class SeedFlowIntegrationTest {
             ids.put(ref, (Number) created.getBody().get("id"));
         }
 
-        // 3. read 'me' back and confirm it matches the seed files exactly
-        Map<String, Object> meJson = payloads.get("me");
-        ResponseEntity<Map> read = api.getForEntity("/api/person/" + ids.get("me"), Map.class);
+        // 3. read the ROOT person back and confirm it matches the seed files exactly.
+        //    Refs are derived from the manifest (the 'root' step and the gendered
+        //    'parent' steps), so this stays valid as the seed data changes.
+        List<Map<String, Object>> steps = (List<Map<String, Object>>) manifest.get("steps");
+        String rootRef = steps.stream()
+                .filter(s -> "root".equals(s.get("create")))
+                .map(s -> (String) s.get("ref"))
+                .findFirst().orElseThrow();
+        Map<String, Object> rootJson = payloads.get(rootRef);
+        ResponseEntity<Map> read = api.getForEntity("/api/person/" + ids.get(rootRef), Map.class);
         assertThat(read.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         Map<String, Object> person = (Map<String, Object>) read.getBody().get("person");
-        assertThat(person.get("firstName")).isEqualTo(meJson.get("firstName"));
-        assertThat(person.get("surname")).isEqualTo(meJson.get("surname"));
-        assertThat(person.get("gender")).isEqualTo(meJson.get("gender"));
+        assertThat(person.get("firstName")).isEqualTo(rootJson.get("firstName"));
+        assertThat(person.get("surname")).isEqualTo(rootJson.get("surname"));
+        assertThat(person.get("gender")).isEqualTo(rootJson.get("gender"));
         // seed file date is "dd MM yyyy"; the API returns ISO
-        String expectedIso = LocalDate.parse((String) meJson.get("birthDate"), SEED_DATE).toString();
+        String expectedIso = LocalDate.parse((String) rootJson.get("birthDate"), SEED_DATE).toString();
         assertThat(person.get("birthDate")).isEqualTo(expectedIso);
 
-        // parents wired and resolved, names matching dad.json / mum.json
+        // parents wired and resolved; match the API's father/mother to the M/F parent payloads
         assertThat(person.get("parent1Id")).isNotNull();
         assertThat(person.get("parent2Id")).isNotNull();
         Map<String, Object> father = (Map<String, Object>) read.getBody().get("father");
         Map<String, Object> mother = (Map<String, Object>) read.getBody().get("mother");
         assertThat(father).as("father resolved").isNotNull();
         assertThat(mother).as("mother resolved").isNotNull();
-        assertThat(father.get("firstName")).isEqualTo(payloads.get("dad").get("firstName"));
-        assertThat(mother.get("firstName")).isEqualTo(payloads.get("mum").get("firstName"));
+        assertThat(father.get("firstName")).isEqualTo(parentPayloadByGender(steps, payloads, "M").get("firstName"));
+        assertThat(mother.get("firstName")).isEqualTo(parentPayloadByGender(steps, payloads, "F").get("firstName"));
+    }
+
+    /** The seed payload of the 'parent' step with the given gender (M -> father, F -> mother). */
+    private static Map<String, Object> parentPayloadByGender(
+            List<Map<String, Object>> steps, Map<String, Map<String, Object>> payloads, String gender) {
+        return steps.stream()
+                .filter(s -> "parent".equals(s.get("create")))
+                .map(s -> payloads.get((String) s.get("ref")))
+                .filter(p -> gender.equals(p.get("gender")))
+                .findFirst().orElseThrow();
     }
 }

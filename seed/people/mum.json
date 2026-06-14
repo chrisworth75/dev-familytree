@@ -1,7 +1,0 @@
-{
-  "firstName": "Mother",
-  "surname": "Worthington",
-  "birthSurname": "Maiden",
-  "gender": "F",
-  "notes": "PLACEHOLDER — replace firstName/birthSurname/birthDate with real details, then re-seed a fresh DB"
-}

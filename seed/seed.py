@@ -130,7 +130,8 @@ def main():
     print("\nref -> id:")
     for k, v in ids.items():
         print(f"  {k:10} {v}")
-    print(f"\nDone. Verify: curl {BASE_URL}/api/person/{ids['me']}")
+    root_ref = next(iter(ids))  # first created = the root
+    print(f"\nDone. Verify: curl {BASE_URL}/api/person/{ids[root_ref]}")
 
 
 if __name__ == "__main__":

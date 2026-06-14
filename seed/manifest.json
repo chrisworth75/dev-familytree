@@ -1,11 +1,14 @@
 {
   "tree": {
-    "name": "My Direct Line",
-    "ownerName": "Chris Worthington"
+    "name": "British Royal Family",
+    "ownerName": "House of Windsor"
   },
   "steps": [
-    { "ref": "me",  "create": "root",   "body": "people/me.json",  "verifyByBirthDate": true },
-    { "ref": "dad", "create": "parent", "of": "me", "body": "people/dad.json" },
-    { "ref": "mum", "create": "parent", "of": "me", "body": "people/mum.json" }
+    { "ref": "charles",   "create": "root",   "body": "people/charles.json",   "verifyByBirthDate": true },
+    { "ref": "philip",    "create": "parent", "of": "charles", "body": "people/philip.json" },
+    { "ref": "elizabeth", "create": "parent", "of": "charles", "body": "people/elizabeth.json" },
+    { "ref": "diana",     "create": "spouse", "of": "charles", "body": "people/diana.json" },
+    { "ref": "william",   "create": "child",  "of": "charles", "parentGender": "M", "body": "people/william.json" },
+    { "ref": "harry",     "create": "child",  "of": "charles", "parentGender": "M", "body": "people/harry.json" }
   ]
 }

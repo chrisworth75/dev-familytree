@@ -29,21 +29,26 @@ test('logs in via Keycloak and sees seeded data + a family', async ({ page }) =>
   await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible({ timeout: 30000 });
   await expect(page.getByText('Failed to load stats')).toHaveCount(0);
 
-  // The seeded curated tree has 3 people (me + mum + dad).
+  // The seeded tree is the British Royal Family: 6 people (Charles + Philip +
+  // Elizabeth + Diana + William + Harry).
   const peopleCard = page.locator('.stat-card', { hasText: 'People in Tree' });
-  await expect(peopleCard.locator('.stat-value')).toHaveText('3');
+  await expect(peopleCard.locator('.stat-value')).toHaveText('6');
 
-  // 3) Open person 1 (the root, Chris) and see the family resolved from the DB.
+  // 3) Open person 1 (the root, Charles) and see the family resolved from the DB.
   await page.goto('/person/1');
   await fillLoginIfPresent(page); // in case the reload needed a silent re-auth fallback
-  await expect(page.getByRole('heading', { name: /Chris Worthington/ })).toBeVisible({ timeout: 30000 });
+  await expect(page.getByRole('heading', { name: /Charles Windsor/ })).toBeVisible({ timeout: 30000 });
   await expect(page.getByRole('heading', { name: 'Family' })).toBeVisible();
+  // Parents (Philip + Elizabeth), spouse (Diana), and children (William, Harry).
   await expect(page.getByRole('heading', { name: 'Parents' })).toBeVisible();
-  // The "Father:"/"Mother:" role labels are unique (the names lack the colon).
   await expect(page.getByText('Father:')).toBeVisible();
   await expect(page.getByText('Mother:')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Spouse' })).toBeVisible();
+  await expect(page.getByText('Diana Spencer')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Children' })).toBeVisible();
+  await expect(page.getByText('William Windsor')).toBeVisible();
 
   // 4) The ancestor tree section renders (proves the d3-tree-service path: the API
-  //    proxies to it for /api/tree-svg, and Chris has 2 ancestors).
+  //    proxies to it for /api/tree-svg, and Charles has 2 ancestors).
   await expect(page.getByRole('heading', { name: /Ancestors \(2\)/ })).toBeVisible({ timeout: 20000 });
 });
