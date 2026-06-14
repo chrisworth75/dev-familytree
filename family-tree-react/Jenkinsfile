@@ -37,10 +37,19 @@ pipeline {
                     echo "--- bring up ephemeral stack (ft-e2e) ---"
                     $COMPOSE up -d --build
 
-                    echo "--- wait for API, Keycloak, and the one-shot seed ---"
+                    echo "--- wait for API + Keycloak ---"
                     for i in $(seq 1 80); do curl -sf http://localhost:13200/actuator/health >/dev/null 2>&1 && break; sleep 3; done
                     for i in $(seq 1 40); do curl -sf http://localhost:18081/realms/family-tree >/dev/null 2>&1 && break; sleep 2; done
-                    $COMPOSE wait seed || true
+
+                    echo "--- wait for the one-shot seed to finish (deterministic) ---"
+                    for i in $(seq 1 80); do
+                      st=$(docker inspect -f "{{.State.Status}}:{{.State.ExitCode}}" ft-e2e-seed-1 2>/dev/null || echo "")
+                      case "$st" in
+                        exited:0) echo "seed completed"; break;;
+                        exited:*) echo "seed FAILED ($st)"; $COMPOSE logs seed; exit 1;;
+                      esac
+                      sleep 3
+                    done
 
                     echo "--- data-driven Playwright ---"
                     npm ci
