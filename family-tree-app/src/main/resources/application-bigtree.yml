@@ -1,0 +1,37 @@
+# ============================================================================
+# 'bigtree' profile — run Spring + React straight from the IDEs (no Docker),
+# pointed at the NATIVE Homebrew Postgres on your Mac.
+# ============================================================================
+#
+#   DB        : familytree on localhost:5432
+#               (DataGrip connection name: "Chris's Big Fat Tree" — ~79k people,
+#                435 trees: your real research, NOT the royal-family seed)
+#   Postgres  : native `postgresql@16` service — NOT a container.
+#               start it with:  brew services start postgresql@16
+#   Run API   : mvn spring-boot:run -Dspring-boot.run.profiles=bigtree
+#               (or set Active profiles = bigtree in the IntelliJ run config)
+#   Run React : cd ../family-tree-react && npm run dev
+#
+#   Auth      : lazy JWKS — the API boots WITHOUT Keycloak running.
+#               * Backend-only / Bruno / curl: use HTTP Basic  chris / chris
+#               * The React UI still does Keycloak login-required, so if you want
+#                 the *frontend*, Keycloak must be up on :8081 (free that port from
+#                 vote-keycloak first). Backend work needs no Keycloak at all.
+# ============================================================================
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/familytree
+    username: familytree
+    password: familytree
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # jwk-set-uri (NOT issuer-uri) = fetched lazily on first token, never at
+          # startup → app boots with no Keycloak. issuer-uri would force it up.
+          jwk-set-uri: http://localhost:8081/realms/family-tree/protocol/openid-connect/certs
+
+  flyway:
+    clean-disabled: true   # SAFETY: never let Flyway wipe the big fat tree

@@ -1,6 +1,7 @@
 # Family Tree API
 
-Personal genealogy database with REST API. Manages people, family relationships, DNA matches, and historical records.
+Spring Boot API for CRUD operations on the database
+
 
 ## Tech Stack
 
@@ -8,7 +9,61 @@ Personal genealogy database with REST API. Manages people, family relationships,
 - PostgreSQL 16
 - Flyway migrations
 
-## Running Locally
+## Running locally from the IDEs (the everyday setup)
+
+Run React + Spring straight from IntelliJ/WebStorm, pointed at the **native**
+Postgres on this Mac (the "Chris's Big Fat Tree" DB in DataGrip — your real ~79k-person
+research). No Docker, no tiers.
+
+1. **Database** — native Postgres, auto-starts at login. If it's not up:
+   ```bash
+   brew services start postgresql@16
+   ```
+   It serves db `familytree` on `localhost:5432` (user/pass `familytree`/`familytree`).
+
+2. **Backend** — run with the `bigtree` profile:
+   ```bash
+   cd family-tree-app && mvn spring-boot:run -Dspring-boot.run.profiles=bigtree
+   ```
+   (or set Active profiles = `bigtree` in the IntelliJ run config)
+   → API on http://localhost:3200. **Boots WITHOUT Keycloak** (see Auth below).
+
+3. **Frontend** — only if you want the UI:
+   ```bash
+   cd family-tree-react && npm run dev
+   ```
+   → http://localhost:4202. ⚠️ React forces a Keycloak login, so for the UI you ALSO
+   need Keycloak on :8081 (free that port from vote-keycloak first). Backend-only work
+   needs no Keycloak.
+
+### Auth in this setup (why there's no Keycloak login for the API)
+
+`/api/**` is still secured — but the `bigtree` profile is wired so you never need
+Keycloak to use the **API**:
+
+- The profile uses a **lazy `jwk-set-uri`** (not `issuer-uri`), so the resource server
+  validates a token's *signature only if one arrives* and **never contacts Keycloak at
+  startup** — the app boots standalone.
+- `SecurityConfig` accepts **HTTP Basic `chris`/`chris`** (an in-memory dev user) on
+  `/api/**` *alongside* Keycloak JWTs. So for local work you just use Basic auth:
+  ```bash
+  curl -u chris:chris http://localhost:3200/api/stats
+  ```
+- **Bruno**: the `bruno-collection` has request-level Basic auth (`chris`/`chris`) baked
+  into every request, so it just works — no token, no Keycloak prompt. (Note: the 401
+  challenge advertises `Bearer`, but Basic is still accepted.)
+- **The one exception is the React UI**: it does Keycloak `login-required`, so the
+  *frontend* (and only the frontend) still needs Keycloak running on :8081. The API,
+  curl, Bruno, and tests do not.
+
+> ⚠️ `chris`/`chris` is a **dev-only** in-memory credential. Local convenience only —
+> not a real account, never use this pattern in a deployed environment.
+
+> Profiles cheat-sheet: `bigtree` = native DB, run from IDE (this), no Keycloak for the
+> API · `dev` = same DB but eager `issuer-uri`, needs Keycloak up · `scratch` = empty test
+> DB · `e2e`/`k8s` = containers/CI only.
+
+## Running Locally (Docker + Keycloak)
 
 ```bash
 # Start local Postgres and Keycloak

@@ -9,28 +9,48 @@ React frontend for the Family Tree genealogy application. Displays family trees 
 - D3.js for tree visualization
 - React Router
 
-## Running Locally
+## Running locally from the IDEs (the everyday setup)
+
+This is the frontend half of the IDE workflow described in
+`../family-tree-app/README.md`. Three things must be up: the **API**, **Keycloak**,
+and this **dev server**.
 
 ```bash
-# Install dependencies
+# Install deps (first time only)
 npm install
 
-# Start dev server
+# Start the Vite dev server
 npm run dev
 ```
 
-App available at http://localhost:4202
+App available at http://localhost:4202. Vite proxies `/api` (and `/uploads`) to the
+backend on `:3200`, so you don't hit CORS.
 
-## API Backend
+### Auth — the frontend DOES need Keycloak (unlike the API)
 
-This frontend connects to the Family Tree API. Start the backend first:
+This is the important difference from the backend. The API can run standalone with
+Basic auth, but **the React UI cannot run without Keycloak**:
 
-```bash
-cd ../family-tree-app
-mvn spring-boot:run -Dspring-boot.run.profiles=dev
-```
+- `main.jsx` calls `keycloak.init({ onLoad: 'login-required' })`, which **redirects to
+  Keycloak before the app renders**. After login, `api.js` attaches the `Bearer` token
+  to every `/api` call (the UI uses JWT, not Basic).
+- If Keycloak is unreachable you get a **"Sign-in unavailable"** page instead of the app.
+- Local-dev config comes from `src/config.js` defaults (because `public/env.js` is empty
+  in dev): Keycloak `http://localhost:8081`, realm `family-tree`, client
+  `family-tree-frontend`, API `http://localhost:3200`. No env file to edit.
+- **Login: `dev-owner` / `dev-owner`.**
 
-API runs at http://localhost:3200/api
+So to run the UI you need **all three**:
+
+1. **API** on `:3200` — run the backend with the `bigtree` profile
+   (`cd ../family-tree-app && mvn spring-boot:run -Dspring-boot.run.profiles=bigtree`).
+2. **Keycloak** on `:8081` with the `family-tree` realm — ⚠️ that port is often taken by
+   `vote-keycloak`; free it first, then bring up the family-tree Keycloak (e.g. the
+   `keycloak` service in `../family-tree-app/docker-compose.dev.yml`).
+3. **This dev server** (`npm run dev`).
+
+> If you only need to poke the **API** (not the UI), skip all of this — use curl/Bruno
+> with Basic `chris/chris`. See `../family-tree-app/README.md` → "Auth in this setup".
 
 ## Scripts
 
