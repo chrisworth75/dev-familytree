@@ -1,4 +1,4 @@
-registry: 192.168.0.186:5001
+registry: 192.168.0.100:5001
 image:
   repository: family-tree-app
   tag: latest

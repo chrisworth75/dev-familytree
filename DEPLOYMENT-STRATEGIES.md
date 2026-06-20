@@ -18,7 +18,7 @@ between simple-local and prod-shaped. The golden rules that keep them from blurr
 |------|------|---------|-------|-----|----------|----------|----------|--------|
 | **1 local** | Mac | Compose, by hand | `localhost:14202` | `:13200` | `:18081` | `:15432` | project `ft-t1` | `build:` (native) |
 | **2 cd** | Calculon | Compose, Jenkins auto | `calculon:24202` | `:23200` | `:28081` | `:25432` | project `ft-t2` | `build:` (native) |
-| **3 gitops** | Calculon | k3s + ArgoCD | `familytree.192.168.0.100.nip.io` | `api.familytree.…` | `keycloak.192.168.0.100.nip.io` | in-cluster PVC | ns `family-tree` | registry `192.168.0.186:5001` |
+| **3 gitops** | Calculon | k3s + ArgoCD | `familytree.192.168.0.100.nip.io` | `api.familytree.…` | `keycloak.192.168.0.100.nip.io` | in-cluster PVC | ns `family-tree` | registry `192.168.0.100:5001` |
 
 Badge colours: Tier 1 green, Tier 2 amber, Tier 3 blue.
 

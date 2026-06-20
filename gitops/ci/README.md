@@ -4,7 +4,7 @@ The two Jenkinsfiles (`/Jenkinsfile` for the API, `/family-tree-react/Jenkinsfil
 for the SPA) each end with two `main`-only stages:
 
 1. **Build & Push image** — `docker build` + push `:$GIT_SHA` and `:latest` to the
-   Mac registry `192.168.0.186:5001`.
+   Calculon registry `192.168.0.100:5001`.
 2. **Deploy (GitOps tag bump)** — `sed` the chart's top-level `image.tag` to
    `$GIT_SHA`, commit `ci(<svc>): deploy <sha> [skip ci]`, and push to `main`.
    ArgoCD (auto-sync) then rolls the new tag out to k3s.
@@ -25,7 +25,7 @@ ArgoCD redeploys.**
    Jenkins runs on Calculon, so its `docker build` is native amd64. (Never push
    Mac-built images here — they crash with `exec format error` on the cluster.)
 2. **Insecure registry on the Calculon Docker daemon**: `/etc/docker/daemon.json` →
-   `{"insecure-registries": ["192.168.0.186:5001"]}`.
+   `{"insecure-registries": ["192.168.0.100:5001"]}`.
 3. **Loop guard** — both jobs' Git SCM has a `UserExclusion` for committer
    `Calculon Jenkins`, so the deploy commit-back won't re-trigger builds.
 
