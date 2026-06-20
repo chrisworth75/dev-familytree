@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/31/census
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -15,4 +15,9 @@ docs {
   Note: Born after 1911 census - may have 1939 Register entries.
 
   ID: 31
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

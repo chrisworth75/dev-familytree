@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/tree
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -35,4 +35,9 @@ docs {
   - size: Number of people in tree (integer, optional)
 
   Returns 201 Created with the new tree object.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

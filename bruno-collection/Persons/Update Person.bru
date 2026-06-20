@@ -7,7 +7,7 @@ meta {
 put {
   url: {{baseUrl}}/api/person/{{personId}}
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -29,4 +29,9 @@ docs {
   - birthYear: Birth year estimate (integer, optional)
   - deathYear: Death year estimate (integer, optional)
   - birthPlace: Birth place (string, optional)
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

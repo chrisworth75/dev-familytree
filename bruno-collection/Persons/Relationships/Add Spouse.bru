@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/person/{{personId}}/spouse
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -35,4 +35,9 @@ docs {
 
   Creates a partnership record linking both persons.
   Returns 201 Created.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

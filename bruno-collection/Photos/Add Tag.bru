@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/photos/{{photoId}}/tags
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -27,4 +27,9 @@ docs {
   - yPosition: Vertical position as fraction of image height (optional)
 
   Returns 201 Created, or 409 Conflict if already tagged.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

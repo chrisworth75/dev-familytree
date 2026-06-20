@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/tree-data/person/{{personId}}/descendants
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -23,4 +23,9 @@ docs {
   Test IDs:
   - 3002 - Arthur Gordon (multiple generations)
   - 1000 - Chris (has 2 children)
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

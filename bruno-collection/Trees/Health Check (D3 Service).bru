@@ -1,0 +1,21 @@
+meta {
+  name: Health Check (D3 Service)
+  type: http
+  seq: 20
+}
+
+get {
+  url: {{d3TreeUrl}}/health
+  body: none
+  auth: basic
+}
+
+docs {
+  Check if the D3 Tree Service is running on port 3300.
+  Returns: { "status": "ok" }
+}
+
+auth:basic {
+  username: chris
+  password: chris
+}

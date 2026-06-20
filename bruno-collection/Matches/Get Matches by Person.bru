@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/match?person_id={{personId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -23,4 +23,9 @@ docs {
   - person_id=1002 (Rebecca Worthington/Hyndman)
 
   Returns a list of DNA match objects sorted by shared_cm descending.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

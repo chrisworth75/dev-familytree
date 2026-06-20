@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/1000/ancestors
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -18,4 +18,9 @@ docs {
   Get ancestors of Chris Worthington (b1975).
 
   ID: 1000
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

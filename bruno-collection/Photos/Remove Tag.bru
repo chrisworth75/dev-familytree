@@ -7,10 +7,15 @@ meta {
 delete {
   url: {{baseUrl}}/api/photos/{{photoId}}/tags/{{personId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   Remove a person tag from a photo.
   Returns 204 No Content on success, 404 if tag doesn't exist.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

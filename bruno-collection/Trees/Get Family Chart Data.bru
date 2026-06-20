@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/tree/{{slug}}/family-chart
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -20,4 +20,9 @@ docs {
 
   Query parameters:
   - maxDepth: Maximum depth to traverse (default: 15, max: 20)
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

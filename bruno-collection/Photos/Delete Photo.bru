@@ -7,10 +7,15 @@ meta {
 delete {
   url: {{baseUrl}}/api/photos/{{photoId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   Delete a photo and its files. Tags are cascade-deleted.
   Returns 204 No Content on success.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

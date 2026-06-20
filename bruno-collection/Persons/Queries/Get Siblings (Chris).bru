@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/1000/siblings
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -15,4 +15,9 @@ docs {
   Returns Tim, Rebecca, and Jennifer.
 
   ID: 1000
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

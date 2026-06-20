@@ -7,10 +7,15 @@ meta {
 get {
   url: {{baseUrl}}/api/photos/images/{{photoId}}/thumb
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   Get the 200x200 thumbnail for a photo.
   Returns the image as image/jpeg.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

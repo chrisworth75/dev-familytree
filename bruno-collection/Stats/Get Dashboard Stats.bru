@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/stats
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -28,4 +28,9 @@ docs {
     "unlinkedMatches": 9825,
     "linkedPeopleCount": 145
   }
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/tree-data/mrca?personA=1000&personB=1002
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -15,4 +15,9 @@ docs {
   Expected MRCA: Jonathan P Worthington (their father)
 
   Returns JSON tree with MRCA as root.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

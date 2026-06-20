@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/tree/1/person
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -36,4 +36,9 @@ docs {
   - birthPlace: Birth place (string, optional)
 
   Returns 201 Created with the new person, or 404 if tree doesn't exist.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

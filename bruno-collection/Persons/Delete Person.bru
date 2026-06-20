@@ -7,10 +7,15 @@ meta {
 delete {
   url: {{baseUrl}}/api/person/{{personId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   Delete a person by ID.
   Returns 204 No Content on success.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

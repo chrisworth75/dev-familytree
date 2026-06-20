@@ -7,7 +7,7 @@ meta {
 delete {
   url: {{baseUrl}}/api/person/{{personId}}/spouse/{{spouseId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 vars:pre-request {
@@ -18,4 +18,9 @@ docs {
   Remove the marriage relationship between two persons.
   Does not delete either person, only removes the marriage link.
   Returns 204 No Content on success.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

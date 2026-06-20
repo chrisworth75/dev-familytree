@@ -7,10 +7,15 @@ meta {
 get {
   url: {{baseUrl}}/api/tree/{{slug}}/hierarchy
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   Get tree hierarchy as nested JSON for D3.js visualization.
   Returns the root person with all descendants nested as children.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

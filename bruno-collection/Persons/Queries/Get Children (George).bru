@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/6000/children
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -15,4 +15,9 @@ docs {
   George has 3 children: Charles Henry, James, and William.
 
   ID: 6000
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

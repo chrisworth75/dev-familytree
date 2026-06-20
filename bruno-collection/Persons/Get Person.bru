@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/{{personId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -20,4 +20,9 @@ docs {
   - spouses: List of spouse person objects
   - children: List of children person objects
   - siblings: List of sibling person objects
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

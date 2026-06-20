@@ -7,9 +7,14 @@ meta {
 get {
   url: {{baseUrl}}/api/photos
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   List all photos with tag counts, ordered by upload date descending.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

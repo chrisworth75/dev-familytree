@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/{{personId}}/descendants/hierarchy
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -42,4 +42,9 @@ docs {
   Useful IDs (env vars):
   - {{george}} (6000) - George Worthington b1825
   - {{hlw}} (511036) - Henry Lonsdale Wrathall
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

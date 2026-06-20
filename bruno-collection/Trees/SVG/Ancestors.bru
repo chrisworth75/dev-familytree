@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/tree-svg/ancestors/{{personId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -21,4 +21,9 @@ docs {
   - maxDepth: Maximum depth (default: 10, max: 20)
 
   Returns: image/svg+xml
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

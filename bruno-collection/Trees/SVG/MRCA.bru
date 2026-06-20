@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/tree-svg/mrca?personA={{personA}}&personB={{personB}}
   body: none
-  auth: none
+  auth: basic
 }
 
 vars:pre-request {
@@ -24,4 +24,9 @@ docs {
   - personB: Second person ID
 
   Returns: image/svg+xml
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

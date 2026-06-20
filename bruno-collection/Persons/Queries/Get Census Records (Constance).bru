@@ -1,0 +1,24 @@
+meta {
+  name: Get Census Records (Constance)
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/person/{{lons}}/census
+  body: none
+  auth: basic
+}
+
+docs {
+  Get census records for Constance Mary Wrathall (4005) with household members.
+
+  Returns a list of CensusHousehold objects, each containing:
+  - Census record fields (year, address, occupation, etc.)
+  - householdMembers: list of all members in the same household
+}
+
+auth:basic {
+  username: chris
+  password: chris
+}

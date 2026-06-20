@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/census/search
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -25,4 +25,9 @@ docs {
   - limit: Maximum number of results (default: 50, max: 500)
 
   Returns a list of matching CensusRecord objects ordered by year and name.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

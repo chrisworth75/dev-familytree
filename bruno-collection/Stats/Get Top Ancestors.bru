@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/stats/top-ancestors
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -27,4 +27,9 @@ docs {
     { "id": 123, "name": "Henry Wrathall", "birthYear": 1845, "descendantCount": 342 },
     { "id": 456, "name": "Mary Lonsdale", "birthYear": 1848, "descendantCount": 338 }
   ]
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

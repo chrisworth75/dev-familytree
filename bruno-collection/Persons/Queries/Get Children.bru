@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/{{personId}}/children
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -18,4 +18,9 @@ docs {
   Useful IDs (env vars):
   - {{george}} (6000) - George Worthington, 3 children
   - {{arthur}} (4004) - Arthur Worthington, has children
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

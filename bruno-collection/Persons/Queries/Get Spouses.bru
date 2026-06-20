@@ -7,11 +7,16 @@ meta {
 get {
   url: {{baseUrl}}/api/person/{{personId}}/spouses
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
   Get all spouses of a person.
 
   Returns a list of spouse Person objects.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

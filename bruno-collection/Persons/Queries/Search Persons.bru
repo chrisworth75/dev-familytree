@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/search
   body: none
-  auth: none
+  auth: basic
 }
 
 params:query {
@@ -26,4 +26,9 @@ docs {
 
   At least one of name or birthPlace must be provided.
   Returns a list of matching Person objects.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

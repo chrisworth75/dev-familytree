@@ -1,0 +1,26 @@
+meta {
+  name: MRCA (Chris & Bryan)
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/mrca?personA=1000&personB=31
+  body: none
+  auth: basic
+}
+
+docs {
+  MRCA path for Chris (1000) and Bryan (31) - great-uncle relationship.
+  MRCA: Constance Mary Worthington (or Arthur Goodall)
+
+  Chris -> Jonathan -> Arthur Gordon -> Constance
+  Bryan -> Constance
+
+  Returns: image/svg+xml
+}
+
+auth:basic {
+  username: chris
+  password: chris
+}

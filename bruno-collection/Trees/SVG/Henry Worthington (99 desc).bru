@@ -1,0 +1,23 @@
+meta {
+  name: Henry Worthington (99 desc)
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/tree-svg/descendants/8000
+  body: none
+  auth: basic
+}
+
+docs {
+  Descendants tree for Henry Worthington (ID: 8000)
+  99 descendants - largest tree in the database
+
+  Returns: image/svg+xml
+}
+
+auth:basic {
+  username: chris
+  password: chris
+}

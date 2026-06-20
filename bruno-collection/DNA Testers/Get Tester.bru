@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/dna-tester/{{dnaTestId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 vars:pre-request {
@@ -17,4 +17,9 @@ vars:pre-request {
 docs {
   Get a DNA tester by their test ID.
   Returns 404 if not found.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

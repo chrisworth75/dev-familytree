@@ -7,7 +7,7 @@ meta {
 delete {
   url: {{baseUrl}}/api/dna-tester/{{dnaTestId}}
   body: none
-  auth: none
+  auth: basic
 }
 
 vars:pre-request {
@@ -19,4 +19,9 @@ docs {
   Also deletes all DNA match relationships involving this tester.
   Returns 204 No Content on success.
   Returns 404 if not found.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

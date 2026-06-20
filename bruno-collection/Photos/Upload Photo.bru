@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/photos
   body: multipartForm
-  auth: none
+  auth: basic
 }
 
 body:multipart-form {
@@ -27,4 +27,9 @@ docs {
   - yearTaken: Optional year the photo was taken
 
   Returns 201 Created with the photo object.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

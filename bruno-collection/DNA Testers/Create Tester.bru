@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/dna-tester
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -39,4 +39,9 @@ docs {
 
   Returns 201 Created with the tester object.
   Uses upsert - updates if dnaTestId already exists.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

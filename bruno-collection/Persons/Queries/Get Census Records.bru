@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/{{personId}}/census
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -19,4 +19,9 @@ docs {
   - {{arthur}} (4004) - Arthur Worthington, 4 census records
   - {{george}} (6000) - George Worthington, 1851 census
   - {{james}} (5000) - James Worthington b1846
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

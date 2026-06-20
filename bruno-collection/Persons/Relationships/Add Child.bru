@@ -7,7 +7,7 @@ meta {
 post {
   url: {{baseUrl}}/api/person/{{personId}}/child
   body: json
-  auth: none
+  auth: basic
 }
 
 body:json {
@@ -35,4 +35,9 @@ docs {
 
   Sets the appropriate parent_1_id or parent_2_id based on parentGender.
   Returns 201 Created.
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }

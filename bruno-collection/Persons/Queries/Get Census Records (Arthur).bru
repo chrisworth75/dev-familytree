@@ -7,7 +7,7 @@ meta {
 get {
   url: {{baseUrl}}/api/person/4004/census
   body: none
-  auth: none
+  auth: basic
 }
 
 docs {
@@ -15,4 +15,9 @@ docs {
   Arthur has 4 linked census records (1881, 1891, 1901, 1911).
 
   ID: 4004
+}
+
+auth:basic {
+  username: chris
+  password: chris
 }
