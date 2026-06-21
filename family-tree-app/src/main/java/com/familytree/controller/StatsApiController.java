@@ -1,129 +1,37 @@
 package com.familytree.controller;
 
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.familytree.model.DashboardStats;
+import com.familytree.model.TopAncestor;
+import com.familytree.model.TopCensusAncestor;
+import com.familytree.service.StatsService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/stats")
 public class StatsApiController {
 
-    private final JdbcTemplate jdbc;
+    private final StatsService statsService;
 
-    public StatsApiController(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
+    public StatsApiController(StatsService statsService) {
+        this.statsService = statsService;
     }
 
     @GetMapping
-    public Map<String, Object> getStats() {
-        return jdbc.queryForObject("""
-            SELECT
-                (SELECT COUNT(*) FROM person) AS tree_size,
-                (SELECT COUNT(*) FROM ancestry_tester) AS dna_match_count,
-                (SELECT COUNT(*) FROM ancestry_tester WHERE person_id IS NOT NULL) AS linked_matches,
-                (SELECT COUNT(*) FROM ancestry_tester WHERE person_id IS NULL) AS unlinked_matches,
-                (SELECT COUNT(DISTINCT person_id) FROM ancestry_tester WHERE person_id IS NOT NULL) AS linked_people_count
-            """,
-            (rs, rowNum) -> Map.of(
-                "treeSize", rs.getLong("tree_size"),
-                "dnaMatchCount", rs.getLong("dna_match_count"),
-                "linkedMatches", rs.getLong("linked_matches"),
-                "unlinkedMatches", rs.getLong("unlinked_matches"),
-                "linkedPeopleCount", rs.getLong("linked_people_count")
-            )
-        );
+    public DashboardStats getStats() {
+        return statsService.getDashboardStats();
     }
 
     @GetMapping("/top-ancestors")
-    public List<Map<String, Object>> getTopAncestors() {
-        String sql = """
-            WITH RECURSIVE descendants AS (
-                -- Base case: direct children of each person
-                SELECT
-                    COALESCE(father_id, mother_id) AS ancestor_id,
-                    id AS descendant_id
-                FROM person
-                WHERE father_id IS NOT NULL OR mother_id IS NOT NULL
-
-                UNION
-
-                SELECT
-                    mother_id AS ancestor_id,
-                    id AS descendant_id
-                FROM person
-                WHERE father_id IS NOT NULL AND mother_id IS NOT NULL
-
-                UNION
-
-                -- Recursive case: descendants of descendants
-                SELECT
-                    d.ancestor_id,
-                    p.id AS descendant_id
-                FROM descendants d
-                JOIN person p ON p.father_id = d.descendant_id OR p.mother_id = d.descendant_id
-            ),
-            ancestor_counts AS (
-                SELECT
-                    ancestor_id,
-                    COUNT(DISTINCT descendant_id) AS descendant_count
-                FROM descendants
-                WHERE ancestor_id IS NOT NULL
-                GROUP BY ancestor_id
-            )
-            SELECT
-                p.id,
-                TRIM(COALESCE(p.first_name, '') || ' ' || COALESCE(p.surname, '')) AS name,
-                COALESCE(EXTRACT(YEAR FROM p.birth_date)::INTEGER, p.birth_year_approx) AS birth_year,
-                p.avatar_path,
-                ac.descendant_count
-            FROM ancestor_counts ac
-            JOIN person p ON p.id = ac.ancestor_id
-            ORDER BY ac.descendant_count DESC
-            LIMIT 10
-            """;
-
-        return jdbc.query(sql, (rs, rowNum) -> {
-            Map<String, Object> row = new HashMap<>();
-            row.put("id", rs.getLong("id"));
-            row.put("name", rs.getString("name"));
-            row.put("birthYear", rs.getObject("birth_year"));
-            row.put("avatarPath", rs.getString("avatar_path"));
-            row.put("descendantCount", rs.getLong("descendant_count"));
-            return row;
-        });
+    public List<TopAncestor> getTopAncestors() {
+        return statsService.getTopAncestorsByDescendants();
     }
 
     @GetMapping("/top-census")
-    public List<Map<String, Object>> getTopByCensus() {
-        String sql = """
-            SELECT
-                p.id,
-                TRIM(COALESCE(p.first_name, '') || ' ' || COALESCE(p.surname, '')) AS name,
-                COALESCE(EXTRACT(YEAR FROM p.birth_date)::INTEGER, p.birth_year_approx) AS birth_year,
-                p.avatar_path,
-                COUNT(*) AS census_count
-            FROM person_source ps
-            JOIN source_record sr ON sr.id = ps.source_record_id
-            JOIN person p ON p.id = ps.person_id
-            WHERE sr.record_type = 'census'
-            GROUP BY p.id
-            ORDER BY census_count DESC, name
-            LIMIT 10
-            """;
-
-        return jdbc.query(sql, (rs, rowNum) -> {
-            Map<String, Object> row = new HashMap<>();
-            row.put("id", rs.getLong("id"));
-            row.put("name", rs.getString("name"));
-            row.put("birthYear", rs.getObject("birth_year"));
-            row.put("avatarPath", rs.getString("avatar_path"));
-            row.put("censusCount", rs.getLong("census_count"));
-            return row;
-        });
+    public List<TopCensusAncestor> getTopByCensus() {
+        return statsService.getTopAncestorsByCensus();
     }
 }
