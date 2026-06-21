@@ -33,8 +33,14 @@ research). No Docker, no tiers.
    cd family-tree-react && npm run dev
    ```
    → http://localhost:4202. ⚠️ React forces a Keycloak login, so for the UI you ALSO
-   need Keycloak on :8081 (free that port from vote-keycloak first). Backend-only work
-   needs no Keycloak.
+   need Keycloak on :8081. The `keycloak` service in `docker-compose.dev.yml` now has
+   `restart: unless-stopped`, so it **auto-starts whenever Docker Desktop is running**
+   (set Docker Desktop to start on login). First-time / after an explicit stop:
+   ```bash
+   docker compose -f docker-compose.dev.yml up -d keycloak
+   ```
+   (only one Keycloak can own :8081 — stop `vote-keycloak` if it's holding the port.)
+   Backend-only work needs no Keycloak.
 
 ### Auth in this setup (why there's no Keycloak login for the API)
 
@@ -53,8 +59,10 @@ Keycloak to use the **API**:
   into every request, so it just works — no token, no Keycloak prompt. (Note: the 401
   challenge advertises `Bearer`, but Basic is still accepted.)
 - **The one exception is the React UI**: it does Keycloak `login-required`, so the
-  *frontend* (and only the frontend) still needs Keycloak running on :8081. The API,
-  curl, Bruno, and tests do not.
+  *frontend* (and only the frontend) still needs Keycloak running on :8081. The
+  `keycloak` service is set to `restart: unless-stopped`, so it auto-starts with Docker
+  Desktop — you shouldn't normally have to start it by hand. The API, curl, Bruno, and
+  tests do not need it at all.
 
 > ⚠️ `chris`/`chris` is a **dev-only** in-memory credential. Local convenience only —
 > not a real account, never use this pattern in a deployed environment.
@@ -69,7 +77,9 @@ Keycloak to use the **API**:
 # Start local Postgres and Keycloak
 docker compose -f docker-compose.dev.yml up -d
 
-# Run with real data
+# Run against the Dockerised Postgres + Keycloak (needs Keycloak up)
+# NB: for the real research data, use the `bigtree` profile against native
+# Postgres instead — see "Running locally from the IDEs" above.
 mvn spring-boot:run -Dspring-boot.run.profiles=dev
 
 # Run with empty test database

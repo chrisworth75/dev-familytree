@@ -19,6 +19,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: familytree-keycloak
+    restart: unless-stopped
     command: ["start-dev", "--import-realm"]
     ports:
       - "8081:8080"
