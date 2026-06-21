@@ -97,4 +97,33 @@ public class StatsApiController {
             return row;
         });
     }
+
+    @GetMapping("/top-census")
+    public List<Map<String, Object>> getTopByCensus() {
+        String sql = """
+            SELECT
+                p.id,
+                TRIM(COALESCE(p.first_name, '') || ' ' || COALESCE(p.surname, '')) AS name,
+                COALESCE(EXTRACT(YEAR FROM p.birth_date)::INTEGER, p.birth_year_approx) AS birth_year,
+                p.avatar_path,
+                COUNT(*) AS census_count
+            FROM person_source ps
+            JOIN source_record sr ON sr.id = ps.source_record_id
+            JOIN person p ON p.id = ps.person_id
+            WHERE sr.record_type = 'census'
+            GROUP BY p.id
+            ORDER BY census_count DESC, name
+            LIMIT 10
+            """;
+
+        return jdbc.query(sql, (rs, rowNum) -> {
+            Map<String, Object> row = new HashMap<>();
+            row.put("id", rs.getLong("id"));
+            row.put("name", rs.getString("name"));
+            row.put("birthYear", rs.getObject("birth_year"));
+            row.put("avatarPath", rs.getString("avatar_path"));
+            row.put("censusCount", rs.getLong("census_count"));
+            return row;
+        });
+    }
 }
