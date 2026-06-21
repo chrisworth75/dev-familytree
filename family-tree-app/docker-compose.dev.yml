@@ -29,5 +29,15 @@ services:
     volumes:
       - ../infra/keycloak:/opt/keycloak/data/import:ro
 
+  # Server-side D3 tree/SVG renderer. The API proxies to it (D3_TREE_SERVICE_URL,
+  # default http://localhost:3300). Port is PUBLISHED here (not just `expose`d like
+  # the tiers) so the IDE/`bigtree` backend running on the host can reach it.
+  d3:
+    build: ../d3-tree-service
+    container_name: familytree-d3
+    restart: unless-stopped
+    ports:
+      - "3300:3300"
+
 volumes:
   familytree-postgres-data:
