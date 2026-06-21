@@ -15,20 +15,33 @@ Run React + Spring straight from IntelliJ/WebStorm, pointed at the **native**
 Postgres on this Mac (the "Chris's Big Fat Tree" DB in DataGrip — your real ~79k-person
 research). No Docker, no tiers.
 
+**What auto-starts:** native Postgres runs as a launchd service (starts at login); the
+**Keycloak** and **d3 tree renderer** containers both have `restart: unless-stopped`, so
+they come back automatically whenever Docker Desktop is running (set Docker Desktop to start
+on login). So in normal use, only the backend + frontend below need launching by hand.
+
 1. **Database** — native Postgres, auto-starts at login. If it's not up:
    ```bash
    brew services start postgresql@16
    ```
    It serves db `familytree` on `localhost:5432` (user/pass `familytree`/`familytree`).
 
-2. **Backend** — run with the `bigtree` profile:
+2. **D3 tree renderer** — the API proxies tree/SVG rendering to a Node service on
+   `:3300`; **without it, trees don't render** (the UI loads but tree views are empty).
+   It auto-starts with Docker Desktop. First-time / after an explicit stop:
+   ```bash
+   docker compose -f docker-compose.dev.yml up -d d3
+   ```
+   Check it: `curl http://localhost:3300/health` → 200.
+
+3. **Backend** — run with the `bigtree` profile:
    ```bash
    cd family-tree-app && mvn spring-boot:run -Dspring-boot.run.profiles=bigtree
    ```
    (or set Active profiles = `bigtree` in the IntelliJ run config)
    → API on http://localhost:3200. **Boots WITHOUT Keycloak** (see Auth below).
 
-3. **Frontend** — only if you want the UI:
+4. **Frontend** — only if you want the UI:
    ```bash
    cd family-tree-react && npm run dev
    ```
@@ -40,6 +53,7 @@ research). No Docker, no tiers.
    docker compose -f docker-compose.dev.yml up -d keycloak
    ```
    (only one Keycloak can own :8081 — stop `vote-keycloak` if it's holding the port.)
+   At the Keycloak login page, sign in as **`dev-owner` / `dev-owner`**.
    Backend-only work needs no Keycloak.
 
 ### Auth in this setup (why there's no Keycloak login for the API)

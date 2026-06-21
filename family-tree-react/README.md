@@ -24,7 +24,8 @@ npm run dev
 ```
 
 App available at http://localhost:4202. Vite proxies `/api` (and `/uploads`) to the
-backend on `:3200`, so you don't hit CORS.
+backend on `:3200`, so you don't hit CORS. At the Keycloak login page, sign in as
+**`dev-owner` / `dev-owner`**.
 
 ### Auth — the frontend DOES need Keycloak (unlike the API)
 
@@ -40,7 +41,7 @@ Basic auth, but **the React UI cannot run without Keycloak**:
   `family-tree-frontend`, API `http://localhost:3200`. No env file to edit.
 - **Login: `dev-owner` / `dev-owner`.**
 
-So to run the UI you need **all three**:
+So to run the UI you need **all of**:
 
 1. **API** on `:3200` — run the backend with the `bigtree` profile
    (`cd ../family-tree-app && mvn spring-boot:run -Dspring-boot.run.profiles=bigtree`).
@@ -49,7 +50,11 @@ So to run the UI you need **all three**:
    **auto-starts with Docker Desktop** and is normally already up. If not (or after an
    explicit stop): `docker compose -f ../family-tree-app/docker-compose.dev.yml up -d keycloak`.
    ⚠️ only one Keycloak can own :8081 — stop `vote-keycloak` if it's holding the port.
-3. **This dev server** (`npm run dev`).
+3. **D3 tree renderer** on `:3300` — the API proxies tree rendering to it; **without it the
+   UI loads but trees stay empty**. The `d3` service (same compose file) also has
+   `restart: unless-stopped`, so it auto-starts with Docker Desktop. If not:
+   `docker compose -f ../family-tree-app/docker-compose.dev.yml up -d d3`.
+4. **This dev server** (`npm run dev`).
 
 > If you only need to poke the **API** (not the UI), skip all of this — use curl/Bruno
 > with Basic `chris/chris`. See `../family-tree-app/README.md` → "Auth in this setup".

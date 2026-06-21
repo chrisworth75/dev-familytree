@@ -26,6 +26,12 @@ export async function getTopAncestors() {
     return res.json();
 }
 
+export async function getTopByCensus() {
+    const res = await authFetch(`${API_BASE}/api/stats/top-census`);
+    if (!res.ok) throw new Error('Failed to fetch top ancestors by census');
+    return res.json();
+}
+
 export async function getDescendantsHierarchy(personId, maxDepth = 10) {
     const res = await authFetch(`${API_BASE}/api/tree-data/person/${personId}/descendants?maxDepth=${maxDepth}`);
     if (!res.ok) throw new Error('Failed to fetch descendants hierarchy');
