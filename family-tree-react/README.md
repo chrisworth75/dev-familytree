@@ -44,9 +44,11 @@ So to run the UI you need **all three**:
 
 1. **API** on `:3200` — run the backend with the `bigtree` profile
    (`cd ../family-tree-app && mvn spring-boot:run -Dspring-boot.run.profiles=bigtree`).
-2. **Keycloak** on `:8081` with the `family-tree` realm — ⚠️ that port is often taken by
-   `vote-keycloak`; free it first, then bring up the family-tree Keycloak (e.g. the
-   `keycloak` service in `../family-tree-app/docker-compose.dev.yml`).
+2. **Keycloak** on `:8081` with the `family-tree` realm — the `keycloak` service in
+   `../family-tree-app/docker-compose.dev.yml` is set to `restart: unless-stopped`, so it
+   **auto-starts with Docker Desktop** and is normally already up. If not (or after an
+   explicit stop): `docker compose -f ../family-tree-app/docker-compose.dev.yml up -d keycloak`.
+   ⚠️ only one Keycloak can own :8081 — stop `vote-keycloak` if it's holding the port.
 3. **This dev server** (`npm run dev`).
 
 > If you only need to poke the **API** (not the UI), skip all of this — use curl/Bruno
