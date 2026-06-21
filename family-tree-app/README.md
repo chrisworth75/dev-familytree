@@ -13,7 +13,8 @@ Spring Boot API for CRUD operations on the database
 
 Run React + Spring straight from IntelliJ/WebStorm, pointed at the **native**
 Postgres on this Mac (the "Chris's Big Fat Tree" DB in DataGrip — your real ~79k-person
-research). No Docker, no tiers.
+research). This is **Tier 0** — the IDE inner-loop, distinct from the Tier 1 *containerized*
+local stack (which is seeded/disposable). See `../DEPLOYMENT-STRATEGIES.md` for the full ladder.
 
 **What auto-starts:** native Postgres runs as a launchd service (starts at login); the
 **Keycloak** and **d3 tree renderer** containers both have `restart: unless-stopped`, so
