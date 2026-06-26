@@ -16,7 +16,12 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
@@ -93,6 +98,36 @@ public class PersonApiController {
     public ResponseEntity<Void> removeSpouse(@PathVariable Long id, @PathVariable Long spouseId) {
         personRepository.removeMarriage(id, spouseId);
         return ResponseEntity.noContent().build();
+    }
+
+    // ========== AVATAR ==========
+
+    // Stores the image under uploads/avatars/ and sets person.avatar_path. The API is the
+    // only write path for a person's avatar (mirrors the DNA-match avatar upload); the seeder
+    // posts each royal portrait here after creating the person.
+    @PostMapping("/{id}/avatar")
+    public ResponseEntity<Map<String, Object>> uploadAvatar(@PathVariable Long id,
+                                                            @RequestParam("avatar") MultipartFile file) {
+        if (personRepository.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            Path uploadDir = Paths.get("uploads/avatars");
+            Files.createDirectories(uploadDir);
+            String filename = UUID.randomUUID() + getFileExtension(file.getOriginalFilename());
+            Files.copy(file.getInputStream(), uploadDir.resolve(filename));
+            String avatarPath = "avatars/" + filename;
+            personRepository.updateAvatarPath(id, avatarPath);
+            return ResponseEntity.ok(Map.of("id", id, "avatarPath", avatarPath));
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private static String getFileExtension(String filename) {
+        if (filename == null) return ".jpg";
+        int dot = filename.lastIndexOf('.');
+        return dot >= 0 ? filename.substring(dot) : ".jpg";
     }
 
     // ========== READ OPERATIONS ==========

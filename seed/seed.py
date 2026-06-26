@@ -19,11 +19,13 @@ Config via env:
 """
 import base64
 import json
+import mimetypes
 import os
 import subprocess
 import sys
 import urllib.error
 import urllib.request
+import uuid
 from datetime import datetime
 from pathlib import Path
 
@@ -59,6 +61,46 @@ def post(path, body):
             return json.loads(r.read().decode())
     except urllib.error.HTTPError as e:
         sys.exit(f"POST {path} failed: {e.code} {e.read().decode()[:300]}")
+
+
+AVATARS = HERE / "avatars"
+
+
+def avatar_for(step):
+    """The avatar image for a step, keyed by its body filename stem
+    (people/charles.json -> avatars/charles.jpg). Returns None if absent."""
+    stem = Path(step["body"]).stem
+    for ext in (".jpg", ".jpeg", ".png"):
+        p = AVATARS / (stem + ext)
+        if p.exists():
+            return p
+    return None
+
+
+def post_avatar(person_id, img_path):
+    """Upload a person's avatar through the API (multipart/form-data, field 'avatar').
+    The API is the only write path for the avatar file + person.avatar_path."""
+    boundary = "----familytreeseed" + uuid.uuid4().hex
+    ctype = mimetypes.guess_type(img_path.name)[0] or "image/jpeg"
+    body = b"".join([
+        f"--{boundary}\r\n".encode(),
+        f'Content-Disposition: form-data; name="avatar"; filename="{img_path.name}"\r\n'.encode(),
+        f"Content-Type: {ctype}\r\n\r\n".encode(),
+        img_path.read_bytes(),
+        f"\r\n--{boundary}--\r\n".encode(),
+    ])
+    headers = {"Content-Type": f"multipart/form-data; boundary={boundary}"}
+    if _AUTH_HEADER:
+        headers["Authorization"] = _AUTH_HEADER
+    req = urllib.request.Request(
+        BASE_URL + f"/api/person/{person_id}/avatar", data=body, headers=headers, method="POST",
+    )
+    try:
+        with urllib.request.urlopen(req):
+            return True
+    except urllib.error.HTTPError as e:
+        print(f"  ! avatar upload for person {person_id} failed: {e.code} {e.read().decode()[:200]}")
+        return False
 
 
 def to_iso(api_date):
@@ -126,6 +168,11 @@ def main():
 
         else:
             sys.exit(f"unknown create kind: {kind}")
+
+        av = avatar_for(step)
+        if av and ref in ids:
+            if post_avatar(ids[ref], av):
+                print(f"     avatar -> {av.name}")
 
     print("\nref -> id:")
     for k, v in ids.items():

@@ -14,6 +14,8 @@ db:
 keycloak:
   jwkSetUri: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
 d3TreeServiceUrl: http://d3-tree-service:3300
+uploads:
+  storage: 1Gi          # PVC for /app/uploads (avatars) — persists across api pod restarts
 seed:
   enabled: true
   image:

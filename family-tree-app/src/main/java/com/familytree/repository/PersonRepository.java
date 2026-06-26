@@ -241,6 +241,11 @@ public class PersonRepository {
                     parent1Id, parent2Id, id);
     }
 
+    public void updateAvatarPath(Long id, String avatarPath) {
+        jdbc.update("UPDATE person SET avatar_path = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+                    avatarPath, id);
+    }
+
     public void delete(Long id) {
         // First remove any partnership records
         jdbc.update("DELETE FROM partnership WHERE person_1_id = ? OR person_2_id = ?", id, id);

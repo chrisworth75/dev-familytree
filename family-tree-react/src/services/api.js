@@ -71,7 +71,10 @@ export function getPersonImageUrl(personId) {
 }
 
 export function getAvatarUrl(avatarPath) {
-    return `/uploads/${avatarPath}`;
+    // Absolute against the API (which serves /uploads as permitAll) so avatars load on
+    // every tier — the nginx-served prod build (Tier 1/3) has no /uploads proxy, unlike
+    // the Vite dev server. Mirrors how MatchCard/MatchDetail already build avatar URLs.
+    return `${API_BASE}/uploads/${avatarPath}`;
 }
 
 export async function getPersonSummary(personId) {

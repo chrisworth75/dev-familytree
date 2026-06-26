@@ -45,6 +45,8 @@ services:
       PORT: "3200"
       KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
       D3_TREE_SERVICE_URL: http://d3:3300
+    volumes:
+      - api-uploads:/app/uploads   # persist seeded avatars across api restarts
     ports:
       - "13200:3200"
     depends_on:
@@ -100,3 +102,4 @@ services:
 
 volumes:
   pgdata:
+  api-uploads:
