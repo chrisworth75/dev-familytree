@@ -1,7 +1,7 @@
 registry: 192.168.0.100:5001
 image:
   repository: family-tree-app
-  tag: latest
+  tag: 58fed60
   pullPolicy: Always   # skeleton uses the moving 'latest' tag; Phase 5 switches to SHA tags
 host: api.familytree.192.168.0.100.nip.io
 db:
