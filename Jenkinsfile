@@ -15,7 +15,7 @@ pipeline {
         // Docker 29+ on the agent dropped API versions < 1.44; the docker-java client
         // bundled with Testcontainers otherwise falls back to 1.32 and gets rejected.
         DOCKER_API_VERSION = '1.44'
-        REGISTRY     = '192.168.0.186:5001'
+        REGISTRY     = '192.168.0.100:5001'
         IMAGE        = 'family-tree-app'
         CHART_VALUES = 'gitops/charts/api/values.yaml'
     }
@@ -31,7 +31,7 @@ pipeline {
 
         // ---- CD: build the image and let ArgoCD redeploy via a GitOps tag bump ----
         // Requires (Jenkins/Calculon setup, see gitops/ci/README.md):
-        //   * Calculon Docker daemon trusts the insecure registry 192.168.0.186:5001
+        //   * Calculon Docker daemon trusts the insecure registry 192.168.0.100:5001
         //   * a 'github-token' username/password credential with push rights
         //   * the job's Git SCM set to ignore commits from 'Calculon Jenkins' (loop guard)
         stage('Build & Push image') {

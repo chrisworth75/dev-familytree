@@ -2,7 +2,6 @@
   "realm": "family-tree",
   "enabled": true,
   "displayName": "Family Tree",
-  "_comment_hsts": "HSTS disabled: this stack is served over plain HTTP (nip.io, no TLS). The Keycloak default 'max-age=…; includeSubDomains' makes browsers force-upgrade keycloak.*.nip.io to https, which the ingress doesn't serve -> 'Could not reach Keycloak'.",
   "browserSecurityHeaders": {
     "strictTransportSecurity": ""
   },

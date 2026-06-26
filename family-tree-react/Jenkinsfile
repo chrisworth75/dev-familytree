@@ -20,7 +20,7 @@ pipeline {
     }
 
     environment {
-        REGISTRY     = '192.168.0.186:5001'
+        REGISTRY     = '192.168.0.100:5001'
         IMAGE        = 'family-tree-react'
         CHART_VALUES = 'gitops/charts/react/values.yaml'
         COMPOSE      = 'docker compose -p ft-e2e -f deploy/tier1-local/compose.yml'

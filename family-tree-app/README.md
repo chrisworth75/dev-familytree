@@ -21,7 +21,7 @@ local stack (which is seeded/disposable). See `../DEPLOYMENT-STRATEGIES.md` for 
 they come back automatically whenever Docker Desktop is running (set Docker Desktop to start
 on login). So in normal use, only the backend + frontend below need launching by hand.
 
-1. **Database** — native Postgres, auto-starts at login. If it's not up:
+1. **Database** — native Postgres, auto-starts at login. If it's not up
    ```bash
    brew services start postgresql@16
    ```
