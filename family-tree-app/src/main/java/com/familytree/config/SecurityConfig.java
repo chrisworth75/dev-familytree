@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/photos/**", "/trees/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/photos/**", "/trees/**", "/uploads/**").permitAll()
                 .requestMatchers("/login", "/error").permitAll()
                 .requestMatchers("/health", "/actuator/health", "/actuator/health/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
