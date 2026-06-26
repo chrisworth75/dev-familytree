@@ -1,7 +1,7 @@
 registry: 192.168.0.100:5001
 image:
   repository: family-tree-react
-  tag: latest
+  tag: 10df2cd
   pullPolicy: Always
 host: familytree.192.168.0.100.nip.io
 tier: "3 · gitops"   # shown by the React TierBanner
