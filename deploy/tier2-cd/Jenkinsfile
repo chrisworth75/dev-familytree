@@ -24,11 +24,14 @@ pipeline {
         stage('Smoke') {
             steps {
                 sh '''
+                    # Browser-facing ports are HTTPS via the TLS edge now; -k because
+                    # Calculon's curl doesn't trust the mkcert CA (the Mac browser does).
                     for i in $(seq 1 30); do
-                      curl -sf http://localhost:23200/actuator/health >/dev/null && { echo "tier2 api UP"; break; }
+                      curl -fsk https://localhost:23200/actuator/health >/dev/null && { echo "tier2 api UP (https)"; break; }
                       sleep 3
                     done
-                    curl -s -o /dev/null -w "react HTTP %{http_code}\\n" http://localhost:24202/
+                    curl -sk -o /dev/null -w "react HTTPS %{http_code}\\n" https://localhost:24202/
+                    curl -sk -o /dev/null -w "keycloak HTTPS %{http_code}\\n" https://localhost:28081/realms/family-tree
                 '''
             }
         }

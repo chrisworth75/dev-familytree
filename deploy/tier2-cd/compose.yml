@@ -29,8 +29,10 @@ services:
       KC_BOOTSTRAP_ADMIN_PASSWORD: admin
       KC_HTTP_ENABLED: "true"
       KC_HOSTNAME_STRICT: "false"
-    ports:
-      - "28081:8080"
+      # Behind the TLS edge: trust X-Forwarded-* so issuer/redirects are https.
+      KC_PROXY_HEADERS: xforwarded
+    expose:
+      - "8080"
     volumes:
       - ../../infra/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
 
@@ -46,8 +48,8 @@ services:
       PORT: "3200"
       KEYCLOAK_JWK_SET_URI: http://keycloak:8080/realms/family-tree/protocol/openid-connect/certs
       D3_TREE_SERVICE_URL: http://d3:3300
-    ports:
-      - "23200:3200"
+    expose:
+      - "3200"
     depends_on:
       postgres:
         condition: service_healthy
@@ -61,15 +63,32 @@ services:
   react:
     build: ../../family-tree-react
     environment:
-      API_BASE: http://192.168.0.100:23200      # browser-facing (Calculon)
-      KEYCLOAK_URL: http://192.168.0.100:28081
+      API_BASE: https://192.168.0.100:23200     # browser-facing, via the TLS edge
+      KEYCLOAK_URL: https://192.168.0.100:28081
       KEYCLOAK_REALM: family-tree
       KEYCLOAK_CLIENT_ID: family-tree-frontend
       TIER: "2 · cd"
-    ports:
-      - "24202:80"
+    expose:
+      - "80"
     depends_on:
       - api
+
+  # TLS edge: terminates HTTPS on the browser-facing ports so the SPA runs in a
+  # secure context (crypto.subtle → keycloak-js PKCE). Cert mounted from the host
+  # (kept out of git). Publishes the same ports the services used to expose.
+  edge:
+    image: nginx:alpine
+    ports:
+      - "24202:24202"
+      - "23200:23200"
+      - "28081:28081"
+    volumes:
+      - ./edge.nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /home/chris/ft-certs:/certs:ro
+    depends_on:
+      - react
+      - api
+      - keycloak
 
   seed:
     build: ../../seed
