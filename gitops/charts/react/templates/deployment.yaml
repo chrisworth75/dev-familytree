@@ -13,6 +13,10 @@ spec:
     metadata:
       labels:
         app: react
+      annotations:
+        # Roll the pod when the env ConfigMap changes (env.js is written from these
+        # vars at container start, so a config-only change must restart the pod).
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
       containers:
         - name: react

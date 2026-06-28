@@ -6,6 +6,10 @@ metadata:
     app: api
 spec:
   ingressClassName: traefik
+  tls:
+    - hosts:
+        - {{ .Values.host }}
+      secretName: ft-tls
   rules:
     - host: {{ .Values.host }}
       http:

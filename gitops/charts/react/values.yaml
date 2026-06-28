@@ -7,9 +7,9 @@ host: familytree.192.168.0.100.nip.io
 tier: "3 · gitops"   # shown by the React TierBanner
 # Browser-facing API + Keycloak URLs (injected into window.__ENV__ at container start)
 api:
-  base: http://api.familytree.192.168.0.100.nip.io
+  base: https://api.familytree.192.168.0.100.nip.io
 keycloak:
-  url: http://keycloak.192.168.0.100.nip.io
+  url: https://keycloak.192.168.0.100.nip.io
   realm: family-tree
   clientId: family-tree-frontend
 resources:

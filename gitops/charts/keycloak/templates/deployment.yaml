@@ -32,7 +32,7 @@ spec:
             - name: KC_HTTP_ENABLED
               value: "true"
             - name: KC_HOSTNAME
-              value: http://{{ .Values.host }}
+              value: https://{{ .Values.host }}
             - name: KC_HOSTNAME_STRICT
               value: "false"
           ports:
