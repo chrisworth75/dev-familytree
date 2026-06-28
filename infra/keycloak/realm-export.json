@@ -2,6 +2,7 @@
   "realm": "family-tree",
   "enabled": true,
   "displayName": "Family Tree",
+  "loginTheme": "familytree",
   "roles": {
     "realm": [
       {

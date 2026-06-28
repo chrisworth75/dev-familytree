@@ -1,0 +1,100 @@
+/* Family Tree — Keycloak login theme
+ * Palette mirrors family-tree-react/src/index.css (Ancestry-inspired teal).
+ * Layered on top of keycloak.v2 (PatternFly v5); !important is used to win
+ * against PatternFly's own utility/component rules. */
+
+:root {
+  --ft-teal: #1a5e5e;
+  --ft-teal-dark: #143f3f;
+  --ft-teal-hover: #16504f;
+  --ft-card-bg: #ffffff;
+  --ft-text: #333333;
+  --ft-text-muted: #666666;
+}
+
+/* Match the app's system-ui font stack everywhere */
+html, body, input, button, select, textarea,
+.pf-v5-c-form-control, .pf-v5-c-button, #kc-page-title {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif !important;
+}
+
+/* Branded teal backdrop in place of Keycloak's default geometric image,
+ * echoing the app's teal nav bar (--color-nav: #1a5e5e). */
+body,
+.login-pf body,
+.login-pf-page,
+#kc-container {
+  background: linear-gradient(160deg, var(--ft-teal) 0%, var(--ft-teal-dark) 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--ft-text);
+}
+
+/* "FAMILY TREE" wordmark (realm displayName) — white, spaced, like a logotype */
+#kc-header,
+#kc-header-wrapper {
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 1.9rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  padding-bottom: 1.25rem;
+}
+
+/* Login card — white, rounded, soft shadow, teal accent strip like the nav */
+.card-pf,
+.pf-v5-c-login__main {
+  background: var(--ft-card-bg) !important;
+  border: none !important;
+  border-top: 4px solid var(--ft-teal) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Card title (e.g. "Sign in to your account") in app teal */
+#kc-page-title,
+.pf-v5-c-title {
+  color: var(--ft-teal) !important;
+  font-weight: 600 !important;
+}
+
+/* Primary button = the app's teal button (index.css button{}) */
+.pf-v5-c-button.pf-m-primary,
+input[type="submit"].pf-m-primary,
+#kc-login {
+  --pf-v5-c-button--m-primary--BackgroundColor: var(--ft-teal);
+  --pf-v5-c-button--m-primary--hover--BackgroundColor: var(--ft-teal-hover);
+  --pf-v5-c-button--m-primary--active--BackgroundColor: var(--ft-teal-hover);
+  --pf-v5-c-button--m-primary--focus--BackgroundColor: var(--ft-teal-hover);
+  background-color: var(--ft-teal) !important;
+  border-radius: 4px !important;
+  font-weight: 500 !important;
+}
+.pf-v5-c-button.pf-m-primary:hover {
+  background-color: var(--ft-teal-hover) !important;
+  opacity: 0.95;
+}
+
+/* Inputs: teal focus ring instead of PatternFly blue */
+.pf-v5-c-form-control:focus,
+.pf-v5-c-form-control:focus-within,
+input:focus {
+  outline-color: var(--ft-teal) !important;
+  border-color: var(--ft-teal) !important;
+  box-shadow: 0 0 0 2px rgba(26, 94, 94, 0.25) !important;
+}
+
+/* Links and link-buttons in app teal (--color-link) */
+a,
+#kc-content a,
+.pf-v5-c-button.pf-m-link {
+  color: var(--ft-teal) !important;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Remember-me checkbox accent */
+input[type="checkbox"] {
+  accent-color: var(--ft-teal);
+}
