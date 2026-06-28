@@ -71,8 +71,8 @@
       "redirectUris": [
         "http://localhost:14202/*",
         "http://localhost:4202/*",
-        "http://192.168.0.100:24202/*",
-        "http://familytree.192.168.0.100.nip.io/*"
+        "https://192.168.0.100:24202/*",
+        "https://familytree.192.168.0.100.nip.io/*"
       ],
       "webOrigins": [
         "+"
