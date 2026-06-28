@@ -17,6 +17,7 @@ pipeline {
         DOCKER_API_VERSION = '1.44'
         REGISTRY     = '192.168.0.100:5001'
         IMAGE        = 'family-tree-app'
+        SEED_IMAGE   = 'family-tree-seed'
         CHART_VALUES = 'gitops/charts/api/values.yaml'
     }
 
@@ -41,6 +42,23 @@ pipeline {
                     sh 'docker build -t $REGISTRY/$IMAGE:$GIT_SHA -t $REGISTRY/$IMAGE:latest .'
                     sh 'docker push $REGISTRY/$IMAGE:$GIT_SHA'
                     sh 'docker push $REGISTRY/$IMAGE:latest'
+                }
+            }
+        }
+
+        // No other job builds the seed image, so fold it in here — a seed/ change
+        // (seed.py, avatars, manifest) then ships on the next CI run instead of
+        // needing a manual Calculon build. The api chart pins family-tree-seed:latest
+        // with pullPolicy: Always, so the PostSync seed Job re-pulls it on the next
+        // sync; the SHA tag is just for traceability. Builds on Calculon (amd64) —
+        // the right arch (an arm64/Mac build exec-format-errors in the cluster).
+        // Docker layer cache makes this ~free when seed/ is unchanged.
+        stage('Build & Push seed image') {
+            steps {
+                dir('seed') {
+                    sh 'docker build -t $REGISTRY/$SEED_IMAGE:$GIT_SHA -t $REGISTRY/$SEED_IMAGE:latest .'
+                    sh 'docker push $REGISTRY/$SEED_IMAGE:$GIT_SHA'
+                    sh 'docker push $REGISTRY/$SEED_IMAGE:latest'
                 }
             }
         }
